@@ -1,0 +1,27 @@
+{
+    "name": "ROS 2 Development Container",
+    "privileged": true,
+    "containerUser": "dcuser",
+    "updateRemoteUserUID": true,
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": []
+        }
+    },
+    "containerEnv": {
+        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
+        "ROS_DOMAIN_ID": "42"
+    },
+    "appPort": "2222:22", // 2222 on host -> 22 (OpenSSH listen) in container
+    "runArgs": [
+        "-e", "DISPLAY"
+    ],
+    "mounts": [
+        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
+        "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+    ],
+    "postCreateCommand": "rosdep update && rosdep install --from-paths src --ignore-src -y"
+}
