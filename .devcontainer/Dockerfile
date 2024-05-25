@@ -34,4 +34,4 @@ EXPOSE 22
 
 # Set the default user.
 USER $USERNAME
-CMD ["/bin/bash"]
+CMD ["sudo", "/usr/sbin/sshd", "-D", "-e"]

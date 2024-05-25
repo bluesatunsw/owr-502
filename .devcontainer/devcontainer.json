@@ -1,6 +1,5 @@
 {
     "name": "ROS 2 Development Container",
-    "privileged": true,
     "containerUser": "dcuser",
     "updateRemoteUserUID": true,
     "build": {
@@ -17,11 +16,13 @@
     },
     "appPort": "2222:22", // 2222 on host -> 22 (OpenSSH listen) in container
     "runArgs": [
-        "-e", "DISPLAY"
+        "-e", "DISPLAY",
+        "--userns=keep-id:uid=1000,gid=1000" // only necessary for rootless podman
     ],
     "mounts": [
         "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
         "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
     ],
-    "postCreateCommand": "rosdep update && rosdep install --from-paths src --ignore-src -y"
+    "postCreateCommand": "rosdep update && rosdep install --from-paths src --ignore-src -y",
+    "postStartCommand": "sudo /usr/sbin/sshd -D -e"
 }
