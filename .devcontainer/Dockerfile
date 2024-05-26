@@ -25,6 +25,7 @@ ENV SHELL /bin/bash
 # Set up ssh
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
+# X11Forwarding yes is already set for ros
 RUN echo 'PasswordAuthentication yes\nPermitEmptyPasswords yes\nPermitRootLogin yes' >> /etc/ssh/sshd_config
 EXPOSE 22
 
