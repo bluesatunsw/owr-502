@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "BLDCMotor.h"
-#include "USBSerial.h"
 #include "WSerial.h"
 #include "common/base_classes/FOCMotor.h"
+#include "common/foc_utils.h"
 #include "common/time_utils.h"
 #include "communication/Commander.h"
 #include "communication/SimpleFOCDebug.h"
@@ -10,20 +10,30 @@
 #include "current_sense/hardware_api.h"
 #include "drivers/BLDCDriver6PWM.h"
 #include "variant_B_G431B_ESC1.h"
+#include <MXLEMMINGObserverSensor.h>
+
 
 
 #define POLE_PAIRS_G60 14
-#define KV_G60 25 // 55, ADJUSTED, rot/s
+#define KV_G60 25 // 25, ADJUSTED, rot/s
 #define R_G60 4.6 // Ohms
+#define L_G60 0.00272 // H
 
 #define POLE_PAIRS_G80 21
 #define KV_G80 30 // 30, ADJUSTED, rot/s
 #define R_G80 1.64 // Ohms
 
 
-BLDCMotor motor = BLDCMotor{POLE_PAIRS_G80, R_G80, KV_G80};
-BLDCDriver6PWM driver = BLDCDriver6PWM{A_PHASE_UH, A_PHASE_UL, A_PHASE_VH, A_PHASE_VL, A_PHASE_WH, A_PHASE_WL};
-LowsideCurrentSense currentSense = LowsideCurrentSense{0.003f, -64.0f/7.0f, A_OP1_OUT, A_OP2_OUT, A_OP3_OUT};
+BLDCMotor motor{POLE_PAIRS_G60, R_G60, KV_G60, L_G60};
+BLDCDriver6PWM driver{A_PHASE_UH, A_PHASE_UL, A_PHASE_VH, A_PHASE_VL, A_PHASE_WH, A_PHASE_WL};
+LowsideCurrentSense currentSense{0.003f, -64.0f/7.0f, A_OP1_OUT, A_OP2_OUT, A_OP3_OUT};
+MXLEMMINGObserverSensor stateObserver{motor};
+
+float _temp;
+PhaseCurrent_s _currents;
+float _dccurrent;
+float _velocity;
+float _position;
 
 Commander commander = Commander(Serial);
 void doMotor(char* cmd){commander.motor(&motor, cmd);}
@@ -42,7 +52,7 @@ static float TempADC(float ADCVoltage) { // convert raw ADC voltage to UNCALIBRA
 	return T;
 }
 
-float readVBUS() { return _readADCVoltageInline(A_VBUS, currentSense.params) * 10.7711; } // Volts 
+float readVBUS() { return _readADCVoltageInline(A_VBUS, currentSense.params) * 10.32; } // Volts 
 float readTemp() { return TempADC(_readADCVoltageInline(A_TEMPERATURE, currentSense.params)); } // C
 
 
@@ -50,44 +60,63 @@ void setup() {
   Serial.begin(115200);
   SimpleFOCDebug::enable(&Serial);
 
+  // Cursed observer setup
+  stateObserver.init();
+  motor.linkSensor(&stateObserver);
+
   // "Driver" set up
-  driver.pwm_frequency = 20000;
+  driver.pwm_frequency = 16000;
   driver.voltage_power_supply = 24;
-  driver.voltage_limit = 24;
+  motor.voltage_limit = driver.voltage_power_supply * 0.6; // reduce to increase OFF time
   driver.init();
   currentSense.linkDriver(&driver);
   motor.linkDriver(&driver);
 
   // Motor setup
   motor.useMonitoring(Serial);
-  motor.controller = MotionControlType::velocity_openloop;
+  motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
+  motor.controller = MotionControlType::velocity;
   motor.torque_controller = TorqueControlType::foc_current;
   motor.monitor_variables = _MON_TARGET | _MON_VOLT_Q | _MON_CURR_D | _MON_VEL | _MON_ANGLE; 
-  // motor.current_limit = 60;
-  // motor.velocity_limit = 50;
   motor.init();
 
+
   // Current sense
+  currentSense.skip_align = true;
   currentSense.init();
   motor.linkCurrentSense(&currentSense); 
+
+	// !!! The MXLEMMING observer sensor doesn't need sensor alignment
+	motor.sensor_direction= Direction::CW;
+  motor.zero_electric_angle = 0;
 
   // Initialize FOC
   motor.initFOC();
 
 
-  motor.monitor_downsample = 1;
+  motor.monitor_downsample = 1000;
   char motor_id = 'M';
   commander.add(motor_id,doMotor,"motor");
   // configuring the monitoring to be well parsed by the webcontroller
   motor.monitor_start_char = motor_id; 
   motor.monitor_end_char = motor_id;
   _delay(1000);
+
+    // driver.voltage_power_supply = readVBUS();
+  motor.disable();
 }
 
 void loop() {
   motor.loopFOC();
   motor.move();
 
-  motor.monitor();
+  driver.voltage_power_supply = readVBUS();
+  _currents = currentSense.getPhaseCurrents();
+  _dccurrent = currentSense.getDCCurrent();
+  _temp = readTemp();
+  _position = stateObserver.getSensorAngle();
+  _velocity = stateObserver.getVelocity();
+
+  // motor.monitor();
   commander.run();
 }
