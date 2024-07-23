@@ -10,14 +10,11 @@
             "extensions": []
         }
     },
-    "containerEnv": {
-        "ROS_AUTOMATIC_DISCOVERY_RANGE": "LOCALHOST",
-        "ROS_DOMAIN_ID": "42"
-    },
     "appPort": "2222:22", // 2222 on host -> 22 (OpenSSH listen) in container
     "runArgs": [
         "-e", "DISPLAY",
-        // "--userns=keep-id:uid=1000,gid=1000" // only necessary for rootless podman
+        //"--net", "host", // Enable to communicate with the rover
+        //"--userns=keep-id:uid=1000,gid=1000" // only necessary for rootless podman
     ],
     "mounts": [
         "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",

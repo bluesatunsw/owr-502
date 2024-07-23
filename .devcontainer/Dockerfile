@@ -16,6 +16,7 @@ RUN apt-get install -y python3-pip
 
 # Install ros desktop
 RUN apt-get install -y ros-iron-desktop
+RUN apt-get install ros-iron-xacro
 
 # Set up user env, password is an empty string (encrypted)
 RUN chsh -s $(which bash) $USERNAME
@@ -32,6 +33,9 @@ EXPOSE 22
 # ********************************************************
 # * Anything else you want to do like clean up goes here *
 # ********************************************************
+
+# Additional ROS setup
+ENV ROS_DOMAIN_ID 42
 
 # Set the default user.
 USER $USERNAME
