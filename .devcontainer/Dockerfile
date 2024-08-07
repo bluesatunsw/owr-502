@@ -19,6 +19,9 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-iron-desktop
 RUN apt-get install ros-iron-xacro
 
+# Install additional ros packages
+RUN apt-get install ros-iron-joint-state-publisher
+
 # Set up user env, password is an empty string (encrypted)
 RUN chsh -s $(which bash) $USERNAME
 RUN echo $USERNAME:U6aMy0wojraho | chpasswd -e
