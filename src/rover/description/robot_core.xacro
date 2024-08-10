@@ -4,20 +4,21 @@
     <xacro:include filename="inertial_macros.xacro"/>
 
 
-    <xacro:property name="chassis_length" value="0.335"/>
-    <xacro:property name="chassis_width" value="0.265"/>
-    <xacro:property name="chassis_height" value="0.138"/>
-    <xacro:property name="chassis_mass" value="1.0"/>
+    <xacro:property name="chassis_length" value="0.600"/>
+    <xacro:property name="chassis_width" value="0.450"/>
+    <xacro:property name="chassis_height" value="0.100"/>
+    <xacro:property name="chassis_mass" value="10.0"/> 
+
+    <xacro:property name="diff_bar_bearing_seat_width" value="0.04"/>
+    <xacro:property name="diff_bar_length" value="0.600"/>
+
+
     <xacro:property name="wheel_radius" value="0.033"/>
     <xacro:property name="wheel_thickness" value="0.026"/>
     <xacro:property name="wheel_mass" value="0.05"/>
     <xacro:property name="wheel_offset_x" value="0.226"/>
-    <xacro:property name="wheel_offset_y" value="0.1485"/>
+    <xacro:property name="wheel_offset_y" value="0.3"/>
     <xacro:property name="wheel_offset_z" value="0.01"/>
-    <xacro:property name="caster_wheel_radius" value="0.01"/>
-    <xacro:property name="caster_wheel_mass" value="0.01"/>
-    <xacro:property name="caster_wheel_offset_x" value="0.075"/>
-    <xacro:property name="caster_wheel_offset_z" value="${wheel_offset_z - wheel_radius + caster_wheel_radius}"/>
 
     <material name="white">
         <color rgba="1 1 1 1" />
@@ -50,93 +51,65 @@
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="${-wheel_offset_x} 0 ${-wheel_offset_z}"/>
+        <origin xyz="0 0 0"/>
     </joint>
 
     <link name="chassis">
         <visual>
-            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
+            <origin xyz="0 0 0"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
             <material name="orange"/>
         </visual>
-        <collision>
-            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}"/>
-            <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
-            </geometry>
-        </collision>
-        <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="${chassis_length/2} 0 ${chassis_height/2}" rpy="0 0 0"/>
-        </xacro:inertial_box>
     </link>
 
     <gazebo reference="chassis">
         <material>Gazebo/Orange</material>
     </gazebo>
 
-    <!-- LEFT WHEEL LINK -->
-
-    <joint name="left_wheel_joint" type="continuous">
+    <!-- LEFT SIDE STUFF -->
+    <!-- TODO: Make it a revolute joint and add constraints -->
+    <joint name="ldb_pivot_joint" type="continuous">
         <parent link="chassis"/>
-        <child link="left_wheel"/>
-        <origin xyz="0 ${wheel_offset_y} 0" rpy="-${pi/2} 0 0" />
+        <child link="ldb_pivot"/>
+        <origin xyz="0 ${chassis_width/2 + 0.014 + diff_bar_bearing_seat_width} 0" rpy="-${pi/2} 0 0" />
         <axis xyz="0 0 1"/>
     </joint>
 
-    <link name="left_wheel">
+    <link name="ldb_pivot">
         <visual>
             <geometry>
-                <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+                <cylinder radius="${0.056/2}" length="${diff_bar_bearing_seat_width}"/>
             </geometry>
             <material name="blue"/>
         </visual>
-        <collision>
-            <geometry>
-                <sphere radius="${wheel_radius}"/>
-            </geometry>
-        </collision>
-        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_thickness}" radius="${wheel_radius}">
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </xacro:inertial_cylinder>
     </link>
 
-    <gazebo reference="left_wheel">
-        <material>Gazebo/Blue</material>
-    </gazebo>
 
-
-
-
-    <!-- RIGHT WHEEL LINK -->
-
-    <joint name="right_wheel_joint" type="continuous">
+    <xacro:include filename="drivebase/db_helpers.xacro" />
+    <xacro:db_module_corner prefix="db_fl" isrear="1" parent="ldb_pivot"/>
+    <xacro:db_module_corner prefix="db_bl" isrear="-1" parent="ldb_pivot"/>
+    
+    <!-- RIGHT SIDE STUFF -->
+    <!-- TODO: Make it a revolute joint and add constraints -->
+    <joint name="rdb_pivot_joint" type="continuous">
         <parent link="chassis"/>
-        <child link="right_wheel"/>
-        <origin xyz="0 ${-wheel_offset_y} 0" rpy="${pi/2} 0 0" />
-        <axis xyz="0 0 -1"/>
+        <child link="rdb_pivot"/>
+        <origin xyz="0 -${chassis_width/2 + 0.014 + diff_bar_bearing_seat_width} 0" rpy="-${pi/2} 0 0" />
+        <axis xyz="0 0 1"/>
     </joint>
 
-    <link name="right_wheel">
+    <link name="rdb_pivot">
         <visual>
             <geometry>
-                <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
+                <cylinder radius="${0.056/2}" length="${diff_bar_bearing_seat_width}"/>
             </geometry>
             <material name="blue"/>
         </visual>
-        <collision>
-            <geometry>
-                <sphere radius="${wheel_radius}"/>
-            </geometry>
-        </collision>
-        <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_thickness}" radius="${wheel_radius}">
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </xacro:inertial_cylinder>
     </link>
 
-    <gazebo reference="right_wheel">
-        <material>Gazebo/Blue</material>
-    </gazebo>
+    <xacro:db_module_corner prefix="db_fr" isrear="1" flip_x="-1" parent="rdb_pivot"/>
+    <xacro:db_module_corner prefix="db_br" isrear="-1" flip_x="-1" parent="rdb_pivot"/>
 
 </robot>
