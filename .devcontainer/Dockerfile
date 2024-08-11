@@ -1,13 +1,11 @@
-FROM ros:iron
+FROM ros:jazzy
 ARG USERNAME=dcuser
-ARG USER_UID=1000
-ARG USER_GID=1000
+ARG USER_UID=1010
+ARG USER_GID=1010
 
 # Create the user
-RUN echo $USERNAME
 RUN groupadd --gid $USER_GID $USERNAME
 RUN useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
-    # Add sudo support.
 RUN apt-get update
 RUN apt-get install -y sudo
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME
@@ -16,11 +14,12 @@ RUN apt-get install -y python3-pip
 RUN apt-get update && apt-get upgrade -y
 
 # Install ros desktop
-RUN apt-get install -y ros-iron-desktop
-RUN apt-get install ros-iron-xacro
+RUN apt-get install -y ros-jazzy-desktop
 
 # Install additional ros packages
-RUN apt-get install ros-iron-joint-state-publisher
+RUN apt-get install -y ros-jazzy-xacro
+RUN apt-get install -y ros-jazzy-joint-state-publisher
+RUN apt-get install -y ros-jazzy-ros-gz
 
 # Set up user env, password is an empty string (encrypted)
 RUN chsh -s $(which bash) $USERNAME
