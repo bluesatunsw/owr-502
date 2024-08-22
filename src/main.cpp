@@ -35,7 +35,7 @@ uint32_t time_prev = 0;
 
 Commander commander = Commander(Serial);
 void doMotor(char* cmd){commander.motor(&motor, cmd);}
-void process_hfi() {motor.process_hfi();} // override weak symbol, runs in current sense ISR!
+void process_hfi() {motor.process_hfi();} // override global weak symbol, runs in current sense ISR!
 
 static float TempADC(float ADCVoltage) { // convert raw ADC voltage to UNCALIBRATED temp (C)
 	// Formula: https://www.giangrandi.org/electronics/ntc/ntc.shtml
@@ -60,7 +60,7 @@ void setup() {
   SimpleFOCDebug::enable(&Serial);
 
   // "Driver" set up
-  driver.pwm_frequency = 10000;
+  driver.pwm_frequency = 20000;
   driver.voltage_power_supply = 24;
   motor.voltage_limit = driver.voltage_power_supply;
   driver.init();
