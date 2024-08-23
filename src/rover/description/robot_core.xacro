@@ -62,6 +62,9 @@
             </geometry>
             <material name="orange"/>
         </visual>
+        <xacro:inertial_box mass="15" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
     </link>
 
     <gazebo reference="chassis">

@@ -43,6 +43,9 @@
                 </geometry>
                 <material name="orange"/>
             </visual>
+            <xacro:inertial_box mass="2" x="${diff_bar_length}" y="${diff_bar_bearing_seat_width}" z="${diff_bar_bearing_seat_width}">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_box>
         </link>
 
         <!-- Steering mount -->
@@ -74,6 +77,14 @@
                 </geometry>
                 <material name="black"/>
             </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="${0.125}"/>
+                </geometry>
+            </collision>
+            <xacro:inertial_sphere mass="2.5" radius="${0.125}" >
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_sphere>
         </link>
     </xacro:macro>
 </robot>
