@@ -64,9 +64,11 @@
                 <geometry>
                     <box size="0.066 0.170 0.213"/>
                 </geometry>
-                <material name="blue"/>
-                
+                <material name="blue"/>                
             </visual>
+            <xacro:inertial_box mass="1" x="0.066" y="0.170" z="0.213">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_box>
         </link>
 
         <!-- Wheel -->
