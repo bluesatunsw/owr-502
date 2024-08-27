@@ -16,7 +16,7 @@ namespace drvconstants {
     constexpr float kCurrentSenseAlignEffort_V = 4;
 
     constexpr HFIMotorData kTmotorG60{14, 4.6f, 25.0f, 1987e-6f, 1474e-6f}; // TODO:
-    constexpr HFIMotorData kTmotorG80{21, 1.64, 30.0f, 707e-6f, 540e-6f}; // TODO:
+    constexpr HFIMotorData kTmotorG80{21, 1.64, 30.0f,707e-6f, 540e-6f}; // TODO:
     constexpr HFIMotorData kRandomDroneOutrunner{2, 0.0026, 2300, 7.465e-6f, 6.51e-6f}; // TODO:
 }
 

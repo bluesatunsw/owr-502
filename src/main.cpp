@@ -67,6 +67,7 @@ void setup() {
   motor.Ts = 1.0/drvconstants::kPWMFreqHz;
   motor.Lq = config::currentMotor.Lq; 
   motor.Ld = config::currentMotor.Ld; // Lowest one 
+  motor.phase_inductance = (config::currentMotor.Lq+config::currentMotor.Ld)/2.0;
   
 
   motor.LPF_velocity.Tf = 1/(25*_2PI); 
