@@ -5,11 +5,13 @@
 #include <HFIBLDCMotor.h>
 #include <SimpleCAN.h>
 #include "Constants.h"
+#include "variant_B_G431B_ESC1.h"
 
 
 HFIBLDCMotor motor{config::currentMotor.PP, config::currentMotor.R, config::currentMotor.KV};
 BLDCDriver6PWM driver{A_PHASE_UH, A_PHASE_UL, A_PHASE_VH, A_PHASE_VL, A_PHASE_WH, A_PHASE_WL};
 LowsideCurrentSense currentSense{drvconstants::kShuntOhms, drvconstants::kADCGain, A_OP1_OUT, A_OP2_OUT, A_OP3_OUT};
+// STM_FDCAN CAN{A_CAN_RX, A_CAN_TX, A_CAN_SHDN};
 
 float _temp;
 PhaseCurrent_s _currents;
@@ -44,13 +46,20 @@ void setup() {
   Serial.begin(115200);
   SimpleFOCDebug::enable(&Serial);
 
-  // Initialize comms
+  // Initialize serial comms (through the ST-Link)
   motor.monitor_downsample = 1000;
   char motor_id = 'M';
   commander.add(motor_id,doMotor,"motor");
   // configuring the monitoring to be well parsed by the webcontroller
   motor.monitor_start_char = motor_id; 
   motor.monitor_end_char = motor_id;
+
+  // Initialize CANFD comms
+  // CAN.logTo(&Serial);
+  // CAN.disableInternalLoopback();
+  // CanFilter filter = CanFilter(MASK_EXTENDED, 0x321, 0x321, FILTER_ANY_FRAME);
+  // CAN.filter(filter);
+  // CAN.begin(1'000'000);
 
 
   // Motor setup
@@ -60,8 +69,10 @@ void setup() {
   motor.torque_controller = TorqueControlType::foc_current;
   motor.monitor_variables = _MON_TARGET | _MON_VOLT_Q | _MON_CURR_D | _MON_VEL | _MON_ANGLE; 
   motor.hfi_v = drvconstants::kHFI_V;
+  motor.velocity_limit = 55;
   motor.hfi_gain1 = drvconstants::kHFI_Gain_Pos;
   motor.hfi_gain2 = drvconstants::kHFI_Gain_Vel;
+  motor.hfi_gain3 = drvconstants::kHFI_Gain_Acc;
   motor.voltage_sensor_align = drvconstants::kCurrentSenseAlignEffort_V;
   motor.error_saturation_limit = drvconstants::kHFI_AngDeltaDiscardThresh;
   motor.Ts = 1.0/drvconstants::kPWMFreqHz;
