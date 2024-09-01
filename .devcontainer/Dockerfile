@@ -13,13 +13,27 @@ RUN chmod 0440 /etc/sudoers.d/$USERNAME
 RUN apt-get install -y python3-pip
 RUN apt-get update && apt-get upgrade -y
 
+# ********************************************************
+# *                 ROS PAGKAGES                         *
+# ********************************************************
+
 # Install ros desktop
 RUN apt-get install -y ros-jazzy-desktop
 
 # Install additional ros packages
-RUN apt-get install -y ros-jazzy-xacro
-RUN apt-get install -y ros-jazzy-joint-state-publisher
-RUN apt-get install -y ros-jazzy-ros-gz
+RUN apt-get install -y ros-jazzy-xacro ros-jazzy-joint-state-publisher
+
+# Gazebo
+RUN apt-get install -y ros-jazzy-ros-gz 
+
+# Ros2Control
+RUN apt-get install -y ros-jazzy-gz-ros2-control ros-jazzy-joint-state-broadcaster \
+    ros-jazzy-diff-drive-controller
+
+# ********************************************************
+# *                END ROS PAGKAGES                         *
+# ********************************************************
+
 
 # Set up user env, password is an empty string (encrypted)
 RUN chsh -s $(which bash) $USERNAME

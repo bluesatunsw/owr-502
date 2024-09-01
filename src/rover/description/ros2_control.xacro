@@ -1,36 +1,35 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <ros2_control name="GazeboSimSystem" type="system">
+    <xacro:macro name="swerve_module_ros2control_iface" params="name">
+        <joint name="db_${name}_fork_tyre_joint">
+            <command_interface name="velocity">
+                <param name="min">-2</param>
+                <param name="max">2</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </xacro:macro>
+
+
+    <ros2_control name="RobotSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
 
-        <joint name="left_wheel_joint">
-            <command_interface name="velocity">
-                <param name="min">-10</param>
-                <param name="max">10</param>
-            </command_interface>
-            
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        
-        <joint name="right_wheel_joint">
-            <command_interface name="velocity">
-                <param name="min">-10</param>
-                <param name="max">10</param>
-            </command_interface>
+        <!-- Drivebase drive motors -->
+        <xacro:swerve_module_ros2control_iface name="fl"/>
+        <xacro:swerve_module_ros2control_iface name="fr"/>
+        <xacro:swerve_module_ros2control_iface name="bl"/>
+        <xacro:swerve_module_ros2control_iface name="br"/>
+        <!-- TODO: Drivebase turn motors -->
 
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-        </joint>
-        
     </ros2_control>
 
     <gazebo>
-        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-            <parameters>$(find OWR-502)/src/rover/description/diff_drive_controller.yaml</parameters>
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <parameters>$(find rover)/config/drivebase/diff_drive_controller.yaml</parameters>
         </plugin>
     </gazebo>
 

@@ -1,7 +1,17 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+
 diff_drive_base_controller:
   ros__parameters:
-    left_wheel_names: ["left_wheel_joint"]
-    right_wheel_names: ["right_wheel_joint"]
+    type: diff_drive_controller/DiffDriveController
+    left_wheel_names: ["db_fl_fork_tyre_joint", "db_bl_fork_tyre_joint"]
+    right_wheel_names: ["db_fr_fork_tyre_joint", "db_br_fork_tyre_joint"]
 
     wheel_separation: 1.25
     #wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
@@ -17,17 +27,18 @@ diff_drive_base_controller:
     pose_covariance_diagonal : [0.001, 0.001, 0.0, 0.0, 0.0, 0.01]
     twist_covariance_diagonal: [0.001, 0.0, 0.0, 0.0, 0.0, 0.01]
 
+    position_feedback: false
     open_loop: true
     enable_odom_tf: true
 
-    cmd_vel_timeout: 0.5
-    #publish_limited_velocity: true
+    cmd_vel_timeout: 2.0 # TODO: 0.5
+    publish_limited_velocity: true
     #velocity_rolling_window_size: 10
 
     # Velocity and acceleration limits
     # Whenever a min_* is unspecified, default to -max_*
-    linear.x.has_velocity_limits: true
-    linear.x.has_acceleration_limits: true
+    linear.x.has_velocity_limits: false # TODO: true
+    linear.x.has_acceleration_limits: false # TODO: true
     linear.x.has_jerk_limits: false
     linear.x.max_velocity: 1.0
     linear.x.min_velocity: -1.0
@@ -35,8 +46,8 @@ diff_drive_base_controller:
     linear.x.max_jerk: 0.0
     linear.x.min_jerk: 0.0
 
-    angular.z.has_velocity_limits: true
-    angular.z.has_acceleration_limits: true
+    angular.z.has_velocity_limits: false
+    angular.z.has_acceleration_limits: false
     angular.z.has_jerk_limits: false
     angular.z.max_velocity: 1.0
     angular.z.min_velocity: -1.0
