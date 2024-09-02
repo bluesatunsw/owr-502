@@ -31,13 +31,14 @@ Run `./init.bash` in each new terminal. This will source the appropriate files a
 ### Command index
 | Command                         | Effect                           |
 | ------------------------------- | -------------------------------- |
-| `ros2 launch rover rsp.launch.py` | Launch the robot state publisher. Just leave this running. |
+| `ros2 launch rover gz_diffdrive.launch.py` | Launch the robot state publisher. Just leave this running. |
 | `xacro ./src/rover/description/robot.urdf.xacro > ./build/rover.urdf` | Compiles the xacro into a singular urdf file|
 | `colcon build --symlink-install` | Builds the rover for the state publisher |
 | `gz sim` | Opens Gazebo |
 | `rviz2`  | Opens Rviz2 |
 | `rqt`    | Launch rqt  |
 | `gz service -s /world/empty/create --reqtype gz.msgs.EntityFactory --reptype gz.msgs.Boolean --timeout 1000 --req 'sdf_filename: "./build/rover.urdf", name: "rover"'` | Spawns the rover into Gazebo |
+| `ros2 run key_teleop key_teleop --ros-args -p twist_stamped_enabled:=True -r /key_vel:=/diff_drive_base_controller/cmd_vel` | Allows rover movement |
 
 
 ### FAQ
