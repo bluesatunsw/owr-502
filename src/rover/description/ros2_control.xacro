@@ -20,6 +20,12 @@
         </joint>
     </xacro:macro>
 
+    <xacro:macro name="ros2control_drivebase_suspension_pivot" params="side">
+        <joint name="${side}db_pivot_joint">
+            <state_interface name="position"/>
+        </joint>
+    </xacro:macro>
+
 
     <ros2_control name="RobotSystem" type="system">
         <hardware>
@@ -31,6 +37,9 @@
         <xacro:ros2control_swerve_module_iface name="fr"/>
         <xacro:ros2control_swerve_module_iface name="bl"/>
         <xacro:ros2control_swerve_module_iface name="br"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="l"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="r"/>
+
         <!-- TODO: Drivebase turn motors -->
 
     </ros2_control>
