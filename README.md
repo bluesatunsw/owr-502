@@ -25,11 +25,30 @@ RViz is not supported (Rqt will work) as it requires OpenGL 1.5 (Up to 1.4 is su
 Set up [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
 Install docker inside WSL
 
+### Post-setup
+Run `./init.bash` in each new terminal. This will source the appropriate files as well as put you in a 10-deep nested shell. This is needed because running an invalid command will kick you out of your shell session.
+
+### Command index
+| Command                         | Effect                           |
+| ------------------------------- | -------------------------------- |
+| `ros2 launch rover gz_diffdrive.launch.py` | Launch the robot state publisher. Just leave this running. |
+| `xacro ./src/rover/description/robot.urdf.xacro > ./build/rover.urdf` | Compiles the xacro into a singular urdf file|
+| `colcon build --symlink-install` | Builds the rover for the state publisher |
+| `gz sim` | Opens Gazebo |
+| `rviz2`  | Opens Rviz2 |
+| `rqt`    | Launch rqt  |
+| `gz service -s /world/empty/create --reqtype gz.msgs.EntityFactory --reptype gz.msgs.Boolean --timeout 1000 --req 'sdf_filename: "./build/rover.urdf", name: "rover"'` | Spawns the rover into Gazebo |
+| `ros2 run key_teleop key_teleop --ros-args -p twist_stamped_enabled:=True -r /key_vel:=/diff_drive_base_controller/cmd_vel` | Allows rover movement |
+
+
 ### FAQ
 - #### `Authorization required, but no authorization protocol specified`
   - Run `xhost +` on the host to allow X clients to **connect from anywhere** (`xhost -` to re-enable authentication)
 - Can't edit any files in the container/on the host
   - reason: With podman the UID/GID are translated in/out of the container, this doesn't apply to bind mounts
   - solution: use the vscode remote dev container extension or similar (as described above) to only edit files from in the container
+- Still can't edit any files in the container/on the host
+  - reason: Docker/Podman set them to belong to the user "Ubuntu" for some reason
+  - solution: run `sudo chown -R dcuser .` . Note that this will block you from editing files from outside the container, in which case you will need to run `sudo chown -R <your_user_name> .` .
 - Where is the code?
   - `/workspaces/owr-502` in the container

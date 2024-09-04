@@ -14,7 +14,7 @@
     "runArgs": [
         "-e", "DISPLAY",
         //"--net", "host", // Enable to communicate with the rover
-        //"--userns=keep-id:uid=1000,gid=1000" // only necessary for rootless podman
+        //"--userns=keep-id:uid=1010,gid=1010" // only necessary for rootless podman
     ],
     "mounts": [
         "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
