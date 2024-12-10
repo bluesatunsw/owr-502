@@ -3,7 +3,7 @@ project(swerve_drive_controller)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(
-    -Wall -Wextra -Wpedantic -Werror=conversion -Werror=unused-but-set-variable 
+    -Wall -Wextra -Werror=conversion -Werror=unused-but-set-variable 
     -Werror=return-type -Werror=shadow -Werror=format -Werror=range-loop-construct
     -Werror=missing-braces)
 endif()
@@ -29,11 +29,13 @@ find_package(ament_cmake REQUIRED)
 foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
   find_package(${Dependency} REQUIRED)
 endforeach()
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
 add_compile_definitions(RCPPUTILS_VERSION_MAJOR=${rcpputils_VERSION_MAJOR})
 add_compile_definitions(RCPPUTILS_VERSION_MINOR=${rcpputils_VERSION_MINOR})
-
-
-# TODO: generate_parameter_library?
+generate_parameter_library(swerve_drive_controller_parameters
+  src/swerve_drive_controller_parameters.yaml
+)
 
 add_library(swerve_drive_controller SHARED
   src/swerve_drive_controller.cpp
@@ -43,10 +45,11 @@ target_include_directories(swerve_drive_controller PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/swerve_drive_controller>
 )
-# TODO: target_link_libraries(swerve_drive_controller PUBLIC swerve_drive_controller_parameters)
-ament_target_dependencies(swerve_drive_controller PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS})
 
-# TODO: pluginlib_export_plugin_description_file?
+target_link_libraries(swerve_drive_controller PUBLIC swerve_drive_controller_parameters)
+target_link_libraries(swerve_drive_controller PUBLIC Eigen3::Eigen)
+ament_target_dependencies(swerve_drive_controller PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS})
+pluginlib_export_plugin_description_file(controller_interface swerve_drive_plugin.xml)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -66,7 +69,7 @@ install(
   DESTINATION include/swerve_drive_controller
 )
 
-install(TARGETS swerve_drive_controller # TODO: swerve_drive_controller_parameters
+install(TARGETS swerve_drive_controller swerve_drive_controller_parameters
   EXPORT export_swerve_drive_controller
   RUNTIME DESTINATION bin
   ARCHIVE DESTINATION lib
