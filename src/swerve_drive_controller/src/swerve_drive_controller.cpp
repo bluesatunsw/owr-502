@@ -79,9 +79,8 @@ namespace swerve_drive_controller {
         kinematics_ = {};
         int count = 0;
         for (const auto& [name, module] : params_.kinematics.module_names_map) {
-            kinematics_.template block<2,3>(count * 2, 0) << 
-                1, 0, -module.translation[1],
-                0, 1, module.translation[0];
+            kinematics_.template block<1,3>(count, 0) << 
+                1.0, 1.0i, std::complex<double>{-module.translation[1], module.translation[0]};
             count++;
 
         }
