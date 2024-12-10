@@ -18,7 +18,7 @@ namespace swerve_drive_controller {
 class SwerveDriveController : public controller_interface::ControllerInterface {
     public:
         SWERVE_DRIVE_CONTROLLER_PUBLIC
-        SwerveDriveController();
+        SwerveDriveController() {};
 
         SWERVE_DRIVE_CONTROLLER_PUBLIC
         controller_interface::InterfaceConfiguration command_interface_configuration() const override;
@@ -64,6 +64,7 @@ class SwerveDriveController : public controller_interface::ControllerInterface {
 
         std::shared_ptr<geometry_msgs::msg::TwistStamped> last_command_msg_;
         realtime_tools::RealtimeBox<std::shared_ptr<geometry_msgs::msg::TwistStamped>> received_velocity_msg_ptr_;
+
         // Taken from the FRC swerve paper, just uses a 1x3 complex matrix instead of a 2x3 matrix
         // v_m &= \begin{bmatrix} 1 & j & jr_x - r_y  \end{bmatrix} \
         //        \begin{bmatrix} v_x \\ v_y \\ \omega \end{bmatrix}

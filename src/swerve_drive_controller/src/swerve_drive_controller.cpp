@@ -1,17 +1,24 @@
 #include "swerve_drive_controller/swerve_drive_controller.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "lifecycle_msgs/msg/state.hpp"
+#include "swerve_drive_controller_parameters.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <complex>
 #include <cmath>
 #include <controller_interface/controller_interface_base.hpp>
+#include <iterator>
+#include <rclcpp/logging.hpp>
 #include <rclcpp/qos.hpp>
+#include <hardware_interface/types/hardware_interface_type_values.hpp>
+#include <tuple>
+#include <ranges>
 
 namespace swerve_drive_controller {
     constexpr auto DEFAULT_COMMAND_TOPIC = "~/cmd_vel";
 
     using controller_interface::CallbackReturn;
     using geometry_msgs::msg::TwistStamped;
+    using controller_interface::InterfaceConfiguration;
     using namespace std::literals;
 
     CallbackReturn SwerveDriveController::on_init() {
@@ -27,7 +34,8 @@ namespace swerve_drive_controller {
         return controller_interface::CallbackReturn::SUCCESS;
     }
 
-    controller_interface::return_type SwerveDriveController::update(const rclcpp::Time & time, const rclcpp::Duration & delta_time) {
+    controller_interface::return_type SwerveDriveController::update(const rclcpp::Time & time, 
+        const rclcpp::Duration & delta_time) {
         auto logger = get_node()->get_logger();
 
         if (get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE) {
@@ -43,28 +51,42 @@ namespace swerve_drive_controller {
         std::shared_ptr<TwistStamped> last_command_msg;
         received_velocity_msg_ptr_.get(last_command_msg);
 
+        // TODO: Timeout logic
+
         const auto chassis_speeds = Eigen::Vector3d{
             last_command_msg->twist.linear.x,
             last_command_msg->twist.linear.y,
             last_command_msg->twist.angular.z
         };
 
-        const Eigen::VectorXd moduleStateReqs = kinematics_ * chassis_speeds;
-        for (int i = 0; i < kinematics_.rows() / 2; i++) {
-            double x{moduleStateReqs(i * 2, 0)};
-            double y{moduleStateReqs(i * 2 + 1, 0)};
-        }
-        
-        // FIXME: Calculate and set inverse kinematics -> wheel speeds
+        // Calculate and set inverse kinematics -> wheel speeds
+        const Eigen::VectorXcd moduleStateReqs = kinematics_ * chassis_speeds;
 
         // TODO: Desaturate wheel speeds
+
         // TODO: Swerve optimization
+        // TODO: also optimize for reachability
+
         // TODO: Angle limiting
 
+
+        // FIXME: check if the order of command_interfaces_ is fixed to be the same as the request from command_interface_configuration 
+        using namespace std::ranges;
+        for (const auto& [state, idx] : 
+            views::zip(moduleStateReqs, views::iota(std::size_t{0}))) {
+            const bool val_set_err = 
+                command_interfaces_[idx * 2].set_value(std::abs(state)) &&
+                command_interfaces_[idx * 2 + 1].set_value(std::arg(state));
+
+            RCLCPP_ERROR_EXPRESSION(logger, !val_set_err,
+                "Setting values to command interfaces has failed! "
+                "This means that you are maybe blocking the interface in your hardware for too long.");
+        }
+         
         return controller_interface::return_type::OK;
     }
 
-    CallbackReturn SwerveDriveController::on_configure(const rclcpp_lifecycle::State & previous_state) {
+    CallbackReturn SwerveDriveController::on_configure(const rclcpp_lifecycle::State& previous_state) {
         auto logger = get_node()->get_logger();
  
         // update parameters if they have changed
@@ -78,13 +100,11 @@ namespace swerve_drive_controller {
 
         kinematics_ = {};
         int count = 0;
-        for (const auto& [name, module] : params_.kinematics.module_names_map) {
+        for (const auto& [name, module] : params_.modules.module_names_map) {
             kinematics_.template block<1,3>(count, 0) << 
                 1.0, 1.0i, std::complex<double>{-module.translation[1], module.translation[0]};
             count++;
-
         }
-
 
         last_command_msg_ = std::make_shared<TwistStamped>();
 
@@ -109,4 +129,35 @@ namespace swerve_drive_controller {
 
         return CallbackReturn::SUCCESS;
     }
+
+    InterfaceConfiguration SwerveDriveController::command_interface_configuration() const {
+        InterfaceConfiguration command_ifaces_config;
+        command_ifaces_config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
+        command_ifaces_config.names.reserve(params_.module_names.size());
+        for (const auto& [mname, module] : params_.modules.module_names_map) {
+            command_ifaces_config.names.push_back(module.drive_joint + "/" + hardware_interface::HW_IF_VELOCITY);
+            command_ifaces_config.names.push_back(module.steering_joint + "/" + hardware_interface::HW_IF_POSITION);
+        }
+
+        return command_ifaces_config;
+    };
+
+    InterfaceConfiguration SwerveDriveController::state_interface_configuration() const {
+        InterfaceConfiguration state_ifaces_config;
+        state_ifaces_config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
+        state_ifaces_config.names.reserve(params_.module_names.size());
+        for (const auto& [mname, module] : params_.modules.module_names_map) {
+            state_ifaces_config.names.push_back(module.drive_joint + "/" + hardware_interface::HW_IF_VELOCITY);
+            state_ifaces_config.names.push_back(module.steering_joint + "/" + hardware_interface::HW_IF_POSITION);
+        }
+
+        return state_ifaces_config;
+    };
 }
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(
+  swerve_drive_controller::SwerveDriveController,
+  controller_interface::ControllerInterface
+)
