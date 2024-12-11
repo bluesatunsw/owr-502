@@ -1,57 +1,40 @@
-swerve_drive_controller:
-  module_names: {
-    type: string_array,
-    validation: {
-      unique<>: null,
+swerve_drive_controller: 
+  module_names: 
+    type: string_array
+    validation:
+      unique <>: null
       not_empty<>: null
-    },
     description: "Specifies pretty names for swerve modules, to get around generate_parameter_library's limited arbitrary map support"
-  }
-  modules: {
-    __map_module_names: {
-      translation: {
-        type: double_array,
-        description: "X,Y translation (in that order) from the desired Centre of Rotation, following REP103 directions (+x -> forward, +y -> left)",
-        validation: {
-          fixed_size<>: 2
-        }
-      },
-      drive_joint: {
-        type: string,
-        description: "Name of this wheel's thrust (driving) joint",
-        validation: {
-          unique<>: null,
-          not_empty<>: null
-        }
-      },
-      steering_joint: {
-        type: string,
-        description: "Name of this wheel's steering (azimuth control) joint",
-        validation: {
-          unique<>: null,
-          not_empty<>: null
-        }
-      },
-    }
-  }
-  wheel_radius: {
-    type: double,
-    description: "Radius of a wheel, i.e., wheels size, used for transformation of linear velocity into wheel rotations. If this parameter is wrong the robot will move faster or slower then expected.",
-    validation: {
-      gt<>: 0.0
-    }
-  }
-  # TODO: wheel angle limits
-  # TODO: max wheel linear velocity (double)
-  # TODO: drive acceleration limit (double)
-  # TODO: use angle optimization (bool)
-  # TODO: cmd_vel timeout
-  publish_desired_module_states: {
-    type: bool,
-    default_value: false,
-    description: "Publish desired swerve module states after inverse kinematics and desaturating speeds.",
-  }
   
+  modules:
+    __map_module_names:
+      translation: 
+        type: double_array
+        description: "X,Y translation (in that order) from the desired Centre of Rotation, following REP103 directions (+x -> forward, +y -> left)"
+        validation: 
+          fixed_size<>: 2
+      drive_joint:
+        type: string
+        description: "Name of this wheel's thrust (driving) joint"
+        validation:
+          not_empty<>: null
+      steering_joint:
+        type: string
+        description: "Name of this wheel's steering (azimuth control) joint"
+        validation: 
+          not_empty<>: null 
 
-
-
+  wheel_radius:
+    type: double
+    description: "Radius of a wheel, i.e., wheels size, used for transformation of linear velocity into wheel rotations. If this parameter is wrong the robot will move faster or slower then expected."
+    validation:
+      gt<>: 0.0
+  #TODO: wheel angle limits
+  #TODO: max wheel linear velocity(double)
+  #TODO: drive acceleration limit(double)
+  #TODO: use angle optimization(bool)
+  #TODO: cmd_vel timeout
+  publish_desired_module_states:
+    type: bool
+    default_value: false
+    description: "Publish desired swerve module states after inverse kinematics and desaturating speeds."

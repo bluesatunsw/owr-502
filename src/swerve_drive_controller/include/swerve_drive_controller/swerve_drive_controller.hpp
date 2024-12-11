@@ -36,7 +36,7 @@ class SwerveDriveController : public controller_interface::ControllerInterface {
         SWERVE_DRIVE_CONTROLLER_PUBLIC
         controller_interface::CallbackReturn on_configure(
         const rclcpp_lifecycle::State & previous_state) override;
-
+        
         SWERVE_DRIVE_CONTROLLER_PUBLIC
         controller_interface::CallbackReturn on_activate(
         const rclcpp_lifecycle::State & previous_state) override;

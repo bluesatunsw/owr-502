@@ -52,6 +52,31 @@ ament_target_dependencies(swerve_drive_controller PUBLIC ${THIS_PACKAGE_INCLUDE_
 pluginlib_export_plugin_description_file(controller_interface swerve_drive_plugin.xml)
 
 if(BUILD_TESTING)
+  find_package(ament_cmake_gmock REQUIRED)
+  find_package(controller_manager REQUIRED)
+  find_package(ros2_control_test_assets REQUIRED)
+
+  # ament_add_gmock(test_swerve_drive_controller
+  #   test/test_swerve_drive_controller.cpp)
+  # target_link_libraries(test_swerve_drive_controller swerve_drive_controller)
+  # ament_target_dependencies(test_swerve_drive_controller
+  #   geometry_msgs
+  #   hardware_interface
+  #   nav_msgs
+  #   rclcpp
+  #   rclcpp_lifecycle
+  #   realtime_tools
+  #   tf2
+  #   tf2_msgs
+  # )
+
+  add_definitions(-DTEST_FILES_DIRECTORY="${CMAKE_CURRENT_SOURCE_DIR}/test")
+  ament_add_gmock(test_load_swerve_drive_controller test/test_load_swerve_drive_controller.cpp)
+  ament_target_dependencies(test_load_swerve_drive_controller
+    controller_manager
+    ros2_control_test_assets
+  )
+
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
   # comment the line when a copyright and license is added to all source files
