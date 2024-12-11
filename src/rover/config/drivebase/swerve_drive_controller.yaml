@@ -1,0 +1,34 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+swerve_drive_base_controller:
+  ros__parameters:
+    type: swerve_drive_controller/SwerveDriveController
+
+    wheel_radius: 0.125
+    module_names: ["FL", "FR", "BL", "BR"]
+    modules:
+      FL: {
+        translation: [0.55, 0.39],
+        drive_joint: db_fl_fork_tyre_joint,
+        steering_joint: db_fl_smount_fork_joint
+      }
+      FR: {
+        translation: [0.55, -0.39],
+        drive_joint: "db_fr_fork_tyre_joint",
+        steering_joint: "db_fr_smount_fork_joint"
+      }
+      BL: {
+        translation: [-0.55, 0.39],
+        drive_joint: "db_bl_fork_tyre_joint",
+        steering_joint: "db_bl_smount_fork_joint"
+      }
+      BR: {
+        translation: [-0.55, -0.39],
+        drive_joint: "db_br_fork_tyre_joint",
+        steering_joint: "db_br_smount_fork_joint"
+      }

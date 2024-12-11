@@ -48,6 +48,6 @@ def generate_launch_description():
             'use_ros2_control',
             default_value='true',
             description='Use ros2_control if true'),
-        node_robot_state_publisher,
-        node_robot_joint_publisher
+        node_robot_joint_publisher,
+        node_robot_state_publisher
     ])
