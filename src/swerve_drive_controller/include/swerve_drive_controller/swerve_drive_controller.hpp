@@ -59,17 +59,18 @@ public:
     const rclcpp_lifecycle::State & previous_state) override;
 
 private:
-        // Parameters from ROS for diff_drive_controller
+  // Parameters from ROS for diff_drive_controller
   std::shared_ptr<ParamListener> param_listener_;
   Params params_;
 
-  std::shared_ptr<geometry_msgs::msg::TwistStamped> last_command_msg_;
-  realtime_tools::RealtimeBox<std::shared_ptr<geometry_msgs::msg::TwistStamped>>
-  received_velocity_msg_ptr_;
+  rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr velocity_command_subscriber_ = nullptr;
 
-        // Taken from the FRC swerve paper, just uses a 1x3 complex matrix instead of a 2x3 matrix
-        // v_m &= \begin{bmatrix} 1 & j & jr_x - r_y  \end{bmatrix} \
-        //        \begin{bmatrix} v_x \\ v_y \\ \omega \end{bmatrix}
+  realtime_tools::RealtimeBox<std::shared_ptr<geometry_msgs::msg::TwistStamped>>
+  received_velocity_msg_ptr_{nullptr};
+
+  // Taken from the FRC swerve paper, just uses a 1x3 complex matrix instead of a 2x3 matrix
+  // v_m &= \begin{bmatrix} 1 & j & jr_x - r_y  \end{bmatrix} \
+  //        \begin{bmatrix} v_x \\ v_y \\ \omega \end{bmatrix}
   Eigen::MatrixX3cd kinematics_;
 
 };
