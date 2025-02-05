@@ -1,0 +1,27 @@
+test_swerve_drive_controller:
+  ros__parameters:
+    type: swerve_drive_controller/SwerveDriveController
+
+    wheel_radius: 0.150
+    module_names: ["FL", "FR", "BL", "BR"]
+    modules:
+      FL: {
+        translation: [1.0, 1.0],
+        drive_joint: db_fl_fork_tyre_joint,
+        steering_joint: db_fl_smount_fork_joint
+      }
+      FR: {
+        translation: [1.0, -1.0],
+        drive_joint: "db_fr_fork_tyre_joint",
+        steering_joint: "db_fr_smount_fork_joint"
+      }
+      BL: {
+        translation: [-1.0, 1.0],
+        drive_joint: "db_bl_fork_tyre_joint",
+        steering_joint: "db_bl_smount_fork_joint"
+      }
+      BR: {
+        translation: [-1.0, -1.0],
+        drive_joint: "db_br_fork_tyre_joint",
+        steering_joint: "db_br_smount_fork_joint"
+      }

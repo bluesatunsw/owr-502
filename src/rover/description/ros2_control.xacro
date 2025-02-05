@@ -46,7 +46,8 @@
 
     <gazebo>
         <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-            <parameters>$(find rover)/config/drivebase/diff_drive_controller.yaml</parameters>
+            <!-- FIXME: reenable? <parameters>$(find rover)/config/drivebase/diff_drive_controller.yaml</parameters> -->
+            <parameters>$(find rover)/config/drivebase/swerve_drive_controller.yaml</parameters>
         </plugin>
     </gazebo>
 
