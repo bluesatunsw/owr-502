@@ -69,12 +69,7 @@ controller_interface::return_type SwerveDriveController::update(
   };
 
   // Calculate and set inverse kinematics -> wheel speeds (m/s) -> (rad/s)
-  const Eigen::VectorXcd moduleStateReqs =
-    kinematics_ * chassis_speeds * (1 / params_.wheel_radius);
-
-  // TODO: Desaturate wheel speeds
-
-  // TODO: Swerve optimization
+  const Eigen::VectorXcd moduleStateReqs =#include "hardware_interface/system_interface.hpp"
   // TODO: also optimize for reachability
 
   // TODO: Angle limiting

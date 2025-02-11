@@ -70,7 +70,25 @@ namespace bg431esc1_actuator {
         hardware_interface::return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
     
     private:
-        const unsigned magic = 0b011000;
+        static constexpr unsigned magic_number = 0b011000;
+
+        bool enabled = false;
+
+        union CanId {
+            uint32_t raw;
+
+            struct {
+                uint8_t _padding: 3;
+                uint8_t priority: 3;
+                uint8_t anonymous: 1;
+                uint8_t magic: 6;
+                uint8_t api_page: 2;
+                uint16_t api_index: 10;
+                uint8_t reserved: 1;
+                uint8_t address: 6;
+            };
+
+        };
 
         enum class ControlMode : uint8_t {
             DISABLED,
@@ -82,33 +100,56 @@ namespace bg431esc1_actuator {
             POSITION_OPEN_LOOP
         };
 
+        union Control {
+            uint64_t raw;
+
+            struct {
+                ControlMode _control_mode: 8;
+                uint32_t _setpoint: 32;
+            };
+        };
+
+        union Status0 {
+            uint64_t raw;
+
+            struct {
+                uint32_t _position: 32;
+                uint32_t _velocity: 32;
+            };
+        };
+
+        union Status2 {
+            uint64_t raw;
+
+            struct {
+                int16_t applied_voltage: 16;
+                int16_t stator_current: 16;
+                int16_t supply_current: 16;
+                uint8_t bus_voltage: 8;
+                uint8_t driver_temp;
+            };
+        };
+
+
+
         int m_socket;
         sockaddr_can m_address;
-
-        struct Telemetry {
-            double pos_estimate;
-            double vel_estimate;
-        };
-
-        struct Status {
-            int16_t applied_voltage;
-            int16_t stator_current;
-            int16_t supply_current;
-            uint8_t bus_voltage;
-            uint8_t driver_temp;
-        };
+        socklen_t m_adress_len = sizeof(m_address);
 
         class BG431ESC1Data {
-            unsigned m_can_address;
             ControlMode m_control_mode;
 
         public:
-            Telemetry telemetry;
-            Status status;
+            Status0 m_telemetry;
+            Status2 m_status;
             std::string m_name;
-            double m_setpoint;
+            uint8_t m_can_address;
 
-            BG431ESC1Data(unsigned can_address, ControlMode control_mode, std::string name) {
+            double m_setpoint;
+            double m_position_estimate;
+            double m_velocity_estimate;
+
+            BG431ESC1Data(uint8_t can_address, ControlMode control_mode, std::string name) {
                 m_can_address = can_address;
                 m_control_mode = control_mode;
                 m_name = name;
@@ -117,9 +158,9 @@ namespace bg431esc1_actuator {
 
         class BG431ESC1WithAuxData : public BG431ESC1Data {
         public:
-            Telemetry aux_encoder;
+            Status0 aux_encoder;
 
-            BG431ESC1WithAuxData(unsigned can_address, ControlMode control_mode, std::string name)
+            BG431ESC1WithAuxData(uint8_t can_address, ControlMode control_mode, std::string name)
                 : BG431ESC1Data(can_address, control_mode, name){};
         };
 

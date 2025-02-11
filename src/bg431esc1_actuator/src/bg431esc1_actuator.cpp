@@ -1,9 +1,11 @@
 #include "bg431esc1_actuator/bg431esc1_actuator.hpp"
 
 #include <hardware_interface/actuator_interface.hpp>
+#include <hardware_interface/types/hardware_interface_return_values.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
 #include <hardware_interface/handle.hpp>
 #include <linux/can.h>
+#include <memory>
 #include <rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp>
 #include <string>
 #include <sys/socket.h>
@@ -20,13 +22,13 @@ namespace bg431esc1_actuator {
             for (auto & joint : hardware_info.joints) {
                 if (joint.parameters.contains("has_aux_encoder")) {
                     m_bg431esc1_with_aux_data.push_back(BG431ESC1WithAuxData(
-                        static_cast<unsigned>(std::stoi(joint.parameters.at("can_id"))),
+                        static_cast<uint8_t>(std::stoi(joint.parameters.at("can_id"))),
                         static_cast<ControlMode>(std::stoi(joint.parameters.at("control_mode"))),
                         joint.name
                     ));
                 } else {
                     m_bg431esc1_data.push_back(BG431ESC1Data(
-                        static_cast<unsigned>(std::stoi(joint.parameters.at("can_id"))),
+                        static_cast<uint8_t>(std::stoi(joint.parameters.at("can_id"))),
                         static_cast<ControlMode>(std::stoi(joint.parameters.at("control_mode"))),
                         joint.name
                     ));
@@ -63,12 +65,12 @@ namespace bg431esc1_actuator {
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name,
                 hardware_interface::HW_IF_POSITION,
-                &datum.telemetry.pos_estimate
+                &datum.m_position_estimate
             ));
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name,
                 hardware_interface::HW_IF_VELOCITY,
-                &datum.telemetry.vel_estimate
+                &datum.m_velocity_estimate
             ));
         }
 
@@ -76,22 +78,22 @@ namespace bg431esc1_actuator {
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name + "_output_shaft",
                 hardware_interface::HW_IF_POSITION,
-                &datum.telemetry.pos_estimate
+                &datum.m_position_estimate
             ));
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name + "_output_shaft",
                 hardware_interface::HW_IF_VELOCITY,
-                &datum.telemetry.vel_estimate
+                &datum.m_velocity_estimate
             ));
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name + "_aux_encoder",
                 hardware_interface::HW_IF_POSITION,
-                &datum.aux_encoder.pos_estimate
+                &datum.m_position_estimate
             ));
             state_interfaces.push_back(hardware_interface::StateInterface(
                 datum.m_name + "_aux_encoder",
                 hardware_interface::HW_IF_VELOCITY,
-                &datum.aux_encoder.vel_estimate
+                &datum.m_velocity_estimate
             ));
         }
 
@@ -133,12 +135,40 @@ namespace bg431esc1_actuator {
 
     CallbackReturn
     Bg431esc1Actuator::on_activate(const rclcpp_lifecycle::State & previous_state) {
+        enabled = true;
         return CallbackReturn::SUCCESS;
     }
 
     CallbackReturn
     Bg431esc1Actuator::on_deactivate(const rclcpp_lifecycle::State & previous_state) {
+        enabled = false;
         return CallbackReturn::SUCCESS;
+    }
+
+    hardware_interface::return_type  Bg431esc1Actuator::read(const rclcpp::Time& timestamp, const rclcpp::Duration&) {
+        struct canfd_frame frame;
+        auto _ = recvfrom(m_socket, &frame, sizeof(canfd_frame),
+            0, (struct sockaddr*)&m_address, &m_adress_len);
+
+        CanId id = {.raw = frame.can_id};
+        if (id.magic != magic_number) return hardware_interface::return_type::ERROR;
+
+        switch (id.api_page) {
+        case 1:
+            break; // Loopback, do nothing
+        case 2:
+            if (id.api_index == 1) { // primary encoder
+                for (BG431ESC1Data datum : m_bg431esc1_data) {
+                    if (datum.m_can_address == id.address) {
+                        motor_controller = 
+                    }
+                }
+            } else { // aux encoder
+            }
+            break;
+        default: // 3
+            break;
+        }
     }
 
 }
