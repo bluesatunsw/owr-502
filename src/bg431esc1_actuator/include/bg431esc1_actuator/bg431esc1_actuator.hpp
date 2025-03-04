@@ -1,7 +1,6 @@
 #ifndef BG431ESC1_ACTUATOR_HPP
 #define BG431ESC1_ACTUATOR_HPP
 
-#include "bg431esc1_actuator_parameters.hpp"
 #include "hardware_interface/actuator_interface.hpp"
 #include <cmath>
 #include <cstdint>
@@ -74,20 +73,38 @@ namespace bg431esc1_actuator {
 
         bool enabled = false;
 
-        union CanId {
-            uint32_t raw;
+        int m_sockfd;
+        sockaddr_can m_socket;        
 
-            struct {
-                uint8_t _padding: 3;
-                uint8_t priority: 3;
-                uint8_t anonymous: 1;
-                uint8_t magic: 6;
-                uint8_t api_page: 2;
-                uint16_t api_index: 10;
-                uint8_t reserved: 1;
-                uint8_t address: 6;
-            };
+        struct CanId {
+            CanId(uint8_t address, uint8_t api_page, uint8_t api_index) {
+                this->address = address;
+                this->api_page = api_page;
+                this->api_index = api_index;
+            }
 
+            CanId(uint8_t address, uint8_t api_page, uint8_t api_index, uint8_t anonymous) {
+                this->address = address;
+                this->api_page = api_page;
+                this->api_index = api_index;
+                this->anonymous = anonymous;
+            }
+
+            CanId(uint8_t address, uint8_t api_page, uint8_t api_index, uint8_t anonymous, uint8_t priority) {
+                this->address = address;
+                this->api_page = api_page;
+                this->api_index = api_index;
+                this->anonymous = anonymous;
+                this->priority = priority;
+            }
+
+            uint8_t priority: 3 = 4;
+            uint8_t anonymous: 1 = 0b0;
+            uint8_t magic: 6 = magic_number;
+            uint8_t api_page: 2;
+            uint16_t api_index: 10;
+            uint8_t reserved: 1 = 0b1;
+            uint8_t address: 6;
         };
 
         enum class ControlMode : uint8_t {
@@ -100,72 +117,61 @@ namespace bg431esc1_actuator {
             POSITION_OPEN_LOOP
         };
 
-        union Control {
-            uint64_t raw;
-
-            struct {
-                ControlMode _control_mode: 8;
-                uint32_t _setpoint: 32;
-            };
+        struct Control {
+            ControlMode _control_mode: 8;
+            uint32_t _setpoint: 32;
         };
 
-        union Status0 {
-            uint64_t raw;
-
-            struct {
-                uint32_t _position: 32;
-                uint32_t _velocity: 32;
-            };
+        struct Status0 {
+            uint32_t _position: 32;
+            uint32_t _velocity: 32;
         };
 
-        union Status2 {
-            uint64_t raw;
-
-            struct {
-                int16_t applied_voltage: 16;
-                int16_t stator_current: 16;
-                int16_t supply_current: 16;
-                uint8_t bus_voltage: 8;
-                uint8_t driver_temp;
-            };
+        struct Status2 {
+            int16_t applied_voltage: 16;
+            int16_t stator_current: 16;
+            int16_t supply_current: 16;
+            uint8_t bus_voltage: 8;
+            uint8_t driver_temp;
         };
-
-
-
-        int m_socket;
-        sockaddr_can m_address;
-        socklen_t m_adress_len = sizeof(m_address);
 
         class BG431ESC1Data {
             ControlMode m_control_mode;
+            double m_sensor_scale = 1.0;
 
         public:
             Status0 m_telemetry;
+            Status0 aux_telemetry;
             Status2 m_status;
             std::string m_name;
             uint8_t m_can_address;
 
+            bool m_has_aux = false;
             double m_setpoint;
             double m_position_estimate;
             double m_velocity_estimate;
 
-            BG431ESC1Data(uint8_t can_address, ControlMode control_mode, std::string name) {
+            double m_aux_position_estimate;
+            double m_aux_velocity_estimate;
+
+            BG431ESC1Data(uint8_t can_address, ControlMode control_mode, std::string name, bool has_aux) {
                 m_can_address = can_address;
                 m_control_mode = control_mode;
                 m_name = name;
+                m_has_aux = has_aux;
             }
-        };
 
-        class BG431ESC1WithAuxData : public BG431ESC1Data {
-        public:
-            Status0 aux_encoder;
+            void set_sensor_scale(double scale) {
+                m_sensor_scale = scale;
+            }
 
-            BG431ESC1WithAuxData(uint8_t can_address, ControlMode control_mode, std::string name)
-                : BG431ESC1Data(can_address, control_mode, name){};
+            bool send_frame() {
+                CanId id = CanId(m_can_address, 0b01, 0b0000000001);
+            }
+
         };
 
         std::vector<BG431ESC1Data> m_bg431esc1_data;
-        std::vector<BG431ESC1WithAuxData> m_bg431esc1_with_aux_data;
     };
 }
 
