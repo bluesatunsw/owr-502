@@ -58,8 +58,12 @@ def generate_launch_description():
         package='ros_gz_sim',
         executable='create',
         output='screen',
-        arguments=['-topic', 'robot_description', '-name',
-                   'rover', '-allow_renaming', 'true'],
+        arguments=[
+            '-topic', 'robot_description', 
+            '-name', 'rover', 
+            '-allow_renaming', 'true',
+            '-z', '7.6'                     # Spawn ABOVE the surface
+        ],
     )
 
     joint_state_broadcaster_spawner = Node(
@@ -84,7 +88,10 @@ def generate_launch_description():
                 [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
                                        'launch',
                                        'gz_sim.launch.py'])]),
-            launch_arguments=[('gz_args', [' -r -v 4 dem_moon.sdf'])]),
+            launch_arguments={
+                'gz_args' : [' -r -v 4 dem_moon.sdf'],
+                'on_exit_shutdown' : 'true'
+            }.items()),
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=gz_spawn_entity,
