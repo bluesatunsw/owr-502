@@ -1,17 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
-
-    <xacro:include filename="inertial_macros.xacro"/>
-
-
-    <xacro:property name="chassis_length" value="0.600"/>
-    <xacro:property name="chassis_width" value="0.450"/>
-    <xacro:property name="chassis_height" value="0.100"/>
-    <xacro:property name="chassis_mass" value="10.0"/> 
+    <xacro:include filename="db_helpers.xacro" />
+    <xacro:include filename="ros2_control.xacro"/>
 
     <xacro:property name="diff_bar_bearing_seat_width" value="0.04"/>
     <xacro:property name="diff_bar_length" value="0.600"/>
-
 
     <xacro:property name="wheel_radius" value="0.033"/>
     <xacro:property name="wheel_thickness" value="0.026"/>
@@ -19,57 +12,6 @@
     <xacro:property name="wheel_offset_x" value="0.226"/>
     <xacro:property name="wheel_offset_y" value="0.3"/>
     <xacro:property name="wheel_offset_z" value="0.01"/>
-
-    <material name="white">
-        <color rgba="1 1 1 1" />
-    </material>
-
-    <material name="orange">
-        <color rgba="1 0.3 0.1 1"/>
-    </material>
-
-    <material name="blue">
-        <color rgba="0.2 0.2 1 1"/>
-    </material>
-
-    <material name="black">
-        <color rgba="0 0 0 1"/>
-    </material>
-
-    <material name="red">
-        <color rgba="1 0 0 1"/>
-    </material>
-
-    <!-- BASE LINK -->
-
-    <link name="base_link">
-    </link>
-
-
-    <!-- CHASSIS LINK -->
-
-    <joint name="chassis_joint" type="fixed">
-        <parent link="base_link"/>
-        <child link="chassis"/>
-        <origin xyz="0 0 0"/>
-    </joint>
-
-    <link name="chassis">
-        <visual>
-            <origin xyz="0 0 0"/>
-            <geometry>
-                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
-            </geometry>
-            <material name="orange"/>
-        </visual>
-        <xacro:inertial_box mass="15" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-        </xacro:inertial_box>
-    </link>
-
-    <gazebo reference="chassis">
-        <material>Gazebo/Orange</material>
-    </gazebo>
 
     <!-- LEFT SIDE STUFF -->
     <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
@@ -91,7 +33,6 @@
     </link>
 
 
-    <xacro:include filename="drivebase/db_helpers.xacro" />
     <xacro:db_module_corner prefix="db_fl" isrear="1" parent="ldb_pivot"/>
     <xacro:db_module_corner prefix="db_bl" isrear="-1" parent="ldb_pivot"/>
     

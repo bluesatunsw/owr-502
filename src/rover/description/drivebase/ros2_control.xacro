@@ -26,7 +26,7 @@
         </joint>
     </xacro:macro>
 
-
+    <!-- FIXME: Gate this behind is_simulation -->
     <ros2_control name="RobotSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>
@@ -44,6 +44,7 @@
 
     </ros2_control>
 
+    <!-- FIXME: Gate this behind is_simulation -->
     <gazebo>
         <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <!-- FIXME: reenable? <parameters>$(find rover)/config/drivebase/diff_drive_controller.yaml</parameters> -->

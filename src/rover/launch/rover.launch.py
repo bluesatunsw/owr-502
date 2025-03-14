@@ -30,9 +30,6 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    # Launch Arguments
-    use_sim_time = LaunchConfiguration("use_sim_time", default=True)
-
     # Get URDF via xacro
     robot_description_content = Command(
         [
@@ -51,7 +48,7 @@ def generate_launch_description():
             FindPackageShare("rover"),
             "config",
             "drivebase",
-            "diff_drive_controller.yaml",
+            "swerve_drive_controller.yaml",
         ]
     )
 
@@ -73,22 +70,35 @@ def generate_launch_description():
             "rover",
             "-allow_renaming",
             "true",
+            "-z",
+            "7.6",  # Spawn ABOVE the surface
         ],
     )
 
-    joint_state_broadcaster_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster"],
-    )
-    diff_drive_base_controller_spawner = Node(
+    swerve_drive_base_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=[
-            "diff_drive_base_controller",
+            "swerve_drive_base_controller",
             "--param-file",
             robot_controllers,
         ],
+    )
+
+    bridge_params = PathJoinSubstitution(
+        [
+            FindPackageShare("rover"),
+            "config",
+            "gazebo",
+            "bridge.yaml",
+        ]
+    )
+
+    start_gazebo_ros_bridge_cmd = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        parameters=[{"config_file": bridge_params}],
+        output="screen",
     )
 
     return LaunchDescription(
@@ -106,27 +116,19 @@ def generate_launch_description():
                         )
                     ]
                 ),
-                launch_arguments=[("gz_args", [" -r -v 4 dem_moon.sdf"])],
+                launch_arguments={
+                    "gz_args": [" -r -v 4 dem_moon.sdf"],
+                    "on_exit_shutdown": "true",
+                }.items(),
             ),
             RegisterEventHandler(
                 event_handler=OnProcessExit(
                     target_action=gz_spawn_entity,
-                    on_exit=[joint_state_broadcaster_spawner],
-                )
-            ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=joint_state_broadcaster_spawner,
-                    on_exit=[diff_drive_base_controller_spawner],
+                    on_exit=[swerve_drive_base_controller_spawner],
                 )
             ),
             node_robot_state_publisher,
             gz_spawn_entity,
-            # Launch Arguments
-            DeclareLaunchArgument(
-                "use_sim_time",
-                default_value=use_sim_time,
-                description="If true, use simulated clock",
-            ),
+            start_gazebo_ros_bridge_cmd,
         ]
     )
