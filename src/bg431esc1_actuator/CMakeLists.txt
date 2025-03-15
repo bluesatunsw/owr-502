@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(bg431esc1_actuator)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(
     -Wall -Wextra -Werror=conversion -Werror=unused-but-set-variable
@@ -38,6 +40,7 @@ generate_parameter_library(bg431esc1_actuator_parameters
 )
 
 add_library(bg431esc1_actuator SHARED
+  src/can_mux.cpp
   src/bg431esc1_actuator.cpp
 )
 target_compile_features(bg431esc1_actuator PUBLIC cxx_std_23)
