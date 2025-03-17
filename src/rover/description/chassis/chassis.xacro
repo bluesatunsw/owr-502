@@ -2,21 +2,15 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" > 
     <xacro:property name="chassis_length" value="0.600"/>
     <xacro:property name="chassis_width" value="0.450"/>
-    <xacro:property name="chassis_height" value="0.100"/>
-    <xacro:property name="chassis_mass" value="10.0"/>     
-    
-    <!-- BASE LINK -->
-
-    <link name="base_link">
-    </link>
-
-
+    <xacro:property name="chassis_height" value="0.166"/>
+    <xacro:property name="chassis_mass" value="10.0"/>    
+    <xacro:property name="chassis_pivot_offset" value="-0.05"/>     
+ 
     <!-- CHASSIS LINK -->
-
     <joint name="chassis_joint" type="fixed">
         <parent link="base_link"/>
         <child link="chassis"/>
-        <origin xyz="0 0 0"/>
+        <origin xyz="0 0 ${chassis_pivot_offset}"/>
     </joint>
 
     <link name="chassis">

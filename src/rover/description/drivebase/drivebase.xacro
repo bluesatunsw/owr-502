@@ -16,7 +16,7 @@
     <!-- LEFT SIDE STUFF -->
     <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
     <joint name="ldb_pivot_joint" type="revolute">
-        <parent link="chassis"/>
+        <parent link="base_link"/>
         <child link="ldb_pivot"/>
         <origin xyz="0 ${chassis_width/2 + 0.014 + diff_bar_bearing_seat_width} 0" rpy="-${pi/2} 0 0" />
         <axis xyz="0 0 1"/>
@@ -39,7 +39,7 @@
     <!-- RIGHT SIDE STUFF -->
     <!-- TODO: Fix effort and velocity limits -->
     <joint name="rdb_pivot_joint" type="continuous">
-        <parent link="chassis"/>
+        <parent link="base_link"/>
         <child link="rdb_pivot"/>
         <origin xyz="0 -${chassis_width/2 + 0.014 + diff_bar_bearing_seat_width} 0" rpy="-${pi/2} 0 0" />
         <axis xyz="0 0 1"/>

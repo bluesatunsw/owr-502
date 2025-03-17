@@ -5,7 +5,12 @@
     <xacro:include filename="utils/inertial_macros.xacro" />
     <xacro:include filename="utils/materials.xacro" />
 
+    <!-- BASE LINK -->
+    <link name="base_link">
+    </link>
+
     <xacro:include filename="chassis/chassis.xacro" />
+    <xacro:include filename="manipulator/manipulator.xacro" />
     <xacro:include filename="drivebase/drivebase.xacro" />
     <xacro:include filename="utils/gazebo_plugins.xacro" />
 </robot>

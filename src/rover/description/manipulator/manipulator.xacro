@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+    <xacro:property name="manip_dof_1_chassis_z" value="0.0895"/>
+    <xacro:property name="manip_dof_2_1_z" value="0.135"/>
+    <xacro:property name="manip_dof_3_2_z" value="0.500"/>
+    <xacro:property name="manip_dof_4_3_z" value="0.562"/>
+    <!-- DoF 4/5 are differential / in the same position -->
+    <xacro:property name="manip_arm_len" value="0.120"/>
+
+
+
+    <!-- DoF 1 -->
+    <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
+    <joint name="manip_dof1_joint" type="revolute">
+        <parent link="chassis"/>
+        <child link="manip_dof1"/>
+        <origin xyz="${manip_dof_1_chassis_z} 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1"/>
+        <limit lower="${-pi}" upper="${pi}" effort="80.0" velocity="10.0"/>
+    </joint>
+
+    <link name="manip_dof1">
+        <visual>
+            <geometry>
+                <box size="0.045 0.07 ${0.1}"/>
+            </geometry>
+            <origin xyz="0 0 ${0.135}" rpy="0 0 0" />
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <!-- DoF 2 -->
+    <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
+    <joint name="manip_dof2_joint" type="revolute">
+        <parent link="manip_dof1"/>
+        <child link="manip_dof2"/>
+        <origin xyz="0 0 ${manip_dof_2_1_z}" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi}" upper="${pi}" effort="80.0" velocity="10.0"/>
+    </joint>
+
+    <link name="manip_dof2">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 ${manip_dof_3_2_z}"/>
+            </geometry>
+            <origin xyz="0 0 ${manip_dof_3_2_z / 2}" rpy="0 0 0" />
+            <material name="orange"/>
+        </visual>
+    </link>
+
+    <!-- DoF 3 -->
+    <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
+    <joint name="manip_dof3_joint" type="revolute">
+        <parent link="manip_dof2"/>
+        <child link="manip_dof3"/>
+        <origin xyz="0 0 ${manip_dof_3_2_z}" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi}" upper="${pi}" effort="80.0" velocity="10.0"/>
+    </joint>
+
+    <link name="manip_dof3">
+        <visual>
+            <geometry>
+                <box size="0.04 0.04 ${manip_dof_4_3_z}"/>
+            </geometry>
+            <origin xyz="0 0 ${manip_dof_4_3_z / 2}" rpy="0 0 0" />
+            <material name="orange"/>
+        </visual>
+    </link>
+
+    <!-- DoF 4 -->
+    <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
+    <joint name="manip_dof4_joint" type="revolute">
+        <parent link="manip_dof3"/>
+        <child link="manip_dof4"/>
+        <origin xyz="0 0 ${manip_dof_4_3_z}" rpy="0 0 0" />
+        <axis xyz="0 1 0"/>
+        <limit lower="${-pi}" upper="${pi}" effort="80.0" velocity="10.0"/>
+    </joint>
+
+    <link name="manip_dof4" />
+
+
+    <!-- DoF 5 -->
+    <!-- TODO: Fix effort and velocity limits. Current values are arbitrary. -->
+    <joint name="manip_dof5_joint" type="revolute">
+        <parent link="manip_dof4"/>
+        <child link="manip_dof5"/>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1"/>
+        <limit lower="${-pi}" upper="${pi}" effort="80.0" velocity="10.0"/>
+    </joint>
+
+    <link name="manip_dof5">
+        <visual>
+            <geometry>
+                <box size="0.03 0.03 ${manip_arm_len}"/>
+            </geometry>
+            <origin xyz="0 0 ${manip_arm_len / 2 + 0.01}" rpy="0 0 0" />
+            <material name="orange"/>
+        </visual>
+    </link>
+
+</robot>
