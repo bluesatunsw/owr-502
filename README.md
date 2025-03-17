@@ -22,8 +22,18 @@ Caveats:
 RViz is not supported (Rqt will work) as it requires OpenGL 1.5 (Up to 1.4 is supported by IGLX, LLVMPipe/Softpipe did not work during testing).
 
 #### Windows
-Set up [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md).
-Install docker inside WSL
+<!-- Set up [WSLg](https://github.com/microsoft/wslg/blob/main/samples/container/Containers.md). 
+Install docker inside WSL -->
+1. Install the extension `Dev Containers` in VSCode
+2. Run `wsl --install -d Ubuntu` to install WSL
+3. Open a new WSL terminal
+4. If prompted for a password, create a password for your Linux user account
+5. Navigate to `\\wsl.localhost\Ubuntu\home\[user]`, clone and open the repository 
+6. If a popup appears prompting you to reopen in a development container, click "Reopen in Container."
+7. Run `./init.bash`
+8. Run `colcon build --symlink-install`
+9. Run `source install/setup.bash`
+10. Run `ros2 launch rover rover.launch.py`
 
 ### Post-setup
 Run `./init.bash` in each new terminal. This will source the appropriate files as well as put you in a 10-deep nested shell. This is needed because running an invalid command will kick you out of your shell session.
