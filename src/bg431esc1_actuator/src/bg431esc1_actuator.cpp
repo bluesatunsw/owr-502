@@ -1,150 +1,230 @@
 #include "bg431esc1_actuator/bg431esc1_actuator.hpp"
 
+#include <linux/can.h>
+#include <sys/socket.h>
+
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
+#include <functional>
 #include <hardware_interface/actuator_interface.hpp>
+#include <hardware_interface/handle.hpp>
 #include <hardware_interface/types/hardware_interface_return_values.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
-#include <hardware_interface/handle.hpp>
-#include <linux/can.h>
+#include <mutex>
+#include <ranges>
 #include <rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp>
 #include <string>
-#include <sys/socket.h>
-#include <vector>
 
+#include "bg431esc1_actuator/can_mux.hpp"
 
 namespace bg431esc1_actuator {
+hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
+    const hardware_interface::HardwareInfo& hardware_info) {
+  m_device = CanMux::get_instance().open(
+      kClassId,
+      std::stoul(hardware_info.hardware_parameters.at("device_index")));
+  m_device.bind(std::bind_front(&Bg431esc1Actuator::recv_callback, this));
 
-    using hardware_interface::CallbackReturn;
+  if (hardware_info.joints.size() != 1) {
+    RCLCPP_FATAL(get_logger(), "Motor has %zu joints. 1 expected.",
+                 hardware_info.joints.size());
+    return hardware_interface::CallbackReturn::ERROR;
+  }
 
-    CallbackReturn
-    Bg431esc1Actuator::on_init(const hardware_interface::HardwareInfo & hardware_info) {
-        // Get motor controllers from configuration file
-        for (auto & joint : hardware_info.joints) {
-            try {
-                m_bg431esc1_data.push_back(BG431ESC1Data(
-                    static_cast<uint8_t>(std::stoi(joint.parameters.at("can_id"))),
-                    static_cast<ControlMode>(std::stoi(joint.parameters.at("control_mode"))),
-                    joint.name,
-                    joint.parameters.contains("has_aux_encoder"
-                )));
+  auto joint{hardware_info.joints.at(0)};
+  if (kValidStateInterfaces.size() != joint.state_interfaces.size() ||
+      std::ranges::views::all(
+          std::ranges::views::transform(joint.state_interfaces, [](auto i) {
+            return std::ranges::contains(kValidStateInterfaces, i.name);
+          }))) {
+    RCLCPP_FATAL(get_logger(),
+                 "Joint '%s' has an invalid set of state interfaces.",
+                 joint.name.c_str());
 
-            } catch (const std::exception & e) {
-                fprintf(stderr, "Exception thrown during init stage with message: %s \n", e.what());
-            }
-        }
-        
-        return CallbackReturn::SUCCESS;        
-    }
+    return hardware_interface::CallbackReturn::ERROR;
+  }
+  if (kValidCommandInterfaces.size() != joint.command_interfaces.size() ||
+      std::ranges::views::all(
+          std::ranges::views::transform(joint.command_interfaces, [](auto i) {
+            return std::ranges::contains(kValidCommandInterfaces, i.name);
+          }))) {
+    RCLCPP_FATAL(get_logger(),
+                 "Joint '%s' has an invalid set of command interfaces.",
+                 joint.name.c_str());
 
-    CallbackReturn 
-    Bg431esc1Actuator::on_configure(const rclcpp_lifecycle::State & previous_state) {
-        // Initialise CAN socket
-        m_sockfd = socket(AF_CAN, SOCK_RAW, CAN_RAW);
-        if (m_sockfd == -1) return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::ERROR;
-        if (bind(m_sockfd, reinterpret_cast<sockaddr *>(&m_socket), sizeof(m_socket)) == -1) {
-            return rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn::ERROR;
-        }
-        return CallbackReturn::SUCCESS;
-    }
+    return hardware_interface::CallbackReturn::ERROR;
+  }
 
-    CallbackReturn
-    Bg431esc1Actuator::on_cleanup(const rclcpp_lifecycle::State & previous_state) {      
-        // Close CAN socket  
-        if (close(m_sockfd) == -1) return CallbackReturn::ERROR;
-        return CallbackReturn::SUCCESS;
-    }
-
-    std::vector<hardware_interface::StateInterface>
-    Bg431esc1Actuator::export_state_interfaces() {
-        // Instantiate vector of state interfaces to track position, velocity of encoders
-        std::vector<hardware_interface::StateInterface> state_interfaces;
-
-        for (BG431ESC1Data datum : m_bg431esc1_data) {
-            state_interfaces.push_back(hardware_interface::StateInterface(
-                datum.m_name + "_position",
-                hardware_interface::HW_IF_POSITION,
-                &datum.m_position_estimate
-            ));
-            state_interfaces.push_back(hardware_interface::StateInterface(
-                datum.m_name + "_velocity",
-                hardware_interface::HW_IF_VELOCITY,
-                &datum.m_velocity_estimate
-            ));
-            
-            // If controller has an auxilary encoder, log that too
-            if (datum.m_has_aux) {
-                state_interfaces.push_back(hardware_interface::StateInterface(
-                    datum.m_name + "_position",
-                    hardware_interface::HW_IF_POSITION,
-                    &datum.m_aux_position_estimate
-                ));
-                state_interfaces.push_back(hardware_interface::StateInterface(
-                    datum.m_name + "_velocity",
-                    hardware_interface::HW_IF_VELOCITY,
-                    &datum.m_aux_velocity_estimate
-                ));
-            }
-        }
-
-        return state_interfaces;
-    }
-
-    std::vector<hardware_interface::CommandInterface>
-    Bg431esc1Actuator::export_command_interfaces() {
-        std::vector<hardware_interface::CommandInterface> command_interfaces;
-
-        for (BG431ESC1Data datum : m_bg431esc1_data) {
-            command_interfaces.push_back(hardware_interface::CommandInterface(
-                datum.m_name,
-                hardware_interface::HW_IF_POSITION,
-                &datum.m_setpoint
-            ));
-            command_interfaces.push_back(hardware_interface::CommandInterface(
-                datum.m_name,
-                hardware_interface::HW_IF_VELOCITY,
-                &datum.m_setpoint
-            ));
-        }
-
-        return command_interfaces;
-    }
-
-    CallbackReturn
-    Bg431esc1Actuator::on_activate(const rclcpp_lifecycle::State & previous_state) {
-        enabled = true;
-        return CallbackReturn::SUCCESS;
-    }
-
-    CallbackReturn
-    Bg431esc1Actuator::on_deactivate(const rclcpp_lifecycle::State & previous_state) {
-        enabled = false;
-        return CallbackReturn::SUCCESS;
-    }
-
-    hardware_interface::return_type
-    Bg431esc1Actuator::read(const rclcpp::Time& timestamp, const rclcpp::Duration&) {
-        struct canfd_frame frame;
-        auto _ = recvfrom(m_socket, &frame, sizeof(canfd_frame),
-            0, (struct sockaddr*)&m_address, &m_adress_len);
-
-        CanId id = {.raw = frame.can_id};
-        if (id.magic != magic_number) return hardware_interface::return_type::ERROR;
-
-        switch (id.api_page) {
-        case 1:
-            break; // Loopback, do nothing
-        case 2:
-            if (id.api_index == 1) { // primary encoder
-                for (BG431ESC1Data datum : m_bg431esc1_data) {
-                    if (datum.m_can_address == id.address) {
-                        motor_controller = 
-                    }
-                }
-            } else { // aux encoder
-            }
-            break;
-        default: // 3
-            break;
-        }
-    }
-
+  return hardware_interface::CallbackReturn::SUCCESS;
 }
+
+hardware_interface::CallbackReturn Bg431esc1Actuator::on_shutdown(
+    [[maybe_unused]] const rclcpp_lifecycle::State& previous_state) {
+  m_device = CanMux::Connection{};
+
+  return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::CallbackReturn Bg431esc1Actuator::on_configure(
+    [[maybe_unused]] const rclcpp_lifecycle::State& previous_state) {
+  for (const auto& [name, descr] : joint_state_interfaces_) {
+    set_state(name, 0.0);
+  }
+  for (const auto& [name, descr] : joint_command_interfaces_) {
+    set_command(name, 0.0);
+  }
+
+  return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::CallbackReturn Bg431esc1Actuator::on_deactivate(
+    [[maybe_unused]] const rclcpp_lifecycle::State& previous_state) {
+  m_command = {.control_mode = CommandData::ControlMode::kDisabled,
+               .setpoint = 0};
+  return hardware_interface::CallbackReturn::SUCCESS;
+}
+
+hardware_interface::return_type Bg431esc1Actuator::prepare_command_mode_switch(
+    const std::vector<std::string>& start_interfaces,
+    const std::vector<std::string>& stop_interfaces) {
+  if (stop_interfaces.size() != 0) {
+    set_command(stop_interfaces.at(0), 0);
+  }
+
+  if (start_interfaces.size() != 0) {
+    auto start_mode{start_interfaces.at(0)};
+    if (start_mode == hardware_interface::HW_IF_POSITION) {
+      m_command.control_mode = CommandData::ControlMode::kPosition;
+    } else if (start_mode == hardware_interface::HW_IF_VELOCITY) {
+      m_command.control_mode = CommandData::ControlMode::kVelocity;
+    } else if (start_mode == hardware_interface::HW_IF_TORQUE) {
+      m_command.control_mode = CommandData::ControlMode::kTorque;
+    } else {
+      RCLCPP_FATAL(get_logger(), "Invalid command mode %s.",
+                   start_mode.c_str());
+
+      return hardware_interface::return_type::ERROR;
+    }
+  } else {
+    m_command = {.control_mode = CommandData::ControlMode::kDisabled,
+                 .setpoint = 0};
+  }
+
+  return hardware_interface::return_type::OK;
+}
+
+hardware_interface::return_type Bg431esc1Actuator::read(
+    [[maybe_unused]] const rclcpp::Time& time,
+    [[maybe_unused]] const rclcpp::Duration& period) {
+  // Protect m_incoming_state
+  std::scoped_lock guard{m_device.mutex()};
+
+  set_state(std::string{kPrimaryPosition}, m_state.primary_position);
+  set_state(std::string{kPrimaryVelocity}, m_state.primary_velocity);
+  set_state(std::string{kAuxilaryPosition}, m_state.auxilary_position);
+  set_state(std::string{kAuxilaryVelocity}, m_state.auxilary_velocity);
+
+  set_state(std::string{kAppliedVoltage}, m_state.applied_voltage);
+  set_state(std::string{kStatorCurrent}, m_state.stator_current);
+  set_state(std::string{kSupplyCurrent}, m_state.supply_current);
+  set_state(std::string{kBusVoltage}, m_state.bus_voltage);
+  set_state(std::string{kDriverTemperature}, m_state.driver_temperature);
+
+  return hardware_interface::return_type::OK;
+}
+
+hardware_interface::return_type Bg431esc1Actuator::write(
+    [[maybe_unused]] const rclcpp::Time& time,
+    [[maybe_unused]] const rclcpp::Duration& period) {
+  struct [[gnu::packed]] ControlFrame {
+    CommandData::ControlMode control_mode;
+    float setpoint;
+  };
+
+  m_device.send(kControlFrameIndex,
+                ControlFrame{
+                    m_command.control_mode,
+                    static_cast<float>(m_command.setpoint),
+                },
+                m_command.control_mode == CommandData::ControlMode::kDisabled
+                    ? CanId::Priority::kFast
+                    : CanId::Priority::kNominal);
+
+  return hardware_interface::return_type::OK;
+}
+
+void Bg431esc1Actuator::recv_callback(CanId::ApiIndex api_index,
+                                      std::span<const std::byte> payload) {
+  struct [[gnu::packed]] Primary {
+    float position;
+    float velocity;
+  };
+
+  struct [[gnu::packed]] Auxilary {
+    float position;
+    float velocity;
+  };
+
+  struct [[gnu::packed]] Miscellaneous {
+    std::int16_t applied_voltage;
+    std::int16_t stator_current;
+    std::int16_t supply_current;
+    std::uint8_t bus_voltage;
+    std::uint8_t driver_temperature;
+  };
+
+  // Within this context, m_incoming_state is protected by m_device.m_mutex
+  switch (api_index) {
+    case kPrimaryFrameIndex: {
+      auto frame{from_bytes<Primary>(payload)};
+      if (!frame) {
+        RCLCPP_ERROR(get_logger(),
+                     "Incoming primary CAN frame has size %zu. Expected %zu.",
+                     payload.size(), sizeof(Primary));
+        return;
+      }
+      m_state.primary_position = frame->position;
+      m_state.primary_velocity = frame->velocity;
+      return;
+    }
+
+    case kAuxiliaryFrameIndex: {
+      auto frame{from_bytes<Auxilary>(payload)};
+      if (!frame) {
+        RCLCPP_ERROR(get_logger(),
+                     "Incoming auxilary CAN frame has size %zu. Expected %zu.",
+                     payload.size(), sizeof(Primary));
+        return;
+      }
+      m_state.auxilary_position = frame->position;
+      m_state.auxilary_velocity = frame->velocity;
+      return;
+    }
+
+    case kMiscellaneousFrameIndex: {
+      auto frame{from_bytes<Miscellaneous>(payload)};
+      if (!frame) {
+        RCLCPP_ERROR(
+            get_logger(),
+            "Incoming miscellaneous CAN frame has size %zu. Expected %zu.",
+            payload.size(), sizeof(Primary));
+        return;
+      }
+      m_state.applied_voltage = frame->applied_voltage * 0.01;
+      m_state.stator_current = frame->supply_current * 0.01;
+      m_state.supply_current = frame->supply_current * 0.01;
+      m_state.bus_voltage = frame->bus_voltage * 0.1;
+      m_state.driver_temperature = frame->driver_temperature * 0.1;
+      return;
+    }
+
+    default: {
+      RCLCPP_ERROR(get_logger(),
+                   "Incoming CAN frame (size %zu) has unknown api index %hu.",
+                   payload.size(), api_index);
+      return;
+    }
+  }
+}
+}  // namespace bg431esc1_actuator

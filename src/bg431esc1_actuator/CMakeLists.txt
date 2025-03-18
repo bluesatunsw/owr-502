@@ -5,9 +5,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(
-    -Wall -Wextra -Werror=conversion -Werror=unused-but-set-variable
-    -Werror=return-type -Werror=shadow -Werror=format -Werror=range-loop-construct
-    -Werror=missing-braces)
+    -Wall -Wextra -Werror=unused-but-set-variable
+    -Werror=return-type -Werror=shadow -Werror=format -Werror=range-loop-construct)
 endif()
 
 # find dependencies
