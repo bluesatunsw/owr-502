@@ -21,7 +21,7 @@
 #include "visibility_control.h"
 
 namespace bg431esc1_actuator {
-class Bg431esc1Actuator : hardware_interface::ActuatorInterface {
+class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
  public:
   // LifecycleNodeInterface
   BG431ESC1_ACTUATOR_PUBLIC

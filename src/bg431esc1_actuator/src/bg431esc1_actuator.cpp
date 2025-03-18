@@ -92,6 +92,12 @@ hardware_interface::return_type Bg431esc1Actuator::prepare_command_mode_switch(
     set_command(stop_interfaces.at(0), 0);
   }
 
+  if (start_interfaces.size() > 1) {
+    RCLCPP_FATAL(get_logger(), "Too many command interfaces used at once.");
+
+    return hardware_interface::return_type::ERROR;
+  }
+
   if (start_interfaces.size() != 0) {
     auto start_mode{start_interfaces.at(0)};
     if (start_mode == hardware_interface::HW_IF_POSITION) {
@@ -228,3 +234,8 @@ void Bg431esc1Actuator::recv_callback(CanId::ApiIndex api_index,
   }
 }
 }  // namespace bg431esc1_actuator
+
+#include "pluginlib/class_list_macros.hpp"
+
+PLUGINLIB_EXPORT_CLASS(bg431esc1_actuator::Bg431esc1Actuator,
+                       hardware_interface::ActuatorInterface)

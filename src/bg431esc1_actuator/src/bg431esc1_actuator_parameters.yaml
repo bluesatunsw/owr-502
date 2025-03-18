@@ -1,21 +1,7 @@
 bg431esc1_actuator:
   parameters:
-    can_id:
+    device_index:
       type: int
       description: "Can Id of the motor controller on the bus"
       validation:
         lt<>: 64
-    
-    control_mode:
-      type: int
-      description: "Control type of the motor:\n
-                      Disabled:         0\n
-                      Voltage:          2\n
-                      Torque:           3\n
-                      Velocity:         4\n
-                      Position:         5\n
-                      VelocityOpenLoop: 6\n
-                      PositionOpenLoop: 7"
-      validation:
-        lt<>: 8
-        one_of<>: [ [ 0, 2, 3, 4, 5, 6, 7] ]
