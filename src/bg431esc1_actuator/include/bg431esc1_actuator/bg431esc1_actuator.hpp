@@ -92,36 +92,30 @@ class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
   };
 
   struct StateData {
-    double primary_position;
-    double primary_velocity;
+    double primary_position{};
+    double primary_velocity{};
 
-    double auxilary_position;
-    double auxilary_velocity;
+    double auxilary_position{};
+    double auxilary_velocity{};
 
-    double applied_voltage;
-    double stator_current;
-    double supply_current;
-    double bus_voltage;
-    double driver_temperature;
-  };
+    double applied_voltage{};
+    double stator_current{};
+    double supply_current{};
+    double bus_voltage{};
+    double driver_temperature{};
+  } m_state {};
 
-  struct CommandData {
-    enum class ControlMode : uint8_t {
-      kDisabled = 0,
-      kVoltage = 1,
-      kTorque = 2,
-      kVelocity = 3,
-      kPosition = 4,
-      kVelocityOpenLoop = 5,
-      kPositionOpenLoop = 6,
-    } control_mode;
-    double setpoint;
-  };
+  enum class ControlMode : uint8_t {
+    kDisabled = 0,
+    kVoltage = 1,
+    kTorque = 2,
+    kVelocity = 3,
+    kPosition = 4,
+    kVelocityOpenLoop = 5,
+    kPositionOpenLoop = 6,
+  } m_control_mode { ControlMode::kDisabled };
 
   CanMux::Connection m_device;
-
-  StateData m_state;
-  CommandData m_command;
 };
 }  // namespace bg431esc1_actuator
 

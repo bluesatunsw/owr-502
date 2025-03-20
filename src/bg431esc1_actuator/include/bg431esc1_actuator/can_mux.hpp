@@ -33,13 +33,18 @@ struct [[gnu::packed]] CanId {
   using DeviceIndex = std::uint8_t;
   using ApiIndex = std::uint16_t;
 
-  Priority priority : 3;
-  uint8_t anonymous : 1 = 0b0;
-  DeviceClass device_class : 6;
-  ApiIndex api_index : 12;
-  uint8_t reserved : 1 = 0b1;
   DeviceIndex device_index : 6;
+  bool reserved : 1 = true;
+  ApiIndex api_index : 12;
+  DeviceClass device_class : 6;
+  bool anonymous : 1 = false;
+  Priority priority : 3;
+  bool err : 1 = false;
+  bool rtr : 1 = false;
+  bool eff : 1 = true;
 };
+
+static_assert(std::bit_cast<std::uint32_t>(CanId { .device_index = 17, .api_index = 420, .device_class = 31, .priority = CanId::Priority::kNominal }) == 0b100'100'0'011111'000110100100'1'010001);
 
 template <typename T>
 std::optional<T> from_bytes(std::span<const std::byte> bytes)

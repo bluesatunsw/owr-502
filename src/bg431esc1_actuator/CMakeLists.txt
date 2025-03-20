@@ -51,7 +51,7 @@ target_include_directories(bg431esc1_actuator PUBLIC
 target_link_libraries(bg431esc1_actuator PUBLIC bg431esc1_actuator_parameters)
 target_link_libraries(bg431esc1_actuator PUBLIC Eigen3::Eigen)
 ament_target_dependencies(bg431esc1_actuator PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS})
-pluginlib_export_plugin_description_file(controller_interface bg431esc1_plugin.xml)
+pluginlib_export_plugin_description_file(hardware_interface bg431esc1_plugin.xml)
 
 # if(BUILD_TESTING)
 #   find_package(ament_cmake_gmock REQUIRED)

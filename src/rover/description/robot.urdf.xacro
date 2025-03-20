@@ -1,15 +1,13 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
-    <xacro:arg name="is_simulation" default="true"/>
-
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
     <xacro:include filename="utils/inertial_macros.xacro" />
     <xacro:include filename="utils/materials.xacro" />
 
     <xacro:include filename="chassis/chassis.xacro" />
     <xacro:include filename="drivebase/drivebase.xacro" />
-    <xacro:include filename="utils/gazebo_plugins.xacro" />
+    <!--<xacro:include filename="utils/gazebo_plugins.xacro" />-->
 
-    <joint name="test_motor" type="continuous">
+    <joint name="test" type="continuous">
         <parent link="chassis"/>
         <child link="dumb"/>
         <origin xyz="0 0 0" rpy="${-pi/2} 0 0" />

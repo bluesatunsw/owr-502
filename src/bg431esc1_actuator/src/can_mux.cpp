@@ -1,7 +1,10 @@
 #include "bg431esc1_actuator/can_mux.hpp"
 
+#include <net/if.h>
 #include <linux/can.h>
+#include <linux/can/raw.h>
 #include <sys/socket.h>
+#include <sys/ioctl.h>
 
 #include <algorithm>
 #include <bit>
@@ -11,6 +14,10 @@
 #include <thread>
 #include <tuple>
 #include <utility>
+#include <string_view>
+
+#include <cstring>
+#include <cerrno>
 
 namespace bg431esc1_actuator {
 void CanMux::Connection::bind(RecvCallback&& callback) {
@@ -22,26 +29,27 @@ void CanMux::Connection::bind(RecvCallback&& callback) {
 std::mutex& CanMux::Connection::mutex() { return m_mutex; }
 
 CanMux::Connection::Connection(Connection&& other) {
+  if (!other.m_mux) return;
   std::scoped_lock guard{other.m_mux->m_mutex, other.m_mutex};
 
   m_recv_cb = std::move(other.m_recv_cb);
   m_mux = other.m_mux;
   m_index = other.m_index;
 
-  other.m_mux = nullptr;
-
-  if (!other.m_mux) return;
-  m_mux->m_connections.at(m_index) = this;
+  if (other.m_mux) {
+    other.m_mux = nullptr;
+    m_mux->m_connections.at(m_index) = this;
+  }
 }
 
 CanMux::Connection& CanMux::Connection::operator=(Connection&& other) {
   if (this == &other) return *this;
 
-  {
+  if (m_mux) {
     std::scoped_lock guard{m_mux->m_mutex, m_mutex};
     m_mux->m_connections.erase(m_index);
   }
-  {
+  if (other.m_mux) {
     std::scoped_lock guard{m_mutex, other.m_mux->m_mutex, other.m_mutex};
 
     m_recv_cb = std::move(other.m_recv_cb);
@@ -49,8 +57,6 @@ CanMux::Connection& CanMux::Connection::operator=(Connection&& other) {
     m_index = other.m_index;
 
     other.m_mux = nullptr;
-
-    if (!other.m_mux) return *this;
     m_mux->m_connections.at(m_index) = this;
   }
 
@@ -58,8 +64,8 @@ CanMux::Connection& CanMux::Connection::operator=(Connection&& other) {
 }
 
 CanMux::Connection::~Connection() {
-  std::scoped_lock guard{m_mux->m_mutex, m_mutex};
   if (!m_mux) return;
+  std::scoped_lock guard{m_mux->m_mutex, m_mutex};
   m_mux->m_connections.erase(m_index);
   m_mux = nullptr;
 }
@@ -71,18 +77,17 @@ void CanMux::Connection::raw_send(CanId::ApiIndex api_index,
 
   canfd_frame frame{};
   frame.can_id = std::bit_cast<canid_t>(CanId{
-      .priority = priority,
-      .device_class = m_index.device_class,
-      .api_index = api_index,
       .device_index = m_index.device_index,
+      .api_index = api_index,
+      .device_class = m_index.device_class,
+      .priority = priority,
   });
   frame.len = static_cast<std::uint8_t>(data.size());
-  frame.flags = 0;
+  frame.flags = CANFD_FDF;
   std::ranges::copy(data, reinterpret_cast<std::byte*>(frame.data));
 
   if (::send(m_mux->m_fd, &frame, sizeof(frame), 0) == -1)
-    throw std::runtime_error("Failed to send frame");
-  ;
+    throw std::runtime_error(std::format("Failed to send frame, error: {}", std::string_view{std::strerror(errno)}));
 }
 
 CanMux::Connection::Connection(CanMux& mux, ConnectionIndex index)
@@ -111,16 +116,30 @@ CanMux::Connection CanMux::open(CanId::DeviceClass device_class,
 }
 
 CanMux::CanMux() {
+  using namespace std::literals;
+
   m_fd = socket(AF_CAN, SOCK_RAW, CAN_RAW);
-  if (m_fd == -1) throw std::runtime_error("CAN Mux failed to create socket");
+  if (m_fd == -1) throw std::runtime_error(std::format("CAN mux failed to create socket, error: {}", std::string_view{std::strerror(errno)}));
+
+  ifreq ifr {};
+  std::string_view kInterface{"can0\0"};
+  std::copy(kInterface.cbegin(), kInterface.cend(), static_cast<char*>(ifr.ifr_name));
+  if (ioctl(m_fd, SIOCGIFINDEX, &ifr) == -1) 
+    throw std::runtime_error(std::format("CAN mux failed to find the index of the CAN interface device, error: {}", std::string_view{std::strerror(errno)}));
 
   sockaddr_can addr{
       .can_family = AF_CAN,
-      .can_ifindex = 0,
+      .can_ifindex = ifr.ifr_ifindex,
       .can_addr = {},
   };
   if (bind(m_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) == -1)
-    throw std::runtime_error("CAN Mux failed to bind socket");
+    throw std::runtime_error(std::format("CAN mux failed to bind socket, error: {}", std::string_view{std::strerror(errno)}));
+
+  // Enable CAN-FD
+  int enable_fd = 1;
+  if (0 != setsockopt(m_fd, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &enable_fd, sizeof(enable_fd)))
+    throw std::runtime_error(std::format("CAN mux failed to set can-fd enabled, error: {}", std::string_view{std::strerror(errno)}));
+  
 
   m_worker = std::jthread{[this] {
     while (true) {
@@ -132,7 +151,7 @@ CanMux::CanMux() {
 void CanMux::recieve() {
   canfd_frame frame{};
   if (recv(m_fd, &frame, sizeof(frame), 0) == -1)
-    throw std::runtime_error("CAN Mux failed to invoke recv.");
+    throw std::runtime_error("CAN Mux failed to invoke recv");
 
   auto id{std::bit_cast<CanId>(frame.can_id)};
 

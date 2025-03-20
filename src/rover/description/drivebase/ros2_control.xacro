@@ -30,10 +30,9 @@
 
     <ros2_control name="test_motor" type="actuator">
         <hardware>
-            <plugin>bg431esc1_actuator/Bg431esc1Actuator</plugin>
+            <plugin>bg431esc1_actuator::Bg431esc1Actuator</plugin>
+            <param name="device_index">1</param>
         </hardware>
-
-        <param name="device_index">1</param>
         <joint name="test">
             <command_interface name="position"/>
             <command_interface name="velocity"/>

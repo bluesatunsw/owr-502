@@ -21,6 +21,13 @@
 namespace bg431esc1_actuator {
 hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
     const hardware_interface::HardwareInfo& hardware_info) {
+  if (
+    hardware_interface::ActuatorInterface::on_init(hardware_info) !=
+    hardware_interface::CallbackReturn::SUCCESS)
+  {
+    return hardware_interface::CallbackReturn::ERROR;
+  }
+
   m_device = CanMux::get_instance().open(
       kClassId,
       std::stoul(hardware_info.hardware_parameters.at("device_index")));
@@ -34,7 +41,7 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
 
   auto joint{hardware_info.joints.at(0)};
   if (kValidStateInterfaces.size() != joint.state_interfaces.size() ||
-      std::ranges::views::all(
+      !std::ranges::views::all(
           std::ranges::views::transform(joint.state_interfaces, [](auto i) {
             return std::ranges::contains(kValidStateInterfaces, i.name);
           }))) {
@@ -45,7 +52,7 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
     return hardware_interface::CallbackReturn::ERROR;
   }
   if (kValidCommandInterfaces.size() != joint.command_interfaces.size() ||
-      std::ranges::views::all(
+      !std::ranges::views::all(
           std::ranges::views::transform(joint.command_interfaces, [](auto i) {
             return std::ranges::contains(kValidCommandInterfaces, i.name);
           }))) {
@@ -80,8 +87,7 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_configure(
 
 hardware_interface::CallbackReturn Bg431esc1Actuator::on_deactivate(
     [[maybe_unused]] const rclcpp_lifecycle::State& previous_state) {
-  m_command = {.control_mode = CommandData::ControlMode::kDisabled,
-               .setpoint = 0};
+  m_control_mode = ControlMode::kDisabled;
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -101,11 +107,11 @@ hardware_interface::return_type Bg431esc1Actuator::prepare_command_mode_switch(
   if (start_interfaces.size() != 0) {
     auto start_mode{start_interfaces.at(0)};
     if (start_mode == hardware_interface::HW_IF_POSITION) {
-      m_command.control_mode = CommandData::ControlMode::kPosition;
+      m_control_mode = ControlMode::kPosition;
     } else if (start_mode == hardware_interface::HW_IF_VELOCITY) {
-      m_command.control_mode = CommandData::ControlMode::kVelocity;
+      m_control_mode = ControlMode::kVelocity;
     } else if (start_mode == hardware_interface::HW_IF_TORQUE) {
-      m_command.control_mode = CommandData::ControlMode::kTorque;
+      m_control_mode = ControlMode::kTorque;
     } else {
       RCLCPP_FATAL(get_logger(), "Invalid command mode %s.",
                    start_mode.c_str());
@@ -113,8 +119,7 @@ hardware_interface::return_type Bg431esc1Actuator::prepare_command_mode_switch(
       return hardware_interface::return_type::ERROR;
     }
   } else {
-    m_command = {.control_mode = CommandData::ControlMode::kDisabled,
-                 .setpoint = 0};
+    m_control_mode = ControlMode::kDisabled;
   }
 
   return hardware_interface::return_type::OK;
@@ -126,16 +131,16 @@ hardware_interface::return_type Bg431esc1Actuator::read(
   // Protect m_incoming_state
   std::scoped_lock guard{m_device.mutex()};
 
-  set_state(std::string{kPrimaryPosition}, m_state.primary_position);
-  set_state(std::string{kPrimaryVelocity}, m_state.primary_velocity);
-  set_state(std::string{kAuxilaryPosition}, m_state.auxilary_position);
-  set_state(std::string{kAuxilaryVelocity}, m_state.auxilary_velocity);
+  set_state(std::format("{}/{}", info_.joints[0].name, kPrimaryPosition), m_state.primary_position);
+  set_state(std::format("{}/{}", info_.joints[0].name, kPrimaryVelocity), m_state.primary_velocity);
+  set_state(std::format("{}/{}", info_.joints[0].name, kAuxilaryPosition), m_state.auxilary_position);
+  set_state(std::format("{}/{}", info_.joints[0].name, kAuxilaryVelocity), m_state.auxilary_velocity);
 
-  set_state(std::string{kAppliedVoltage}, m_state.applied_voltage);
-  set_state(std::string{kStatorCurrent}, m_state.stator_current);
-  set_state(std::string{kSupplyCurrent}, m_state.supply_current);
-  set_state(std::string{kBusVoltage}, m_state.bus_voltage);
-  set_state(std::string{kDriverTemperature}, m_state.driver_temperature);
+  set_state(std::format("{}/{}", info_.joints[0].name, kAppliedVoltage), m_state.applied_voltage);
+  set_state(std::format("{}/{}", info_.joints[0].name, kStatorCurrent), m_state.stator_current);
+  set_state(std::format("{}/{}", info_.joints[0].name, kSupplyCurrent), m_state.supply_current);
+  set_state(std::format("{}/{}", info_.joints[0].name, kBusVoltage), m_state.bus_voltage);
+  set_state(std::format("{}/{}", info_.joints[0].name, kDriverTemperature), m_state.driver_temperature);
 
   return hardware_interface::return_type::OK;
 }
@@ -144,16 +149,29 @@ hardware_interface::return_type Bg431esc1Actuator::write(
     [[maybe_unused]] const rclcpp::Time& time,
     [[maybe_unused]] const rclcpp::Duration& period) {
   struct [[gnu::packed]] ControlFrame {
-    CommandData::ControlMode control_mode;
+    ControlMode control_mode;
     float setpoint;
-  };
+  } frame {m_control_mode, 0.0f};
 
+  switch (m_control_mode) {
+    case ControlMode::kPosition:
+      frame.setpoint = static_cast<float>(get_command(std::format("{}/{}", info_.joints[0].name, hardware_interface::HW_IF_POSITION)));
+      break;
+    case ControlMode::kVelocity:
+      frame.setpoint = static_cast<float>(get_command(std::format("{}/{}", info_.joints[0].name, hardware_interface::HW_IF_VELOCITY)));
+      break;
+    case ControlMode::kTorque:
+      frame.setpoint = static_cast<float>(get_command(std::format("{}/{}", info_.joints[0].name, hardware_interface::HW_IF_TORQUE)));
+      break;
+    case ControlMode::kDisabled:
+      frame.setpoint = 0.0f;
+      break;
+    default: 
+      RCLCPP_FATAL(get_logger(), "Invalid command mode %hhu.", static_cast<std::uint8_t>(m_control_mode));
+  }
   m_device.send(kControlFrameIndex,
-                ControlFrame{
-                    m_command.control_mode,
-                    static_cast<float>(m_command.setpoint),
-                },
-                m_command.control_mode == CommandData::ControlMode::kDisabled
+                frame,
+                m_control_mode == ControlMode::kDisabled
                     ? CanId::Priority::kFast
                     : CanId::Priority::kNominal);
 
