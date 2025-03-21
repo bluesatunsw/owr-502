@@ -1,11 +1,20 @@
+## Overview
+
+The code in this directory describes firmware for the Mellow FLY-DP5 board,
+which controls stepper motors (part of the end effector of the robot actuator)
+in response to CAN frames as sent by the Jetson central robot computer.
+A specification for the data sent in these CAN frames can be found [elsewhere in
+this repository](https://github.com/bluesatunsw/owr-502/blob/B-G431-ESC1/docs/main.pdf).
+(It is the same data standard as for the other motor controllers.)
+
 ## Development
 
 We are currently using the Arduino framework for the firmware.
 
-You should have the following installed:
+Have the following installed for development:
 - `dfu-util`: `sudo apt install dfu-util` or similar (see the [utility's website](https://dfu-util.sourceforge.net/))
 - `arduino-cli`: follow installation instructions from the [Arduino website](https://arduino.github.io/arduino-cli/1.2/)
-- the STM32 libraries for Arduino: I'm sure you can figure this out
+- the STM32 libraries for Arduino: see [Arduino_Core_STM32](https://github.com/stm32duino/Arduino_Core_STM32)
 
 ### Build the firmware
 
