@@ -1,5 +1,16 @@
-import launch
-import launch_ros.actions
+# Copyright 2022 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
@@ -48,6 +59,22 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
+    gz_spawn_entity = Node(
+        package="ros_gz_sim",
+        executable="create",
+        output="screen",
+        arguments=[
+            "-topic",
+            "robot_description",
+            "-name",
+            "rover",
+            "-allow_renaming",
+            "true",
+            "-z",
+            "7.6",  # Spawn ABOVE the surface
+        ],
+    )
+
     swerve_drive_base_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -58,26 +85,50 @@ def generate_launch_description():
         ],
     )
 
+    bridge_params = PathJoinSubstitution(
+        [
+            FindPackageShare("rover"),
+            "config",
+            "gazebo",
+            "bridge.yaml",
+        ]
+    )
+
+    start_gazebo_ros_bridge_cmd = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        parameters=[{"config_file": bridge_params}],
+        output="screen",
+    )
+
     return LaunchDescription(
         [
+            # Launch gazebo environment
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [
                         PathJoinSubstitution(
-                            [FindPackageShare("realsense2_camera"), "launch", "rs_launch.py"]
+                            [
+                                FindPackageShare("ros_gz_sim"),
+                                "launch",
+                                "gz_sim.launch.py",
+                            ]
                         )
                     ]
                 ),
                 launch_arguments={
-                    "enable_color": "true",
-                    "enable_depth": "true",
-                    "pointcloud.enable": "true"
+                    "gz_args": [" -r -v 4 dem_moon.sdf"],
+                    "on_exit_shutdown": "true",
                 }.items(),
             ),
-            swerve_drive_base_controller_spawner,
+            RegisterEventHandler(
+                event_handler=OnProcessExit(
+                    target_action=gz_spawn_entity,
+                    on_exit=[swerve_drive_base_controller_spawner],
+                )
+            ),
             node_robot_state_publisher,
+            gz_spawn_entity,
+            start_gazebo_ros_bridge_cmd,
         ]
     )
-
-
-
