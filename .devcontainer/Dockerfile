@@ -21,7 +21,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y ros-jazzy-desktop
 
 # Install additional ros packages
-RUN apt-get install -y ros-jazzy-xacro ros-jazzy-joint-state-publisher
+RUN apt-get install -y ros-jazzy-xacro ros-jazzy-joint-state-publisher ros-jazzy-librealsense2
 
 # Gazebo
 RUN apt-get install -y ros-jazzy-ros-gz 
