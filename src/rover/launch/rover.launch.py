@@ -56,7 +56,7 @@ def generate_launch_description():
             "--param-file",
             robot_controllers,
         ],
-    )
+    )                    
 
     return LaunchDescription(
         [
@@ -73,6 +73,15 @@ def generate_launch_description():
                     "enable_depth": "true",
                     "pointcloud.enable": "true"
                 }.items(),
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    [
+                        PathJoinSubstitution(
+                            [FindPackageShare("usb_cam"), "launch", "camera.launch.py"]
+                        )
+                    ]
+                )
             ),
             swerve_drive_base_controller_spawner,
             node_robot_state_publisher,
