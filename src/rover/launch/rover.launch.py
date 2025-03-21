@@ -48,22 +48,6 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    gz_spawn_entity = Node(
-        package="ros_gz_sim",
-        executable="create",
-        output="screen",
-        arguments=[
-            "-topic",
-            "robot_description",
-            "-name",
-            "rover",
-            "-allow_renaming",
-            "true",
-            "-z",
-            "7.6",  # Spawn ABOVE the surface
-        ],
-    )
-
     swerve_drive_base_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -80,36 +64,18 @@ def generate_launch_description():
                 PythonLaunchDescriptionSource(
                     [
                         PathJoinSubstitution(
-                            [
-                                FindPackageShare("realsense_camera"),
-                                "launch",
-                                "rs_launch.py",
-                            ], 
-                            [
-                                FindPackageShare("ros_gz_sim"),
-                                "launch",
-                                "gz_sim.launch.py",
-                            ]
+                            [FindPackageShare("realsense2_camera"), "launch", "rs_launch.py"]
                         )
                     ]
                 ),
                 launch_arguments={
-                    "gz_args": [" -r -v 4 dem_moon.sdf"],
-                    "on_exit_shutdown": "true",
                     "enable_color": "true",
                     "enable_depth": "true",
                     "pointcloud.enable": "true"
                 }.items(),
             ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=gz_spawn_entity,
-                    on_exit=[swerve_drive_base_controller_spawner],
-                )
-            ),
+            swerve_drive_base_controller_spawner,
             node_robot_state_publisher,
-            gz_spawn_entity,
-            start_gazebo_ros_bridge_cmd,
         ]
     )
 
