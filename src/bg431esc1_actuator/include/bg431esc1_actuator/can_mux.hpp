@@ -57,10 +57,10 @@ std::optional<T> from_bytes(std::span<const std::byte> bytes)
 {
   if (bytes.size() != sizeof(T)) return std::nullopt;
 
-  // Use this instead of a reinterpret cast deref to ensure proper alignment
-  T res;
-  std::copy_n(bytes.begin(), sizeof(T), reinterpret_cast<std::byte*>(&res));
-  return res;
+  // Be careful to avoid UB around pointer casting and alignment
+  alignas(T) std::array<std::byte, sizeof(T)> buf;
+  std::ranges::copy(bytes, buf.begin());
+  return std::bit_cast<T>(buf);
 }
 
 class CanMux {
