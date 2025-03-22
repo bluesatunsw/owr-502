@@ -74,6 +74,11 @@ class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
       hardware_interface::HW_IF_TORQUE,
   };
 
+  constexpr static std::string_view kPosition =
+      hardware_interface::HW_IF_POSITION;
+  constexpr static std::string_view kVelocity =
+      hardware_interface::HW_IF_VELOCITY;
+
   constexpr static std::string_view kPrimaryPosition = "primary_position";
   constexpr static std::string_view kPrimaryVelocity = "primary_velocity";
   constexpr static std::string_view kAuxilaryPosition = "auxilary_position";
@@ -85,25 +90,36 @@ class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
   constexpr static std::string_view kBusVoltage = "bus_voltage";
   constexpr static std::string_view kDriverTemperature = "driver_temperature";
 
-  constexpr static std::array<std::string_view, 9> kValidStateInterfaces{
-      kPrimaryPosition,  kPrimaryVelocity, kAuxilaryPosition,
-      kAuxilaryVelocity, kAppliedVoltage,  kStatorCurrent,
-      kSupplyCurrent,    kBusVoltage,      kDriverTemperature,
+  constexpr static std::array<std::string_view, 11> kValidStateInterfaces{
+      kPosition,        kVelocity,          kPrimaryPosition,
+      kPrimaryVelocity, kAuxilaryPosition,  kAuxilaryVelocity,
+      kAppliedVoltage,  kStatorCurrent,     kSupplyCurrent,
+      kBusVoltage,      kDriverTemperature,
   };
 
-  struct StateData {
-    double primary_position{};
-    double primary_velocity{};
+  // The state values in the native format of the CAN frames, ie. unscaled
+  struct RawStateData {
+    float primary_position{};
+    float primary_velocity{};
 
-    double auxilary_position{};
-    double auxilary_velocity{};
+    float auxilary_position{};
+    float auxilary_velocity{};
 
-    double applied_voltage{};
-    double stator_current{};
-    double supply_current{};
-    double bus_voltage{};
-    double driver_temperature{};
-  } m_state {};
+    std::int16_t applied_voltage{};
+    std::int16_t stator_current{};
+    std::int16_t supply_current{};
+    std::uint8_t bus_voltage{};
+    std::uint8_t driver_temperature{};
+  } m_raw_state{};
+
+  bool m_use_auxilary{};
+  bool m_recieved_primary{};
+  bool m_recieved_auxilary{};
+
+  // **ADDED** to position to obtain primary_position
+  double m_offset{};
+  // motor state : joint state
+  double m_ratio{};
 
   enum class ControlMode : uint8_t {
     kDisabled = 0,
@@ -113,7 +129,7 @@ class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
     kPosition = 4,
     kVelocityOpenLoop = 5,
     kPositionOpenLoop = 6,
-  } m_control_mode { ControlMode::kDisabled };
+  } m_control_mode{ControlMode::kDisabled};
 
   CanMux::Connection m_device;
 };

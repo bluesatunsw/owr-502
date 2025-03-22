@@ -1,23 +1,23 @@
 #include "bg431esc1_actuator/can_mux.hpp"
 
-#include <net/if.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
-#include <sys/socket.h>
+#include <net/if.h>
 #include <sys/ioctl.h>
+#include <sys/socket.h>
 
 #include <algorithm>
 #include <bit>
+#include <cerrno>
+#include <cstring>
 #include <format>
+#include <iostream>
 #include <mutex>
 #include <stdexcept>
+#include <string_view>
 #include <thread>
 #include <tuple>
 #include <utility>
-#include <string_view>
-
-#include <cstring>
-#include <cerrno>
 
 namespace bg431esc1_actuator {
 void CanMux::Connection::bind(RecvCallback&& callback) {
@@ -87,7 +87,9 @@ void CanMux::Connection::raw_send(CanId::ApiIndex api_index,
   std::ranges::copy(data, reinterpret_cast<std::byte*>(frame.data));
 
   if (::send(m_mux->m_fd, &frame, sizeof(frame), 0) == -1)
-    throw std::runtime_error(std::format("Failed to send frame, error: {}", std::string_view{std::strerror(errno)}));
+    throw std::runtime_error(
+        std::format("Failed to send frame, error: {}",
+                    std::string_view{std::strerror(errno)}));
 }
 
 CanMux::Connection::Connection(CanMux& mux, ConnectionIndex index)
@@ -119,13 +121,20 @@ CanMux::CanMux() {
   using namespace std::literals;
 
   m_fd = socket(AF_CAN, SOCK_RAW, CAN_RAW);
-  if (m_fd == -1) throw std::runtime_error(std::format("CAN mux failed to create socket, error: {}", std::string_view{std::strerror(errno)}));
+  if (m_fd == -1)
+    throw std::runtime_error(
+        std::format("CAN mux failed to create socket, error: {}",
+                    std::string_view{std::strerror(errno)}));
 
-  ifreq ifr {};
+  ifreq ifr{};
   std::string_view kInterface{"can0\0"};
-  std::copy(kInterface.cbegin(), kInterface.cend(), static_cast<char*>(ifr.ifr_name));
-  if (ioctl(m_fd, SIOCGIFINDEX, &ifr) == -1) 
-    throw std::runtime_error(std::format("CAN mux failed to find the index of the CAN interface device, error: {}", std::string_view{std::strerror(errno)}));
+  std::copy(kInterface.cbegin(), kInterface.cend(),
+            static_cast<char*>(ifr.ifr_name));
+  if (ioctl(m_fd, SIOCGIFINDEX, &ifr) == -1)
+    throw std::runtime_error(
+        std::format("CAN mux failed to find the index of the CAN interface "
+                    "device, error: {}",
+                    std::string_view{std::strerror(errno)}));
 
   sockaddr_can addr{
       .can_family = AF_CAN,
@@ -133,13 +142,17 @@ CanMux::CanMux() {
       .can_addr = {},
   };
   if (bind(m_fd, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)) == -1)
-    throw std::runtime_error(std::format("CAN mux failed to bind socket, error: {}", std::string_view{std::strerror(errno)}));
+    throw std::runtime_error(
+        std::format("CAN mux failed to bind socket, error: {}",
+                    std::string_view{std::strerror(errno)}));
 
   // Enable CAN-FD
   int enable_fd = 1;
-  if (0 != setsockopt(m_fd, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &enable_fd, sizeof(enable_fd)))
-    throw std::runtime_error(std::format("CAN mux failed to set can-fd enabled, error: {}", std::string_view{std::strerror(errno)}));
-  
+  if (0 != setsockopt(m_fd, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &enable_fd,
+                      sizeof(enable_fd)))
+    throw std::runtime_error(
+        std::format("CAN mux failed to set can-fd enabled, error: {}",
+                    std::string_view{std::strerror(errno)}));
 
   m_worker = std::jthread{[this] {
     while (true) {
@@ -162,7 +175,12 @@ void CanMux::recieve() {
   auto conn_iter{m_connections.find({id.device_class, id.device_index})};
   if (conn_iter == m_connections.end()) {
     m_mutex.unlock();
-    // TODO: Warn unhandled
+    std::cerr
+        << std::format(
+               "No connection associated with CAN device: class={}, index={}",
+               static_cast<CanId::DeviceClass>(id.device_class),
+               static_cast<CanId::DeviceIndex>(id.device_index))
+        << std::endl;
     return;
   }
   auto conn{conn_iter->second};
@@ -170,7 +188,11 @@ void CanMux::recieve() {
   m_mutex.unlock();
 
   if (!conn->m_recv_cb) {
-    // TODO: Warn unbound
+    std::cerr << std::format(
+                     "No callback bound to CAN device: class={}, index={}",
+                     static_cast<CanId::DeviceClass>(id.device_class),
+                     static_cast<CanId::DeviceIndex>(id.device_index))
+              << std::endl;
     return;
   }
 

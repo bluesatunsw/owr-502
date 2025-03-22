@@ -44,7 +44,12 @@ struct [[gnu::packed]] CanId {
   bool eff : 1 = true;
 };
 
-static_assert(std::bit_cast<std::uint32_t>(CanId { .device_index = 17, .api_index = 420, .device_class = 31, .priority = CanId::Priority::kNominal }) == 0b100'100'0'011111'000110100100'1'010001);
+static_assert(std::bit_cast<std::uint32_t>(CanId{
+                  .device_index = 17,
+                  .api_index = 420,
+                  .device_class = 31,
+                  .priority = CanId::Priority::kNominal}) ==
+              0b100'100'0'011111'000110100100'1'010001);
 
 template <typename T>
 std::optional<T> from_bytes(std::span<const std::byte> bytes)
