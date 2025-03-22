@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  ros2_docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        - WORKSPACE_DIR=${WORKSPACE_DIR}
+        - USERNAME=${USERNAME}
+        - UID=${UID}
+        - GID=${GID}
+    container_name: ros2_docker
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # Limit ROS communication to local computer only
+      #- ROS_LOCALHOST_ONLY=1
+    # Required for communicating over the network
+    network_mode: "host"
+    # Required for accessing hardware
+    #privileged: true
+    tty: true
+    volumes:
+      # Required for accessing hardware
+      # - /dev:/dev
+      - ../:${WORKSPACE_DIR}
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+      # Required for ROS 2 shared memory communication
+      #- /dev/shm:/dev/shm
+    userns_mode: "keep-id:uid=1010,gid=1010"    # Make permissions work for rootless podman (L bozo docker)
+
+x-podman:
+  in_pod: false

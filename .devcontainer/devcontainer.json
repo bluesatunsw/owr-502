@@ -1,25 +1,22 @@
 {
-    "name": "ROS 2 Development Container",
-    "containerUser": "dcuser",
-    "updateRemoteUserUID": true,
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
-    "customizations": {
-        "vscode": {
-            "extensions": []
-        }
-    },
-    "appPort": "2222:22", // 2222 on host -> 22 (OpenSSH listen) in container
-    "runArgs": [
-        "-e", "DISPLAY",
-        //"--net", "host", // Enable to communicate with the rover
-        //"--userns=keep-id:uid=1010,gid=1010" // only necessary for rootless podman
+    "name": "ROS2 Docker",
+    "dockerComposeFile": [
+      "docker-compose.yml"
     ],
-    "mounts": [
-        "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",
-        "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
-    ],
+    "service": "ros2_docker",
+    "workspaceFolder": "/workspaces/owr-502",
+    "shutdownAction": "stopCompose",
+    "remoteUser": "dcuser",
     "postCreateCommand": "rosdep update && rosdep install --from-paths src --ignore-src -y",
-    "postStartCommand": "sudo /usr/sbin/sshd -e"
-}
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-iot.vscode-ros",
+          "ms-python.mypy-type-checker",
+          "ms-python.pylint",
+          "ms-python.python",
+          "ms-vscode.cmake-tools"
+        ]
+      }
+    }
+  }

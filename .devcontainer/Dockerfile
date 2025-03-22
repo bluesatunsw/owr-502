@@ -1,11 +1,11 @@
-FROM ros:jazzy
+FROM ros:jazzy as dev
 ARG USERNAME=dcuser
-ARG USER_UID=1010
-ARG USER_GID=1010
+ARG UID=1010
+ARG GID=1010
 
 # Create the user
-RUN groupadd --gid $USER_GID $USERNAME
-RUN useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+RUN groupadd --gid $GID $USERNAME
+RUN useradd --uid $UID --gid $GID -m $USERNAME
 RUN apt-get update
 RUN apt-get install -y sudo
 RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME
@@ -32,30 +32,25 @@ RUN apt-get install -y ros-jazzy-ros-gz
 RUN apt-get install -y ros-jazzy-gz-ros2-control ros-jazzy-joint-state-broadcaster \
     ros-jazzy-diff-drive-controller
 
-# ********************************************************
-# *                END ROS PAGKAGES                         *
-# ********************************************************
 
+RUN echo '* soft rtprio 99\n\
+* soft priority 99\n\
+* soft memlock unlimited\n\
+* hard rtprio 99\n\
+* hard priority 99\n\
+* hard memlock unlimited' >> /etc/security/limits.conf
+RUN apt-get install -y fish neovim
+
+# ********************************************************
+# *                END ROS PAGKAGES                      *
+# ********************************************************
+# TODO? ENV ROS_DOMAIN_ID $ROS_DOMAIN_ID
 
 # Set up user env, password is an empty string (encrypted)
 RUN chsh -s $(which bash) $USERNAME
 RUN echo $USERNAME:U6aMy0wojraho | chpasswd -e
 ENV SHELL /bin/bash
 
-# Set up ssh
-RUN apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-# X11Forwarding yes is already set for ros
-RUN echo 'PasswordAuthentication yes\nPermitEmptyPasswords yes\nPermitRootLogin yes' >> /etc/ssh/sshd_config
-EXPOSE 22
-
-# ********************************************************
-# * Anything else you want to do like clean up goes here *
-# ********************************************************
-
-# Additional ROS setup
-ENV ROS_DOMAIN_ID 42
-
 # Set the default user.
 USER $USERNAME
-CMD ["sudo", "/usr/sbin/sshd", "-D", "-e"]
+CMD ["/bin/bash"]
