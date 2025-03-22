@@ -154,8 +154,15 @@ CanMux::CanMux() {
         std::format("CAN mux failed to set can-fd enabled, error: {}",
                     std::string_view{std::strerror(errno)}));
 
-  m_worker = std::jthread{[this] {
-    while (true) {
+  // Enable timeout
+  timeval timeout{.tv_sec = 1, .tv_usec = 0};
+  if (0 != setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
+    throw std::runtime_error(
+        std::format("CAN mux failed to set timeout, error: {}",
+                    std::string_view{std::strerror(errno)}));
+
+  m_worker = std::jthread{[this](std::stop_token stop_token) {
+    while (!stop_token.stop_requested()) {
       recieve();
     }
   }};
@@ -163,8 +170,13 @@ CanMux::CanMux() {
 
 void CanMux::recieve() {
   canfd_frame frame{};
-  if (recv(m_fd, &frame, sizeof(frame), 0) == -1)
-    throw std::runtime_error("CAN Mux failed to invoke recv");
+  if (recv(m_fd, &frame, sizeof(frame), 0) == -1) {
+    // On timeout return are check if the worker should be stopped
+    if (errno == EAGAIN || errno == EWOULDBLOCK) return;
+    throw std::runtime_error(
+        std::format("CAN Mux failed to invoke recv, error: {}",
+                    std::string_view{std::strerror(errno)}));
+  }
 
   auto id{std::bit_cast<CanId>(frame.can_id)};
 
