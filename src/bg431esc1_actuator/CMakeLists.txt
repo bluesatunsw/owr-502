@@ -103,6 +103,12 @@ install(TARGETS bg431esc1_actuator bg431esc1_actuator_parameters
   LIBRARY DESTINATION lib
 )
 
+# TODO: Remove this later / gate this behind a CMake flag
+install(
+  DIRECTORY test/
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_export_targets(export_bg431esc1_actuator HAS_LIBRARY_TARGET)
 ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 ament_package()

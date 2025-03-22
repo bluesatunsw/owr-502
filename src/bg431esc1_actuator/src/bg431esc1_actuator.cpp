@@ -31,10 +31,10 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
   m_use_auxilary =
       hardware_info.hardware_parameters.at("use_auxilary") == "true";
 
-  m_device = CanMux::get_instance().open(
-      kClassId,
-      std::stoul(hardware_info.hardware_parameters.at("device_index")));
+  unsigned long dev_index = std::stoul(hardware_info.hardware_parameters.at("device_index"));
+  m_device = CanMux::get_instance().open(kClassId, dev_index);
   m_device.bind(std::bind_front(&Bg431esc1Actuator::recv_callback, this));
+
 
   if (hardware_info.joints.size() != 1) {
     RCLCPP_FATAL(get_logger(), "Motor has %zu joints. 1 expected.",
@@ -65,6 +65,12 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
 
     return hardware_interface::CallbackReturn::ERROR;
   }
+  
+  RCLCPP_INFO(get_logger(), "Motor \"%s\" id %ld, with %s auxiliary encoder successfully configured", 
+		  joint.name.c_str(), 
+		  dev_index, 
+		  m_use_auxilary ? "an" : "no"
+  );
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -105,6 +111,7 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_configure(
         }
       }
     }
+    RCLCPP_WARN_THROTTLE(get_logger(), *this->get_clock(), 5000, "Waiting for motor to come up...");
     std::this_thread::yield();
   }
 

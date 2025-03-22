@@ -36,7 +36,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("bg431esc1_actuator"), "test", "description", "urdf.xacro"]
+                [FindPackageShare("bg431esc1_actuator"), "description", "urdf.xacro"]
             ),
         ]
     )
@@ -48,7 +48,6 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [
             FindPackageShare("bg431esc1_actuator"),
-            "test",
             "config",
             "test_actuator.yaml",
         ]
@@ -84,7 +83,7 @@ def generate_launch_description():
         package="joint_state_publisher",
         executable="joint_state_publisher",
         output="screen",
-        parameters=[params],
+        parameters=[robot_description],
     )
 
     return LaunchDescription(
