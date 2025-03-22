@@ -7,7 +7,6 @@ services:
       target: dev
       args:
         - WORKSPACE_DIR=${WORKSPACE_DIR}
-        - USERNAME=${USERNAME}
         - UID=${UID}
         - GID=${GID}
     container_name: ros2_docker
