@@ -75,7 +75,7 @@ void CanMux::Connection::raw_send(CanId::ApiIndex api_index,
                                   CanId::Priority priority) {
   if (!m_mux) throw std::logic_error("Use of moved from/null connection.");
 
-  canfd_frame frame{};
+  can_frame frame{};
   frame.can_id = std::bit_cast<canid_t>(CanId{
       .device_index = m_index.device_index,
       .api_index = api_index,
@@ -83,10 +83,9 @@ void CanMux::Connection::raw_send(CanId::ApiIndex api_index,
       .priority = priority,
   });
   frame.len = static_cast<std::uint8_t>(data.size());
-  frame.flags = CANFD_FDF;
   std::ranges::copy(data, reinterpret_cast<std::byte*>(frame.data));
 
-  if (::send(m_mux->m_fd, &frame, sizeof(frame), 0) == -1)
+  if (write(m_mux->m_fd, &frame, sizeof(frame)) == -1)
     throw std::runtime_error(
         std::format("Failed to send frame, error: {}",
                     std::string_view{std::strerror(errno)}));
@@ -120,7 +119,7 @@ CanMux::Connection CanMux::open(CanId::DeviceClass device_class,
 CanMux::CanMux() {
   using namespace std::literals;
 
-  m_fd = socket(AF_CAN, SOCK_RAW, CAN_RAW);
+  m_fd = socket(PF_CAN, SOCK_RAW, CAN_RAW);
   if (m_fd == -1)
     throw std::runtime_error(
         std::format("CAN mux failed to create socket, error: {}",
@@ -136,6 +135,7 @@ CanMux::CanMux() {
                     "device, error: {}",
                     std::string_view{std::strerror(errno)}));
 
+  
   sockaddr_can addr{
       .can_family = AF_CAN,
       .can_ifindex = ifr.ifr_ifindex,
@@ -146,31 +146,25 @@ CanMux::CanMux() {
         std::format("CAN mux failed to bind socket, error: {}",
                     std::string_view{std::strerror(errno)}));
 
-  // Enable CAN-FD
-  int enable_fd = 1;
-  if (0 != setsockopt(m_fd, SOL_CAN_RAW, CAN_RAW_FD_FRAMES, &enable_fd,
-                      sizeof(enable_fd)))
-    throw std::runtime_error(
-        std::format("CAN mux failed to set can-fd enabled, error: {}",
-                    std::string_view{std::strerror(errno)}));
-
   // Enable timeout
   timeval timeout{.tv_sec = 1, .tv_usec = 0};
   if (0 != setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)))
     throw std::runtime_error(
         std::format("CAN mux failed to set timeout, error: {}",
                     std::string_view{std::strerror(errno)}));
-
+ 
   m_worker = std::jthread{[this](std::stop_token stop_token) {
     while (!stop_token.stop_requested()) {
       recieve();
     }
   }};
+
+  std::cerr << "CAN mux initialised fd: " << m_fd << std::endl;
 }
 
 void CanMux::recieve() {
   canfd_frame frame{};
-  if (recv(m_fd, &frame, sizeof(frame), 0) == -1) {
+  if (read(m_fd, &frame, sizeof(frame)) == -1) {
     // On timeout return are check if the worker should be stopped
     if (errno == EAGAIN || errno == EWOULDBLOCK) return;
     throw std::runtime_error(
