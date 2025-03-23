@@ -58,6 +58,8 @@ class Bg431esc1Actuator : public hardware_interface::ActuatorInterface {
       const rclcpp::Time& time, const rclcpp::Duration& period) override;
 
  private:
+  std::string fqn(const std::string_view& name) const;
+
   void recv_callback(CanId::ApiIndex api_index,
                      std::span<const std::byte> payload);
 

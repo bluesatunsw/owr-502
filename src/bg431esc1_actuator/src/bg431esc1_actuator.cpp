@@ -31,10 +31,10 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
   m_use_auxilary =
       hardware_info.hardware_parameters.at("use_auxilary") == "true";
 
-  unsigned long dev_index = std::stoul(hardware_info.hardware_parameters.at("device_index"));
+  unsigned long dev_index =
+      std::stoul(hardware_info.hardware_parameters.at("device_index"));
   m_device = CanMux::get_instance().open(kClassId, dev_index);
   m_device.bind(std::bind_front(&Bg431esc1Actuator::recv_callback, this));
-
 
   if (hardware_info.joints.size() != 1) {
     RCLCPP_FATAL(get_logger(), "Motor has %zu joints. 1 expected.",
@@ -65,12 +65,11 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_init(
 
     return hardware_interface::CallbackReturn::ERROR;
   }
-  
-  RCLCPP_INFO(get_logger(), "Motor \"%s\" id %ld, with %s auxiliary encoder successfully configured", 
-		  joint.name.c_str(), 
-		  dev_index, 
-		  m_use_auxilary ? "an" : "no"
-  );
+
+  RCLCPP_INFO(
+      get_logger(),
+      "Motor \"%s\" id %ld, with %s auxiliary encoder successfully configured",
+      joint.name.c_str(), dev_index, m_use_auxilary ? "an" : "no");
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
@@ -111,7 +110,8 @@ hardware_interface::CallbackReturn Bg431esc1Actuator::on_configure(
         }
       }
     }
-    RCLCPP_WARN_THROTTLE(get_logger(), *this->get_clock(), 5000, "Waiting for motor to come up...");
+    RCLCPP_WARN_THROTTLE(get_logger(), *this->get_clock(), 5000,
+                         "Waiting for motor to come up...");
     std::this_thread::yield();
   }
 
@@ -140,11 +140,11 @@ hardware_interface::return_type Bg431esc1Actuator::prepare_command_mode_switch(
 
   if (start_interfaces.size() != 0) {
     auto start_mode{start_interfaces.at(0)};
-    if (start_mode == hardware_interface::HW_IF_POSITION) {
+    if (start_mode == fqn(hardware_interface::HW_IF_POSITION)) {
       m_control_mode = ControlMode::kPosition;
-    } else if (start_mode == hardware_interface::HW_IF_VELOCITY) {
+    } else if (start_mode == fqn(hardware_interface::HW_IF_VELOCITY)) {
       m_control_mode = ControlMode::kVelocity;
-    } else if (start_mode == hardware_interface::HW_IF_TORQUE) {
+    } else if (start_mode == fqn(hardware_interface::HW_IF_TORQUE)) {
       m_control_mode = ControlMode::kTorque;
     } else {
       RCLCPP_FATAL(get_logger(), "Invalid command mode %s.",
@@ -165,30 +165,20 @@ hardware_interface::return_type Bg431esc1Actuator::read(
   // Protect m_incoming_state
   std::scoped_lock guard{m_device.mutex()};
 
-  set_state(std::format("{}/{}", info_.joints[0].name, kPosition),
+  set_state(fqn(kPosition),
             (m_raw_state.primary_position - m_offset) / m_ratio);
-  set_state(std::format("{}/{}", info_.joints[0].name, kVelocity),
-            m_raw_state.primary_velocity / m_ratio);
+  set_state(fqn(kVelocity), m_raw_state.primary_velocity / m_ratio);
 
-  set_state(std::format("{}/{}", info_.joints[0].name, kPrimaryPosition),
-            m_raw_state.primary_position);
-  set_state(std::format("{}/{}", info_.joints[0].name, kPrimaryVelocity),
-            m_raw_state.primary_velocity);
-  set_state(std::format("{}/{}", info_.joints[0].name, kAuxilaryPosition),
-            m_raw_state.auxilary_position);
-  set_state(std::format("{}/{}", info_.joints[0].name, kAuxilaryVelocity),
-            m_raw_state.auxilary_velocity);
+  set_state(fqn(kPrimaryPosition), m_raw_state.primary_position);
+  set_state(fqn(kPrimaryVelocity), m_raw_state.primary_velocity);
+  set_state(fqn(kAuxilaryPosition), m_raw_state.auxilary_position);
+  set_state(fqn(kAuxilaryVelocity), m_raw_state.auxilary_velocity);
 
-  set_state(std::format("{}/{}", info_.joints[0].name, kAppliedVoltage),
-            m_raw_state.applied_voltage * 0.1);
-  set_state(std::format("{}/{}", info_.joints[0].name, kStatorCurrent),
-            m_raw_state.stator_current * 0.1);
-  set_state(std::format("{}/{}", info_.joints[0].name, kSupplyCurrent),
-            m_raw_state.supply_current * 0.1);
-  set_state(std::format("{}/{}", info_.joints[0].name, kBusVoltage),
-            m_raw_state.bus_voltage * 0.01);
-  set_state(std::format("{}/{}", info_.joints[0].name, kDriverTemperature),
-            m_raw_state.driver_temperature * 0.01);
+  set_state(fqn(kAppliedVoltage), m_raw_state.applied_voltage * 0.1);
+  set_state(fqn(kStatorCurrent), m_raw_state.stator_current * 0.1);
+  set_state(fqn(kSupplyCurrent), m_raw_state.supply_current * 0.1);
+  set_state(fqn(kBusVoltage), m_raw_state.bus_voltage * 0.01);
+  set_state(fqn(kDriverTemperature), m_raw_state.driver_temperature * 0.01);
 
   return hardware_interface::return_type::OK;
 }
@@ -204,22 +194,19 @@ hardware_interface::return_type Bg431esc1Actuator::write(
   switch (m_control_mode) {
     case ControlMode::kPosition:
       frame.setpoint = static_cast<float>(get_command(
-                           std::format("{}/{}", info_.joints[0].name,
-                                       hardware_interface::HW_IF_POSITION))) *
+                           fqn(hardware_interface::HW_IF_POSITION))) *
                            m_ratio +
                        m_offset;
       break;
     case ControlMode::kVelocity:
       frame.setpoint = static_cast<float>(get_command(
-                           std::format("{}/{}", info_.joints[0].name,
-                                       hardware_interface::HW_IF_VELOCITY))) *
+                           fqn(hardware_interface::HW_IF_VELOCITY))) *
                        m_ratio;
       break;
     case ControlMode::kTorque:
       // Velocity and torque are inversely proportional
-      frame.setpoint = static_cast<float>(get_command(
-                           std::format("{}/{}", info_.joints[0].name,
-                                       hardware_interface::HW_IF_TORQUE))) /
+      frame.setpoint = static_cast<float>(
+                           get_command(fqn(hardware_interface::HW_IF_TORQUE))) /
                        m_ratio;
       break;
     case ControlMode::kDisabled:
@@ -235,6 +222,10 @@ hardware_interface::return_type Bg431esc1Actuator::write(
                     : CanId::Priority::kNominal);
 
   return hardware_interface::return_type::OK;
+}
+
+std::string Bg431esc1Actuator::fqn(const std::string_view& name) const {
+  return std::format("{}/{}", info_.joints[0].name, name);
 }
 
 void Bg431esc1Actuator::recv_callback(CanId::ApiIndex api_index,

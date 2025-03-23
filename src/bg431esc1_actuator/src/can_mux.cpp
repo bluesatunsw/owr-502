@@ -135,7 +135,6 @@ CanMux::CanMux() {
                     "device, error: {}",
                     std::string_view{std::strerror(errno)}));
 
-  
   sockaddr_can addr{
       .can_family = AF_CAN,
       .can_ifindex = ifr.ifr_ifindex,
@@ -152,7 +151,7 @@ CanMux::CanMux() {
     throw std::runtime_error(
         std::format("CAN mux failed to set timeout, error: {}",
                     std::string_view{std::strerror(errno)}));
- 
+
   m_worker = std::jthread{[this](std::stop_token stop_token) {
     while (!stop_token.stop_requested()) {
       recieve();
