@@ -72,11 +72,11 @@ class StepperProfiler {
             1'000'000};
         m_current_position =
             m_trajectory.final_position -
-            m_trajectory.final_velocity * remaining -
+            m_trajectory.final_velocity * remaining +
             std::copysign(m_max_acceleration, m_trajectory.coast_velocity) *
                 remaining * remaining / 2;
         m_current_velocity =
-            m_trajectory.final_velocity -
+            m_trajectory.final_velocity +
             std::copysign(m_max_acceleration, m_trajectory.coast_velocity) *
                 remaining;
         break;

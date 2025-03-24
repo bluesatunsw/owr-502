@@ -78,6 +78,10 @@ struct CanTiming {
 HAL_StatusTypeDef halStatus = {};
 CAN_HandleTypeDef hcan_ = {};
 
+StepperProfiler stepperX(1600, 800);
+StepperProfiler stepperY(1600, 800);
+StepperProfiler stepperZ(1600, 800);
+
 ///////////////////////////////
 // Stepper-related functions //
 ///////////////////////////////
@@ -306,10 +310,9 @@ void initialiseCAN() {
   halStatus = HAL_CAN_Start(&hcan_);
 }
 
-/* for testing purposes only (loopback) */
 void sendFrame(CANFrame frameToSend) {
   CAN_TxHeaderTypeDef header = {
-    .StdId = frameToSend.id,
+    .StdId = frameToSend.id, /* ignored */
     .ExtId = frameToSend.id,
     .IDE = CAN_ID_EXT,
     .RTR = CAN_RTR_DATA,
@@ -326,10 +329,7 @@ void sendFrame(CANFrame frameToSend) {
 CANFrame getFrame() {
   /* as per the filters we've set up, we expect all messages to go into FIFO0 */
   CANFrame frame = {0};
-  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) {
-    blinkLED(3, VERY_FAST_BLINK_TIME_MS);
-    return frame;
-  }
+  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return frame;
   CAN_RxHeaderTypeDef frameHeader;
   uint8_t framePayload[8];
   halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
@@ -434,15 +434,18 @@ void blinkMorse(char *s) {
 void setup() {
   initialiseBlinker();
   initialiseSteppers();
-  // test steppers
   initialiseCAN();
+  stepperX.set_target(-3000.0);
+  stepperY.set_target(-10000.0);
+  stepperZ.set_target(10000.0);
 }
 
 void loop() {
+  // TODO: transmit CAN status frames 50 times a second
   CANFrame frame = getFrame();
   switch (frame.id) {
     case STEPPER_A:
-      //motorA.set_target(frame.data);
+      //stepperX.set_target(frame.data);
       break;
     case STEPPER_B:
       //motorB.set_target(frame.data);
@@ -453,21 +456,19 @@ void loop() {
     default:
       break;
   }
-  // (stepA, dirA) = motorA.update()
-  // digitalWrite(X_STEP, stepA);
-  // digitalWrite(X_DIR, dirA);
-  // (stepB, dirB) = motorB.update()
-  // digitalWrite(Y_STEP, stepB);
-  // digitalWrite(Y_DIR, dirB);
-  // (stepC, dirC) = motorC.update()
-  // digitalWrite(Z_STEP, stepC);
-  // digitalWrite(Z_DIR, dirC);
+  auto[x_step, x_dir] = stepperX.update();
+  digitalWrite(X_STEP, x_step);
+  digitalWrite(X_DIR, x_dir);
+  auto[y_step, y_dir] = stepperY.update();
+  digitalWrite(Y_STEP, y_step);
+  digitalWrite(Y_DIR, y_dir);
+  auto[z_step, z_dir] = stepperZ.update();
+  digitalWrite(Z_STEP, z_step);
+  digitalWrite(Z_DIR, z_dir);
 
-  if (frame.id == 0) {
-    blinkLED(2, VERY_FAST_BLINK_TIME_MS);
-  } else {
-    blinkLED(frame.data[0], FAST_BLINK_TIME_MS);
-  }
-
-  delay(1000);
+  /* if (frame.id == 0) { */
+  /*   blinkLED(2, VERY_FAST_BLINK_TIME_MS); */
+  /* } else { */
+  /*   blinkLED(frame.data[0], FAST_BLINK_TIME_MS); */
+  /* } */
 }
