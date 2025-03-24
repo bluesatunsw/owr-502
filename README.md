@@ -40,7 +40,9 @@ Run `./init.bash` in each new terminal. This will source the appropriate files a
 ### Command index
 | Command                         | Effect                           |
 | ------------------------------- | -------------------------------- |
-| `ros2 launch rover gz_diffdrive.launch.py` | Launch the robot state publisher. Just leave this running. |
+| `devcontainer up --workspace_directory .` | Run in owr-502/ to run the Docker container. Make sure to first replace `docker-compose.yml` with `docker-compose-jetson.yml` in `devcontainer.json` before running if you are on the Jetson. |
+| `docker exec -it ros2_docker /bin/bash` | Enter the docker container after launching it with the devcontainer. |
+| `ros2 launch rover rover.launch.py` | Launch the robot state publisher. Just leave this running. |
 | `xacro ./src/rover/description/robot.urdf.xacro > ./build/rover.urdf` | Compiles the xacro into a singular urdf file|
 | `colcon build --symlink-install` | Builds the rover for the state publisher |
 | `gz sim` | Opens Gazebo |
