@@ -1,40 +1,38 @@
-// stepper_controller.ino
-//
-// Firmware for the Mellow FLY-DP5 that responds to motor controller CAN frames
-// and drives the stepper motors accordingly.
+/*
+ * stepper_controller.ino
+ *
+ * Firmware for the Mellow FLY-DP5 (STM32F072RBT6) that responds to motor
+ * controller CAN frames and drives stepper motors accordingly.
+ */
+
+#include "stepper_profiler.hpp"
+#include "hal_conf_extra.h"
 
 #include <stm32f0xx_hal_can.h>
-#include "hal_conf_extra.h"
-#include <cmath>
 
 #ifndef PI
-#define PI           3.14159265358979323846
+#define PI 3.14159265358979323846
 #endif
 
-#define BLINK_TIME_MS       300
-#define FAST_BLINK_TIME_MS  150
-#define SLOW_BLINK_TIME_MS  600
-#define BITRATE             1000000
+/* for CAN -- 1 Mb/s */
+#define BITRATE   1000000
 
-#define FILTER_HIGH(id)     ((id & 0x1FFFE000) >> 13)
-#define FILTER_LOW(id)      (((id & 0x1FFF) << 3) | 0x4)
-/* match address and magic of B-G431-ESC1, nothing else */
-#define ESC1_ID_MASK              0x01F8003F
+#define FILTER_HIGH(id)           ((id & 0x1FFFE000) >> 13)
+#define FILTER_LOW(id)            (((id & 0x1FFF) << 3) | 0x4)
+#define ESC1_ID_MASK              0x01F8003F /* just match address and magic */
 #define FILTER_ESC1_MASK_HIGH     FILTER_HIGH(ESC1_ID_MASK)
 #define FILTER_ESC1_MASK_LOW      FILTER_LOW(ESC1_ID_MASK)
-#define FILTER_ESC1_ID_HIGH       FILTER_HIGH(0x00C00000)
-#define FILTER_ESC1_ID_LOW(addr)  FILTER_LOW(addr)
+#define FILTER_ESC1_ID_HIGH       FILTER_HIGH(0x00C00000) /* just magic */
+#define FILTER_ESC1_ID_LOW(addr)  FILTER_LOW(addr) /* just address */
 
-// current convention: clockwise rotations are positive
-// set this to -1 to switch convention
+/* for steppers */
+#define STEPS_PER_REVOLUTION      200
+#define MICROSTEP_MULTIPLIER      8
+ 
+/* current convention: clockwise rotations are positive
+ * set this to -1 to switch convention */
 #define ROTATION_POLARITY   1
 
-#define STEPS_PER_REVOLUTION          200
-#define MICROSTEP_MULTIPLIER          8
-
-#define VERY_FAST_BLINK_TIME_MS  50
-#define VERY_SLOW_BLINK_TIME_MS  2000
-  
 #define X_EN      PC_2
 #define X_STEP    PC_15
 #define X_DIR     PC_14
@@ -47,7 +45,15 @@
 #define Z_STEP    PA_5
 #define Z_DIR     PA_4
 
-// Ext. CAN IDs of the stepper motors
+/* mostly for debugging */
+#define VERY_FAST_BLINK_TIME_MS   50
+#define FAST_BLINK_TIME_MS        150
+#define BLINK_TIME_MS             300
+#define SLOW_BLINK_TIME_MS        600
+#define VERY_SLOW_BLINK_TIME_MS   2000
+ 
+/* Lowest 6 bits of the ext. CAN IDs of the stepper motors
+ * as per the B-G431-ESC1 spec */
 enum StepperId {
   STEPPER_A = 42, STEPPER_B, STEPPER_C
 };
@@ -68,9 +74,6 @@ struct CanTiming {
   uint32_t tseg1;
   uint32_t tseg2;
 };
-
-float stepperError[] = {0, 0, 0};
-
 
 HAL_StatusTypeDef halStatus = {};
 CAN_HandleTypeDef hcan_ = {};
@@ -148,7 +151,7 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan_) {
   /* initialise CAN pins (PB8 = CAN_RX, PB9 = CAN_TX) */
   GPIO_InitTypeDef CANRxTx = {
     .Pin = GPIO_PIN_8 | GPIO_PIN_9,
-    .Mode = GPIO_MODE_AF_PP,
+    .Mode = GPIO_MODE_AF_PP, /* not open-drain! the docs are wrong! */
     .Pull = GPIO_NOPULL,
     .Speed = GPIO_SPEED_FREQ_HIGH,
     .Alternate = GPIO_AF4_CAN,
@@ -303,6 +306,7 @@ void initialiseCAN() {
   halStatus = HAL_CAN_Start(&hcan_);
 }
 
+/* for testing purposes only (loopback) */
 void sendFrame(CANFrame frameToSend) {
   CAN_TxHeaderTypeDef header = {
     .StdId = frameToSend.id,
@@ -319,9 +323,8 @@ void sendFrame(CANFrame frameToSend) {
 
 /* if a CAN frame available, return the frame
  * otherwise immediately return a null frame */
-/* untested!!! */
 CANFrame getFrame() {
-  /* as per the filter(s) we've set up, we expect messages to go into FIFO0 */
+  /* as per the filters we've set up, we expect all messages to go into FIFO0 */
   CANFrame frame = {0};
   if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) {
     blinkLED(3, VERY_FAST_BLINK_TIME_MS);
@@ -359,7 +362,6 @@ void blinkLED(int times, int blinkDur) {
   }
 }
 
-// indicate a fatal error
 void blinkSOS() {
   for (int i = 0; i < 9; i++) {
     digitalWrite(PC_7, HIGH);
@@ -370,7 +372,7 @@ void blinkSOS() {
   delay(800);
 }
 
-// printf like it's 1844
+/* printf like it's 1844 */
 void blinkMorse(char *s) {
   char c = s[0];
   const char *morse_lookup[] = {
@@ -433,20 +435,7 @@ void setup() {
   initialiseBlinker();
   initialiseSteppers();
   // test steppers
-  // moveStepperRelative(STEPPER_A, -PI);
-  // moveStepperRelative(STEPPER_A, PI);
-  // delay(1000);
   initialiseCAN();
-  // test send CAN frame
-  /* CANFrame frameToSend = { */
-  /*   .id = STEPPER_C, */
-  /*   .header = 0, */
-  /*   .data = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA} */
-  /* }; */
-  /* //.bitbangCANFrameExtID(frameToSend); */
-  /* sendFrame(frameToSend); */
-  /* delay(1); */
-  /* sendFrame(frameToSend); */
 }
 
 void loop() {
