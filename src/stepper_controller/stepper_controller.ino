@@ -21,9 +21,6 @@
 
 #define STEPS_PER_REVOLUTION          200
 #define MICROSTEP_MULTIPLIER          8
-#define VELOCITY_RAMPUP
-#define VELOCITY_RAMPDOWN
-#define VELOCITY_MAX
 
 #define VERY_FAST_BLINK_TIME_MS  50
 #define VERY_SLOW_BLINK_TIME_MS  2000
@@ -123,6 +120,7 @@ void moveStepperRelative(enum StepperId id, float posRadians) {
   // TODO: keep track of accumulated error
   // TODO: trapezoid motion
   // TODO: wtf is going on with the microstep stuff?
+  // Nevermind!!! Evan is writing a motor class that will handle all this
   float numSteps = abs(posRadians * STEPS_PER_REVOLUTION * MICROSTEP_MULTIPLIER / (2 * PI));
   for (int i = 0; i < numSteps; i++) {
     digitalWrite(stepperStep, HIGH);
@@ -292,14 +290,13 @@ void initialiseCAN() {
   blinkHalStatus(halStatus);
 }
 
-/* blocks until a CAN frame becomes available */
-/* untested */
+/* if a CAN frame available, return the frame
+ * otherwise immediately return a null frame */
+/* untested!!! */
 CANFrame getFrame() {
   /* as per the filter(s) we've set up, we expect messages to go into FIFO0 */
-  CANFrame frame = {};
-  while (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) {
-    blinkLED(1, VERY_SLOW_BLINK_TIME_MS);
-  };
+  CANFrame frame = {0};
+  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return frame;
   CAN_RxHeaderTypeDef frameHeader;
   uint8_t framePayload[8];
   halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
@@ -407,6 +404,7 @@ void blinkMorse(char *s) {
 void setup() {
   initialiseBlinker();
   initialiseSteppers();
+  // test steppers
   moveStepperRelative(STEPPER_A, -PI);
   moveStepperRelative(STEPPER_A, PI);
   delay(1000);
@@ -414,8 +412,30 @@ void setup() {
 }
 
 void loop() {
-  // blinkSOS();
   CANFrame frame = getFrame();
+  switch (frame.id) {
+    case STEPPER_A:
+      //motorA.set_target(frame.data);
+      break;
+    case STEPPER_B:
+      //motorB.set_target(frame.data);
+      break;
+    case STEPPER_C:
+      //motorC.set_target(frame.data);
+      break;
+    default:
+      break;
+  }
+  // (stepA, dirA) = motorA.update()
+  // digitalWrite(X_STEP, stepA);
+  // digitalWrite(X_DIR, dirA);
+  // (stepB, dirB) = motorB.update()
+  // digitalWrite(Y_STEP, stepB);
+  // digitalWrite(Y_DIR, dirB);
+  // (stepC, dirC) = motorC.update()
+  // digitalWrite(Z_STEP, stepC);
+  // digitalWrite(Z_DIR, dirC);
+
   if (frame.id >= STEPPER_A && frame.id <= STEPPER_C) {
     blinkLED(frame.data[7], FAST_BLINK_TIME_MS);
   }
