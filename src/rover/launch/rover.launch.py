@@ -84,7 +84,6 @@ def generate_launch_description():
                 )
             ),
             swerve_drive_base_controller_spawner,
-            control_node,
             node_robot_state_publisher,
         ]
     )
