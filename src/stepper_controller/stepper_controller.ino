@@ -16,6 +16,15 @@
 #define SLOW_BLINK_TIME_MS  600
 #define BITRATE             1000000
 
+#define FILTER_HIGH(id)     ((id & 0x1FFFE000) >> 13)
+#define FILTER_LOW(id)      (((id & 0x1FFF) << 3) | 0x4)
+/* match address and magic of B-G431-ESC1, nothing else */
+#define ESC1_ID_MASK              0x01F8003F
+#define FILTER_ESC1_MASK_HIGH     FILTER_HIGH(ESC1_ID_MASK)
+#define FILTER_ESC1_MASK_LOW      FILTER_LOW(ESC1_ID_MASK)
+#define FILTER_ESC1_ID_HIGH       FILTER_HIGH(0x00C00000)
+#define FILTER_ESC1_ID_LOW(addr)  FILTER_LOW(addr)
+
 // current convention: clockwise rotations are positive
 // set this to -1 to switch convention
 #define ROTATION_POLARITY   1
@@ -38,6 +47,11 @@
 #define Z_STEP    PA_5
 #define Z_DIR     PA_4
 
+// Ext. CAN IDs of the stepper motors
+enum StepperId {
+  STEPPER_A = 42, STEPPER_B, STEPPER_C
+};
+
 extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan);
 void blinkLED(int times, int blinkDur);
 void blinkMorse(char *s);
@@ -57,10 +71,6 @@ struct CanTiming {
 
 float stepperError[] = {0, 0, 0};
 
-// stand-ins for the actual CAN IDs of the stepper motors
-enum StepperId {
-  STEPPER_A = 32, STEPPER_B, STEPPER_C
-};
 
 HAL_StatusTypeDef halStatus = {};
 CAN_HandleTypeDef hcan_ = {};
@@ -234,7 +244,7 @@ void initialiseCAN() {
   hcan_.Instance = CAN;
   CAN_InitTypeDef *init = &(hcan_.Init);
   init->Prescaler = timing.prescaler;
-  init->Mode = CAN_MODE_LOOPBACK;
+  init->Mode = CAN_MODE_NORMAL;
   init->SyncJumpWidth = (timing.sjw - 1) << CAN_BTR_SJW_Pos;
   init->TimeSeg1 = (timing.tseg1 - 1) << CAN_BTR_TS1_Pos;
   init->TimeSeg2 = (timing.tseg2 - 1) << CAN_BTR_TS2_Pos;
@@ -247,27 +257,49 @@ void initialiseCAN() {
 
   halStatus = HAL_CAN_Init(&hcan_);
 
-  /*
-   * Currently, we're just trying to pick up all CAN frames to make sure that we
-   * can actually pick them up, but for the actual driver we should configure
-   * three separate filters (w/ CAN_FILTERMODE_IDLIST) corresponding to the
-   * three stepper IDs.
-   */
-  CAN_FilterTypeDef filterConf = {
-    .FilterIdHigh = 0x0000,
-    .FilterIdLow = 0x0000,
-    .FilterMaskIdHigh = 0x0000,
-    .FilterMaskIdLow = 0x0000,
+  /* Filters CAN frames using STM32 CAN filter hardware... like a boss */
+  CAN_FilterTypeDef filterConfA = {
+    .FilterIdHigh = FILTER_ESC1_ID_HIGH,
+    .FilterIdLow = FILTER_ESC1_ID_LOW(STEPPER_A),
+    .FilterMaskIdHigh = FILTER_ESC1_MASK_HIGH,
+    .FilterMaskIdLow = FILTER_ESC1_MASK_LOW,
     .FilterFIFOAssignment = CAN_FILTER_FIFO0,
     .FilterBank = 0,
-    //.FilterMode = CAN_FILTERMODE_IDLIST,
     .FilterMode = CAN_FILTERMODE_IDMASK,
     .FilterScale = CAN_FILTERSCALE_32BIT,
-    .FilterActivation = CAN_FILTER_DISABLE,
+    .FilterActivation = CAN_FILTER_ENABLE,
     .SlaveStartFilterBank = 0
   };
+  halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConfA);
 
-  halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConf);
+  CAN_FilterTypeDef filterConfB = {
+    .FilterIdHigh = FILTER_ESC1_ID_HIGH,
+    .FilterIdLow = FILTER_ESC1_ID_LOW(STEPPER_B),
+    .FilterMaskIdHigh = FILTER_ESC1_MASK_HIGH,
+    .FilterMaskIdLow = FILTER_ESC1_MASK_LOW,
+    .FilterFIFOAssignment = CAN_FILTER_FIFO0,
+    .FilterBank = 1,
+    .FilterMode = CAN_FILTERMODE_IDMASK,
+    .FilterScale = CAN_FILTERSCALE_32BIT,
+    .FilterActivation = CAN_FILTER_ENABLE,
+    .SlaveStartFilterBank = 0
+  };
+  halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConfB);
+
+  CAN_FilterTypeDef filterConfC = {
+    .FilterIdHigh = FILTER_ESC1_ID_HIGH,
+    .FilterIdLow = FILTER_ESC1_ID_LOW(STEPPER_C),
+    .FilterMaskIdHigh = FILTER_ESC1_MASK_HIGH,
+    .FilterMaskIdLow = FILTER_ESC1_MASK_LOW,
+    .FilterFIFOAssignment = CAN_FILTER_FIFO0,
+    .FilterBank = 2,
+    .FilterMode = CAN_FILTERMODE_IDMASK,
+    .FilterScale = CAN_FILTERSCALE_32BIT,
+    .FilterActivation = CAN_FILTER_ENABLE,
+    .SlaveStartFilterBank = 0
+  };
+  halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConfC);
+
   halStatus = HAL_CAN_Start(&hcan_);
 }
 
@@ -291,14 +323,15 @@ void sendFrame(CANFrame frameToSend) {
 CANFrame getFrame() {
   /* as per the filter(s) we've set up, we expect messages to go into FIFO0 */
   CANFrame frame = {0};
-  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return frame;
+  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) {
+    blinkLED(3, VERY_FAST_BLINK_TIME_MS);
+    return frame;
+  }
   CAN_RxHeaderTypeDef frameHeader;
   uint8_t framePayload[8];
   halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
-  blinkHalStatus(halStatus);
   if (halStatus == HAL_ERROR) return frame;
-  blinkLED(10, VERY_FAST_BLINK_TIME_MS);
-  frame.id = STEPPER_A;
+  frame.id = frameHeader.ExtId;
   frame.header = frameHeader;
   for (int i = 0; i < 8; i++) {
     frame.data[i] = framePayload[i];
@@ -405,15 +438,15 @@ void setup() {
   // delay(1000);
   initialiseCAN();
   // test send CAN frame
-  CANFrame frameToSend = {
-    .id = STEPPER_C,
-    .header = 0,
-    .data = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA}
-  };
-  //.bitbangCANFrameExtID(frameToSend);
-  sendFrame(frameToSend);
-  delay(1);
-  sendFrame(frameToSend);
+  /* CANFrame frameToSend = { */
+  /*   .id = STEPPER_C, */
+  /*   .header = 0, */
+  /*   .data = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA} */
+  /* }; */
+  /* //.bitbangCANFrameExtID(frameToSend); */
+  /* sendFrame(frameToSend); */
+  /* delay(1); */
+  /* sendFrame(frameToSend); */
 }
 
 void loop() {
@@ -441,10 +474,11 @@ void loop() {
   // digitalWrite(Z_STEP, stepC);
   // digitalWrite(Z_DIR, dirC);
 
-  if (frame.id >= STEPPER_A && frame.id <= STEPPER_C) {
-    blinkLED(frame.data[7], FAST_BLINK_TIME_MS);
-  } else if (frame.id == 0) {
+  if (frame.id == 0) {
     blinkLED(2, VERY_FAST_BLINK_TIME_MS);
+  } else {
+    blinkLED(frame.data[0], FAST_BLINK_TIME_MS);
   }
+
   delay(1000);
 }
