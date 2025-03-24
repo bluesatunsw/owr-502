@@ -6,8 +6,6 @@
             <command_interface name="velocity">
                 <param name="min">-2</param>
                 <param name="max">2</param>
-                <param name="can_id">1</param>
-                <param name="control_mode">3</param>
             </command_interface>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
@@ -28,40 +26,13 @@
         </joint>
     </xacro:macro>
 
-    <ros2_control name="test_motor" type="actuator">
-        <hardware>
-            <plugin>bg431esc1_actuator::Bg431esc1Actuator</plugin>
-            <param name="device_index">1</param>
-            <param name="ratio">1</param>
-            <param name="use_auxilary">false</param>
-        </hardware>
-        <joint name="test">
-            <command_interface name="position"/>
-            <command_interface name="velocity"/>
-            <command_interface name="torque"/>
-
-            <state_interface name="position"/>
-            <state_interface name="velocity"/>
-
-            <state_interface name="primary_position"/>
-            <state_interface name="primary_velocity"/>
-            <state_interface name="auxilary_position"/>
-            <state_interface name="auxilary_velocity"/>
-
-            <state_interface name="applied_voltage"/>
-            <state_interface name="stator_current"/>
-            <state_interface name="supply_current"/>
-            <state_interface name="bus_voltage"/>
-            <state_interface name="driver_temperature"/>
-        </joint>
-    </ros2_control>
-
-<!-- 
+    <!-- FIXME: Gate this behind is_simulation -->
     <ros2_control name="RobotSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
 
+        <!-- Drivebase drive motors -->
         <xacro:ros2control_swerve_module_iface name="fl"/>
         <xacro:ros2control_swerve_module_iface name="fr"/>
         <xacro:ros2control_swerve_module_iface name="bl"/>
@@ -69,12 +40,16 @@
         <xacro:ros2control_drivebase_suspension_pivot side="l"/>
         <xacro:ros2control_drivebase_suspension_pivot side="r"/>
 
+        <!-- TODO: Drivebase turn motors -->
+
     </ros2_control>
 
+    <!-- FIXME: Gate this behind is_simulation -->
     <gazebo>
         <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+            <!-- FIXME: reenable? <parameters>$(find rover)/config/drivebase/diff_drive_controller.yaml</parameters> -->
             <parameters>$(find rover)/config/drivebase/swerve_drive_controller.yaml</parameters>
         </plugin>
-    </gazebo> -->
+    </gazebo>
 
 </robot>
