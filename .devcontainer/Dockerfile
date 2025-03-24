@@ -24,7 +24,7 @@ RUN apt-get install -y ros-jazzy-desktop
 RUN apt-get install -y ros-jazzy-xacro \ 
     ros-jazzy-joint-state-publisher \
     ros-jazzy-librealsense2 ros-jazzy-realsense2-camera \
-    ros-jazzy-usb-cam
+    ros-jazzy-usb-cam \
     python3-pydantic # usb-cam dependency
 
 # Gazebo
