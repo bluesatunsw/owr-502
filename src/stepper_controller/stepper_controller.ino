@@ -6,29 +6,45 @@
 #include <stm32f0xx_hal_can.h>
 #include "hal_conf_extra.h"
 
+#ifndef PI
+#define PI           3.14159265358979323846
+#endif
+
 #define BLINK_TIME_MS       300
 #define FAST_BLINK_TIME_MS  150
 #define SLOW_BLINK_TIME_MS  600
 #define BITRATE             1000000
 
+// current convention: clockwise rotations are positive
+// set this to -1 to switch convention
+#define ROTATION_POLARITY   1
+
+#define STEPS_PER_REVOLUTION          200
+#define MICROSTEP_MULTIPLIER          8
+#define VELOCITY_RAMPUP
+#define VELOCITY_RAMPDOWN
+#define VELOCITY_MAX
+
 #define VERY_FAST_BLINK_TIME_MS  50
 #define VERY_SLOW_BLINK_TIME_MS  2000
+  
+#define X_EN      PC_2
+#define X_STEP    PC_15
+#define X_DIR     PC_14
+#define X_CS      PC_13
+
+#define Y_EN      PA_2
+#define Y_STEP    PA_1
+#define Y_DIR     PA_0
+
+#define Z_EN      PA_6
+#define Z_STEP    PA_5
+#define Z_DIR     PA_4
+#define Z_CS      PA_3
 
 extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan);
 void blinkLED(int times, int blinkDur);
 void blinkMorse(char *s);
-
-// stand-ins for the actual CAN IDs of the stepper motors
-enum StepperId {
-  STEPPER_A = 32, STEPPER_B, STEPPER_C
-};
-
-HAL_StatusTypeDef halStatus = {};
-CAN_HandleTypeDef hcan_ = {};
-
-///////////////////////////
-// CAN-related functions //
-///////////////////////////
 
 struct CANFrame {
   uint32_t id;
@@ -43,6 +59,83 @@ struct CanTiming {
   uint32_t tseg2;
 };
 
+
+float stepperError[] = {0, 0, 0};
+
+// stand-ins for the actual CAN IDs of the stepper motors
+enum StepperId {
+  STEPPER_A = 32, STEPPER_B, STEPPER_C
+};
+
+HAL_StatusTypeDef halStatus = {};
+CAN_HandleTypeDef hcan_ = {};
+
+///////////////////////////////
+// Stepper-related functions //
+///////////////////////////////
+
+void initialiseSteppers() {
+  pinMode(X_EN, OUTPUT);
+  pinMode(X_STEP, OUTPUT);
+  pinMode(X_DIR, OUTPUT);
+
+  pinMode(Y_EN, OUTPUT);
+  pinMode(Y_STEP, OUTPUT);
+  pinMode(Y_DIR, OUTPUT);
+  
+  pinMode(Z_EN, OUTPUT);
+  pinMode(Z_STEP, OUTPUT);
+  pinMode(Z_DIR, OUTPUT);
+
+  digitalWrite(X_EN, LOW);
+  digitalWrite(Y_EN, LOW);
+  digitalWrite(Z_EN, LOW);
+}
+
+/* Moves the specified stepper posRadians from current position */
+void moveStepperRelative(enum StepperId id, float posRadians) {
+  posRadians *= ROTATION_POLARITY;
+
+  unsigned stepperStep;
+  unsigned stepperDir;
+  switch (id) {
+    case STEPPER_A:
+      stepperStep = X_STEP;
+      stepperDir = X_DIR;
+      break;
+    case STEPPER_B:
+      stepperStep = Y_STEP;
+      stepperDir = Y_DIR;
+      break;
+    case STEPPER_C:
+      stepperStep = Z_STEP;
+      stepperDir = Z_DIR;
+      break;
+    default:
+      blinkMorse("badid");
+      return;
+  }
+  if (posRadians < 0) {
+    digitalWrite(stepperDir, HIGH);
+  } else {
+    digitalWrite(stepperDir, LOW);
+  }
+  // TODO: keep track of accumulated error
+  // TODO: trapezoid motion
+  // TODO: wtf is going on with the microstep stuff?
+  float numSteps = abs(posRadians * STEPS_PER_REVOLUTION * MICROSTEP_MULTIPLIER / (2 * PI));
+  for (int i = 0; i < numSteps; i++) {
+    digitalWrite(stepperStep, HIGH);
+    delay(1);
+    digitalWrite(stepperStep, LOW);
+    delay(1);
+  }
+}
+
+///////////////////////////
+// CAN-related functions //
+///////////////////////////
+
 void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan_) {
   __HAL_RCC_CAN1_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -53,16 +146,16 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan_) {
     .Mode = GPIO_MODE_AF_OD,
     .Pull = GPIO_NOPULL,
     /* TODO: set speed dynamically based on bitrate/solved clock division? */
-    //.Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
-    .Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
+    .Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
+    //.Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
     .Alternate = GPIO_AF4_CAN,
   };
   GPIO_InitTypeDef CANTx = {
     .Pin = GPIO_PIN_9,
     .Mode = GPIO_MODE_AF_OD,
     .Pull = GPIO_NOPULL,
-    //.Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
-    .Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
+    .Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
+    //.Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
     .Alternate = GPIO_AF4_CAN,
   };
   HAL_GPIO_Init(GPIOB, &CANRx);
@@ -313,6 +406,10 @@ void blinkMorse(char *s) {
 
 void setup() {
   initialiseBlinker();
+  initialiseSteppers();
+  moveStepperRelative(STEPPER_A, -PI);
+  moveStepperRelative(STEPPER_A, PI);
+  delay(1000);
   initialiseCAN();
 }
 
