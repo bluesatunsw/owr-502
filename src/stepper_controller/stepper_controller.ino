@@ -5,6 +5,7 @@
 
 #include <stm32f0xx_hal_can.h>
 #include "hal_conf_extra.h"
+#include <cmath>
 
 #ifndef PI
 #define PI           3.14159265358979323846
@@ -28,7 +29,6 @@
 #define X_EN      PC_2
 #define X_STEP    PC_15
 #define X_DIR     PC_14
-#define X_CS      PC_13
 
 #define Y_EN      PA_2
 #define Y_STEP    PA_1
@@ -37,7 +37,6 @@
 #define Z_EN      PA_6
 #define Z_STEP    PA_5
 #define Z_DIR     PA_4
-#define Z_CS      PA_3
 
 extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan);
 void blinkLED(int times, int blinkDur);
@@ -55,7 +54,6 @@ struct CanTiming {
   uint32_t tseg1;
   uint32_t tseg2;
 };
-
 
 float stepperError[] = {0, 0, 0};
 
@@ -137,27 +135,15 @@ void moveStepperRelative(enum StepperId id, float posRadians) {
 void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan_) {
   __HAL_RCC_CAN1_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-
   /* initialise CAN pins (PB8 = CAN_RX, PB9 = CAN_TX) */
-  GPIO_InitTypeDef CANRx = {
-    .Pin = GPIO_PIN_8,
-    .Mode = GPIO_MODE_AF_OD,
+  GPIO_InitTypeDef CANRxTx = {
+    .Pin = GPIO_PIN_8 | GPIO_PIN_9,
+    .Mode = GPIO_MODE_AF_PP,
     .Pull = GPIO_NOPULL,
-    /* TODO: set speed dynamically based on bitrate/solved clock division? */
-    .Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
-    //.Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
+    .Speed = GPIO_SPEED_FREQ_HIGH,
     .Alternate = GPIO_AF4_CAN,
   };
-  GPIO_InitTypeDef CANTx = {
-    .Pin = GPIO_PIN_9,
-    .Mode = GPIO_MODE_AF_OD,
-    .Pull = GPIO_NOPULL,
-    .Speed = GPIO_SPEED_FREQ_MEDIUM, /* 4 to 10 MHz? */
-    //.Speed = GPIO_SPEED_FREQ_LOW, /* up to 4 MHz? */
-    .Alternate = GPIO_AF4_CAN,
-  };
-  HAL_GPIO_Init(GPIOB, &CANRx);
-  HAL_GPIO_Init(GPIOB, &CANTx);
+  HAL_GPIO_Init(GPIOB, &CANRxTx);
 }
 
 /* taken from Aavin's SimpleCAN's BaseCAN.cpp */
@@ -242,23 +228,20 @@ void blinkHalStatus(HAL_StatusTypeDef status) {
 }
 
 void initialiseCAN() {
-  /* CAN "peripheral clock" is the APB clock (PCLK) */
-  /* which is derived from SYSCLK (8 MHz) by default -- refer to clock tree */
-  uint32_t clockFreq = HAL_RCC_GetPCLK1Freq();
-  CanTiming timing = solveCanTiming(clockFreq, BITRATE, 1);
+  /* OK so turns out the clock we're working with is actually 48 MHz */
+  CanTiming timing = solveCanTiming(48'000'000, BITRATE, 1);
 
   hcan_.Instance = CAN;
   CAN_InitTypeDef *init = &(hcan_.Init);
   init->Prescaler = timing.prescaler;
-  //init->Mode = CAN_MODE_NORMAL;
   init->Mode = CAN_MODE_LOOPBACK;
-  init->SyncJumpWidth = timing.sjw;
-  init->TimeSeg1 = timing.tseg1;
-  init->TimeSeg2 = timing.tseg2;
-  init->TimeTriggeredMode = ENABLE;
+  init->SyncJumpWidth = (timing.sjw - 1) << CAN_BTR_SJW_Pos;
+  init->TimeSeg1 = (timing.tseg1 - 1) << CAN_BTR_TS1_Pos;
+  init->TimeSeg2 = (timing.tseg2 - 1) << CAN_BTR_TS2_Pos;
+  init->TimeTriggeredMode = DISABLE;
   init->AutoBusOff = DISABLE;
   init->AutoWakeUp = DISABLE;
-  init->AutoRetransmission = DISABLE;
+  init->AutoRetransmission = ENABLE;
   init->ReceiveFifoLocked = DISABLE;
   init->TransmitFifoPriority = DISABLE;
 
@@ -280,14 +263,26 @@ void initialiseCAN() {
     //.FilterMode = CAN_FILTERMODE_IDLIST,
     .FilterMode = CAN_FILTERMODE_IDMASK,
     .FilterScale = CAN_FILTERSCALE_32BIT,
-    .FilterActivation = CAN_FILTER_ENABLE,
+    .FilterActivation = CAN_FILTER_DISABLE,
     .SlaveStartFilterBank = 0
   };
 
   halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConf);
-
   halStatus = HAL_CAN_Start(&hcan_);
-  blinkHalStatus(halStatus);
+}
+
+void sendFrame(CANFrame frameToSend) {
+  CAN_TxHeaderTypeDef header = {
+    .StdId = frameToSend.id,
+    .ExtId = frameToSend.id,
+    .IDE = CAN_ID_EXT,
+    .RTR = CAN_RTR_DATA,
+    .DLC = 8,
+    .TransmitGlobalTime = DISABLE
+  };
+  uint32_t txMailbox;
+  while (HAL_CAN_GetTxMailboxesFreeLevel(&hcan_) == 0);
+  halStatus = HAL_CAN_AddTxMessage(&hcan_, &header, frameToSend.data, &txMailbox);
 }
 
 /* if a CAN frame available, return the frame
@@ -405,10 +400,20 @@ void setup() {
   initialiseBlinker();
   initialiseSteppers();
   // test steppers
-  moveStepperRelative(STEPPER_A, -PI);
-  moveStepperRelative(STEPPER_A, PI);
-  delay(1000);
+  // moveStepperRelative(STEPPER_A, -PI);
+  // moveStepperRelative(STEPPER_A, PI);
+  // delay(1000);
   initialiseCAN();
+  // test send CAN frame
+  CANFrame frameToSend = {
+    .id = STEPPER_C,
+    .header = 0,
+    .data = {0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA}
+  };
+  //.bitbangCANFrameExtID(frameToSend);
+  sendFrame(frameToSend);
+  delay(1);
+  sendFrame(frameToSend);
 }
 
 void loop() {
@@ -438,5 +443,8 @@ void loop() {
 
   if (frame.id >= STEPPER_A && frame.id <= STEPPER_C) {
     blinkLED(frame.data[7], FAST_BLINK_TIME_MS);
+  } else if (frame.id == 0) {
+    blinkLED(2, VERY_FAST_BLINK_TIME_MS);
   }
+  delay(1000);
 }
