@@ -104,47 +104,6 @@ void initialiseSteppers() {
   digitalWrite(Z_EN, LOW);
 }
 
-/* Moves the specified stepper posRadians from current position */
-void moveStepperRelative(enum StepperId id, float posRadians) {
-  posRadians *= ROTATION_POLARITY;
-
-  unsigned stepperStep;
-  unsigned stepperDir;
-  switch (id) {
-    case STEPPER_A:
-      stepperStep = X_STEP;
-      stepperDir = X_DIR;
-      break;
-    case STEPPER_B:
-      stepperStep = Y_STEP;
-      stepperDir = Y_DIR;
-      break;
-    case STEPPER_C:
-      stepperStep = Z_STEP;
-      stepperDir = Z_DIR;
-      break;
-    default:
-      blinkMorse("badid");
-      return;
-  }
-  if (posRadians < 0) {
-    digitalWrite(stepperDir, HIGH);
-  } else {
-    digitalWrite(stepperDir, LOW);
-  }
-  // TODO: keep track of accumulated error
-  // TODO: trapezoid motion
-  // TODO: wtf is going on with the microstep stuff?
-  // Nevermind!!! Evan is writing a motor class that will handle all this
-  float numSteps = abs(posRadians * STEPS_PER_REVOLUTION * MICROSTEP_MULTIPLIER / (2 * PI));
-  for (int i = 0; i < numSteps; i++) {
-    digitalWrite(stepperStep, HIGH);
-    delay(1);
-    digitalWrite(stepperStep, LOW);
-    delay(1);
-  }
-}
-
 ///////////////////////////
 // CAN-related functions //
 ///////////////////////////
