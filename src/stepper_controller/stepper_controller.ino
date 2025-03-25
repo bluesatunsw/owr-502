@@ -15,7 +15,9 @@
 #endif
 
 /* for CAN -- 1 Mb/s */
-#define BITRATE   1000000
+#define BITRATE         1000000
+/* how often the status of the steppers should be reported on CAN, in Hz */
+#define FEEDBACK_FREQ   50
 
 #define FILTER_HIGH(id)           (((id) & 0x1FFFE000) >> 13)
 #define FILTER_LOW(id)            ((((id) & 0x1FFF) << 3) | 0x4)
@@ -52,6 +54,10 @@
 #define Z_STEP    PA_5
 #define Z_DIR     PA_4
 
+/* for the stepper motor profiling */
+#define MAX_SPEED         1600
+#define MAX_ACCELERATION  800
+
 /* mostly for debugging */
 #define VERY_FAST_BLINK_TIME_MS   50
 #define FAST_BLINK_TIME_MS        150
@@ -65,7 +71,7 @@ enum StepperId {
   STEPPER_A = 42, STEPPER_B, STEPPER_C
 };
 
-extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan);
+extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan);
 void blinkLED(int times, int blinkDur);
 void blinkMorse(char *s);
 
@@ -85,6 +91,17 @@ enum ControlMode {
   Position = 4,
   VelocityOpenLoop = 5,
   PositionOpenLoop = 6
+};
+
+enum Priority {
+  Exceptional = 0,
+  Immediate = 1,
+  Fast = 2,
+  High = 3,
+  Nominal = 4,
+  Low = 5,
+  Slow = 6,
+  Optional = 7
 };
 
 struct ESC1FrameId {
@@ -113,10 +130,7 @@ struct CanTiming {
 
 HAL_StatusTypeDef halStatus = {};
 CAN_HandleTypeDef hcan_ = {};
-
-StepperProfiler stepperX(1600, 800);
-StepperProfiler stepperY(1600, 800);
-StepperProfiler stepperZ(1600, 800);
+TIM_HandleTypeDef htim_ = {};
 
 ///////////////////////////////
 // Stepper-related functions //
@@ -353,6 +367,19 @@ ESC1FrameId extCANToESC1(uint32_t extCANId) {
   return esc1FrameId;
 }
 
+uint32_t ESC1ToExtCAN(ESC1FrameId id) {
+  uint32_t extId = 0;
+  if (!id.is_valid) return extId;
+  extId = id.address
+        | (1u << 6) /* reserved */
+        | id.api_index << 7
+        | id.api_page << 17
+        | (0x18 << 19) /* magic */
+        | id.anonymous << 25
+        | id.priority << 26;
+  return extId;
+}
+
 /* as above but with more suitable type */
 /* not sure how to make this more extensible (elegantly handle different commands) but now's not the time */
 ESC1ControlRequest getControlRequestFrame() {
@@ -379,6 +406,44 @@ ESC1ControlRequest getControlRequestFrame() {
     controlRequest.frameId.is_valid = 0;
   }
   return controlRequest;
+}
+
+/* sends a CAN "feedback" frame reporting the position and velocity of the given stepper motor with the specified "address" */
+void reportStatus(uint8_t address, StepperProfiler stepper) {
+  ESC1FrameId esc1FrameId = {
+    .is_valid = 1,
+    .priority = Nominal,
+    .anonymous = 0,
+    .magic = 0x18,
+    .api_page = 2,
+    .api_index = 1,
+    .reserved = 1,
+    .address = address
+  };
+  uint32_t extId = ESC1ToExtCAN(esc1FrameId);
+  uint8_t frameData[8];
+  /* i hope these casts work */
+  uint32_t position = stepper.get_position();
+  uint32_t velocity = stepper.get_velocity();
+  frameData[0] = GET_BIT_RANGE(position, 31, 24);
+  frameData[1] = GET_BIT_RANGE(position, 23, 16);
+  frameData[2] = GET_BIT_RANGE(position, 15, 8);
+  frameData[3] = GET_BIT_RANGE(position, 7, 0);
+  frameData[4] = GET_BIT_RANGE(velocity, 31, 24);
+  frameData[5] = GET_BIT_RANGE(velocity, 23, 16);
+  frameData[6] = GET_BIT_RANGE(velocity, 15, 8);
+  frameData[7] = GET_BIT_RANGE(velocity, 7, 0);
+  CAN_TxHeaderTypeDef header = {
+    .StdId = extId, /* ignored */
+    .ExtId = extId,
+    .IDE = CAN_ID_EXT,
+    .RTR = CAN_RTR_DATA,
+    .DLC = 8,
+    .TransmitGlobalTime = DISABLE
+  };
+  uint32_t txMailbox;
+  while (HAL_CAN_GetTxMailboxesFreeLevel(&hcan_) == 0);
+  halStatus = HAL_CAN_AddTxMessage(&hcan_, &header, frameData, &txMailbox);
 }
 
 /////////////////////
@@ -470,6 +535,12 @@ void blinkMorse(char *s) {
 // Arduino functions //
 ///////////////////////
 
+StepperProfiler stepperX(MAX_SPEED, MAX_ACCELERATION);
+StepperProfiler stepperY(MAX_SPEED, MAX_ACCELERATION);
+StepperProfiler stepperZ(MAX_SPEED, MAX_ACCELERATION);
+
+unsigned long nextReportTime = 0;
+
 void setup() {
   initialiseBlinker();
   initialiseSteppers();
@@ -479,24 +550,26 @@ void setup() {
   stepperZ.set_target(10000.0);
 }
 
+/* tight loop! */
 void loop() {
   ESC1ControlRequest frame = getControlRequestFrame();
   /* support position control only */
   if (frame.frameId.is_valid && frame.control_mode == Position) {
     switch (frame.frameId.address) {
      case STEPPER_A:
-      stepperX.set_target(frame.setpoint);
+      stepperX.set_target(frame.setpoint * ROTATION_POLARITY);
       break;
      case STEPPER_B:
-      stepperY.set_target(frame.setpoint);
+      stepperY.set_target(frame.setpoint * ROTATION_POLARITY);
       break;
      case STEPPER_C:
-      stepperZ.set_target(frame.setpoint);
+      stepperZ.set_target(frame.setpoint * ROTATION_POLARITY);
       break;
      default:
       break;
     }
   }
+
   auto[x_step, x_dir] = stepperX.update();
   digitalWrite(X_STEP, x_step);
   digitalWrite(X_DIR, x_dir);
@@ -507,9 +580,14 @@ void loop() {
   digitalWrite(Z_STEP, z_step);
   digitalWrite(Z_DIR, z_dir);
 
-  /* if (frame.id == 0) { */
-  /*   blinkLED(2, VERY_FAST_BLINK_TIME_MS); */
-  /* } else { */
-  /*   blinkLED(frame.data[0], FAST_BLINK_TIME_MS); */
-  /* } */
+  // TODO: transmit CAN status frames 50 times a second
+  if (nextReportTime < millis()) {
+    reportStatus(STEPPER_A, stepperX);
+    reportStatus(STEPPER_B, stepperY);
+    reportStatus(STEPPER_C, stepperZ);
+    if (nextReportTime == 0) {
+      nextReportTime = millis();
+    }
+    nextReportTime += 20;
+  }
 }
