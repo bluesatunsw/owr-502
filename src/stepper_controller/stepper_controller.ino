@@ -17,13 +17,20 @@
 /* for CAN -- 1 Mb/s */
 #define BITRATE   1000000
 
-#define FILTER_HIGH(id)           ((id & 0x1FFFE000) >> 13)
-#define FILTER_LOW(id)            (((id & 0x1FFF) << 3) | 0x4)
+#define FILTER_HIGH(id)           (((id) & 0x1FFFE000) >> 13)
+#define FILTER_LOW(id)            ((((id) & 0x1FFF) << 3) | 0x4)
 #define ESC1_ID_MASK              0x01F8003F /* just match address and magic */
 #define FILTER_ESC1_MASK_HIGH     FILTER_HIGH(ESC1_ID_MASK)
 #define FILTER_ESC1_MASK_LOW      FILTER_LOW(ESC1_ID_MASK)
 #define FILTER_ESC1_ID_HIGH       FILTER_HIGH(0x00C00000) /* just magic */
 #define FILTER_ESC1_ID_LOW(addr)  FILTER_LOW(addr) /* just address */
+
+#define CONTROL_REQUEST_INDEX     1
+
+/* binary: b x 1s */
+#define MASK(b)                   ((1ul << (b)) - 1)
+/* hi, lo  inclusive */
+#define GET_BIT_RANGE(x, hi, lo)  ((x & MASK(hi + 1) & ~MASK(lo)) >> lo)
 
 /* for steppers */
 #define STEPS_PER_REVOLUTION      200
@@ -66,6 +73,35 @@ struct CANFrame {
   uint32_t id;
   CAN_RxHeaderTypeDef header;
   uint8_t data[8];
+};
+
+// i feel like we should have a project-wide library or header file for these definitions
+// TODO (LOW PRIORITY): better class inheritance
+enum ControlMode {
+  Disabled = 0,
+  Voltage = 1,
+  Torque = 2,
+  Velocity = 3,
+  Position = 4,
+  VelocityOpenLoop = 5,
+  PositionOpenLoop = 6
+};
+
+struct ESC1FrameId {
+  bool is_valid : 1;
+  unsigned priority : 3;
+  unsigned anonymous : 1;
+  unsigned magic : 6;
+  unsigned api_page : 2;
+  unsigned api_index : 10;
+  unsigned reserved : 1;
+  unsigned address : 6;
+};
+
+struct ESC1ControlRequest {
+  struct ESC1FrameId frameId;
+  ControlMode control_mode : 8;
+  uint32_t setpoint : 32; /* cast to float */
 };
 
 struct CanTiming {
@@ -301,6 +337,50 @@ CANFrame getFrame() {
   return frame;
 }
 
+/* really should be a ESC1FrameId class method */
+ESC1FrameId extCANToESC1(uint32_t extCANId) {
+  ESC1FrameId esc1FrameId = {
+    .is_valid = 0,
+    .priority = GET_BIT_RANGE(extCANId, 29, 27),
+    .anonymous = GET_BIT_RANGE(extCANId, 26, 26),
+    .magic = GET_BIT_RANGE(extCANId, 25, 20),
+    .api_page = GET_BIT_RANGE(extCANId, 19, 17),
+    .api_index = GET_BIT_RANGE(extCANId, 16, 7),
+    .reserved = GET_BIT_RANGE(extCANId, 6, 6),
+    .address = GET_BIT_RANGE(extCANId, 5, 0)
+  };
+  esc1FrameId.is_valid = (esc1FrameId.magic == 0x18);
+  return esc1FrameId;
+}
+
+/* as above but with more suitable type */
+/* not sure how to make this more extensible (elegantly handle different commands) but now's not the time */
+ESC1ControlRequest getControlRequestFrame() {
+  ESC1ControlRequest controlRequest = {0};
+  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return controlRequest;
+  CAN_RxHeaderTypeDef frameHeader;
+  uint8_t framePayload[8];
+  halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
+  if (halStatus == HAL_ERROR) return controlRequest;
+  if (frameHeader.IDE != CAN_ID_EXT) return controlRequest;
+  if (frameHeader.RTR != CAN_RTR_DATA) return controlRequest;
+  controlRequest.frameId = extCANToESC1(frameHeader.ExtId);
+  if (!controlRequest.frameId.is_valid) return controlRequest;
+  /* only listen to API page 1 commands */
+  if (controlRequest.frameId.api_page != 1) return controlRequest;
+  switch (controlRequest.frameId.api_index) {
+   case CONTROL_REQUEST_INDEX:
+    /* expect 5 bytes of data for this type of request */
+    if (frameHeader.DLC < 5) return controlRequest;
+    controlRequest.control_mode = (enum ControlMode)framePayload[0];
+    controlRequest.setpoint = framePayload[1] << 24 | framePayload[2] << 16 | framePayload[3] << 8 | framePayload[4];
+    break;
+   default:
+    controlRequest.frameId.is_valid = 0;
+  }
+  return controlRequest;
+}
+
 /////////////////////
 // Other functions //
 /////////////////////
@@ -400,20 +480,22 @@ void setup() {
 }
 
 void loop() {
-  // TODO: transmit CAN status frames 50 times a second
-  CANFrame frame = getFrame();
-  switch (frame.id) {
-    case STEPPER_A:
-      //stepperX.set_target(frame.data);
+  ESC1ControlRequest frame = getControlRequestFrame();
+  /* support position control only */
+  if (frame.frameId.is_valid && frame.control_mode == Position) {
+    switch (frame.frameId.address) {
+     case STEPPER_A:
+      stepperX.set_target(frame.setpoint);
       break;
-    case STEPPER_B:
-      //motorB.set_target(frame.data);
+     case STEPPER_B:
+      stepperY.set_target(frame.setpoint);
       break;
-    case STEPPER_C:
-      //motorC.set_target(frame.data);
+     case STEPPER_C:
+      stepperZ.set_target(frame.setpoint);
       break;
-    default:
+     default:
       break;
+    }
   }
   auto[x_step, x_dir] = stepperX.update();
   digitalWrite(X_STEP, x_step);
