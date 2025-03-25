@@ -46,14 +46,17 @@ constexpr int kTicksPerRev{kStepsPerRev*kMicrostepMulti};
 #define X_EN      PC_2
 #define X_STEP    PC_15
 #define X_DIR     PC_14
+#define X_UART    PC_13
 
 #define Y_EN      PA_2
 #define Y_STEP    PA_1
 #define Y_DIR     PA_0
+#define Y_UART    PC_3
 
 #define Z_EN      PA_6
 #define Z_STEP    PA_5
 #define Z_DIR     PA_4
+#define Z_UART    PA_3
 
 /* for the stepper motor profiling */
 // TODO: make this run properly at higher speeds -- can't go above 1.5x this speed
@@ -76,12 +79,6 @@ enum StepperId {
 extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan);
 void blinkLED(int times, int blinkDur);
 void blinkMorse(char *s);
-
-struct CANFrame {
-  uint32_t id;
-  CAN_RxHeaderTypeDef header;
-  uint8_t data[8];
-};
 
 // i feel like we should have a project-wide library or header file for these definitions
 // TODO (LOW PRIORITY): better class inheritance
@@ -324,38 +321,6 @@ void initialiseCAN() {
   halStatus = HAL_CAN_ConfigFilter(&hcan_, &filterConfC);
 
   halStatus = HAL_CAN_Start(&hcan_);
-}
-
-void sendFrame(CANFrame frameToSend) {
-  CAN_TxHeaderTypeDef header = {
-    .StdId = frameToSend.id, /* ignored */
-    .ExtId = frameToSend.id,
-    .IDE = CAN_ID_EXT,
-    .RTR = CAN_RTR_DATA,
-    .DLC = 8,
-    .TransmitGlobalTime = DISABLE
-  };
-  uint32_t txMailbox;
-  while (HAL_CAN_GetTxMailboxesFreeLevel(&hcan_) == 0);
-  halStatus = HAL_CAN_AddTxMessage(&hcan_, &header, frameToSend.data, &txMailbox);
-}
-
-/* if a CAN frame available, return the frame
- * otherwise immediately return a null frame */
-CANFrame getFrame() {
-  /* as per the filters we've set up, we expect all messages to go into FIFO0 */
-  CANFrame frame = {0};
-  if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return frame;
-  CAN_RxHeaderTypeDef frameHeader;
-  uint8_t framePayload[8];
-  halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
-  if (halStatus == HAL_ERROR) return frame;
-  frame.id = frameHeader.ExtId;
-  frame.header = frameHeader;
-  for (int i = 0; i < 8; i++) {
-    frame.data[i] = framePayload[i];
-  }
-  return frame;
 }
 
 /* really should be a ESC1FrameId class method */
