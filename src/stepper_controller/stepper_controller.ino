@@ -35,9 +35,10 @@
 #define GET_BIT_RANGE(x, hi, lo)  ((x & MASK(hi + 1) & ~MASK(lo)) >> lo)
 
 /* for steppers */
-#define STEPS_PER_REVOLUTION      200
-#define MICROSTEP_MULTIPLIER      8
- 
+constexpr int kStepsPerRev{200};
+constexpr int kMicrostepMulti{8};
+constexpr int kTicksPerRev{kStepsPerRev*kMicrostepMulti};
+
 /* current convention: clockwise rotations are positive
  * set this to -1 to switch convention */
 #define ROTATION_POLARITY   1
@@ -55,8 +56,9 @@
 #define Z_DIR     PA_4
 
 /* for the stepper motor profiling */
-#define MAX_SPEED         1600
-#define MAX_ACCELERATION  800
+// TODO: make this run properly at higher speeds -- can't go above 1.5x this speed
+constexpr int kMaxSpeed{kTicksPerRev};
+constexpr int kMaxAcceleration{kTicksPerRev};
 
 /* mostly for debugging */
 #define VERY_FAST_BLINK_TIME_MS   50
@@ -68,7 +70,7 @@
 /* Lowest 6 bits of the ext. CAN IDs of the stepper motors
  * as per the B-G431-ESC1 spec */
 enum StepperId {
-  STEPPER_A = 42, STEPPER_B, STEPPER_C
+  STEPPER_A = 10, STEPPER_B, STEPPER_C
 };
 
 extern "C" void HAL_CAN_MspInit(CAN_HandleTypeDef *hcan);
@@ -126,6 +128,11 @@ struct CanTiming {
   uint32_t sjw;
   uint32_t tseg1;
   uint32_t tseg2;
+};
+
+union FloatBitsConverter {
+  float f;
+  uint32_t u;
 };
 
 HAL_StatusTypeDef halStatus = {};
@@ -267,7 +274,7 @@ void initialiseCAN() {
   init->TimeTriggeredMode = DISABLE;
   init->AutoBusOff = DISABLE;
   init->AutoWakeUp = DISABLE;
-  init->AutoRetransmission = ENABLE;
+  init->AutoRetransmission = DISABLE;
   init->ReceiveFifoLocked = DISABLE;
   init->TransmitFifoPriority = DISABLE;
 
@@ -355,10 +362,10 @@ CANFrame getFrame() {
 ESC1FrameId extCANToESC1(uint32_t extCANId) {
   ESC1FrameId esc1FrameId = {
     .is_valid = 0,
-    .priority = GET_BIT_RANGE(extCANId, 29, 27),
-    .anonymous = GET_BIT_RANGE(extCANId, 26, 26),
-    .magic = GET_BIT_RANGE(extCANId, 25, 20),
-    .api_page = GET_BIT_RANGE(extCANId, 19, 17),
+    .priority = GET_BIT_RANGE(extCANId, 28, 26),
+    .anonymous = GET_BIT_RANGE(extCANId, 25, 25),
+    .magic = GET_BIT_RANGE(extCANId, 24, 19),
+    .api_page = GET_BIT_RANGE(extCANId, 18, 17),
     .api_index = GET_BIT_RANGE(extCANId, 16, 7),
     .reserved = GET_BIT_RANGE(extCANId, 6, 6),
     .address = GET_BIT_RANGE(extCANId, 5, 0)
@@ -387,6 +394,7 @@ ESC1ControlRequest getControlRequestFrame() {
   if (HAL_CAN_GetRxFifoFillLevel(&hcan_, CAN_RX_FIFO0) == 0) return controlRequest;
   CAN_RxHeaderTypeDef frameHeader;
   uint8_t framePayload[8];
+  FloatBitsConverter floatConverter;
   halStatus = HAL_CAN_GetRxMessage(&hcan_, CAN_RX_FIFO0, &frameHeader, framePayload);
   if (halStatus == HAL_ERROR) return controlRequest;
   if (frameHeader.IDE != CAN_ID_EXT) return controlRequest;
@@ -400,7 +408,8 @@ ESC1ControlRequest getControlRequestFrame() {
     /* expect 5 bytes of data for this type of request */
     if (frameHeader.DLC < 5) return controlRequest;
     controlRequest.control_mode = (enum ControlMode)framePayload[0];
-    controlRequest.setpoint = framePayload[1] << 24 | framePayload[2] << 16 | framePayload[3] << 8 | framePayload[4];
+    floatConverter.u = framePayload[1] << 24 | framePayload[2] << 16 | framePayload[3] << 8 | framePayload[4];
+    controlRequest.setpoint = floatConverter.f;
     break;
    default:
     controlRequest.frameId.is_valid = 0;
@@ -423,8 +432,11 @@ void reportStatus(uint8_t address, StepperProfiler stepper) {
   uint32_t extId = ESC1ToExtCAN(esc1FrameId);
   uint8_t frameData[8];
   /* i hope these casts work */
-  uint32_t position = stepper.get_position();
-  uint32_t velocity = stepper.get_velocity();
+  FloatBitsConverter floatConverter;
+  floatConverter.f = stepper.get_position();
+  uint32_t position = floatConverter.u;
+  floatConverter.f = stepper.get_velocity();
+  uint32_t velocity = floatConverter.u;
   frameData[0] = GET_BIT_RANGE(position, 31, 24);
   frameData[1] = GET_BIT_RANGE(position, 23, 16);
   frameData[2] = GET_BIT_RANGE(position, 15, 8);
@@ -535,9 +547,9 @@ void blinkMorse(char *s) {
 // Arduino functions //
 ///////////////////////
 
-StepperProfiler stepperX(MAX_SPEED, MAX_ACCELERATION);
-StepperProfiler stepperY(MAX_SPEED, MAX_ACCELERATION);
-StepperProfiler stepperZ(MAX_SPEED, MAX_ACCELERATION);
+StepperProfiler stepperX(kMaxSpeed, kMaxAcceleration);
+StepperProfiler stepperY(kMaxSpeed, kMaxAcceleration);
+StepperProfiler stepperZ(kMaxSpeed, kMaxAcceleration);
 
 unsigned long nextReportTime = 0;
 
@@ -545,9 +557,6 @@ void setup() {
   initialiseBlinker();
   initialiseSteppers();
   initialiseCAN();
-  stepperX.set_target(-3000.0);
-  stepperY.set_target(-10000.0);
-  stepperZ.set_target(10000.0);
 }
 
 /* tight loop! */
@@ -570,6 +579,7 @@ void loop() {
     }
   }
 
+  /* update step and direction as per internal stepper profile */
   auto[x_step, x_dir] = stepperX.update();
   digitalWrite(X_STEP, x_step);
   digitalWrite(X_DIR, x_dir);
@@ -580,7 +590,7 @@ void loop() {
   digitalWrite(Z_STEP, z_step);
   digitalWrite(Z_DIR, z_dir);
 
-  // TODO: transmit CAN status frames 50 times a second
+  /* transmit CAN status frames 50 times a second */
   if (nextReportTime < millis()) {
     reportStatus(STEPPER_A, stepperX);
     reportStatus(STEPPER_B, stepperY);
@@ -588,6 +598,8 @@ void loop() {
     if (nextReportTime == 0) {
       nextReportTime = millis();
     }
-    nextReportTime += 20;
+    while (nextReportTime < millis()) {
+      nextReportTime += 1000 / FEEDBACK_FREQ;
+    }
   }
 }
