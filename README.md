@@ -63,3 +63,44 @@ Run `./init.bash` in each new terminal. This will source the appropriate files a
   - solution: run `sudo chown -R dcuser .` . Note that this will block you from editing files from outside the container, in which case you will need to run `sudo chown -R <your_user_name> .` .
 - Where is the code?
   - `/workspaces/owr-502` in the container
+
+
+# Jetson Configuration
+## Apt Packages Needed
+
+``` shell
+sudo apt install docker docker-compose docker-buildx git
+```
+
+You will also need to run:
+
+``` shell
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker # Or preferably, log out and log in again.
+```
+
+## NVM
+Nodejs is needed for the devcontainer package.
+For some reason the one provided by apt on the Jetson image is years out of date.
+Solution: [Download NVM using the install script](https://github.com/nvm-sh/nvm).
+The Jetson comes with wget pre-installed, but not curl.
+
+Then run:
+
+``` shell
+sudo npm install -g @devcontainers/cli
+```
+
+## Git
+Follow the instructions for ssh setup [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+Then run `git config --global user.name <>, git config --global user.email <>`.
+You can use your own github email, but by convention make the username some variation of "Wark".
+
+### List of Existing Warks
+Avoid naming any new Jetson git users any of these names:
+
+- Wark Maldron
+- Wark 2
+
+Add to this list as more Warks are brought into existence.
