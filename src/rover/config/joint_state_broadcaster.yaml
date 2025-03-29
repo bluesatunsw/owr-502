@@ -1,0 +1,8 @@
+joint_state_broadcaster:
+  ros__parameters:
+    extra_joints: '{ldb_pivot_joint, rdb_pivot_joint}'
+    map_interface_to_joint_state:
+      effort: effort
+      position: position
+      velocity: velocity
+    # use_urdf_to_filter: true
