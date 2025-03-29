@@ -74,23 +74,20 @@ def generate_launch_description():
     )
 
 
-    usb_cam_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                PathJoinSubstitution(
-                    [FindPackageShare("usb_cam"), "launch", "camera.launch.py"]
-                )
-            ]
-        ),
-        launch_arguments={
-            "" : ""
-        }.items()
+    usb_cam_node = Node(
+        package='usb_cam', executable='usb_cam_node_exe',
+        namespace="webcam",
+        parameters=[{
+            "video_device" : Command("realpath /dev/v4l/by-id/usb-046d_C270_HD_WEBCAM_200901010001-video-index0"),
+            "frame_id" : "webcam_frame",
+            "camera_name" : "webcam"
+        }],
     )
 
     return LaunchDescription(
         [
             realsense_launch,
-            usb_cam_launch,
+            usb_cam_node,
             jsp_spawner,
             node_robot_state_publisher,
         ]
