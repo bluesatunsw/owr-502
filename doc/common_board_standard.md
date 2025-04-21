@@ -51,7 +51,7 @@ Trace asynchronous SW debugging should always be enabled; this allows for flashi
 |  5  | `GND`  |
 |  6  | `SWO`  |
 
-To aid in debugging and inspection, there should be at least two WS2812B ARGB LEDs (XL-2121RGBC-WS2812B). The control signal can be created using a half-duplex UART externally pulled to 5 V using a 4k7 resistor.
+To aid in debugging and inspection, there should be at least two WS2812B ARGB LEDs (XL-2121RGBC-WS2812B). For boards which have multiple distinct output "channels" there should be an additional LED near each channel to show the status of that channel. The control signal can be created using a half-duplex UART externally pulled to 5 V using a 4k7 resistor.
 
 ## Housing
 A board will be housed in a case composed of two parts which will be screwed together using M2.5 countersunk Torx machine screws. The lower half will be manufactured from 8 mm aluminium plate so that it can provide rigidity and serve as a heat spreader. A custom pattern should be milled so that the heat spreader almost makes contact with the tops of hot components, with a thermal pad used to fill the remaining space. The upper half will be 3D printed.
