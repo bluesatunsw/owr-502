@@ -48,4 +48,3 @@ The IO pins routed to the breakout port are not otherwise used for any other pur
 
 - Each stepper channel has an NTC thermistor (NCP15XH103F03RC) for temperature monitoring.
 - A 6-axis IMU (ASM330LHH) and 3-axis magnetometer (LIS2MDL), both communicating over I2C, may optionally be installed to allow for groundstation use and advanced control modes.
-- The input bus voltage is monitored.

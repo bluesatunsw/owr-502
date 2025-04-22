@@ -10,6 +10,6 @@ Power to each of the subcircuits can be toggled by the MCU. Triggering the estop
 Unlike other power hub devices, the switching of channels is instant (it lacks a soft start).
 
 ## Monitoring
-The bus voltage, total input current and output current of each channel is monitored.
+The total input current of the rover and output current of each channel is monitored.
 
 **[TODO] Explain how this will be implemented**

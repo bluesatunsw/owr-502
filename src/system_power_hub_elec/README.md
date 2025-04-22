@@ -8,6 +8,6 @@ Power input from the MPH is provided via a male XT60 connector and each of the c
 Power to each of the channels can be toggled by the MCU. When a channel is enabled, including when the device initially powers up, a soft start slowly reduces the output impedance to reduce inrush current. As implied by their names, each channel is able to output 30A peak and 20A continuous.
 
 ## Monitoring
-The bus voltage and output current of each channel is monitored.
+The output current of each channel is monitored.
 
 **[TODO] Explain how this will be implemented**
