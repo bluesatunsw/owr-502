@@ -35,7 +35,7 @@ The TMC5160 datasheet states that 100u of capacitance per amp of output current 
 ## Breakout Port
 
 External sensors and low-power devices may be connected via a 24-pin JST-ZPD breakout header exposing:
-- power from the VDD, 12V and bus rails;
+- power from the VDD, 12V and VBUS;
 - digital communication via I2C, SPI and UART/USART;
 - digital GPIO including timer channels; and
 - analog GPIO including op-amp and comparator channels.
