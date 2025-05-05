@@ -2570,12 +2570,6 @@
 		(uuid "768a4aed-fc9d-436a-ae4d-1a03f927e039")
 	)
 	(junction
-		(at 229.87 30.48)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "88fb2f5a-8a94-4e19-8dc3-dd91a7066e8c")
-	)
-	(junction
 		(at 251.46 48.26)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3119,16 +3113,6 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 30.48) (xy 229.87 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4a83ba96-1eb5-4422-8652-95c7e9d286a7")
-	)
-	(wire
-		(pts
 			(xy 81.28 44.45) (xy 85.09 44.45)
 		)
 		(stroke
@@ -3169,7 +3153,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 25.4) (xy 229.87 30.48)
+			(xy 229.87 34.29) (xy 229.87 39.37)
 		)
 		(stroke
 			(width 0)
@@ -3216,16 +3200,6 @@
 			(type default)
 		)
 		(uuid "58dcf032-cb08-43e2-b3b7-6abaef491b72")
-	)
-	(wire
-		(pts
-			(xy 229.87 30.48) (xy 236.22 30.48)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5a6c8576-9a38-47b8-b022-b54e0006ebc1")
 	)
 	(wire
 		(pts
@@ -7577,7 +7551,7 @@
 	)
 	(symbol
 		(lib_id "power:VBUS")
-		(at 229.87 25.4 0)
+		(at 229.87 34.29 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7586,7 +7560,7 @@
 		(fields_autoplaced yes)
 		(uuid "adb87fbc-983a-4159-b315-5bb576213ac8")
 		(property "Reference" "#PWR04"
-			(at 229.87 29.21 0)
+			(at 229.87 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7595,7 +7569,7 @@
 			)
 		)
 		(property "Value" "VBUS"
-			(at 229.87 20.32 0)
+			(at 229.87 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7603,7 +7577,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 229.87 25.4 0)
+			(at 229.87 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7612,7 +7586,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 229.87 25.4 0)
+			(at 229.87 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7621,7 +7595,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VBUS\""
-			(at 229.87 25.4 0)
+			(at 229.87 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7636,78 +7610,6 @@
 			(project ""
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/2cef1f8a-4b90-4951-aa93-aa8829702e75"
 					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:C_CompactH")
-		(at 238.76 30.48 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "afa64dc4-3724-4bbc-84a7-e7c6921c2d22")
-		(property "Reference" "C5"
-			(at 239.522 29.591 0)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "470n"
-			(at 237.998 29.591 0)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 238.76 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 238.76 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 238.76 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b64cbedb-bfad-44d6-beb7-49fad1f917d6")
-		)
-		(pin "2"
-			(uuid "b82046a0-f02a-4073-a828-58fe9ddbd968")
-		)
-		(instances
-			(project ""
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/2cef1f8a-4b90-4951-aa93-aa8829702e75"
-					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -9186,72 +9088,6 @@
 			(project "stepper-driver"
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/2cef1f8a-4b90-4951-aa93-aa8829702e75"
 					(reference "R8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 241.3 30.48 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f65c399c-be52-446c-b81a-c0ee9f71f831")
-		(property "Reference" "#PWR05"
-			(at 241.3 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 241.3 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 241.3 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 241.3 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 241.3 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "4a94d31f-d8f4-4df8-a3ac-8b9a1edee003")
-		)
-		(instances
-			(project ""
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/2cef1f8a-4b90-4951-aa93-aa8829702e75"
-					(reference "#PWR05")
 					(unit 1)
 				)
 			)
