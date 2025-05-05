@@ -12,6 +12,11 @@ The coils of the stepper motors are connected using a 4-pin JST-VH connector. A 
 
 The TMC5160 datasheet states that 100u of capacitance per amp of output current is required; however, this requirement can be reduced significantly by using polymer capacitors, which have a very low ESR. A 220u capacitor (HV1H227M1010PZ) per channel should be sufficient.
 
+### MOSFETs
+| Manufacturer | Model        | Max Voltage | Peak Current | Continuous Current | RDS_on |
+|--------------|--------------|-------------|--------------|--------------------|--------|
+| Infineon     | BTN7030-1EPA | 28V         | 17A          |7A       | |
+
 ### Coil Pinout
 
 | Pin | Signal | Colour |

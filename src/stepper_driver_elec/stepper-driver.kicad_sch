@@ -23580,8 +23580,8 @@
 		)
 	)
 	(sheet
-		(at 165.1 50.8)
-		(size 25.4 12.7)
+		(at 165.1 45.72)
+		(size 39.37 24.13)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -23596,7 +23596,7 @@
 		)
 		(uuid "2cef1f8a-4b90-4951-aa93-aa8829702e75")
 		(property "Sheetname" "Channel"
-			(at 165.1 50.0884 0)
+			(at 165.1 45.0084 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23605,12 +23605,62 @@
 			)
 		)
 		(property "Sheetfile" "channel.kicad_sch"
-			(at 165.1 64.0846 0)
+			(at 165.1 70.4346 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
+			)
+		)
+		(pin "CLK" input
+			(at 165.1 48.26 180)
+			(uuid "c333d972-6c94-458c-99de-dea5dac4fdd9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CSN" input
+			(at 165.1 54.61 180)
+			(uuid "dcb74a1e-2f8a-4893-8849-1c52273c7c99")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "MISO" input
+			(at 165.1 59.69 180)
+			(uuid "cc8ca9a5-3342-48e8-b21d-da6a80e8f4aa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "MOSI" input
+			(at 165.1 62.23 180)
+			(uuid "09396bbe-8c22-4442-9dbd-f7de1d4403c7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SCLK" input
+			(at 165.1 57.15 180)
+			(uuid "71c3f8b4-20cf-44ed-86e5-d6b91e45548e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances
