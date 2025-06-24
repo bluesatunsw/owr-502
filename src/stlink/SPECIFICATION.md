@@ -1,4 +1,5 @@
 # STLink Specification
+STLINK-V3MINIE
 
 ## Purpose
 Allows us to use Serial Wire Debug on our boards.
