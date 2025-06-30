@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# Run this to automatically set up your term environment
+# Run without args to set up your terminal environment
+# Run `./init.bash owr_update` to run rosdep
+function owr_run_subshells {
+    if [ $SHLVL -le 10 ]; then
+        /bin/bash -c "./init.bash owr_run_subshells"
+        /bin/bash; echo "WARN: Exited subshell $SHLVL"
+    fi
+}
+
+function owr_update {
+    rosdep update && rosdep install --from-paths src --ignore-src -y
+}
+
+if [[ $# -gt 0 ]]; then "$@"; exit; fi      # Run func named by first arg
 source /ros_entrypoint.sh
-for i in $(seq 1 10);
-do
-    $SHELL
-done
+owr_run_subshells
