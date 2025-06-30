@@ -6,7 +6,6 @@ services:
       dockerfile: Dockerfile
       target: dev
       args:
-        - WORKSPACE_DIR=${WORKSPACE_DIR}
         - UID=${UID}
         - GID=${GID}
     container_name: ros2_docker
