@@ -2,13 +2,12 @@
 This repo includes all software necessary to operate the Test Rover Platform that is being designed and developed in the 502 project.
 
 ## Starting the dev environment
-Run `devcontainer up --workspace-folder .` to build and run the dev container, or restart if it was stopped.
+Run `podman compose -f "$PWD/.devcontainer/docker-compose.yml" up -d` to build and run the container, or restart if it was stopped.
 
-Caveats:
-- Anything capable of launching a devcontainer-compliant container will work (code-oss and vscodium will **not** work)
-  - As a fallback the [devcontainer cli](https://github.com/devcontainers/cli) may be used
-  - Alternatively use [vscode-remote-oss](https://github.com/xaberus/vscode-remote-oss) or [vscode-open-remote-ssh](https://open-vsx.org/extension/jeanp413/open-remote-ssh) (more basic)
-- The devcontainer CLI cannot stop or remove containers
+Then run `podman exec -it --latest /bin/bash`
+
+To kill the container run `podman rm --force --latest -t 0` 
+
 
 ### GUI Applications
 #### Linux
