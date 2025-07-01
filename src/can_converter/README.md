@@ -1,2 +1,0 @@
-# amogus
-sussy baka
