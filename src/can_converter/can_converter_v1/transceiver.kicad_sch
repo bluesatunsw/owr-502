@@ -206,52 +206,49 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Res_1Percent_E24_0805_125mW_-40C-90C:120R_0805_125mW_1%_E24_Chip-Resistor"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
+		(symbol "TCAN1462VDRQ1:TCAN1462VDRQ1"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "R"
-				(at 2.032 0 90)
+			(property "Reference" "IC"
+				(at 26.67 7.62 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left top)
 				)
 			)
-			(property "Value" "120R_0805_125mW_1%_E24_Chip-Resistor"
-				(at -3.4544 0.0254 90)
+			(property "Value" "TCAN1462VDRQ1"
+				(at 26.67 5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "SOIC127P600X175-8N"
+				(at 26.67 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
 					(hide yes)
 				)
 			)
-			(property "Footprint" "Resistors_SMD:R_0805"
-				(at -1.778 0 90)
+			(property "Datasheet" "https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tcan1462-q1"
+				(at 26.67 -194.92 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left top)
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
-				(at 2.032 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "120R, 0805, 125mW, 1%, E24, Chip Resistor"
+			(property "Description" "CAN Interface IC Automotive signal improvement CAN FD transceiver with VIO and standby"
 				(at 0 0 0)
 				(effects
 					(font
@@ -260,239 +257,70 @@
 					(hide yes)
 				)
 			)
-			(property "MPN" "any"
-				(at 4.572 2.54 90)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer" "any"
-				(at 7.112 5.08 90)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "DisplayValue" "120R"
-				(at -0.0254 -0.0508 90)
+			(property "Height" "1.75"
+				(at 26.67 -394.92 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-				)
-			)
-			(property "Package" "0805"
-				(at -0.0254 -0.0508 90)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
+					(justify left top)
 					(hide yes)
 				)
 			)
-			(property "Fit" "fit: "
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-				)
-			)
-			(property "State" "legacy"
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "R_0805*"
-				(at 0 0 0)
+			(property "Mouser Part Number" "595-TCAN1462VDRQ1"
+				(at 26.67 -494.92 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left top)
 					(hide yes)
 				)
 			)
-			(symbol "120R_0805_125mW_1%_E24_Chip-Resistor_0_1"
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TCAN1462VDRQ1?qs=rQFj71Wb1eU28cwJFt9kYg%3D%3D"
+				(at 26.67 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Texas Instruments"
+				(at 26.67 -694.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "TCAN1462VDRQ1"
+				(at 26.67 -794.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(symbol "TCAN1462VDRQ1_1_1"
 				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
+					(start 5.08 2.54)
+					(end 25.4 -10.16)
 					(stroke
 						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "120R_0805_125mW_1%_E24_Chip-Resistor_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "nxp:TJA1051T3"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at 0 -11.43 0)
-				(effects
-					(font
-						(size 0.9906 0.9906)
-					)
-				)
-			)
-			(property "Value" "TJA1051T3"
-				(at 0 11.43 0)
-				(effects
-					(font
-						(size 0.9906 0.9906)
-					)
-				)
-			)
-			(property "Footprint" "tssop:SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-				(at -1.27 5.08 0)
-				(effects
-					(font
-						(size 0.9906 0.9906)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "$PTX_DATASHEETS/datasheets/CAN/NXP-TJA1051-rev09.pdf"
-				(at -1.27 5.08 0)
-				(effects
-					(font
-						(size 0.9906 0.9906)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "High-speed CAN transceiver, Dual 3,3V / 5V voltage inputs, SO-8 Package"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Fit" "fit: "
-				(at 0 0 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-				)
-			)
-			(property "State" "reviewed"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer" "NXP"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "MPN" "TJA1051T/3"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Package" "SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "SOIC-8_3.90mmx4.90mm_Pitch1.27mm*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "TJA1051T3_0_1"
-				(rectangle
-					(start -7.62 10.16)
-					(end 7.62 -10.16)
-					(stroke
-						(width 0)
 						(type default)
 					)
 					(fill
 						(type background)
 					)
 				)
-			)
-			(symbol "TJA1051T3_1_1"
-				(pin input line
-					(at -12.7 8.89 0)
+				(pin passive line
+					(at 0 0 0)
 					(length 5.08)
 					(name "TXD"
 						(effects
@@ -509,80 +337,8 @@
 						)
 					)
 				)
-				(pin output line
-					(at -12.7 6.35 0)
-					(length 5.08)
-					(name "RXD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -12.7 2.54 0)
-					(length 5.08)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -12.7 -2.54 0)
-					(length 5.08)
-					(name "VIO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -12.7 -5.08 0)
-					(length 5.08)
-					(name "VCC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at -12.7 -8.89 0)
+				(pin passive line
+					(at 0 -2.54 0)
 					(length 5.08)
 					(name "GND"
 						(effects
@@ -599,8 +355,62 @@
 						)
 					)
 				)
-				(pin open_emitter line
-					(at 12.7 7.62 180)
+				(pin passive line
+					(at 0 -5.08 0)
+					(length 5.08)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -7.62 0)
+					(length 5.08)
+					(name "RXD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 30.48 0 180)
+					(length 5.08)
+					(name "STB"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 30.48 -2.54 180)
 					(length 5.08)
 					(name "CANH"
 						(effects
@@ -617,8 +427,8 @@
 						)
 					)
 				)
-				(pin open_collector line
-					(at 12.7 -7.62 180)
+				(pin passive line
+					(at 30.48 -5.08 180)
 					(length 5.08)
 					(name "CANL"
 						(effects
@@ -628,6 +438,24 @@
 						)
 					)
 					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 30.48 -7.62 180)
+					(length 5.08)
+					(name "NC_VIO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -988,126 +816,60 @@
 		)
 	)
 	(junction
-		(at 111.76 85.09)
+		(at 193.04 100.33)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0bd76363-48f0-4444-b526-b1237b2a9bcd")
+		(uuid "58875f0a-0220-4bce-ae23-5d585183d85d")
 	)
 	(junction
-		(at 168.91 74.93)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "128ff465-a76f-4976-8c96-85f269457bf8")
-	)
-	(junction
-		(at 168.91 90.17)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "56417bd3-8088-4e18-ba32-1d263a3a762d")
-	)
-	(junction
-		(at 111.76 135.89)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5aae1c52-986e-4fd8-a655-c2c1f22fd6ae")
-	)
-	(junction
-		(at 124.46 93.98)
+		(at 107.95 97.79)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "70ec6a19-6b78-422d-801b-d1e8674e9989")
 	)
-	(junction
-		(at 168.91 125.73)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "761cb646-dd44-40d5-80f9-946f9ee1ab00")
-	)
-	(junction
-		(at 168.91 140.97)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a446bf79-98d1-4634-aff2-82e12ffd893d")
-	)
-	(junction
-		(at 124.46 144.78)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fd5c8311-fcef-4dea-87c9-62e6225dd87b")
-	)
 	(wire
 		(pts
-			(xy 137.16 142.24) (xy 137.16 152.4)
+			(xy 193.04 100.33) (xy 193.04 101.6)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0e78ce0b-984c-44f4-a02e-7be5cef71c75")
+		(uuid "0903bc93-fa76-403d-8f0f-e8de5e1b98ae")
 	)
 	(wire
 		(pts
-			(xy 137.16 91.44) (xy 137.16 101.6)
+			(xy 167.64 95.25) (xy 177.8 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "11393a46-092c-44d2-810e-6f7d8043c00b")
+		(uuid "13dbdb98-9266-449a-8846-94780a40dc3b")
 	)
 	(wire
 		(pts
-			(xy 111.76 143.51) (xy 111.76 152.4)
+			(xy 115.57 86.36) (xy 115.57 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1226aef5-7d5f-40c6-aac2-3f007a8070fb")
+		(uuid "21c5c9cc-acbe-46fe-849c-ef714f43a08f")
 	)
 	(wire
 		(pts
-			(xy 168.91 74.93) (xy 168.91 78.74)
+			(xy 128.27 100.33) (xy 137.16 100.33)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "17485c2f-79cd-4356-a224-46e4acc27ebf")
+		(uuid "28a0db5d-3778-4d16-9e82-75c0db7f5b08")
 	)
 	(wire
 		(pts
-			(xy 130.81 144.78) (xy 130.81 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1fa5d994-3ffb-49c0-ae50-96ba7183d5d1")
-	)
-	(wire
-		(pts
-			(xy 168.91 86.36) (xy 168.91 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1fb43b23-82db-4f8c-b539-f05a18a38fc4")
-	)
-	(wire
-		(pts
-			(xy 111.76 133.35) (xy 111.76 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "25c83818-42d4-4636-8b85-8212e31a972b")
-	)
-	(wire
-		(pts
-			(xy 111.76 92.71) (xy 111.76 101.6)
+			(xy 193.04 109.22) (xy 193.04 118.11)
 		)
 		(stroke
 			(width 0)
@@ -1117,7 +879,7 @@
 	)
 	(wire
 		(pts
-			(xy 124.46 93.98) (xy 130.81 93.98)
+			(xy 107.95 97.79) (xy 137.16 97.79)
 		)
 		(stroke
 			(width 0)
@@ -1127,117 +889,47 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 125.73) (xy 168.91 125.73)
+			(xy 167.64 92.71) (xy 177.8 92.71)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "34e0983d-cd92-492a-995e-8ec978570781")
+		(uuid "6554b653-ed8d-4da2-b644-e238cc135be0")
 	)
 	(wire
 		(pts
-			(xy 130.81 73.66) (xy 137.16 73.66)
+			(xy 128.27 92.71) (xy 137.16 92.71)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "604efb54-203a-4316-a8a4-fe5fc70c9292")
+		(uuid "6b9e4f2f-1b2a-47af-a63a-d2c2eb60b9ad")
 	)
 	(wire
 		(pts
-			(xy 168.91 140.97) (xy 179.07 140.97)
+			(xy 167.64 100.33) (xy 193.04 100.33)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "636a6403-0ca5-4a33-a0f3-80b72303bd70")
+		(uuid "74b59021-d21c-4bd3-a3f0-76bc48037b2a")
 	)
 	(wire
 		(pts
-			(xy 168.91 137.16) (xy 168.91 140.97)
+			(xy 115.57 95.25) (xy 137.16 95.25)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "70b9ee44-3aa6-45d0-b51e-e7fff6395d62")
+		(uuid "b4492f78-b502-4c40-8208-ee38b38124b9")
 	)
 	(wire
 		(pts
-			(xy 130.81 127) (xy 137.16 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8931fbad-c2b5-493b-a6fd-1a3e13f71383")
-	)
-	(wire
-		(pts
-			(xy 111.76 135.89) (xy 137.16 135.89)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "89d8d66c-d37e-496d-a37e-8e305cac16bb")
-	)
-	(wire
-		(pts
-			(xy 130.81 87.63) (xy 137.16 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8fa7a1c7-ec82-4ab5-990a-1ac1110887dd")
-	)
-	(wire
-		(pts
-			(xy 124.46 143.51) (xy 124.46 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "94deff2b-16d5-4343-a2f5-66c97faede43")
-	)
-	(wire
-		(pts
-			(xy 130.81 93.98) (xy 130.81 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a0da0b9a-aae1-42c6-bdc6-93b9d8129849")
-	)
-	(wire
-		(pts
-			(xy 162.56 74.93) (xy 168.91 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a7a20ac2-ef40-4b59-bd94-39bd44951ace")
-	)
-	(wire
-		(pts
-			(xy 168.91 125.73) (xy 168.91 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a87b4381-6548-4196-ba57-b26498715cbc")
-	)
-	(wire
-		(pts
-			(xy 111.76 82.55) (xy 111.76 85.09)
+			(xy 193.04 99.06) (xy 193.04 100.33)
 		)
 		(stroke
 			(width 0)
@@ -1247,97 +939,17 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 125.73) (xy 179.07 125.73)
+			(xy 167.64 97.79) (xy 177.8 97.79)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c70b6800-f2a9-47f9-9cf2-fc32328fd42e")
+		(uuid "d6ae0b6b-49b7-45c4-b81f-a8cfc31eb3ca")
 	)
 	(wire
 		(pts
-			(xy 130.81 76.2) (xy 137.16 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cfaa9911-05be-44c6-bff7-2de747ebaac3")
-	)
-	(wire
-		(pts
-			(xy 168.91 140.97) (xy 162.56 140.97)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d2ffe9dc-b238-4cf3-b6cc-fbdbc66e463f")
-	)
-	(wire
-		(pts
-			(xy 168.91 74.93) (xy 179.07 74.93)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d4ca7c4e-d445-4c7a-93b5-ae9fc0167f76")
-	)
-	(wire
-		(pts
-			(xy 168.91 90.17) (xy 162.56 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d7052960-fea1-4f32-b311-54ba606c9f69")
-	)
-	(wire
-		(pts
-			(xy 130.81 80.01) (xy 137.16 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "daaac400-ebe9-4838-ba16-de9785e95d83")
-	)
-	(wire
-		(pts
-			(xy 111.76 85.09) (xy 137.16 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dbc9bbd8-dbb1-405a-898d-db90b9bf2c29")
-	)
-	(wire
-		(pts
-			(xy 124.46 144.78) (xy 130.81 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e536235d-60e9-4d4a-96ff-6ad6e8c38444")
-	)
-	(wire
-		(pts
-			(xy 130.81 130.81) (xy 137.16 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e82b29ce-9ddd-4567-843e-d1e62aa5cd29")
-	)
-	(wire
-		(pts
-			(xy 124.46 92.71) (xy 124.46 93.98)
+			(xy 107.95 96.52) (xy 107.95 97.79)
 		)
 		(stroke
 			(width 0)
@@ -1345,72 +957,20 @@
 		)
 		(uuid "fac5df20-5ade-4483-b941-182ec01e054e")
 	)
-	(wire
-		(pts
-			(xy 130.81 138.43) (xy 137.16 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fc40f1d1-83f4-4e73-af62-70faec0af1aa")
-	)
-	(wire
-		(pts
-			(xy 168.91 90.17) (xy 179.07 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd5fe6e8-4144-4726-9441-426c905738d9")
-	)
-	(wire
-		(pts
-			(xy 130.81 124.46) (xy 137.16 124.46)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fd766ef7-ac93-4bb4-b2b3-4f7f4e9ecc58")
-	)
 	(hierarchical_label "CAN1_S"
 		(shape input)
-		(at 130.81 80.01 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "0cd521a7-154f-4421-acd6-3650ffe56a6e")
-	)
-	(hierarchical_label "CAN2_L"
-		(shape bidirectional)
-		(at 179.07 140.97 0)
+		(at 177.8 92.71 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "19238a77-5e76-4196-b4e9-65dbf9fc917f")
-	)
-	(hierarchical_label "CAN2_S"
-		(shape input)
-		(at 130.81 130.81 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "444fe730-0160-4464-ab7f-b69d73861802")
+		(uuid "0cd521a7-154f-4421-acd6-3650ffe56a6e")
 	)
 	(hierarchical_label "CAN1_L"
 		(shape bidirectional)
-		(at 179.07 90.17 0)
+		(at 177.8 97.79 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1421,7 +981,7 @@
 	)
 	(hierarchical_label "CAN1_H"
 		(shape bidirectional)
-		(at 179.07 74.93 0)
+		(at 177.8 95.25 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1432,7 +992,7 @@
 	)
 	(hierarchical_label "CAN1_RX"
 		(shape output)
-		(at 130.81 76.2 180)
+		(at 128.27 100.33 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1441,20 +1001,9 @@
 		)
 		(uuid "88863548-2c4e-43ea-9860-7b3e60643a6c")
 	)
-	(hierarchical_label "CAN2_TX"
-		(shape input)
-		(at 130.81 124.46 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "be715645-3f8b-4fd8-bffa-5fd4d5ac97b3")
-	)
 	(hierarchical_label "CAN1_TX"
 		(shape input)
-		(at 130.81 73.66 180)
+		(at 128.27 92.71 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1463,31 +1012,9 @@
 		)
 		(uuid "d236f156-4b1e-49ec-ba66-0e400f8c5de7")
 	)
-	(hierarchical_label "CAN2_H"
-		(shape bidirectional)
-		(at 179.07 125.73 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "dfa996a9-9f7c-42e9-8713-d55604117da5")
-	)
-	(hierarchical_label "CAN2_RX"
-		(shape output)
-		(at 130.81 127 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "efc6ded1-12a3-4204-92dc-d0c3c470cd92")
-	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 124.46 101.6 0)
+		(at 107.95 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1496,7 +1023,7 @@
 		(fields_autoplaced yes)
 		(uuid "08d2eb0f-2a67-4904-b171-a558437a5963")
 		(property "Reference" "#PWR035"
-			(at 124.46 104.14 0)
+			(at 107.95 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1505,7 +1032,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 124.46 105.41 0)
+			(at 107.95 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1513,7 +1040,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 124.46 101.6 0)
+			(at 107.95 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1521,7 +1048,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 124.46 101.6 0)
+			(at 107.95 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1529,7 +1056,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 124.46 101.6 0)
+			(at 107.95 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1549,137 +1076,8 @@
 		)
 	)
 	(symbol
-		(lib_id "nxp:TJA1051T3")
-		(at 149.86 133.35 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "0a6fbc0c-3771-4bd3-bc30-4559d5cfeab4")
-		(property "Reference" "U4"
-			(at 149.86 116.84 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-			)
-		)
-		(property "Value" "TJA1051T3"
-			(at 149.86 119.38 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-			)
-		)
-		(property "Footprint" "tssop:SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-			(at 148.59 128.27 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "$PTX_DATASHEETS/datasheets/CAN/NXP-TJA1051-rev09.pdf"
-			(at 148.59 128.27 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 149.86 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 149.86 121.92 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-			)
-		)
-		(property "State" "reviewed"
-			(at 149.86 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "NXP"
-			(at 149.86 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "TJA1051T/3"
-			(at 149.86 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Package" "SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-			(at 149.86 133.35 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7096e3dd-4972-4083-a460-a76c255a5f81")
-		)
-		(pin "2"
-			(uuid "09e7f71a-565b-429d-b957-3b9b1c28f94c")
-		)
-		(pin "3"
-			(uuid "94746e3e-72f6-4e9c-8d83-ec35604d1fb4")
-		)
-		(pin "4"
-			(uuid "7a66348e-5500-4b5f-8f7e-256c17272a1d")
-		)
-		(pin "5"
-			(uuid "b5082a47-2c69-4db4-b47d-112063d906d0")
-		)
-		(pin "6"
-			(uuid "f58c8f25-9f34-45a6-a49e-7435fe7f63f8")
-		)
-		(pin "7"
-			(uuid "8b80860f-2500-4e92-b9c9-a5dffef2e0ec")
-		)
-		(pin "8"
-			(uuid "ab3b8e27-674f-4b0b-817e-e4b35d387ed3")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "U4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 111.76 88.9 0)
+		(at 193.04 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1688,7 +1086,7 @@
 		(fields_autoplaced yes)
 		(uuid "26bfb0c9-8829-4034-8f01-f9cd3f523ebb")
 		(property "Reference" "C8"
-			(at 115.57 86.3727 0)
+			(at 196.85 102.8827 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1697,7 +1095,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 112.395 91.44 0)
+			(at 193.675 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1707,7 +1105,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 112.7252 92.71 0)
+			(at 194.0052 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1716,7 +1114,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 115.316 94.869 0)
+			(at 196.596 111.379 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1725,7 +1123,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 111.76 88.9 0)
+			(at 193.04 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1733,7 +1131,7 @@
 			)
 		)
 		(property "MPN" "any"
-			(at 114.935 83.82 0)
+			(at 196.215 100.33 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1742,7 +1140,7 @@
 			)
 		)
 		(property "Manufacturer" "any"
-			(at 117.475 81.28 0)
+			(at 198.755 97.79 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1751,7 +1149,7 @@
 			)
 		)
 		(property "DisplayValue" "100n"
-			(at 115.57 88.9127 0)
+			(at 196.85 105.4227 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1760,7 +1158,7 @@
 			)
 		)
 		(property "Fit" "fit: "
-			(at 115.57 90.8177 0)
+			(at 196.85 107.3277 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1769,7 +1167,7 @@
 			)
 		)
 		(property "State" "legacy"
-			(at 119.38 92.71 0)
+			(at 200.66 109.22 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1778,7 +1176,7 @@
 			)
 		)
 		(property "CapRatedVoltage" "50V"
-			(at 115.57 92.0877 0)
+			(at 196.85 108.5977 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1787,7 +1185,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 111.76 88.9 0)
+			(at 193.04 105.41 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1811,197 +1209,8 @@
 		)
 	)
 	(symbol
-		(lib_id "powerport:+5V")
-		(at 124.46 143.51 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "38243316-d6d3-4058-8196-331c1e3f6bc7")
-		(property "Reference" "#PWR036"
-			(at 124.46 147.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 124.46 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 124.46 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 124.46 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 124.46 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9dcd96e1-a4a6-40b7-aeda-d3215808e604")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR036")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:GND")
-		(at 124.46 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "39a29309-0071-467c-819d-58a069c36bd9")
-		(property "Reference" "#PWR037"
-			(at 124.46 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 124.46 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 124.46 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 124.46 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 124.46 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9a53b0fa-a729-4c33-8818-9e8938aa32f6")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR037")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:GND")
-		(at 137.16 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "42a487c0-0da8-4801-b66d-cd1c17df3038")
-		(property "Reference" "#PWR039"
-			(at 137.16 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 137.16 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 137.16 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 137.16 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 137.16 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "39c714c7-3522-45f7-974e-5e37fdc3d8e9")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR039")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "powerport:+3V3")
-		(at 111.76 82.55 0)
+		(at 193.04 99.06 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2010,7 +1219,7 @@
 		(fields_autoplaced yes)
 		(uuid "59d58e0c-be7d-4fd4-adea-fb32816de51c")
 		(property "Reference" "#PWR030"
-			(at 111.76 86.36 0)
+			(at 193.04 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2019,7 +1228,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 111.76 78.74 0)
+			(at 193.04 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2027,7 +1236,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 82.55 0)
+			(at 193.04 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2035,7 +1244,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 82.55 0)
+			(at 193.04 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2043,7 +1252,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 111.76 82.55 0)
+			(at 193.04 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2064,7 +1273,7 @@
 	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 137.16 101.6 0)
+		(at 115.57 86.36 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2073,7 +1282,7 @@
 		(fields_autoplaced yes)
 		(uuid "7ba6049d-fcb6-4ab3-9422-fe4e2e5086b2")
 		(property "Reference" "#PWR038"
-			(at 137.16 104.14 0)
+			(at 115.57 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2082,15 +1291,16 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 137.16 105.41 0)
+			(at 118.11 85.7249 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
 		(property "Footprint" ""
-			(at 137.16 101.6 0)
+			(at 115.57 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2098,7 +1308,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 137.16 101.6 0)
+			(at 115.57 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2106,7 +1316,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 137.16 101.6 0)
+			(at 115.57 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2127,7 +1337,7 @@
 	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 111.76 101.6 0)
+		(at 193.04 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2136,7 +1346,7 @@
 		(fields_autoplaced yes)
 		(uuid "7d50539e-550d-4d93-b040-31b19a166cd3")
 		(property "Reference" "#PWR031"
-			(at 111.76 104.14 0)
+			(at 193.04 120.65 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2145,7 +1355,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 111.76 105.41 0)
+			(at 193.04 121.92 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2153,7 +1363,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 111.76 101.6 0)
+			(at 193.04 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2161,7 +1371,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.76 101.6 0)
+			(at 193.04 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2169,7 +1379,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 111.76 101.6 0)
+			(at 193.04 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2189,17 +1399,53 @@
 		)
 	)
 	(symbol
-		(lib_id "powerport:+3V3")
-		(at 111.76 133.35 0)
+		(lib_id "TCAN1462VDRQ1:TCAN1462VDRQ1")
+		(at 137.16 92.71 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "b1944ab1-2e83-4653-879b-ba68390aac60")
-		(property "Reference" "#PWR032"
-			(at 111.76 137.16 0)
+		(uuid "c276d47b-8a15-4df5-ad73-e59227becf6f")
+		(property "Reference" "IC1"
+			(at 152.4 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TCAN1462VDRQ1"
+			(at 152.4 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SOIC127P600X175-8N"
+			(at 163.83 187.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tcan1462-q1"
+			(at 163.83 287.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "CAN Interface IC Automotive signal improvement CAN FD transceiver with VIO and standby"
+			(at 137.16 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2207,424 +1453,84 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3V3"
-			(at 111.76 129.54 0)
+		(property "Height" "1.75"
+			(at 163.83 487.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "Footprint" ""
-			(at 111.76 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 111.76 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 111.76 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e1b16afc-efaf-4747-98ed-5a66b9547bf1")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR032")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Res_1Percent_E24_0805_125mW_-40C-90C:120R_0805_125mW_1%_E24_Chip-Resistor")
-		(at 168.91 82.55 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "b4688076-3882-4cf1-a4d3-31587b2a7898")
-		(property "Reference" "R7"
-			(at 171.45 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "120R_0805_125mW_1%_E24_Chip-Resistor"
-			(at 165.4556 82.5246 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+				(justify left top)
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistors_SMD:R_0805"
-			(at 167.132 82.55 90)
+		(property "Mouser Part Number" "595-TCAN1462VDRQ1"
+			(at 163.83 587.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left top)
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 170.942 82.55 90)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TCAN1462VDRQ1?qs=rQFj71Wb1eU28cwJFt9kYg%3D%3D"
+			(at 163.83 687.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left top)
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 168.91 82.55 0)
+		(property "Manufacturer_Name" "Texas Instruments"
+			(at 163.83 787.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-			)
-		)
-		(property "MPN" "any"
-			(at 173.482 80.01 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
+				(justify left top)
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "any"
-			(at 176.022 77.47 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "DisplayValue" "120R"
-			(at 171.45 82.55 0)
+		(property "Manufacturer_Part_Number" "TCAN1462VDRQ1"
+			(at 163.83 887.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
-			)
-		)
-		(property "Package" "0805"
-			(at 171.45 84.455 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 171.45 85.725 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 176.53 86.36 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
+				(justify left top)
 				(hide yes)
 			)
 		)
-		(pin "1"
-			(uuid "94fb010d-f62f-43b6-9a07-43d8fdc36914")
+		(pin "7"
+			(uuid "31866260-4b21-409c-b4ad-f3db28efbb17")
+		)
+		(pin "4"
+			(uuid "0be71660-d8ff-4ca7-a8b9-3a725584b56b")
 		)
 		(pin "2"
-			(uuid "d59e57dd-54b3-4672-a9ca-54416324b62e")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Res_1Percent_E24_0805_125mW_-40C-90C:120R_0805_125mW_1%_E24_Chip-Resistor")
-		(at 168.91 133.35 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "bbdfc82a-8ab8-42c4-b994-97a843afeda9")
-		(property "Reference" "R8"
-			(at 171.45 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "120R_0805_125mW_1%_E24_Chip-Resistor"
-			(at 165.4556 133.3246 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistors_SMD:R_0805"
-			(at 167.132 133.35 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 170.942 133.35 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 168.91 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "any"
-			(at 173.482 130.81 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "any"
-			(at 176.022 128.27 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "DisplayValue" "120R"
-			(at 171.45 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Package" "0805"
-			(at 171.45 135.255 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 171.45 136.525 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 176.53 137.16 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
+			(uuid "95ec147d-f83d-422e-b313-e64b66353e16")
 		)
 		(pin "1"
-			(uuid "f694ee49-547f-48aa-ac86-33de13f3685d")
+			(uuid "f9e463db-2d0e-46f2-97d9-7d631736db2b")
 		)
-		(pin "2"
-			(uuid "85b33ef1-1823-4d7b-84e8-bed6ac11be72")
+		(pin "3"
+			(uuid "20ecdfbd-06fd-4a59-9e16-46d70e86cc09")
 		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "R8")
-					(unit 1)
-				)
-			)
+		(pin "8"
+			(uuid "219fbf7a-76e4-41f4-a3c4-12b3174e0ff3")
 		)
-	)
-	(symbol
-		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 111.76 139.7 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "c54a7a8f-d45e-4e49-9a04-055dcdeae748")
-		(property "Reference" "C9"
-			(at 115.57 137.1727 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
+		(pin "6"
+			(uuid "d516e9c6-6051-4805-9f1c-05726b5a59b8")
 		)
-		(property "Value" "100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor"
-			(at 112.395 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Capacitors_SMD:C_0603"
-			(at 112.7252 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 115.316 145.669 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 111.76 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "any"
-			(at 114.935 134.62 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "any"
-			(at 117.475 132.08 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "DisplayValue" "100n"
-			(at 115.57 139.7127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 115.57 141.6177 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 119.38 143.51 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(property "CapRatedVoltage" "50V"
-			(at 115.57 142.8877 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "Package" "0603"
-			(at 111.76 139.7 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "bdba127f-7b88-45b6-9cd1-fcf30ca6c846")
-		)
-		(pin "2"
-			(uuid "6d2b4286-cad1-4460-800c-9dd2a38d4e5c")
+		(pin "5"
+			(uuid "e6b3e662-7809-4c86-94cb-70975c207cd3")
 		)
 		(instances
-			(project "candleLightfd-S01"
+			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "C9")
+					(reference "IC1")
 					(unit 1)
 				)
 			)
@@ -2632,7 +1538,7 @@
 	)
 	(symbol
 		(lib_id "powerport:+5V")
-		(at 124.46 92.71 0)
+		(at 107.95 96.52 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2641,7 +1547,7 @@
 		(fields_autoplaced yes)
 		(uuid "d44a4a4d-0c89-41c5-8f71-53f16f21e75d")
 		(property "Reference" "#PWR034"
-			(at 124.46 96.52 0)
+			(at 107.95 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2650,7 +1556,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 124.46 88.9 0)
+			(at 107.95 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2658,7 +1564,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 124.46 92.71 0)
+			(at 107.95 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2666,7 +1572,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 124.46 92.71 0)
+			(at 107.95 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2674,7 +1580,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 124.46 92.71 0)
+			(at 107.95 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2694,333 +1600,8 @@
 		)
 	)
 	(symbol
-		(lib_id "powerport:GND")
-		(at 111.76 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "da2e8484-29d8-4063-b2cd-60d68aaf93bc")
-		(property "Reference" "#PWR033"
-			(at 111.76 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 111.76 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 111.76 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 111.76 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 111.76 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "545c2a1d-15aa-4038-83d8-312c5b8f6bb8")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR033")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "nxp:TJA1051T3")
-		(at 149.86 82.55 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e58806b1-1d99-4e75-b638-24ce0457a23e")
-		(property "Reference" "U3"
-			(at 149.86 66.04 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-			)
-		)
-		(property "Value" "TJA1051T3"
-			(at 149.86 68.58 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-			)
-		)
-		(property "Footprint" "tssop:SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-			(at 148.59 77.47 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "$PTX_DATASHEETS/datasheets/CAN/NXP-TJA1051-rev09.pdf"
-			(at 148.59 77.47 0)
-			(effects
-				(font
-					(size 0.9906 0.9906)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 149.86 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Fit" "fit: "
-			(at 149.86 71.12 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-			)
-		)
-		(property "State" "reviewed"
-			(at 149.86 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "NXP"
-			(at 149.86 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "TJA1051T/3"
-			(at 149.86 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Package" "SOIC-8_3.90mmx4.90mm_Pitch1.27mm"
-			(at 149.86 82.55 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "54789027-c402-4e3c-b11b-757db5e91553")
-		)
-		(pin "2"
-			(uuid "61243f14-0bbd-46b9-a0aa-8da777c31876")
-		)
-		(pin "3"
-			(uuid "dbf2743e-f66e-4f59-b927-6a31479ba54a")
-		)
-		(pin "4"
-			(uuid "b01e32a0-da0c-48cf-9e8a-58cd67656ba9")
-		)
-		(pin "5"
-			(uuid "4cbd3c15-37ba-43f4-9a2c-04e9c5f11492")
-		)
-		(pin "6"
-			(uuid "21f7344c-8876-4941-8f46-72fa37563731")
-		)
-		(pin "7"
-			(uuid "cd88e81f-b4db-44b9-bb38-580090f11ba6")
-		)
-		(pin "8"
-			(uuid "5a2c5936-92dc-42de-b2b3-7303663eb20f")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "U3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 124.46 148.59 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "f5a0b8e7-d170-407c-9d96-ed219e79efa7")
-		(property "Reference" "C11"
-			(at 128.27 146.0627 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor"
-			(at 125.095 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Capacitors_SMD:C_0603"
-			(at 125.4252 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 128.016 154.559 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 124.46 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "any"
-			(at 127.635 143.51 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "any"
-			(at 130.175 140.97 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "DisplayValue" "100n"
-			(at 128.27 148.6027 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 128.27 150.5077 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 132.08 152.4 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(property "CapRatedVoltage" "50V"
-			(at 128.27 151.7777 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "Package" "0603"
-			(at 124.46 148.59 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ade68131-fb64-4bb6-bb36-05e68ca804a7")
-		)
-		(pin "2"
-			(uuid "98a661c9-c010-4780-bd1a-bb2b9d26b9fd")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "C11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 124.46 97.79 0)
+		(at 107.95 101.6 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3029,7 +1610,7 @@
 		(fields_autoplaced yes)
 		(uuid "f8dee829-10fc-4432-8bea-4a8b3600e721")
 		(property "Reference" "C10"
-			(at 128.27 95.2627 0)
+			(at 111.76 99.0727 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3038,7 +1619,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 125.095 100.33 0)
+			(at 108.585 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3048,7 +1629,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 125.4252 101.6 0)
+			(at 108.9152 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3057,7 +1638,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 128.016 103.759 0)
+			(at 111.506 107.569 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3066,7 +1647,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 124.46 97.79 0)
+			(at 107.95 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3074,7 +1655,7 @@
 			)
 		)
 		(property "MPN" "any"
-			(at 127.635 92.71 0)
+			(at 111.125 96.52 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -3083,7 +1664,7 @@
 			)
 		)
 		(property "Manufacturer" "any"
-			(at 130.175 90.17 0)
+			(at 113.665 93.98 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -3092,7 +1673,7 @@
 			)
 		)
 		(property "DisplayValue" "100n"
-			(at 128.27 97.8027 0)
+			(at 111.76 101.6127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3101,7 +1682,7 @@
 			)
 		)
 		(property "Fit" "fit: "
-			(at 128.27 99.7077 0)
+			(at 111.76 103.5177 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -3110,7 +1691,7 @@
 			)
 		)
 		(property "State" "legacy"
-			(at 132.08 101.6 0)
+			(at 115.57 105.41 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -3119,7 +1700,7 @@
 			)
 		)
 		(property "CapRatedVoltage" "50V"
-			(at 128.27 100.9777 0)
+			(at 111.76 104.7877 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -3128,7 +1709,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 124.46 97.79 0)
+			(at 107.95 101.6 0)
 			(effects
 				(font
 					(size 0.635 0.635)
