@@ -6376,12 +6376,6 @@
 		(uuid "0afd1a4e-d6ec-4254-9e74-2fed8d15ad5c")
 	)
 	(junction
-		(at 269.24 147.32)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "16cfc8ee-ce26-40f9-aee4-b566cd0b213e")
-	)
-	(junction
 		(at 67.31 130.81)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -7975,16 +7969,6 @@
 		)
 		(uuid "03567a42-0a0e-4f12-86ce-3d15795f13b9")
 	)
-	(wire
-		(pts
-			(xy 273.05 149.86) (xy 273.05 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0379abe7-056f-48c3-8066-82463bc01244")
-	)
 	(bus
 		(pts
 			(xy 143.51 137.16) (xy 143.51 139.7)
@@ -9504,16 +9488,6 @@
 			(type default)
 		)
 		(uuid "5d98093d-624f-4708-87f6-141c8abd465d")
-	)
-	(wire
-		(pts
-			(xy 269.24 147.32) (xy 273.05 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5ec518a3-97a9-481b-a15d-8e9e181e893a")
 	)
 	(wire
 		(pts
@@ -15611,71 +15585,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 273.05 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "29c00441-1dd1-40ee-b45e-d28ba7c3d292")
-		(property "Reference" "#PWR0186"
-			(at 273.05 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 273.05 158.115 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 273.05 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 273.05 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 273.05 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "515463e6-1d91-48e3-8899-daaf90a5da82")
-		)
-		(instances
-			(project "stepper-driver"
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
-					(reference "#PWR0186")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:STM32G474_Stepper")
 		(at 115.57 49.53 0)
 		(unit 1)
@@ -15700,7 +15609,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LQFP64-10x10mm"
+		(property "Footprint" "Package_QFP:LQFP-64_10x10mm_P0.5mm"
 			(at 115.57 49.53 0)
 			(effects
 				(font
@@ -16861,78 +16770,6 @@
 			(project ""
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
 					(reference "#PWR0150")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:C_CompactV")
-		(at 273.05 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3fa57ed4-95c3-4c77-a20f-dcd1068a2bde")
-		(property "Reference" "C105"
-			(at 272.161 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "220n"
-			(at 273.939 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 273.05 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 273.05 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 273.05 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "b1b722c0-95df-4b85-9a82-11db4241a7f0")
-		)
-		(pin "2"
-			(uuid "b627a321-4a66-4967-9f62-6b3e5c2a65db")
-		)
-		(instances
-			(project "stepper-driver"
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
-					(reference "C105")
 					(unit 1)
 				)
 			)
@@ -18771,7 +18608,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LQFP64-10x10mm"
+		(property "Footprint" "Package_QFP:LQFP-64_10x10mm_P0.5mm"
 			(at 139.7 167.64 0)
 			(effects
 				(font
