@@ -1696,184 +1696,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "generic-connectors:CONN_01X02"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "P"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "CONN_01X02"
-				(at 2.54 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "Connector_generic:Header_1x2_Pitch2.54mm"
-				(at -11.43 6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "2.54mm, Header. 2 Pin"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer" "generic"
-				(at 2.54 7.62 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "MPN" "generic"
-				(at 5.08 10.16 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "Fit" "fit: "
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-				)
-			)
-			(property "State" "legacy"
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "Package" "THT 2.54mm 1x2-pin"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Header_1x2_Pitch2.54mm*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "CONN_01X02_0_1"
-				(rectangle
-					(start -1.27 3.81)
-					(end 1.27 -1.27)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 2.667)
-					(end 0.254 2.413)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(rectangle
-					(start -1.27 0.127)
-					(end 0.254 -0.127)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "CONN_01X02_1_1"
-				(pin passive line
-					(at -5.08 2.54 0)
-					(length 3.81)
-					(name "P1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "P2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "generic-connectors:TP1.0mm"
 			(pin_names
 				(offset 1.016)
@@ -2720,12 +2542,6 @@
 		(uuid "471ec626-206f-44b3-afa4-48688e9980d6")
 	)
 	(junction
-		(at 40.64 64.77)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "19614d10-10cd-4180-b7eb-c5e5a96db9bb")
-	)
-	(junction
 		(at 160.02 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2949,16 +2765,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 64.77) (xy 50.8 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "16a9568d-e2e6-4320-9862-7e3c4d83d936")
-	)
-	(wire
-		(pts
 			(xy 62.23 59.69) (xy 67.31 59.69)
 		)
 		(stroke
@@ -2976,6 +2782,16 @@
 			(type default)
 		)
 		(uuid "20d33c3f-a675-422c-9157-cce4c07342ec")
+	)
+	(wire
+		(pts
+			(xy 40.64 57.15) (xy 40.64 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21087c90-563d-4fea-b43a-3e1118daba88")
 	)
 	(wire
 		(pts
@@ -3049,16 +2865,6 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 64.77) (xy 50.8 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "38f9d951-5d4f-490f-881c-63b784e8a93f")
-	)
-	(wire
-		(pts
 			(xy 135.89 123.19) (xy 142.24 123.19)
 		)
 		(stroke
@@ -3089,16 +2895,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 64.77) (xy 40.64 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "42930f05-418b-47b0-b2f9-3b710eca2314")
-	)
-	(wire
-		(pts
 			(xy 44.45 118.11) (xy 54.61 118.11)
 		)
 		(stroke
@@ -3126,16 +2922,6 @@
 			(type default)
 		)
 		(uuid "501a307b-8dd0-4cc7-8004-3ba19db2c6b4")
-	)
-	(wire
-		(pts
-			(xy 50.8 57.15) (xy 67.31 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "50547251-48c1-4e14-87e7-27f34a47f299")
 	)
 	(wire
 		(pts
@@ -3206,16 +2992,6 @@
 			(type default)
 		)
 		(uuid "7f6fbc12-1db5-4382-8600-177e1254748b")
-	)
-	(wire
-		(pts
-			(xy 40.64 53.34) (xy 40.64 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "87b790a1-9387-4584-ab5c-828c3271baf0")
 	)
 	(wire
 		(pts
@@ -3359,16 +3135,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 60.96) (xy 40.64 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c9f1e438-514b-4c3c-b829-680b021e7ae2")
-	)
-	(wire
-		(pts
 			(xy 135.89 119.38) (xy 135.89 123.19)
 		)
 		(stroke
@@ -3456,6 +3222,16 @@
 			(type default)
 		)
 		(uuid "f7fbb2f5-ae83-4a0f-8761-d6c5491a5db9")
+	)
+	(wire
+		(pts
+			(xy 40.64 57.15) (xy 67.31 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "facf38b3-77d3-4f08-8f66-9ff6b90dd9ae")
 	)
 	(wire
 		(pts
@@ -4578,120 +4354,6 @@
 		)
 	)
 	(symbol
-		(lib_id "generic-connectors:CONN_01X02")
-		(at 35.56 60.96 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "46da57e5-25eb-4508-9380-e2a611a8e23d")
-		(property "Reference" "P2"
-			(at 33.02 57.785 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "CONN_01X02"
-			(at 33.02 60.325 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_generic:Header_1x2_Pitch2.54mm"
-			(at 46.99 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 35.56 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 35.56 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "generic"
-			(at 33.02 53.34 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "generic"
-			(at 30.48 50.8 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Fit" "fit: none"
-			(at 33.02 62.23 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 27.94 64.77 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(property "Package" "THT 2.54mm 1x2-pin"
-			(at 35.56 60.96 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6d1b1310-1952-4aff-bfc3-075f6cc318a3")
-		)
-		(pin "2"
-			(uuid "a242d380-654a-42bf-a6f5-a272cf16679d")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
-					(reference "P2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "powerport:GND")
 		(at 146.05 91.44 0)
 		(unit 1)
@@ -5304,7 +4966,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "220n"
 			(at 138.43 87.0077 0)
 			(effects
 				(font
@@ -5375,7 +5037,7 @@
 				(hide yes)
 			)
 		)
-		(property "Package" "0603"
+		(property "Package" "0402"
 			(at 134.62 86.36 0)
 			(effects
 				(font
@@ -5418,7 +5080,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "220n"
 			(at 149.86 87.0077 0)
 			(effects
 				(font
@@ -5757,69 +5419,6 @@
 			(project "candleLightfd-S01"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
 					(reference "#PWR018")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:+3V3")
-		(at 40.64 53.34 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a3c567ca-6223-4ee9-8d90-d34f43c651aa")
-		(property "Reference" "#PWR017"
-			(at 40.64 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 40.64 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 40.64 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 40.64 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 40.64 53.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a5f0eccc-f1ab-4343-8d18-348dfc8b0267")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
-					(reference "#PWR017")
 					(unit 1)
 				)
 			)
