@@ -14,6 +14,233 @@
 		(comment 3 "hardware/${prefix}-S${type_number}_${short_desciption}")
 	)
 	(lib_symbols
+		(symbol "Bluesat:TCAN1462V"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 1.905 8.255 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "TCAN1462V"
+				(at 1.905 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TCAN1462V_1_1"
+				(rectangle
+					(start -7.62 5.08)
+					(end 7.62 -5.08)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin input line
+					(at -10.16 2.54 0)
+					(length 2.54)
+					(name "RXD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -10.16 0 0)
+					(length 2.54)
+					(name "TXD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -10.16 -2.54 0)
+					(length 2.54)
+					(name "STB"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -1.27 7.62 270)
+					(length 2.54)
+					(name "VIO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 0 -7.62 90)
+					(length 2.54)
+					(hide yes)
+					(name "EP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 1.27 7.62 270)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 1.27 180)
+					(length 2.54)
+					(name "CANH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 10.16 -1.27 180)
+					(length 2.54)
+					(name "CANL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor"
 			(pin_numbers
 				(hide yes)
@@ -196,266 +423,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "TCAN1462VDRQ1:TCAN1462VDRQ1"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "IC"
-				(at 26.67 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Value" "TCAN1462VDRQ1"
-				(at 26.67 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Footprint" "SOIC127P600X175-8N"
-				(at 26.67 -94.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tcan1462-q1"
-				(at 26.67 -194.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Description" "CAN Interface IC Automotive signal improvement CAN FD transceiver with VIO and standby"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Height" "1.75"
-				(at 26.67 -394.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Part Number" "595-TCAN1462VDRQ1"
-				(at 26.67 -494.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TCAN1462VDRQ1?qs=rQFj71Wb1eU28cwJFt9kYg%3D%3D"
-				(at 26.67 -594.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Name" "Texas Instruments"
-				(at 26.67 -694.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer_Part_Number" "TCAN1462VDRQ1"
-				(at 26.67 -794.92 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-					(hide yes)
-				)
-			)
-			(symbol "TCAN1462VDRQ1_1_1"
-				(rectangle
-					(start 5.08 2.54)
-					(end 25.4 -10.16)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin passive line
-					(at 0 0 0)
-					(length 5.08)
-					(name "TXD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 0)
-					(length 5.08)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -5.08 0)
-					(length 5.08)
-					(name "VCC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -7.62 0)
-					(length 5.08)
-					(name "RXD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 30.48 0 180)
-					(length 5.08)
-					(name "STB"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 30.48 -2.54 180)
-					(length 5.08)
-					(name "CANH"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 30.48 -5.08 180)
-					(length 5.08)
-					(name "CANL"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 30.48 -7.62 180)
-					(length 5.08)
-					(name "NC_VIO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -816,20 +783,20 @@
 		)
 	)
 	(junction
-		(at 193.04 100.33)
+		(at 90.17 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "58875f0a-0220-4bce-ae23-5d585183d85d")
+		(uuid "7b7eef1f-7ba8-4ed5-93a7-0001e811e2e1")
 	)
 	(junction
-		(at 107.95 97.79)
+		(at 170.18 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "70ec6a19-6b78-422d-801b-d1e8674e9989")
+		(uuid "82f5c050-2a52-42aa-8eb7-4c7933ce257d")
 	)
 	(wire
 		(pts
-			(xy 193.04 100.33) (xy 193.04 101.6)
+			(xy 90.17 77.47) (xy 90.17 81.28)
 		)
 		(stroke
 			(width 0)
@@ -839,37 +806,27 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 95.25) (xy 177.8 95.25)
+			(xy 111.76 91.44) (xy 124.46 91.44)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "13dbdb98-9266-449a-8846-94780a40dc3b")
+		(uuid "2b41b355-35a9-4a8f-ae4f-06a1570ab739")
 	)
 	(wire
 		(pts
-			(xy 115.57 86.36) (xy 115.57 95.25)
+			(xy 170.18 105.41) (xy 170.18 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "21c5c9cc-acbe-46fe-849c-ef714f43a08f")
+		(uuid "2b7e9c73-61ae-43b5-a915-675f66aea852")
 	)
 	(wire
 		(pts
-			(xy 128.27 100.33) (xy 137.16 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "28a0db5d-3778-4d16-9e82-75c0db7f5b08")
-	)
-	(wire
-		(pts
-			(xy 193.04 109.22) (xy 193.04 118.11)
+			(xy 90.17 90.17) (xy 90.17 105.41)
 		)
 		(stroke
 			(width 0)
@@ -879,77 +836,97 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 97.79) (xy 137.16 97.79)
+			(xy 134.62 96.52) (xy 134.62 105.41)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3114673b-bd92-4a66-92f0-76552f0ff693")
+		(uuid "37e39fb7-9664-4afb-bd47-c57dd094f4db")
 	)
 	(wire
 		(pts
-			(xy 167.64 92.71) (xy 177.8 92.71)
+			(xy 144.78 87.63) (xy 154.94 87.63)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6554b653-ed8d-4da2-b644-e238cc135be0")
+		(uuid "6ce1e6ac-2a48-4b53-b814-af9b300a833b")
 	)
 	(wire
 		(pts
-			(xy 128.27 92.71) (xy 137.16 92.71)
+			(xy 90.17 81.28) (xy 133.35 81.28)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6b9e4f2f-1b2a-47af-a63a-d2c2eb60b9ad")
+		(uuid "79d68597-ae66-4d82-8e33-99dbc3425326")
 	)
 	(wire
 		(pts
-			(xy 167.64 100.33) (xy 193.04 100.33)
+			(xy 135.89 81.28) (xy 170.18 81.28)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "74b59021-d21c-4bd3-a3f0-76bc48037b2a")
+		(uuid "87191743-73f7-4f09-9df6-5baeffd91b07")
 	)
 	(wire
 		(pts
-			(xy 115.57 95.25) (xy 137.16 95.25)
+			(xy 170.18 78.74) (xy 170.18 81.28)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b4492f78-b502-4c40-8208-ee38b38124b9")
+		(uuid "9964eaa7-6d91-44f4-b6fd-d594c838e465")
 	)
 	(wire
 		(pts
-			(xy 193.04 99.06) (xy 193.04 100.33)
+			(xy 111.76 86.36) (xy 124.46 86.36)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b5c1b43f-08f2-4233-8852-545a3363b1f0")
+		(uuid "ac692d48-b2e7-41bc-84b6-54d18c3d50f2")
 	)
 	(wire
 		(pts
-			(xy 167.64 97.79) (xy 177.8 97.79)
+			(xy 111.76 88.9) (xy 124.46 88.9)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d6ae0b6b-49b7-45c4-b81f-a8cfc31eb3ca")
+		(uuid "e57cf580-20d4-4c28-a5c6-d9586b9bd0bb")
 	)
 	(wire
 		(pts
-			(xy 107.95 96.52) (xy 107.95 97.79)
+			(xy 144.78 90.17) (xy 154.94 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f2d66ee2-b23d-4172-a719-6b4c7e9c0eab")
+	)
+	(wire
+		(pts
+			(xy 90.17 81.28) (xy 90.17 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa2e7413-64fb-42c6-83f6-da58f490d501")
+	)
+	(wire
+		(pts
+			(xy 170.18 81.28) (xy 170.18 82.55)
 		)
 		(stroke
 			(width 0)
@@ -957,20 +934,20 @@
 		)
 		(uuid "fac5df20-5ade-4483-b941-182ec01e054e")
 	)
-	(hierarchical_label "CAN1_S"
-		(shape input)
-		(at 177.8 92.71 0)
+	(hierarchical_label "CAN1_RX"
+		(shape output)
+		(at 111.76 86.36 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "0cd521a7-154f-4421-acd6-3650ffe56a6e")
+		(uuid "67bff7b3-4590-4f22-90f2-ffd167b78069")
 	)
 	(hierarchical_label "CAN1_L"
 		(shape bidirectional)
-		(at 177.8 97.79 0)
+		(at 154.94 90.17 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -981,7 +958,7 @@
 	)
 	(hierarchical_label "CAN1_H"
 		(shape bidirectional)
-		(at 177.8 95.25 0)
+		(at 154.94 87.63 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -990,31 +967,31 @@
 		)
 		(uuid "7fc5aea9-327e-436e-93b6-e33e1b3c9253")
 	)
-	(hierarchical_label "CAN1_RX"
-		(shape output)
-		(at 128.27 100.33 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "88863548-2c4e-43ea-9860-7b3e60643a6c")
-	)
 	(hierarchical_label "CAN1_TX"
 		(shape input)
-		(at 128.27 92.71 180)
+		(at 111.76 88.9 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "d236f156-4b1e-49ec-ba66-0e400f8c5de7")
+		(uuid "bd09c353-15d6-427c-ac2f-1ca36504ec8e")
+	)
+	(hierarchical_label "CAN1_S"
+		(shape input)
+		(at 111.76 91.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "c12c1b41-58ce-4eb5-a906-9219bd26b5c5")
 	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 107.95 105.41 0)
+		(at 170.18 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1023,7 +1000,7 @@
 		(fields_autoplaced yes)
 		(uuid "08d2eb0f-2a67-4904-b171-a558437a5963")
 		(property "Reference" "#PWR035"
-			(at 107.95 107.95 0)
+			(at 170.18 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1032,7 +1009,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 107.95 109.22 0)
+			(at 170.18 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1040,7 +1017,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 107.95 105.41 0)
+			(at 170.18 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1048,7 +1025,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 107.95 105.41 0)
+			(at 170.18 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1056,7 +1033,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 107.95 105.41 0)
+			(at 170.18 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1076,8 +1053,71 @@
 		)
 	)
 	(symbol
+		(lib_id "powerport:GND")
+		(at 134.62 105.41 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1c548560-4b47-4583-a1d9-c6a5a7dac723")
+		(property "Reference" "#PWR025"
+			(at 134.62 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 134.62 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 134.62 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 134.62 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 134.62 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "28747840-b3fb-4b29-b887-31652f62322a")
+		)
+		(instances
+			(project "Can_converter_v1"
+				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
+					(reference "#PWR025")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 193.04 105.41 0)
+		(at 90.17 86.36 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1086,7 +1126,7 @@
 		(fields_autoplaced yes)
 		(uuid "26bfb0c9-8829-4034-8f01-f9cd3f523ebb")
 		(property "Reference" "C8"
-			(at 196.85 102.8827 0)
+			(at 93.98 83.8327 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1095,7 +1135,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 193.675 107.95 0)
+			(at 90.805 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1104,8 +1144,8 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 194.0052 109.22 0)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 91.1352 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1114,7 +1154,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 196.596 111.379 0)
+			(at 93.726 92.329 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1123,7 +1163,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 193.04 105.41 0)
+			(at 90.17 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1131,7 +1171,7 @@
 			)
 		)
 		(property "MPN" "any"
-			(at 196.215 100.33 0)
+			(at 93.345 81.28 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1140,7 +1180,7 @@
 			)
 		)
 		(property "Manufacturer" "any"
-			(at 198.755 97.79 0)
+			(at 95.885 78.74 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1149,7 +1189,7 @@
 			)
 		)
 		(property "DisplayValue" "100n"
-			(at 196.85 105.4227 0)
+			(at 93.98 86.3727 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1158,7 +1198,7 @@
 			)
 		)
 		(property "Fit" "fit: "
-			(at 196.85 107.3277 0)
+			(at 93.98 88.2777 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1167,7 +1207,7 @@
 			)
 		)
 		(property "State" "legacy"
-			(at 200.66 109.22 0)
+			(at 97.79 90.17 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1176,7 +1216,7 @@
 			)
 		)
 		(property "CapRatedVoltage" "50V"
-			(at 196.85 108.5977 0)
+			(at 93.98 89.5477 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1185,7 +1225,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 193.04 105.41 0)
+			(at 90.17 86.36 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1210,7 +1250,7 @@
 	)
 	(symbol
 		(lib_id "powerport:+3V3")
-		(at 193.04 99.06 0)
+		(at 90.17 77.47 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1219,7 +1259,7 @@
 		(fields_autoplaced yes)
 		(uuid "59d58e0c-be7d-4fd4-adea-fb32816de51c")
 		(property "Reference" "#PWR030"
-			(at 193.04 102.87 0)
+			(at 90.17 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1228,7 +1268,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 193.04 95.25 0)
+			(at 90.17 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1236,7 +1276,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 193.04 99.06 0)
+			(at 90.17 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1244,7 +1284,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 193.04 99.06 0)
+			(at 90.17 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1252,7 +1292,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 193.04 99.06 0)
+			(at 90.17 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1273,71 +1313,7 @@
 	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 115.57 86.36 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7ba6049d-fcb6-4ab3-9422-fe4e2e5086b2")
-		(property "Reference" "#PWR038"
-			(at 115.57 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 118.11 85.7249 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 115.57 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 115.57 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 115.57 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "9a3adb60-8a51-4a6e-adb7-a4d90b27e329")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "#PWR038")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:GND")
-		(at 193.04 118.11 0)
+		(at 90.17 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1346,7 +1322,7 @@
 		(fields_autoplaced yes)
 		(uuid "7d50539e-550d-4d93-b040-31b19a166cd3")
 		(property "Reference" "#PWR031"
-			(at 193.04 120.65 0)
+			(at 90.17 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1355,7 +1331,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 193.04 121.92 0)
+			(at 90.17 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1363,7 +1339,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 193.04 118.11 0)
+			(at 90.17 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1371,7 +1347,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 193.04 118.11 0)
+			(at 90.17 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1379,7 +1355,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 193.04 118.11 0)
+			(at 90.17 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1399,53 +1375,35 @@
 		)
 	)
 	(symbol
-		(lib_id "TCAN1462VDRQ1:TCAN1462VDRQ1")
-		(at 137.16 92.71 0)
+		(lib_id "Bluesat:TCAN1462V")
+		(at 134.62 88.9 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "c276d47b-8a15-4df5-ad73-e59227becf6f")
-		(property "Reference" "IC1"
-			(at 152.4 85.09 0)
+		(uuid "85f46eaf-10b5-4752-9c2b-f1df4339e714")
+		(property "Reference" "U2"
+			(at 136.7633 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "TCAN1462VDRQ1"
-			(at 152.4 87.63 0)
+		(property "Value" "TCAN1462V"
+			(at 136.7633 99.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "SOIC127P600X175-8N"
-			(at 163.83 187.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/general/docs/suppproductinfo.tsp?distId=26&gotoUrl=https://www.ti.com/lit/gpn/tcan1462-q1"
-			(at 163.83 287.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Description" "CAN Interface IC Automotive signal improvement CAN FD transceiver with VIO and standby"
-			(at 137.16 92.71 0)
+		(property "Footprint" "Package_SON:VSON-8-1EP_3x3mm_P0.65mm_EP1.65x2.4mm"
+			(at 134.62 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1453,84 +1411,55 @@
 				(hide yes)
 			)
 		)
-		(property "Height" "1.75"
-			(at 163.83 487.63 0)
+		(property "Datasheet" ""
+			(at 134.62 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left top)
 				(hide yes)
 			)
 		)
-		(property "Mouser Part Number" "595-TCAN1462VDRQ1"
-			(at 163.83 587.63 0)
+		(property "Description" ""
+			(at 134.62 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left top)
 				(hide yes)
 			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TCAN1462VDRQ1?qs=rQFj71Wb1eU28cwJFt9kYg%3D%3D"
-			(at 163.83 687.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "Texas Instruments"
-			(at 163.83 787.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "TCAN1462VDRQ1"
-			(at 163.83 887.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-				(hide yes)
-			)
-		)
-		(pin "7"
-			(uuid "31866260-4b21-409c-b4ad-f3db28efbb17")
-		)
-		(pin "4"
-			(uuid "0be71660-d8ff-4ca7-a8b9-3a725584b56b")
-		)
-		(pin "2"
-			(uuid "95ec147d-f83d-422e-b313-e64b66353e16")
-		)
-		(pin "1"
-			(uuid "f9e463db-2d0e-46f2-97d9-7d631736db2b")
-		)
-		(pin "3"
-			(uuid "20ecdfbd-06fd-4a59-9e16-46d70e86cc09")
-		)
-		(pin "8"
-			(uuid "219fbf7a-76e4-41f4-a3c4-12b3174e0ff3")
-		)
-		(pin "6"
-			(uuid "d516e9c6-6051-4805-9f1c-05726b5a59b8")
 		)
 		(pin "5"
-			(uuid "e6b3e662-7809-4c86-94cb-70975c207cd3")
+			(uuid "194c5528-47b0-4a9f-b5bf-7c1b91be59f5")
+		)
+		(pin "4"
+			(uuid "179feea7-576f-4cf0-a1bb-5b3ec10ce997")
+		)
+		(pin "6"
+			(uuid "bd3290d5-79d0-4739-bb25-1c86959bd266")
+		)
+		(pin "7"
+			(uuid "13869bff-0d13-4c16-9a52-e4b8f5743485")
+		)
+		(pin "8"
+			(uuid "b5fa308b-7a75-417d-88e0-9da250c79019")
+		)
+		(pin "3"
+			(uuid "e3e63486-8f90-4a01-8a7e-a4d9d48495bc")
+		)
+		(pin "2"
+			(uuid "d64ff2fd-21cb-4863-ba2e-9607e0c56114")
+		)
+		(pin "1"
+			(uuid "5e085ee9-a2b1-48ca-806d-3c8710ca3dbc")
+		)
+		(pin "9"
+			(uuid "5ad7c54a-49c9-41c8-80de-3649266a52e3")
 		)
 		(instances
 			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "IC1")
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -1538,7 +1467,7 @@
 	)
 	(symbol
 		(lib_id "powerport:+5V")
-		(at 107.95 96.52 0)
+		(at 170.18 78.74 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1547,7 +1476,7 @@
 		(fields_autoplaced yes)
 		(uuid "d44a4a4d-0c89-41c5-8f71-53f16f21e75d")
 		(property "Reference" "#PWR034"
-			(at 107.95 100.33 0)
+			(at 170.18 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1556,7 +1485,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 107.95 92.71 0)
+			(at 170.18 74.93 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1564,7 +1493,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 107.95 96.52 0)
+			(at 170.18 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1572,7 +1501,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 107.95 96.52 0)
+			(at 170.18 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1580,7 +1509,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 107.95 96.52 0)
+			(at 170.18 78.74 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1601,7 +1530,7 @@
 	)
 	(symbol
 		(lib_id "Cap_10Percent_E24_0603_X7R_50V_-40C-125C:100n_0603_X7R_10%_50V_-40C..125C_Chip-Capacitor")
-		(at 107.95 101.6 0)
+		(at 170.18 86.36 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1609,8 +1538,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f8dee829-10fc-4432-8bea-4a8b3600e721")
-		(property "Reference" "C10"
-			(at 111.76 99.0727 0)
+		(property "Reference" "C9"
+			(at 173.99 83.8327 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1619,7 +1548,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 108.585 104.14 0)
+			(at 170.815 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1628,8 +1557,8 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 108.9152 105.41 0)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 171.1452 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1638,7 +1567,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 111.506 107.569 0)
+			(at 173.736 92.329 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1647,7 +1576,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 107.95 101.6 0)
+			(at 170.18 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1655,7 +1584,7 @@
 			)
 		)
 		(property "MPN" "any"
-			(at 111.125 96.52 0)
+			(at 173.355 81.28 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1664,7 +1593,7 @@
 			)
 		)
 		(property "Manufacturer" "any"
-			(at 113.665 93.98 0)
+			(at 175.895 78.74 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -1673,7 +1602,7 @@
 			)
 		)
 		(property "DisplayValue" "100n"
-			(at 111.76 101.6127 0)
+			(at 173.99 86.3727 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1682,7 +1611,7 @@
 			)
 		)
 		(property "Fit" "fit: "
-			(at 111.76 103.5177 0)
+			(at 173.99 88.2777 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1691,7 +1620,7 @@
 			)
 		)
 		(property "State" "legacy"
-			(at 115.57 105.41 0)
+			(at 177.8 90.17 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1700,7 +1629,7 @@
 			)
 		)
 		(property "CapRatedVoltage" "50V"
-			(at 111.76 104.7877 0)
+			(at 173.99 89.5477 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1709,7 +1638,7 @@
 			)
 		)
 		(property "Package" "0603"
-			(at 107.95 101.6 0)
+			(at 170.18 86.36 0)
 			(effects
 				(font
 					(size 0.635 0.635)
@@ -1726,7 +1655,7 @@
 		(instances
 			(project "candleLightfd-S01"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/77431ed0-1b80-4c54-96b3-7ca17dd7479a"
-					(reference "C10")
+					(reference "C9")
 					(unit 1)
 				)
 			)

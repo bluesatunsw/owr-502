@@ -14,6 +14,169 @@
 		(comment 3 "hardware/${prefix}-S${type_number}_${short_desciption}")
 	)
 	(lib_symbols
+		(symbol "Connector:Conn_01x02_Pin"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02_Pin"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x02, script generated"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Conn_01x02_Pin_1_1"
+				(rectangle
+					(start 0.8636 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start 0.8636 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy 0.8636 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -2.54) (xy 0.8636 -2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Kingbright:KPT-1608EC"
 			(pin_names
 				(offset 1.016)
@@ -780,671 +943,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "d-sub:D-SUB-9_side"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "X"
-				(at 5.715 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" ""
-				(at -3.81 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "d-sub:D-SUB-9_side"
-				(at 0 17.145 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at -3.81 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "D-SUB-9_side_1_1"
-				(polyline
-					(pts
-						(xy -3.81 13.335) (xy -3.81 -14.605) (xy 3.81 -10.16) (xy 3.81 9.525) (xy -3.81 13.335)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(circle
-					(center -1.905 10.16)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 10.16) (xy -3.81 10.16)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.905 5.08)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 5.08) (xy -3.81 5.08)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.905 0)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 0) (xy -3.81 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.905 -5.08)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -5.08) (xy -3.81 -5.08)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.905 -10.16)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.905 -10.16) (xy -3.81 -10.16)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.905 7.62) (xy -3.81 7.62)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.905 7.62)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.905 2.54) (xy -3.81 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.905 2.54)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.905 -2.54) (xy -3.81 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.905 -2.54)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.905 -7.62) (xy -3.81 -7.62)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.905 -7.62)
-					(radius 0.635)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(pin passive line
-					(at -8.89 10.16 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 7.62 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 5.08 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 2.54 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 0 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 -2.54 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 -5.08 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 -7.62 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -8.89 -10.16 0)
-					(length 5.08)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "kikit:Tab"
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(property "Reference" "T"
-				(at 0 3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Tab"
-				(at 0 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" "kikit:Tab"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "KiKit tab annotations"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "KiKit"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Tab_0_1"
-				(polyline
-					(pts
-						(xy -3.81 0) (xy -2.54 0)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -3.81 0) (xy -3.81 -1.27) (xy 3.81 -1.27) (xy 3.81 0)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start -1.27 1.27)
-					(mid -1.642 0.372)
-					(end -2.54 0)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.524 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 2.54)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -1.016 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center -0.508 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0.508 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.016 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy -1.27 2.54)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 2.54)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 1.524 0)
-					(radius 0.0762)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 2.54 0)
-					(mid 1.642 0.372)
-					(end 1.27 1.27)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 0) (xy 3.81 0)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "mechanical:LAG_Rocket"
 			(pin_names
 				(offset 1.016)
@@ -1640,226 +1138,6 @@
 					)
 					(fill
 						(type background)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "mechanical:Passermarke_1mm_1.8mmx1.8mm"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "NB"
-				(at 0 3.81 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Value" "Passermarke_1mm_1.8mmx1.8mm"
-				(at 1.27 -3.81 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Footprint" "mechanical:Passermarke_1mm_1.8mmx1.8mm"
-				(at -2.54 1.27 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Passermarke, Cu: 1mm, Mask: 1.8mm x 1.8mm"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Fit" "fit: "
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-				)
-			)
-			(property "State" "reviewed"
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Passermarke_1mm_1.8mmx1.8mm*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Passermarke_1mm_1.8mmx1.8mm_0_1"
-				(rectangle
-					(start -2.54 2.54)
-					(end 2.54 -2.54)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "powerport:+12V"
-			(power)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "+12V"
-				(at 0 3.556 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "12V general purpose supply voltage"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "State" "reviewed"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "POWER, PWR"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "+12V_0_1"
-				(polyline
-					(pts
-						(xy -0.762 1.27) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "+12V_1_1"
-				(pin power_in line
-					(at 0 0 90)
-					(length 0)
-					(hide yes)
-					(name "+12V"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
 					)
 				)
 			)
@@ -2792,20 +2070,12 @@
 		(uuid "cd091dca-0044-48a7-9d82-715a4cf0448d")
 	)
 	(no_connect
-		(at 238.76 80.01)
-		(uuid "04194669-f679-43d6-924a-bb2824220710")
-	)
-	(no_connect
 		(at 43.18 74.93)
 		(uuid "10f8e3da-a0f9-425c-ac8d-0468e2d42f1e")
 	)
 	(no_connect
 		(at 43.18 77.47)
 		(uuid "1e0ccd4d-0720-4655-853a-3ac0ff9164f4")
-	)
-	(no_connect
-		(at 248.92 74.93)
-		(uuid "aade0b4b-1dc5-4d81-bcbf-732836b82f1c")
 	)
 	(wire
 		(pts
@@ -2816,16 +2086,6 @@
 			(type default)
 		)
 		(uuid "020791f0-5d81-42e5-989b-448f7a65719c")
-	)
-	(wire
-		(pts
-			(xy 248.92 69.85) (xy 237.49 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "081748ed-1030-430c-9a13-faf647a32f92")
 	)
 	(wire
 		(pts
@@ -2859,16 +2119,6 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 72.39) (xy 248.92 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0ebe5466-739f-49e4-8b9e-e09f835a60a0")
-	)
-	(wire
-		(pts
 			(xy 252.73 114.3) (xy 252.73 115.57)
 		)
 		(stroke
@@ -2889,7 +2139,7 @@
 	)
 	(wire
 		(pts
-			(xy 142.24 64.77) (xy 151.13 64.77)
+			(xy 142.24 64.77) (xy 165.1 64.77)
 		)
 		(stroke
 			(width 0)
@@ -2929,26 +2179,6 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 77.47) (xy 248.92 77.47)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2eb63cd6-c108-4e38-be9c-8f6cfb7f03c1")
-	)
-	(wire
-		(pts
-			(xy 238.76 59.69) (xy 248.92 59.69)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "311efc7d-9d69-490e-ba10-0ed3b506af07")
-	)
-	(wire
-		(pts
 			(xy 232.41 114.3) (xy 232.41 115.57)
 		)
 		(stroke
@@ -2969,16 +2199,6 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 80.01) (xy 248.92 80.01)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "35fe2f35-4bac-455a-be06-1814ffe3bf71")
-	)
-	(wire
-		(pts
 			(xy 15.24 81.28) (xy 21.59 81.28)
 		)
 		(stroke
@@ -2989,7 +2209,7 @@
 	)
 	(wire
 		(pts
-			(xy 142.24 67.31) (xy 151.13 67.31)
+			(xy 142.24 67.31) (xy 165.1 67.31)
 		)
 		(stroke
 			(width 0)
@@ -3116,16 +2336,6 @@
 			(type default)
 		)
 		(uuid "7dd90c14-79b9-4f77-8e78-6f70bf075c06")
-	)
-	(wire
-		(pts
-			(xy 238.76 67.31) (xy 248.92 67.31)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "855c4c0f-51a1-4e5e-a7d7-da9d2096569d")
 	)
 	(wire
 		(pts
@@ -3269,16 +2479,6 @@
 	)
 	(wire
 		(pts
-			(xy 238.76 64.77) (xy 248.92 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cef6df84-18cb-44d2-9fe0-8726a37f4fae")
-	)
-	(wire
-		(pts
 			(xy 142.24 81.28) (xy 151.13 81.28)
 		)
 		(stroke
@@ -3309,16 +2509,6 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 62.23) (xy 248.92 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e4734dfa-a3c7-465b-a440-c20fe406aee5")
-	)
-	(wire
-		(pts
 			(xy 113.03 92.71) (xy 166.37 92.71)
 		)
 		(stroke
@@ -3336,36 +2526,6 @@
 			(type default)
 		)
 		(uuid "f6a733ac-2049-42e2-8567-806241debf5f")
-	)
-	(label "CAN2_L"
-		(at 238.76 59.69 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "2f34cad2-31e0-4d24-bd8f-72bd0a6502dd")
-	)
-	(label "CAN1_H"
-		(at 238.76 67.31 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "4d0d9380-bfba-4180-9bdf-ebb317917281")
-	)
-	(label "CAN1_L"
-		(at 151.13 67.31 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "577b2c55-b997-403b-90be-b00101ed53e2")
 	)
 	(label "USB_P"
 		(at 55.88 64.77 180)
@@ -3387,36 +2547,6 @@
 		)
 		(uuid "8746046a-fc71-421d-8f0d-25a17b865533")
 	)
-	(label "CAN2_H"
-		(at 238.76 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "99edf5e1-fbb0-446c-b01b-879536290f71")
-	)
-	(label "CAN1_H"
-		(at 151.13 64.77 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "9f796e69-cd47-4961-afa7-5d388def78fd")
-	)
-	(label "CAN1_L"
-		(at 238.76 64.77 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "abef24cd-03e9-40f8-9859-a3ee050d9f14")
-	)
 	(label "USB_N"
 		(at 55.88 67.31 180)
 		(effects
@@ -3436,80 +2566,6 @@
 			(justify right bottom)
 		)
 		(uuid "dfd25303-b796-4b2a-93ad-0aa6cf034f07")
-	)
-	(label "SH"
-		(at 238.76 80.01 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ec900f48-bf0f-4caf-8cb4-3522c35b1962")
-	)
-	(symbol
-		(lib_id "powerport:GND")
-		(at 237.49 69.85 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "190ffd73-f934-4aee-aaf0-560c4f03f632")
-		(property "Reference" "#PWR09"
-			(at 234.95 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 234.95 70.485 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 237.49 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 237.49 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 237.49 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d9d00efa-8024-4f19-ad09-70c2ce91586e")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "wuerth:629722000214_pasteInHole")
@@ -3692,7 +2748,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 210.312 119.38 90)
 			(effects
 				(font
@@ -3789,70 +2845,6 @@
 	)
 	(symbol
 		(lib_id "powerport:GND")
-		(at 237.49 62.23 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "28b3f202-30ea-45ad-9a50-f224a2378a51")
-		(property "Reference" "#PWR08"
-			(at 234.95 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 234.95 62.865 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 237.49 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 237.49 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 237.49 62.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "437a2d39-0bb9-4ccf-84f3-1d269f7fc07b")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "#PWR08")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:GND")
 		(at 54.61 96.52 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3915,35 +2907,32 @@
 		)
 	)
 	(symbol
-		(lib_id "kikit:Tab")
-		(at 57.15 190.5 0)
+		(lib_id "Connector:Conn_01x02_Pin")
+		(at 170.18 67.31 180)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom no)
+		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "36920fdd-6f81-4615-b06a-ac0f7218b454")
-		(property "Reference" "T103"
-			(at 62.865 188.595 0)
+		(uuid "3c6b689a-29c0-4a2d-8eda-04fedeba6daa")
+		(property "Reference" "J1"
+			(at 169.545 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "Tab"
-			(at 62.865 191.135 0)
+		(property "Value" "SM02B-PASS"
+			(at 169.545 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "kikit:Tab"
-			(at 57.15 190.5 0)
+		(property "Footprint" "Bluesat:SM02B-PASS"
+			(at 170.18 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3951,8 +2940,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 57.15 190.5 0)
+		(property "Datasheet" "~"
+			(at 170.18 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3960,18 +2949,25 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 57.15 190.5 0)
+		(property "Description" "Generic connector, single row, 01x02, script generated"
+			(at 170.18 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
+		)
+		(pin "2"
+			(uuid "5d076ce5-5669-475f-b666-4c374e9d6e20")
+		)
+		(pin "1"
+			(uuid "dd6f943d-d856-4d5c-b56a-9fd3c02a820d")
 		)
 		(instances
-			(project "candleLightfd-S01"
+			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "T103")
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -4461,95 +3457,6 @@
 		)
 	)
 	(symbol
-		(lib_id "d-sub:D-SUB-9_side")
-		(at 257.81 69.85 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "55236545-d126-4831-a1dc-809d22ec60f1")
-		(property "Reference" "X2"
-			(at 262.89 71.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "~"
-			(at 254 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "d-sub:D-SUB-9_side"
-			(at 257.81 52.705 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 254 64.77 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 257.81 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "29eb628a-14a1-444f-a722-3b5b09e57571")
-		)
-		(pin "2"
-			(uuid "928a131f-75d5-45ce-8569-e97ada26c7ae")
-		)
-		(pin "3"
-			(uuid "a155677b-fbe2-4b0b-b434-7f76d3923025")
-		)
-		(pin "4"
-			(uuid "558eb035-0bf6-460a-9cfa-ed2ace788bd3")
-		)
-		(pin "5"
-			(uuid "214c5d66-62d8-46eb-8f75-b4f19fca0901")
-		)
-		(pin "6"
-			(uuid "a5210ef3-42ca-4737-8adc-7a47273b48f0")
-		)
-		(pin "7"
-			(uuid "6ab255d2-644f-4b50-9a3c-0a06a306e3a5")
-		)
-		(pin "8"
-			(uuid "5730d309-62fd-4b47-b3bc-ee2b8a66c160")
-		)
-		(pin "9"
-			(uuid "f6bc20d1-ccca-44e5-af33-a2829aee3609")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "X2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Res_1Percent_E24_0603_100mW_-40C-90C:1k_0603_100mW_1%_E24_Chip-Resistor")
 		(at 232.41 119.38 0)
 		(unit 1)
@@ -4577,7 +3484,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 230.632 119.38 90)
 			(effects
 				(font
@@ -4958,7 +3865,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 52.832 92.71 90)
 			(effects
 				(font
@@ -5249,87 +4156,6 @@
 		)
 	)
 	(symbol
-		(lib_id "mechanical:Passermarke_1mm_1.8mmx1.8mm")
-		(at 26.67 170.18 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c5564582-dae0-4823-be7d-5f6f467c4dd7")
-		(property "Reference" "NB3"
-			(at 30.48 168.275 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Passermarke_1mm_1.8mmx1.8mm"
-			(at 30.48 170.815 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mechanical:Passermarke_1mm_1.8mmx1.8mm"
-			(at 24.13 168.91 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 26.67 170.18 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 26.67 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Fit" "fit: "
-			(at 30.48 172.72 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "reviewed"
-			(at 34.29 173.99 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "NB3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Res_1Percent_E24_0603_100mW_-40C-90C:1k_0603_100mW_1%_E24_Chip-Resistor")
 		(at 252.73 119.38 0)
 		(unit 1)
@@ -5357,7 +4183,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 250.952 119.38 90)
 			(effects
 				(font
@@ -5453,69 +4279,6 @@
 		)
 	)
 	(symbol
-		(lib_id "kikit:Tab")
-		(at 24.13 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ddb43cf1-7558-496d-b6be-07a8c62b9dd1")
-		(property "Reference" "T101"
-			(at 29.845 188.595 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Tab"
-			(at 29.845 191.135 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "kikit:Tab"
-			(at 24.13 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 24.13 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 24.13 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "T101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "powerport:GND")
 		(at 20.32 85.09 0)
 		(unit 1)
@@ -5573,69 +4336,6 @@
 			(project "candleLightfd-S01"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
 					(reference "#PWR03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "kikit:Tab")
-		(at 39.37 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ede94801-1327-46a3-91ac-39c6ec270d2d")
-		(property "Reference" "T102"
-			(at 45.085 188.595 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Tab"
-			(at 45.085 191.135 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "kikit:Tab"
-			(at 39.37 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 39.37 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 39.37 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "T102")
 					(unit 1)
 				)
 			)
@@ -5705,87 +4405,6 @@
 		)
 	)
 	(symbol
-		(lib_id "mechanical:Passermarke_1mm_1.8mmx1.8mm")
-		(at 26.67 177.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f259ea94-0539-4cd1-a783-4f8504fba4e2")
-		(property "Reference" "NB4"
-			(at 30.48 175.895 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Passermarke_1mm_1.8mmx1.8mm"
-			(at 30.48 178.435 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "mechanical:Passermarke_1mm_1.8mmx1.8mm"
-			(at 24.13 176.53 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 26.67 177.8 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 26.67 177.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Fit" "fit: "
-			(at 30.48 180.34 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "reviewed"
-			(at 34.29 181.61 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "NB4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Res_1Percent_E24_0603_100mW_-40C-90C:5k1_0603_100mW_1%_E24_Chip-Resistor")
 		(at 45.72 92.71 0)
 		(unit 1)
@@ -5813,7 +4432,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 43.942 92.71 90)
 			(effects
 				(font
@@ -5903,142 +4522,6 @@
 			(project "candleLightfd-S01"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
 					(reference "R1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "kikit:Tab")
-		(at 73.66 190.5 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f9bdc023-20ff-43dc-a896-f4b2d2dbb981")
-		(property "Reference" "T104"
-			(at 79.375 188.595 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Tab"
-			(at 79.375 191.135 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "kikit:Tab"
-			(at 73.66 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 73.66 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 73.66 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "T104")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:+12V")
-		(at 237.49 77.47 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fe9f3425-d32a-4b81-8ba3-ac89e599fcec")
-		(property "Reference" "#PWR010"
-			(at 241.3 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+12V"
-			(at 233.68 78.105 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 237.49 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 237.49 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 237.49 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "State" "reviewed"
-			(at 237.49 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d7ffdd63-c1ad-4ced-93b7-2f8f7a01b6db")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
-					(reference "#PWR010")
 					(unit 1)
 				)
 			)
