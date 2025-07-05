@@ -1378,18 +1378,6 @@
 			)
 			(symbol "INDUCTOR_0_1"
 				(arc
-					(start 0.0254 4.9784)
-					(mid 1.2195 3.7595)
-					(end 0.0254 2.5654)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
 					(start 0.0254 2.5908)
 					(mid 1.2956 1.2957)
 					(end 0.0254 0.0254)
@@ -1405,6 +1393,18 @@
 					(start 0.0254 0.0508)
 					(mid 1.2956 -1.2443)
 					(end 0.0254 -2.5146)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0.0254 4.9784)
+					(mid 1.2195 3.7595)
+					(end 0.0254 2.5654)
 					(stroke
 						(width 0)
 						(type solid)
@@ -9574,7 +9574,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005dcffcfe")
-		(property "Reference" "U3B"
+		(property "Reference" "U3B1"
 			(at 40.64 180.34 0)
 			(effects
 				(font
@@ -9643,7 +9643,7 @@
 		(instances
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3B")
+					(reference "U3B1")
 					(unit 2)
 				)
 			)
@@ -9658,7 +9658,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005dd10eee")
-		(property "Reference" "U3C"
+		(property "Reference" "U3C1"
 			(at 87.5284 178.0032 0)
 			(effects
 				(font
@@ -9729,7 +9729,7 @@
 		(instances
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3C")
+					(reference "U3C1")
 					(unit 3)
 				)
 			)
@@ -12609,7 +12609,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005f0dcf20")
-		(property "Reference" "U3A"
+		(property "Reference" "U3A1"
 			(at 50.8 168.91 0)
 			(effects
 				(font
@@ -12680,7 +12680,7 @@
 		(instances
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3A")
+					(reference "U3A1")
 					(unit 1)
 				)
 			)
