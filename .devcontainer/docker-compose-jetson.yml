@@ -5,7 +5,6 @@ services:
       file: docker-compose.yml
       service: ros2_docker
     network_mode: "host"
-    privileged: true          # Required for accessing hardware
     tty: true
     ulimits:                  # Allow realtime privileges
       rtprio: 99
@@ -15,7 +14,3 @@ services:
     environment:
      - DISPLAY=${DISPLAY}
      - QT_X11_NO_MITSHM=1
-    volumes:
-      - /dev:/dev             # Required for accessing hardware
-      - /dev/shm:/dev/shm     # Required for ROS 2 shared memory communication
-      

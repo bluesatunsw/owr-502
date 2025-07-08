@@ -19,7 +19,7 @@ services:
     # Required for communicating over the network
     network_mode: "host"
     # Required for accessing hardware
-    #privileged: true
+    privileged: true
     tty: true
     volumes:
       # Required for accessing hardware
