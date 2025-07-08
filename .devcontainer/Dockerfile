@@ -1,4 +1,4 @@
-FROM ros:jazzy as dev
+FROM docker.io/ros:jazzy as dev
 ARG USERNAME=dcuser
 ARG UID=1010
 ARG GID=1010
