@@ -1,0 +1,268 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "294cc751-7444-4d80-b629-85aa96521600")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 76.2 25.4)
+		(size 25.4 19.05)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "94a740e7-9b11-4174-bd08-c69030daa16d")
+		(property "Sheetname" "Regulators"
+			(at 76.2 24.6884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "regulators.kicad_sch"
+			(at 76.2 45.0346 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "EN_{19V}" input
+			(at 76.2 30.48 180)
+			(uuid "6175d288-afd7-4608-b4d6-630dcda7de36")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "EN_{24V}" input
+			(at 76.2 27.94 180)
+			(uuid "fc8aa4f3-cade-4d5c-a486-c8c9e8ef5bd2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VS_{5V}" output
+			(at 76.2 41.91 180)
+			(uuid "649a7984-abaf-41c9-a8df-cd406c9da234")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VS_{12V}" output
+			(at 76.2 39.37 180)
+			(uuid "f0cb4443-416e-4269-a5db-6dca84dd3a10")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VS_{19V}" output
+			(at 76.2 36.83 180)
+			(uuid "8a78efb1-192e-4557-a2bf-b2795a7f5d6a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VS_{24V}" output
+			(at 76.2 34.29 180)
+			(uuid "e2d1b1f6-8614-4c02-84b7-982f264dd1aa")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 76.2 50.8)
+		(size 25.4 35.56)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "fcae8f75-3f79-40cf-823d-66a8972288db")
+		(property "Sheetname" "Connectors"
+			(at 76.2 50.0884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "connectors.kicad_sch"
+			(at 76.2 86.9446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "ARGB_{0}" input
+			(at 76.2 59.69 180)
+			(uuid "eb56fd17-9473-4d7c-ae6d-2c4936cbd148")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ARGB_{1}" input
+			(at 76.2 62.23 180)
+			(uuid "4d624ccc-bc05-49fc-b970-e1a03d5442d9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ARGB_{2}" input
+			(at 76.2 64.77 180)
+			(uuid "f26c1025-6a5d-466c-95d6-bf7da2be6a49")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ARGB_{3}" input
+			(at 76.2 67.31 180)
+			(uuid "f3d789bb-76bc-4a4b-bc6a-b5132d575aa1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "EN_{5V}" input
+			(at 76.2 55.88 180)
+			(uuid "10b8b947-148d-4813-9f98-6e8c216147ce")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "EN_{12V}" input
+			(at 76.2 53.34 180)
+			(uuid "a394d568-16b3-4169-968a-63a60bc39044")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IS_{5V}" output
+			(at 76.2 83.82 180)
+			(uuid "c0591ac0-9eb2-4b8b-8b0a-bee1e0c9ab12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IS_{12V}" output
+			(at 76.2 81.28 180)
+			(uuid "fadb3279-0a4d-4e84-9d23-6a4d01d57b8a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IS_{19V}" output
+			(at 76.2 78.74 180)
+			(uuid "79581577-942d-4bd5-b302-56bd1f418e02")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IS_{24V}" output
+			(at 76.2 76.2 180)
+			(uuid "0989beda-6c87-4913-ab48-6222f34b7f18")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VS_{VBUS}" output
+			(at 76.2 72.39 180)
+			(uuid "ed662b26-6f49-46ee-a533-af1da06e4d1c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
