@@ -3057,6 +3057,16 @@
 		)
 		(uuid "c3f3cefc-bb66-4c20-9c3e-7de2928ec0bd")
 	)
+	(text "Change resistance value in code for voltage divider"
+		(exclude_from_sim no)
+		(at 118.11 85.344 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "d2603b2f-0284-4026-bc33-93961d446270")
+	)
 	(text "Voltage supply (0 - 51v)"
 		(exclude_from_sim no)
 		(at 300.99 97.79 0)
@@ -3193,7 +3203,7 @@
 		(uuid "c556d783-e462-45a1-ba63-b80818c367ff")
 	)
 	(junction
-		(at 71.12 148.59)
+		(at 71.12 149.86)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cca417b8-2cd1-4a67-b2b9-7a1a2a8cfabd")
@@ -3302,7 +3312,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 148.59) (xy 71.12 148.59)
+			(xy 67.31 149.86) (xy 71.12 149.86)
 		)
 		(stroke
 			(width 0)
@@ -3382,7 +3392,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 147.32) (xy 74.93 148.59)
+			(xy 74.93 148.59) (xy 74.93 149.86)
 		)
 		(stroke
 			(width 0)
@@ -3722,16 +3732,6 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 120.65) (xy 133.35 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "46828fc1-d96f-4234-8aa7-3ed4de435a9a")
-	)
-	(wire
-		(pts
 			(xy 128.27 196.85) (xy 128.27 195.58)
 		)
 		(stroke
@@ -3769,16 +3769,6 @@
 			(type default)
 		)
 		(uuid "507d07ec-bb46-4834-a2c1-8b24427c288a")
-	)
-	(wire
-		(pts
-			(xy 130.81 106.68) (xy 99.06 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "509fb2f6-9300-4491-a7ea-5ed380fe89e8")
 	)
 	(polyline
 		(pts
@@ -3909,16 +3899,6 @@
 			(type default)
 		)
 		(uuid "660dedaa-1fd0-4eba-a3a5-b8c06b1234b4")
-	)
-	(wire
-		(pts
-			(xy 139.7 120.65) (xy 133.35 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66180ceb-086e-41d7-bf64-20262fcb1f31")
 	)
 	(wire
 		(pts
@@ -4062,7 +4042,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 121.92) (xy 90.17 121.92)
+			(xy 90.17 123.19) (xy 139.7 123.19)
 		)
 		(stroke
 			(width 0)
@@ -4119,16 +4099,6 @@
 			(type dash)
 		)
 		(uuid "8675b6b7-776d-4b21-9c11-256684c687e9")
-	)
-	(wire
-		(pts
-			(xy 130.81 123.19) (xy 130.81 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "868ed291-38bd-4f5c-b958-f6cb8ce37071")
 	)
 	(wire
 		(pts
@@ -4210,16 +4180,6 @@
 		)
 		(uuid "93fdce3f-4662-48fd-ba82-ba0128bca4c2")
 	)
-	(wire
-		(pts
-			(xy 139.7 123.19) (xy 130.81 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "94fec6db-cc20-4a12-b9f6-9c09cfc9deaa")
-	)
 	(polyline
 		(pts
 			(xy 241.3 77.47) (xy 260.35 77.47)
@@ -4232,7 +4192,7 @@
 	)
 	(wire
 		(pts
-			(xy 74.93 148.59) (xy 71.12 148.59)
+			(xy 74.93 149.86) (xy 71.12 149.86)
 		)
 		(stroke
 			(width 0)
@@ -4282,7 +4242,7 @@
 	)
 	(wire
 		(pts
-			(xy 90.17 127) (xy 97.79 127)
+			(xy 90.17 128.27) (xy 96.52 128.27)
 		)
 		(stroke
 			(width 0)
@@ -4422,7 +4382,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 104.14) (xy 97.79 127)
+			(xy 96.52 120.65) (xy 96.52 128.27)
 		)
 		(stroke
 			(width 0)
@@ -4459,16 +4419,6 @@
 			(type dash)
 		)
 		(uuid "b77c920b-081e-47a7-a0e8-06e158d92b6c")
-	)
-	(wire
-		(pts
-			(xy 99.06 106.68) (xy 99.06 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b7d34870-81ab-44ef-994c-8137c8f97ec9")
 	)
 	(wire
 		(pts
@@ -4652,7 +4602,7 @@
 	)
 	(wire
 		(pts
-			(xy 67.31 147.32) (xy 67.31 148.59)
+			(xy 67.31 148.59) (xy 67.31 149.86)
 		)
 		(stroke
 			(width 0)
@@ -4672,7 +4622,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 104.14) (xy 97.79 104.14)
+			(xy 96.52 120.65) (xy 139.7 120.65)
 		)
 		(stroke
 			(width 0)
@@ -9861,7 +9811,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 71.12 148.59 0)
+		(at 71.12 149.86 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9870,7 +9820,7 @@
 		(fields_autoplaced yes)
 		(uuid "071c211e-7a03-4dbe-b66d-bae8323e305f")
 		(property "Reference" "#PWR015"
-			(at 71.12 154.94 0)
+			(at 71.12 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9879,7 +9829,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 71.12 153.67 0)
+			(at 71.12 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9887,7 +9837,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 71.12 148.59 0)
+			(at 71.12 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9896,7 +9846,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 71.12 148.59 0)
+			(at 71.12 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9905,7 +9855,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 71.12 148.59 0)
+			(at 71.12 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9927,7 +9877,7 @@
 	)
 	(symbol
 		(lib_id "Connector:USB_C_Plug_USB2.0")
-		(at 74.93 124.46 0)
+		(at 74.93 125.73 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9936,7 +9886,7 @@
 		(fields_autoplaced yes)
 		(uuid "93374b31-7b47-4123-9250-3c6d9d9a7723")
 		(property "Reference" "P6"
-			(at 74.93 101.6 0)
+			(at 74.93 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9944,7 +9894,7 @@
 			)
 		)
 		(property "Value" "USB_C_Plug_USB2.0"
-			(at 74.93 104.14 0)
+			(at 74.93 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9952,7 +9902,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 78.74 124.46 0)
+			(at 78.74 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9961,7 +9911,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.usb.org/sites/default/files/documents/usb_type-c.zip"
-			(at 78.74 124.46 0)
+			(at 78.74 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9970,7 +9920,7 @@
 			)
 		)
 		(property "Description" "USB 2.0-only Type-C Plug connector"
-			(at 74.93 124.46 0)
+			(at 74.93 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
