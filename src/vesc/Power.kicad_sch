@@ -1466,134 +1466,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "BLDC_4-rescue:NCP1117ST33T3G"
-			(pin_names
-				(offset 0.762)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at 0 6.35 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Value" "BLDC_4-rescue_NCP1117ST33T3G"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "SOT223"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "NCP1117ST33T3G_0_1"
-				(rectangle
-					(start -6.35 -3.81)
-					(end 6.35 3.81)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "NCP1117ST33T3G_1_1"
-				(pin power_in line
-					(at -10.16 1.27 0)
-					(length 3.81)
-					(name "VI"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -6.35 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin power_out line
-					(at 10.16 1.27 180)
-					(length 3.81)
-					(name "VO"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "BLDC_4-rescue:PWR_FLAG"
 			(power)
 			(pin_numbers
@@ -2547,142 +2419,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:+5V"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "+5V"
-				(at 0 3.556 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"+5V\""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "+5V_0_1"
-				(polyline
-					(pts
-						(xy -0.762 1.27) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "+5V_1_1"
-				(pin power_in line
-					(at 0 0 90)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-	)
-	(text "3.3v regulator\nfor the logic"
-		(exclude_from_sim no)
-		(at 223.52 45.72 0)
-		(effects
-			(font
-				(size 1.016 1.016)
-			)
-			(justify left bottom)
-		)
-		(uuid "2ec851d0-87a9-4f13-8162-04575ea5c51c")
 	)
 	(text "Op Amp Current Sense for 3rd Phase"
 		(exclude_from_sim no)
@@ -2755,12 +2491,6 @@
 		(uuid "1338d0d1-4389-4379-acb2-2225daab1151")
 	)
 	(junction
-		(at 227.33 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "1488ae06-2f59-4e06-8299-852584846622")
-	)
-	(junction
 		(at 46.99 165.1)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2771,12 +2501,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1dbe286b-7dcf-4441-b8fb-c2f37f389685")
-	)
-	(junction
-		(at 254 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2b5b6f9c-c143-4660-bb95-73f798356180")
 	)
 	(junction
 		(at 241.3 104.14)
@@ -2795,12 +2519,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "31bea72e-e1e9-4197-be01-a8af62939ce7")
-	)
-	(junction
-		(at 262.89 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "37f9236c-a33c-4a6f-8725-596a12771c77")
 	)
 	(junction
 		(at 233.68 57.15)
@@ -2855,12 +2573,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "66035633-b23d-4b6a-a46d-8ceb90ea9b51")
-	)
-	(junction
-		(at 270.51 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "69ceec26-1ccd-49ff-9e86-c5489e3258d3")
 	)
 	(junction
 		(at 99.06 72.39)
@@ -2929,12 +2641,6 @@
 		(uuid "a61dc632-b0be-4215-965b-15eea16be5f8")
 	)
 	(junction
-		(at 254 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ae667f09-f5e0-482e-90b0-8c259314c901")
-	)
-	(junction
 		(at 186.69 97.79)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2945,12 +2651,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b8499f3d-6846-4e33-b43f-0f823f5c79ae")
-	)
-	(junction
-		(at 270.51 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c1ce2d85-90a8-4dd1-a5f3-e342aa90d84b")
 	)
 	(junction
 		(at 186.69 127)
@@ -2989,12 +2689,6 @@
 		(uuid "de694249-cf0d-4152-ae78-aae4bab788bc")
 	)
 	(junction
-		(at 227.33 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e1c144e2-307a-4ace-b12b-628a420fa322")
-	)
-	(junction
 		(at 118.11 64.77)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3011,18 +2705,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ebe1b7a8-24c6-488d-82a8-2bc5d038502a")
-	)
-	(junction
-		(at 262.89 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f0c5e850-9735-4f35-8cd5-a86d433a2e80")
-	)
-	(junction
-		(at 241.3 40.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f67d20a4-44dc-45d6-ba3e-82eb10a47bc8")
 	)
 	(junction
 		(at 115.57 17.78)
@@ -3212,26 +2894,6 @@
 	)
 	(wire
 		(pts
-			(xy 270.51 40.64) (xy 270.51 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1101c8dc-3ef9-48ec-820f-6726886a5db0")
-	)
-	(wire
-		(pts
-			(xy 241.3 35.56) (xy 241.3 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "110942f4-5840-4bf9-9659-cb5076fa6802")
-	)
-	(wire
-		(pts
 			(xy 128.27 105.41) (xy 130.81 105.41)
 		)
 		(stroke
@@ -3249,16 +2911,6 @@
 			(type default)
 		)
 		(uuid "1242eab3-1205-4c33-9db8-ff6489d5f006")
-	)
-	(polyline
-		(pts
-			(xy 281.94 46.99) (xy 281.94 20.32)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "1363ab3d-3748-4b43-b1bd-0d0196863f8a")
 	)
 	(wire
 		(pts
@@ -3462,36 +3114,6 @@
 	)
 	(wire
 		(pts
-			(xy 278.13 27.94) (xy 278.13 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "24fb6fb6-ef71-4392-81b6-c2b745ebcab6")
-	)
-	(wire
-		(pts
-			(xy 254 40.64) (xy 254 39.37)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2a327691-20ea-46e9-a824-75e620380a09")
-	)
-	(wire
-		(pts
-			(xy 241.3 40.64) (xy 241.3 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2ae7734d-d1a3-43cc-909d-285acbc5fe00")
-	)
-	(wire
-		(pts
 			(xy 248.92 69.85) (xy 248.92 68.58)
 		)
 		(stroke
@@ -3672,16 +3294,6 @@
 	)
 	(wire
 		(pts
-			(xy 262.89 27.94) (xy 270.51 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3cd92701-fc75-4269-a6e0-9e4574283880")
-	)
-	(wire
-		(pts
 			(xy 179.07 44.45) (xy 171.45 44.45)
 		)
 		(stroke
@@ -3709,26 +3321,6 @@
 			(type default)
 		)
 		(uuid "3ebeba7f-4b74-4bff-a104-b7347278ef56")
-	)
-	(wire
-		(pts
-			(xy 270.51 25.4) (xy 270.51 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4169f6ee-c118-463f-8ed8-273fdc2f0b48")
-	)
-	(wire
-		(pts
-			(xy 254 27.94) (xy 262.89 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41cf882f-05a0-475e-9463-902f53c0d378")
 	)
 	(wire
 		(pts
@@ -3842,26 +3434,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 27.94) (xy 226.06 25.4)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b46bb17-53b9-4016-88fe-71ac7ced5e7a")
-	)
-	(polyline
-		(pts
-			(xy 281.94 20.32) (xy 218.44 20.32)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "4b6438ea-4011-4720-99da-10aac9c0b1ff")
-	)
-	(wire
-		(pts
 			(xy 104.14 102.87) (xy 106.68 102.87)
 		)
 		(stroke
@@ -3869,16 +3441,6 @@
 			(type default)
 		)
 		(uuid "4ba124fa-5e9a-4a24-80a0-1168fbab41c3")
-	)
-	(wire
-		(pts
-			(xy 270.51 27.94) (xy 278.13 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4be0f6a7-6073-4d4c-8c72-5a3381c714b6")
 	)
 	(wire
 		(pts
@@ -4112,16 +3674,6 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 40.64) (xy 241.3 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c6ae7ae-f47c-4ebf-8214-529ee50a06b4")
-	)
-	(wire
-		(pts
 			(xy 17.78 190.5) (xy 17.78 189.23)
 		)
 		(stroke
@@ -4179,26 +3731,6 @@
 			(type default)
 		)
 		(uuid "6f8132b6-afc5-469a-b39a-5323798e2c1c")
-	)
-	(wire
-		(pts
-			(xy 226.06 27.94) (xy 227.33 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7043cb15-2683-4880-bc57-17e84256a1c5")
-	)
-	(wire
-		(pts
-			(xy 278.13 40.64) (xy 270.51 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "70bea24e-2d54-44cd-95fb-029b2a7508e8")
 	)
 	(wire
 		(pts
@@ -4372,16 +3904,6 @@
 	)
 	(wire
 		(pts
-			(xy 262.89 39.37) (xy 262.89 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "82dc66fb-0977-43c4-ba62-30df35d61c6d")
-	)
-	(wire
-		(pts
 			(xy 116.84 57.15) (xy 130.81 57.15)
 		)
 		(stroke
@@ -4442,16 +3964,6 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 38.1) (xy 227.33 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c051638-96bd-40b7-be60-b89c5aeb6a03")
-	)
-	(wire
-		(pts
 			(xy 99.06 85.09) (xy 95.25 85.09)
 		)
 		(stroke
@@ -4489,16 +4001,6 @@
 			(type default)
 		)
 		(uuid "8f258be6-caea-4776-8e14-d3fcdfbedf06")
-	)
-	(polyline
-		(pts
-			(xy 218.44 20.32) (xy 218.44 46.99)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "905fed59-b5af-4d29-80f1-ad421c19b4d2")
 	)
 	(wire
 		(pts
@@ -4592,16 +4094,6 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 27.94) (xy 231.14 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a4e60d6-786b-4db4-86ff-6faa147fd93b")
-	)
-	(wire
-		(pts
 			(xy 198.12 48.26) (xy 198.12 50.8)
 		)
 		(stroke
@@ -4679,16 +4171,6 @@
 			(type default)
 		)
 		(uuid "a058736a-ea3c-4bec-a3f4-e48d3619fd2a")
-	)
-	(wire
-		(pts
-			(xy 251.46 27.94) (xy 254 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a080678f-c434-458c-b133-a579bd6d62d6")
 	)
 	(polyline
 		(pts
@@ -4960,16 +4442,6 @@
 		)
 		(uuid "b5fa5df4-32a5-41ff-8695-331a4e4d2833")
 	)
-	(wire
-		(pts
-			(xy 241.3 40.64) (xy 254 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b7259971-1c05-4dc7-b953-8773a3d6d6e3")
-	)
 	(polyline
 		(pts
 			(xy 105.41 130.81) (xy 105.41 195.58)
@@ -4989,16 +4461,6 @@
 			(type default)
 		)
 		(uuid "b7afb34f-542d-4f85-b885-cb4026dea3a4")
-	)
-	(polyline
-		(pts
-			(xy 218.44 46.99) (xy 281.94 46.99)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "b9683bb4-234e-4e3f-8b78-b43fa5d89ee5")
 	)
 	(wire
 		(pts
@@ -5112,16 +4574,6 @@
 	)
 	(wire
 		(pts
-			(xy 278.13 39.37) (xy 278.13 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c4c23067-4885-40f5-952d-f9c24d4a0203")
-	)
-	(wire
-		(pts
 			(xy 255.27 93.98) (xy 261.62 93.98)
 		)
 		(stroke
@@ -5129,16 +4581,6 @@
 			(type default)
 		)
 		(uuid "c4e1302f-9637-498b-99a5-fd958f3ec6b4")
-	)
-	(wire
-		(pts
-			(xy 223.52 40.64) (xy 227.33 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c557a4a5-c9df-4c07-8bb9-354bbd8b5ea4")
 	)
 	(wire
 		(pts
@@ -5352,16 +4794,6 @@
 	)
 	(wire
 		(pts
-			(xy 262.89 27.94) (xy 262.89 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d24216ab-3027-489f-bce7-ae515cc37194")
-	)
-	(wire
-		(pts
 			(xy 125.73 62.23) (xy 130.81 62.23)
 		)
 		(stroke
@@ -5389,16 +4821,6 @@
 			(type default)
 		)
 		(uuid "d452e816-0364-46cf-8670-21ca186d9fc8")
-	)
-	(wire
-		(pts
-			(xy 262.89 40.64) (xy 270.51 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d5f1a616-f349-4371-b850-c99493ebf504")
 	)
 	(wire
 		(pts
@@ -5562,16 +4984,6 @@
 	)
 	(wire
 		(pts
-			(xy 254 27.94) (xy 254 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e26484b0-c129-4abc-b222-9992d73b2aee")
-	)
-	(wire
-		(pts
 			(xy 80.01 167.64) (xy 86.36 167.64)
 		)
 		(stroke
@@ -5632,16 +5044,6 @@
 	)
 	(wire
 		(pts
-			(xy 254 40.64) (xy 262.89 40.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e80cfaf7-1fc6-436d-a08f-92414615e3d8")
-	)
-	(wire
-		(pts
 			(xy 242.57 93.98) (xy 241.3 93.98)
 		)
 		(stroke
@@ -5699,16 +5101,6 @@
 			(type default)
 		)
 		(uuid "e9abd9d7-694d-4399-9d55-ca10d3b0e035")
-	)
-	(wire
-		(pts
-			(xy 270.51 27.94) (xy 270.51 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ec1f43d8-21eb-447f-b73f-713184db7c61")
 	)
 	(wire
 		(pts
@@ -7184,267 +6576,6 @@
 		)
 	)
 	(symbol
-		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 254 34.29 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000050500b3a")
-		(property "Reference" "C8"
-			(at 248.92 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2.2u"
-			(at 248.92 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 254 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 254 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 254 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "96c5fa84-2ad2-457d-a7ba-583711a60012")
-		)
-		(pin "2"
-			(uuid "a0c79c75-90d3-4ede-be2c-e45bbe1acaa5")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "C8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:GND-RESCUE-BLDC_4")
-		(at 241.3 43.18 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000050500b40")
-		(property "Reference" "#PWR027"
-			(at 241.3 43.18 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 241.3 44.958 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 241.3 43.18 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 241.3 43.18 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 241.3 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fa43c792-70dc-4ea8-bdd5-b522bf30b006")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#PWR027")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:VCC")
-		(at 270.51 25.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000050500b46")
-		(property "Reference" "#PWR026"
-			(at 270.51 22.86 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VCC"
-			(at 270.51 22.86 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 270.51 25.4 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 270.51 25.4 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 270.51 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "cd82d975-cf65-44b5-b5b1-0ef640b76454")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#PWR026")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:PWR_FLAG")
-		(at 223.52 40.64 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-0000505104a0")
-		(property "Reference" "#FLG01"
-			(at 223.52 38.227 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 223.52 38.1 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 223.52 40.64 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 40.64 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 223.52 40.64 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "899fd799-00b7-4d65-82cc-717b9ff2d0bd")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:PWR_FLAG")
 		(at 280.67 64.77 0)
 		(unit 1)
@@ -7503,74 +6634,6 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "#FLG02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:NCP1117ST33T3G")
-		(at 241.3 29.21 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000053e7af36")
-		(property "Reference" "U1"
-			(at 241.3 22.86 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Value" "AMS1117-3.3"
-			(at 241.3 24.13 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-223-3_TabPin2"
-			(at 241.3 29.21 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 241.3 29.21 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 241.3 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "4da1fb77-4cee-4513-a9cd-32240a0c21e4")
-		)
-		(pin "1"
-			(uuid "05aea1f4-27ad-4055-85ab-9628f07ff2b4")
-		)
-		(pin "2"
-			(uuid "3b256faa-deab-4045-96f7-412d5e4ec061")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U1")
 					(unit 1)
 				)
 			)
@@ -8039,70 +7102,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 226.06 25.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d367a29")
-		(property "Reference" "#PWR025"
-			(at 226.06 23.114 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 226.06 22.86 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 226.06 25.4 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 226.06 25.4 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 226.06 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b6262dd2-4385-439c-a04b-8d39619c404b")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#PWR025")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
 		(at 123.19 74.93 90)
 		(unit 1)
@@ -8369,78 +7368,6 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "J4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 227.33 33.02 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d8307c4")
-		(property "Reference" "C7"
-			(at 224.79 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "100n"
-			(at 226.06 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 227.33 33.02 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 227.33 33.02 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 227.33 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "56831c76-b933-49eb-8822-c6009c21e27f")
-		)
-		(pin "2"
-			(uuid "c16e43e9-79f6-4666-bac0-9ba6b862f6bd")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "C7")
-					(unit 1)
-				)
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
-					(reference "C?")
 					(unit 1)
 				)
 			)
@@ -8781,70 +7708,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 259.08 57.15 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005da1095b")
-		(property "Reference" "#PWR035"
-			(at 261.366 57.15 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 262.89 57.15 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 259.08 57.15 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 259.08 57.15 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 259.08 57.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1fa78b38-d35b-426f-98d5-3dde5df05f1b")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#PWR035")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
 		(at 107.95 25.4 0)
 		(unit 1)
@@ -8929,7 +7792,7 @@
 				)
 			)
 		)
-		(property "Value" "3.3k"
+		(property "Value" "4.7k"
 			(at 95.25 26.67 90)
 			(effects
 				(font
@@ -8979,74 +7842,6 @@
 		)
 	)
 	(symbol
-		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 262.89 34.29 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005da55da4")
-		(property "Reference" "C9"
-			(at 262.89 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "22uF"
-			(at 261.62 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 262.89 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 262.89 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 262.89 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8d8d4121-db72-49c9-aee4-f715c73f0750")
-		)
-		(pin "2"
-			(uuid "bdf83d3e-dffb-46e6-b35b-56db750275aa")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "C9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:R-RESCUE-BLDC_4")
 		(at 95.25 43.18 180)
 		(unit 1)
@@ -9063,7 +7858,7 @@
 				)
 			)
 		)
-		(property "Value" "18k"
+		(property "Value" "14k"
 			(at 95.25 43.18 90)
 			(effects
 				(font
@@ -9107,74 +7902,6 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "R21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 270.51 34.29 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005da61135")
-		(property "Reference" "C10"
-			(at 270.51 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "22uF"
-			(at 269.24 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 270.51 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 270.51 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 270.51 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0b45fff7-f131-41cf-95a9-3cdd6dc42f09")
-		)
-		(pin "2"
-			(uuid "8dbb517e-efae-42c6-8015-fdf581d6a35d")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "C10")
 					(unit 1)
 				)
 			)
@@ -9241,138 +7968,6 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "R20")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+5V")
-		(at 87.63 46.99 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005da7d2c6")
-		(property "Reference" "#PWR031"
-			(at 87.63 44.704 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 87.63 43.18 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0238994f-8c72-4415-935b-ec695b9390ff")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "#PWR031")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 278.13 34.29 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005daebe01")
-		(property "Reference" "C11"
-			(at 278.13 31.75 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "22uF"
-			(at 276.86 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 278.13 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 278.13 34.29 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 278.13 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4ce253bd-5b78-4a08-94a2-a37751241f97")
-		)
-		(pin "2"
-			(uuid "b428d5dd-7200-48c8-8862-5119ef25faf4")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "C11")
 					(unit 1)
 				)
 			)
@@ -13219,6 +11814,134 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "R69")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BLDC_4-rescue:VCC")
+		(at 87.63 46.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a15d422e-4030-476e-b3dc-78cd2494ab9b")
+		(property "Reference" "#PWR09"
+			(at 87.63 44.45 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 87.63 43.18 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 87.63 46.99 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 87.63 46.99 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 87.63 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "53e44c68-3027-440a-8723-418e00794044")
+		)
+		(instances
+			(project "Cheap FOCer 2 60mm"
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BLDC_4-rescue:VCC")
+		(at 259.08 57.15 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c5724f95-936e-431a-ae16-58a45dcdd37d")
+		(property "Reference" "#PWR08"
+			(at 261.62 57.15 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VCC"
+			(at 262.89 57.15 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 57.15 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 57.15 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 259.08 57.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4db8c35b-2680-47b0-b7a6-39beb6ad1a8e")
+		)
+		(instances
+			(project "Cheap FOCer 2 60mm"
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
