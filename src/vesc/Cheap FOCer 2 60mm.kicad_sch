@@ -2769,17 +2769,6 @@
 		)
 		(uuid "e3ce2200-bd6c-4988-b1ac-628f92fcda76")
 	)
-	(text "Connect signal ground and\npower ground in one place only"
-		(exclude_from_sim no)
-		(at 311.15 175.26 0)
-		(effects
-			(font
-				(size 1.524 1.524)
-			)
-			(justify left bottom)
-		)
-		(uuid "ed00c30e-7173-4802-92c7-bb852c7ca1aa")
-	)
 	(text "Fiducials"
 		(exclude_from_sim no)
 		(at 243.84 80.01 0)
@@ -3217,16 +3206,6 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 176.53) (xy 328.93 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "55b8a0e3-f5f2-4f1c-a5f4-044684c2480f")
-	)
-	(wire
-		(pts
 			(xy 309.88 87.63) (xy 303.53 87.63)
 		)
 		(stroke
@@ -3464,16 +3443,6 @@
 			(type default)
 		)
 		(uuid "8b516627-1b6a-4f45-8adb-75b48f3338d5")
-	)
-	(wire
-		(pts
-			(xy 321.31 176.53) (xy 321.31 179.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c6d28ff-3131-4b67-a919-97544de308c1")
 	)
 	(polyline
 		(pts
@@ -3974,16 +3943,6 @@
 			(type default)
 		)
 		(uuid "f12df926-0cfe-4017-93d7-d94b93c6706a")
-	)
-	(wire
-		(pts
-			(xy 321.31 176.53) (xy 328.93 176.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f3ea2859-5906-4279-95fa-b0bc8b7fa08f")
 	)
 	(wire
 		(pts
@@ -4981,71 +4940,6 @@
 		)
 	)
 	(symbol
-		(lib_id "BLDC_4-rescue:GND-RESCUE-BLDC_4")
-		(at 321.31 179.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-000053fa1f8f")
-		(property "Reference" "#PWR09"
-			(at 321.31 179.07 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 321.31 180.848 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 321.31 179.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 321.31 179.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 321.31 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "661fa375-7b30-40c6-afd2-f92962d020a8")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:R-RESCUE-BLDC_4")
 		(at 228.6 213.36 180)
 		(unit 1)
@@ -5825,71 +5719,6 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
 					(reference "R3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:GND-RESCUE-BLDC_4")
-		(at 328.93 179.07 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-0000548f24df")
-		(property "Reference" "#PWR010"
-			(at 328.93 179.07 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 328.93 180.848 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 328.93 179.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 328.93 179.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 328.93 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "af588e96-f1bf-4b0c-a963-ab56d12a871d")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "#PWR010")
 					(unit 1)
 				)
 			)
