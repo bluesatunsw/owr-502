@@ -2443,6 +2443,16 @@
 		)
 		(uuid "ac20add2-b505-404a-b146-4f9b84c3e312")
 	)
+	(text "approx 14k"
+		(exclude_from_sim no)
+		(at 78.74 40.132 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c5f9ce22-d7bd-40c6-8698-46700cc352ae")
+	)
 	(text "Phase sense voltage dividers"
 		(exclude_from_sim no)
 		(at 227.33 123.19 0)
@@ -2477,6 +2487,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0ca570c4-e0d6-4b5d-a2d0-4c99b2fc3d41")
+	)
+	(junction
+		(at 95.25 35.56)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "0d96b31e-08a5-48ac-b11b-54f1e0e315d6")
 	)
 	(junction
 		(at 91.44 168.91)
@@ -2555,12 +2571,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "52e6c5ca-3957-4f52-b56d-2ac512fbcc2e")
-	)
-	(junction
-		(at 95.25 35.56)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5d2e2e9e-4612-410c-9bb1-96ba9267ac00")
 	)
 	(junction
 		(at 198.12 35.56)
@@ -2824,7 +2834,7 @@
 	)
 	(wire
 		(pts
-			(xy 95.25 49.53) (xy 87.63 49.53)
+			(xy 95.25 35.56) (xy 91.44 35.56)
 		)
 		(stroke
 			(width 0)
@@ -3071,6 +3081,16 @@
 			(type default)
 		)
 		(uuid "1ed16312-e93d-4c22-b235-4f9f288179aa")
+	)
+	(wire
+		(pts
+			(xy 74.93 35.56) (xy 73.66 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f071a42-5a1c-4242-99f7-4b37de33db11")
 	)
 	(wire
 		(pts
@@ -3914,6 +3934,16 @@
 	)
 	(wire
 		(pts
+			(xy 83.82 35.56) (xy 82.55 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "845974e8-85d3-490b-b410-9eed4c8c4b85")
+	)
+	(wire
+		(pts
 			(xy 124.46 92.71) (xy 130.81 92.71)
 		)
 		(stroke
@@ -4564,6 +4594,16 @@
 	)
 	(wire
 		(pts
+			(xy 66.04 35.56) (xy 64.77 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2077902-7247-4499-860c-f0c33c3d8180")
+	)
+	(wire
+		(pts
 			(xy 193.04 74.93) (xy 193.04 80.01)
 		)
 		(stroke
@@ -4944,16 +4984,6 @@
 	)
 	(wire
 		(pts
-			(xy 95.25 35.56) (xy 95.25 36.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "de4b888d-bfd1-49fd-a0a4-e62fc5e353d0")
-	)
-	(wire
-		(pts
 			(xy 173.99 85.09) (xy 171.45 85.09)
 		)
 		(stroke
@@ -5011,16 +5041,6 @@
 			(type default)
 		)
 		(uuid "e41f44c8-445d-4c70-b977-fa007146bfdf")
-	)
-	(wire
-		(pts
-			(xy 87.63 49.53) (xy 87.63 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e65f3e1a-7ead-4aeb-acd2-9b1085b668a3")
 	)
 	(wire
 		(pts
@@ -7792,7 +7812,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7k"
+		(property "Value" "4k7"
 			(at 95.25 26.67 90)
 			(effects
 				(font
@@ -7836,72 +7856,6 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "R18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:R-RESCUE-BLDC_4")
-		(at 95.25 43.18 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005da5850b")
-		(property "Reference" "R21"
-			(at 97.79 43.18 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "14k"
-			(at 95.25 43.18 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 95.25 43.18 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 95.25 43.18 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 95.25 43.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f934f564-40f8-4965-92b0-e59d99a668e1")
-		)
-		(pin "2"
-			(uuid "209032e1-94de-4fa6-a125-0e6fc9685ce6")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -11620,6 +11574,73 @@
 	)
 	(symbol
 		(lib_id "Device:R")
+		(at 69.85 35.56 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "03a2eb27-1954-421b-8023-e2054566266a")
+		(property "Reference" "R5"
+			(at 69.85 33.274 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4k7"
+			(at 69.85 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 69.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "eb4425c3-2a87-412c-b022-ed4e926c648e")
+		)
+		(pin "2"
+			(uuid "6ea9d41e-5335-446d-8b34-45ead1afb6f6")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
 		(at 62.23 176.53 90)
 		(unit 1)
 		(exclude_from_sim no)
@@ -11821,7 +11842,7 @@
 	)
 	(symbol
 		(lib_id "BLDC_4-rescue:VCC")
-		(at 87.63 46.99 0)
+		(at 64.77 35.56 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11829,7 +11850,7 @@
 		(dnp no)
 		(uuid "a15d422e-4030-476e-b3dc-78cd2494ab9b")
 		(property "Reference" "#PWR09"
-			(at 87.63 44.45 0)
+			(at 62.23 35.56 0)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -11838,7 +11859,7 @@
 			)
 		)
 		(property "Value" "VCC"
-			(at 87.63 43.18 0)
+			(at 60.96 35.56 0)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -11846,7 +11867,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 87.63 46.99 0)
+			(at 64.77 35.56 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -11855,7 +11876,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 87.63 46.99 0)
+			(at 64.77 35.56 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -11864,7 +11885,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 87.63 46.99 0)
+			(at 64.77 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11878,6 +11899,140 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 87.63 35.56 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a952aabe-8832-4802-bf9f-72d9b732d55d")
+		(property "Reference" "R8"
+			(at 87.63 33.274 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4k7"
+			(at 87.63 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 87.63 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 87.63 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 87.63 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7130f0c7-87f3-4d80-9782-b12623ba5759")
+		)
+		(pin "2"
+			(uuid "8a9da6a3-0c0e-43ba-bfd5-05222d12c524")
+		)
+		(instances
+			(project "Cheap FOCer 2 60mm"
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 78.74 35.56 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c26ad9f1-ca65-4eca-95b7-292fa563e862")
+		(property "Reference" "R7"
+			(at 78.74 33.274 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4k7"
+			(at 78.74 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 78.74 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 78.74 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 78.74 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "600409c8-a0c4-487b-99a0-b86b1c02d6e1")
+		)
+		(pin "2"
+			(uuid "ac51213a-f859-4ccb-b4c6-1fd37de6aff3")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "R7")
 					(unit 1)
 				)
 			)
