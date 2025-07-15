@@ -2117,7 +2117,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Power_Protection:SP0505BAHT"
+		(symbol "Power_Protection:ESDA5V3SC5"
 			(pin_names
 				(hide yes)
 			)
@@ -2133,7 +2133,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "SP0505BAHT"
+			(property "Value" "ESDA5V3SC5"
 				(at 7.62 0.635 0)
 				(effects
 					(font
@@ -2142,7 +2142,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
 				(at 7.62 -1.27 0)
 				(effects
 					(font
@@ -2152,7 +2152,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "http://www.littelfuse.com/~/media/files/littelfuse/technical%20resources/documents/data%20sheets/sp05xxba.pdf"
+			(property "Datasheet" "https://www.st.com/resource/en/datasheet/esda5v3sc6.pdf"
 				(at 3.175 3.175 0)
 				(effects
 					(font
@@ -2161,7 +2161,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "TVS Diode Array, 5.5V Standoff, 5 Channels, SOT-23-6 package"
+			(property "Description" "Quad TVS Diode Array, 5.3V Standoff, 4 Channels, 400W, ±30kV, SOT-23-5"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2188,7 +2188,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "SP0505BAHT_0_0"
+			(symbol "ESDA5V3SC5_0_0"
 				(pin passive line
 					(at 0 -5.08 90)
 					(length 2.54)
@@ -2208,9 +2208,9 @@
 					)
 				)
 			)
-			(symbol "SP0505BAHT_0_1"
+			(symbol "ESDA5V3SC5_0_1"
 				(rectangle
-					(start -6.985 2.54)
+					(start -4.445 2.54)
 					(end 6.985 -2.54)
 					(stroke
 						(width 0.254)
@@ -2222,55 +2222,7 @@
 				)
 				(polyline
 					(pts
-						(xy -5.842 1.016) (xy -5.842 1.27) (xy -4.445 1.27) (xy -4.318 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -5.08 2.54) (xy -5.08 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -5.08 1.27) (xy -5.08 -1.27) (xy -2.54 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -5.08 1.27) (xy -4.445 0) (xy -5.715 0) (xy -5.08 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -3.302 1.016) (xy -3.302 1.27) (xy -1.905 1.27) (xy -1.778 1.27)
+						(xy -3.302 1.016) (xy -3.302 1.27) (xy -1.778 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2314,17 +2266,6 @@
 					)
 					(fill
 						(type none)
-					)
-				)
-				(circle
-					(center -2.54 -1.27)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
 					)
 				)
 				(polyline
@@ -2376,31 +2317,19 @@
 				)
 				(polyline
 					(pts
-						(xy 0.635 1.27) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.635 1.27) (xy -0.762 1.27) (xy -0.762 1.016)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 0.635 0) (xy -0.635 0) (xy 0 1.27) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 1.27) (xy -0.762 1.27) (xy -0.762 1.016)
 					)
 					(stroke
 						(width 0)
@@ -2506,9 +2435,9 @@
 					)
 				)
 			)
-			(symbol "SP0505BAHT_1_1"
+			(symbol "ESDA5V3SC5_1_1"
 				(pin passive line
-					(at -5.08 5.08 270)
+					(at -2.54 5.08 270)
 					(length 2.54)
 					(name "K"
 						(effects
@@ -2526,7 +2455,7 @@
 					)
 				)
 				(pin passive line
-					(at -2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(name "K"
 						(effects
@@ -2544,7 +2473,7 @@
 					)
 				)
 				(pin passive line
-					(at 0 5.08 270)
+					(at 2.54 5.08 270)
 					(length 2.54)
 					(name "K"
 						(effects
@@ -2562,24 +2491,6 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
 					(at 5.08 5.08 270)
 					(length 2.54)
 					(name "K"
@@ -2589,7 +2500,7 @@
 							)
 						)
 					)
-					(number "6"
+					(number "5"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2702,6 +2613,30 @@
 			(embedded_fonts no)
 		)
 	)
+	(rectangle
+		(start 72.39 170.18)
+		(end 85.09 177.8)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid b08a28c2-bc45-471a-bf03-eeef86892ec0)
+	)
+	(rectangle
+		(start 78.74 113.03)
+		(end 95.25 116.84)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid ffbb5a6f-aae1-469c-be9e-75e45d8fa8e6)
+	)
 	(text "Power Pads"
 		(exclude_from_sim no)
 		(at 303.53 80.01 0)
@@ -2787,7 +2722,7 @@
 		(uuid "0bc6a87b-f7a4-4c00-a05a-d9e2b742b42d")
 	)
 	(junction
-		(at 104.14 163.83)
+		(at 99.06 163.83)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "19e8b9c8-86d9-42cd-873d-713a41b2fc78")
@@ -2805,7 +2740,7 @@
 		(uuid "6d3ce994-f059-4080-9b4b-fa6128da3d5d")
 	)
 	(junction
-		(at 111.76 171.45)
+		(at 106.68 171.45)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8815d01e-ff5f-4c58-b6a0-3c6854369835")
@@ -2817,7 +2752,7 @@
 		(uuid "ab4ef0c6-ef6d-4ed0-9df5-49d7ac0dd575")
 	)
 	(junction
-		(at 106.68 166.37)
+		(at 101.6 166.37)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c3c4d074-8d72-400b-a57d-9c14c50c901f")
@@ -2829,7 +2764,7 @@
 		(uuid "cca417b8-2cd1-4a67-b2b9-7a1a2a8cfabd")
 	)
 	(junction
-		(at 109.22 168.91)
+		(at 104.14 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e38572ef-d0f6-42ba-83dc-e47469d63441")
@@ -2956,7 +2891,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 168.91) (xy 115.57 170.18)
+			(xy 110.49 168.91) (xy 110.49 170.18)
 		)
 		(stroke
 			(width 0)
@@ -2986,7 +2921,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 170.18) (xy 129.54 170.18)
+			(xy 110.49 170.18) (xy 129.54 170.18)
 		)
 		(stroke
 			(width 0)
@@ -3026,7 +2961,7 @@
 	)
 	(wire
 		(pts
-			(xy 106.68 162.56) (xy 106.68 166.37)
+			(xy 101.6 162.56) (xy 101.6 166.37)
 		)
 		(stroke
 			(width 0)
@@ -3056,7 +2991,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 163.83) (xy 104.14 163.83)
+			(xy 81.28 163.83) (xy 99.06 163.83)
 		)
 		(stroke
 			(width 0)
@@ -3076,7 +3011,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 162.56) (xy 111.76 171.45)
+			(xy 106.68 162.56) (xy 106.68 171.45)
 		)
 		(stroke
 			(width 0)
@@ -3176,7 +3111,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 167.64) (xy 115.57 166.37)
+			(xy 110.49 167.64) (xy 110.49 166.37)
 		)
 		(stroke
 			(width 0)
@@ -3216,7 +3151,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 166.37) (xy 106.68 166.37)
+			(xy 110.49 166.37) (xy 101.6 166.37)
 		)
 		(stroke
 			(width 0)
@@ -3226,7 +3161,7 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 163.83) (xy 115.57 163.83)
+			(xy 99.06 163.83) (xy 110.49 163.83)
 		)
 		(stroke
 			(width 0)
@@ -3236,7 +3171,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 165.1) (xy 129.54 165.1)
+			(xy 110.49 165.1) (xy 129.54 165.1)
 		)
 		(stroke
 			(width 0)
@@ -3266,7 +3201,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 163.83) (xy 115.57 165.1)
+			(xy 110.49 163.83) (xy 110.49 165.1)
 		)
 		(stroke
 			(width 0)
@@ -3336,7 +3271,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 171.45) (xy 111.76 171.45)
+			(xy 110.49 171.45) (xy 106.68 171.45)
 		)
 		(stroke
 			(width 0)
@@ -3396,7 +3331,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 168.91) (xy 115.57 168.91)
+			(xy 104.14 168.91) (xy 110.49 168.91)
 		)
 		(stroke
 			(width 0)
@@ -3496,7 +3431,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 171.45) (xy 81.28 171.45)
+			(xy 106.68 171.45) (xy 81.28 171.45)
 		)
 		(stroke
 			(width 0)
@@ -3506,7 +3441,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 172.72) (xy 129.54 172.72)
+			(xy 110.49 172.72) (xy 129.54 172.72)
 		)
 		(stroke
 			(width 0)
@@ -3546,7 +3481,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 162.56) (xy 109.22 168.91)
+			(xy 104.14 162.56) (xy 104.14 168.91)
 		)
 		(stroke
 			(width 0)
@@ -3626,7 +3561,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 168.91) (xy 109.22 168.91)
+			(xy 81.28 168.91) (xy 104.14 168.91)
 		)
 		(stroke
 			(width 0)
@@ -3676,7 +3611,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 172.72) (xy 115.57 171.45)
+			(xy 110.49 172.72) (xy 110.49 171.45)
 		)
 		(stroke
 			(width 0)
@@ -3736,7 +3671,7 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 162.56) (xy 104.14 163.83)
+			(xy 99.06 162.56) (xy 99.06 163.83)
 		)
 		(stroke
 			(width 0)
@@ -3776,7 +3711,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 152.4) (xy 104.14 152.4)
+			(xy 104.14 152.4) (xy 99.06 152.4)
 		)
 		(stroke
 			(width 0)
@@ -3916,16 +3851,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 162.56) (xy 114.3 175.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e89ad7d3-4e75-4bdf-a601-c8b8d303a1f6")
-	)
-	(wire
-		(pts
 			(xy 151.13 170.18) (xy 161.29 170.18)
 		)
 		(stroke
@@ -3966,7 +3891,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 167.64) (xy 129.54 167.64)
+			(xy 110.49 167.64) (xy 129.54 167.64)
 		)
 		(stroke
 			(width 0)
@@ -4006,7 +3931,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 166.37) (xy 106.68 166.37)
+			(xy 81.28 166.37) (xy 101.6 166.37)
 		)
 		(stroke
 			(width 0)
@@ -4689,7 +4614,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "100n, 50V"
 			(at 146.05 104.14 0)
 			(effects
 				(font
@@ -5855,89 +5780,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:SP0505BAHT")
-		(at 109.22 157.48 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d5c9b81")
-		(property "Reference" "D1"
-			(at 111.76 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "SMF05CT1G"
-			(at 109.22 153.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6"
-			(at 101.6 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.littelfuse.com/~/media/files/littelfuse/technical%20resources/documents/data%20sheets/sp05xxba.pdf"
-			(at 106.045 160.655 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 109.22 157.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "5997c4be-ebd7-4f63-a7f3-0028be7d9d15")
-		)
-		(pin "1"
-			(uuid "64d7652a-5bb3-4a2c-bda4-0bd56843c485")
-		)
-		(pin "3"
-			(uuid "c60f06ef-8d07-44b7-a876-1c75dfff2b66")
-		)
-		(pin "4"
-			(uuid "2a24c566-9127-45f4-8196-ea2ab90619f2")
-		)
-		(pin "5"
-			(uuid "9ff509f2-13d5-45b9-b1e6-69760fadd8b9")
-		)
-		(pin "6"
-			(uuid "9b6f7501-e626-41a0-a6e2-050978cb8be3")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "D1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:GND-RESCUE-BLDC_4")
-		(at 104.14 152.4 270)
+		(at 99.06 152.4 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5945,7 +5789,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005d5c9b87")
 		(property "Reference" "#PWR04"
-			(at 104.14 152.4 0)
+			(at 99.06 152.4 0)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -5954,7 +5798,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 102.362 152.4 0)
+			(at 97.282 152.4 0)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -5963,7 +5807,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 104.14 152.4 0)
+			(at 99.06 152.4 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -5972,7 +5816,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 104.14 152.4 0)
+			(at 99.06 152.4 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -5981,7 +5825,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 104.14 152.4 0)
+			(at 99.06 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5995,70 +5839,6 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
 					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:+5V")
-		(at 114.3 175.26 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d678581")
-		(property "Reference" "#PWR07"
-			(at 114.3 177.546 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+5V"
-			(at 115.57 176.53 90)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 114.3 175.26 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 114.3 175.26 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 114.3 175.26 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "cfd723bc-d36d-4702-80e3-d3af96c2bc87")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -7201,6 +6981,85 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
 					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:ESDA5V3SC5")
+		(at 104.14 157.48 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a61e4c3-a807-4506-966b-4f740cafe93c")
+		(property "Reference" "D2"
+			(at 110.49 156.2099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "TPAZ1143-04F"
+			(at 110.236 159.004 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+			(at 96.52 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/esda5v3sc6.pdf"
+			(at 100.965 160.655 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Quad TVS Diode Array, 5.3V Standoff, 4 Channels, 400W, ±30kV, SOT-23-5"
+			(at 104.14 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "7aa5aafa-369a-4880-ae5e-e8f44ae28154")
+		)
+		(pin "2"
+			(uuid "32e0debc-7ad6-406a-a297-20c87454da61")
+		)
+		(pin "1"
+			(uuid "9ee1ae2b-92cc-40a2-a426-62a3624773b3")
+		)
+		(pin "4"
+			(uuid "bc171c4f-cf11-42e3-a152-579a331103c0")
+		)
+		(pin "5"
+			(uuid "8569c63e-4229-494d-bf77-e661aa204038")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
+					(reference "D2")
 					(unit 1)
 				)
 			)
