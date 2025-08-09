@@ -6412,6 +6412,12 @@
 		(uuid "25ed245a-3970-4ba9-8119-64247acf4b6d")
 	)
 	(junction
+		(at 92.71 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "286c9b61-8a1d-41b6-8e4b-5adcae1468d8")
+	)
+	(junction
 		(at 64.77 102.87)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6554,6 +6560,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8d384f90-73af-4ebe-aa62-7b8206d79d1b")
+	)
+	(junction
+		(at 118.11 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "94e5e79e-3ebb-41b3-9bbc-fb21684113a0")
 	)
 	(junction
 		(at 246.38 85.09)
@@ -7959,6 +7971,16 @@
 		)
 		(uuid "0264ed47-a493-41a6-92a4-16629ee76715")
 	)
+	(wire
+		(pts
+			(xy 90.17 156.21) (xy 92.71 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03249472-0b03-4e2e-9e6f-6ed665b40875")
+	)
 	(bus
 		(pts
 			(xy 143.51 124.46) (xy 143.51 127)
@@ -9061,6 +9083,16 @@
 	)
 	(wire
 		(pts
+			(xy 90.17 153.67) (xy 90.17 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "40f74758-629c-4cd3-9fc5-5891a792064e")
+	)
+	(wire
+		(pts
 			(xy 125.73 181.61) (xy 125.73 184.15)
 		)
 		(stroke
@@ -10021,6 +10053,16 @@
 	)
 	(wire
 		(pts
+			(xy 118.11 156.21) (xy 120.65 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7ee6b0ab-9a6f-4032-bfc9-4bc489046497")
+	)
+	(wire
+		(pts
 			(xy 125.73 184.15) (xy 129.54 184.15)
 		)
 		(stroke
@@ -10288,6 +10330,16 @@
 			(type default)
 		)
 		(uuid "8b481e10-169b-480d-91ad-1e2bd08c4de4")
+	)
+	(wire
+		(pts
+			(xy 127 156.21) (xy 127 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b8cbeca-46bb-4c78-b1b6-e88a62a0019a")
 	)
 	(wire
 		(pts
@@ -12228,6 +12280,16 @@
 			(type default)
 		)
 		(uuid "ee9e357c-2d74-4f26-892d-7aee1fd5b21f")
+	)
+	(wire
+		(pts
+			(xy 125.73 156.21) (xy 127 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eeec7034-b3a7-4a20-afd4-a3ed66636190")
 	)
 	(wire
 		(pts
@@ -14587,6 +14649,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Bluesat:R_CompactV")
+		(at 90.17 151.13 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0e61f38b-6494-4bcb-b6ee-52d8876ae17b")
+		(property "Reference" "R105"
+			(at 89.281 151.13 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "100k"
+			(at 90.17 151.13 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 90.17 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 90.17 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, compact symbol"
+			(at 90.17 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "86793f6d-4cda-462b-b0d9-b91d74849b18")
+		)
+		(pin "1"
+			(uuid "a7901c67-fbdf-4bda-ad07-e33d6ef87ce6")
+		)
+		(instances
+			(project ""
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
+					(reference "R105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 46.99 46.99 0)
 		(unit 1)
@@ -16437,6 +16570,72 @@
 			(project "stepper-driver"
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
 					(reference "#PWR0157")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 127 157.48 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3c5bae3a-65a8-4023-8c3d-5deabd74ac58")
+		(property "Reference" "#PWR0140"
+			(at 127 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 127 160.655 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 127 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c311e2e9-6cdd-41e0-a123-8d6f0b9555cb")
+		)
+		(instances
+			(project "stepper-driver"
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
+					(reference "#PWR0140")
 					(unit 1)
 				)
 			)
@@ -20172,7 +20371,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Package_SON:VSON-8-1EP_3x3mm_P0.65mm_EP1.65x2.4mm"
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 			(at 48.26 54.61 0)
 			(effects
 				(font
@@ -24166,6 +24365,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VDD")
+		(at 90.17 148.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ea3a7a32-c6ef-492c-a76b-7864120bd3d4")
+		(property "Reference" "#PWR0186"
+			(at 90.17 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VDD"
+			(at 90.17 145.415 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 90.17 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 90.17 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VDD\""
+			(at 90.17 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "81ecff2f-d2d1-46d0-bd78-852b0099d287")
+		)
+		(instances
+			(project "stepper-driver"
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
+					(reference "#PWR0186")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 163.83 128.27 270)
 		(unit 1)
@@ -24428,6 +24692,77 @@
 			(project "stepper-driver"
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
 					(reference "#PWR0182")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Bluesat:R_CompactH")
+		(at 123.19 156.21 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f7e0d694-6975-4531-a06a-94bb1c472733")
+		(property "Reference" "R104"
+			(at 125.0315 156.0195 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Value" "100k"
+			(at 123.19 156.21 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 123.19 156.21 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 123.19 156.21 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, compact symbol"
+			(at 122.9995 156.0195 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "124538a6-9a40-40e9-815a-7143477863eb")
+		)
+		(pin "1"
+			(uuid "9499d245-04c2-4379-8846-38f6f3959939")
+		)
+		(instances
+			(project ""
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
+					(reference "R104")
 					(unit 1)
 				)
 			)
