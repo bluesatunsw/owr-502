@@ -2951,86 +2951,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Mechanical:Fiducial"
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(property "Reference" "FID"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Fiducial"
-				(at 0 3.175 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Fiducial Marker"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "fiducial marker"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Fiducial*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Fiducial_0_1"
-				(circle
-					(center 0 0)
-					(radius 1.27)
-					(stroke
-						(width 0.508)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Mechanical:MountingHole"
 			(pin_names
 				(offset 1.016)
@@ -3283,17 +3203,6 @@
 		)
 		(uuid "e3ce2200-bd6c-4988-b1ac-628f92fcda76")
 	)
-	(text "Fiducials"
-		(exclude_from_sim no)
-		(at 243.84 80.01 0)
-		(effects
-			(font
-				(size 1.524 1.524)
-			)
-			(justify left bottom)
-		)
-		(uuid "f836061a-a701-4b18-bfa7-7b1e0bd050fc")
-	)
 	(junction
 		(at 101.6 167.64)
 		(diameter 0)
@@ -3311,12 +3220,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3467b71a-34a3-49ad-9591-662f25698be6")
-	)
-	(junction
-		(at 303.53 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4e97adce-be4d-4bec-9070-8d4b5dccf426")
 	)
 	(junction
 		(at 86.36 120.65)
@@ -3986,16 +3889,6 @@
 		)
 		(uuid "82b7a021-74d2-455e-90b2-84ca1b115b6c")
 	)
-	(polyline
-		(pts
-			(xy 260.35 99.06) (xy 260.35 77.47)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "8675b6b7-776d-4b21-9c11-256684c687e9")
-	)
 	(wire
 		(pts
 			(xy 335.28 123.19) (xy 334.01 123.19)
@@ -4046,16 +3939,6 @@
 		)
 		(uuid "908df359-8664-4382-9648-0adc2d8a01e0")
 	)
-	(polyline
-		(pts
-			(xy 241.3 99.06) (xy 241.3 77.47)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "9352a511-7a2a-49c3-8927-f3a7950ffcf3")
-	)
 	(wire
 		(pts
 			(xy 274.32 128.27) (xy 298.45 128.27)
@@ -4065,16 +3948,6 @@
 			(type default)
 		)
 		(uuid "93fdce3f-4662-48fd-ba82-ba0128bca4c2")
-	)
-	(polyline
-		(pts
-			(xy 241.3 77.47) (xy 260.35 77.47)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "9773b30a-f7fa-48ea-85f5-aac1cbbdd9a9")
 	)
 	(wire
 		(pts
@@ -4165,16 +4038,6 @@
 			(type default)
 		)
 		(uuid "ac0bc751-003a-4db9-a9ca-eaa4cfd9668e")
-	)
-	(wire
-		(pts
-			(xy 302.26 91.44) (xy 303.53 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "adcf64c5-5368-4939-823a-01516676aa5f")
 	)
 	(wire
 		(pts
@@ -4348,16 +4211,6 @@
 	)
 	(wire
 		(pts
-			(xy 303.53 87.63) (xy 303.53 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cc615c75-4503-4123-bcd2-93f53313b58d")
-	)
-	(wire
-		(pts
 			(xy 226.06 139.7) (xy 236.22 139.7)
 		)
 		(stroke
@@ -4406,16 +4259,6 @@
 		)
 		(uuid "db7368b7-766a-4fd8-b68e-81335974413f")
 	)
-	(polyline
-		(pts
-			(xy 241.3 99.06) (xy 260.35 99.06)
-		)
-		(stroke
-			(width 0)
-			(type dash)
-		)
-		(uuid "dbae2d94-d1e9-4187-aed4-1f51c5d9bb4e")
-	)
 	(wire
 		(pts
 			(xy 151.13 135.89) (xy 161.29 135.89)
@@ -4438,7 +4281,7 @@
 	)
 	(wire
 		(pts
-			(xy 303.53 91.44) (xy 303.53 93.98)
+			(xy 303.53 87.63) (xy 303.53 93.98)
 		)
 		(stroke
 			(width 0)
@@ -6271,257 +6114,6 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
 					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "BLDC_4-rescue:CONN_1")
-		(at 298.45 91.44 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005c92938b")
-		(property "Reference" "NEG3"
-			(at 299.72 88.9 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "MOTOR3"
-			(at 298.45 92.837 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" ""
-			(at 298.45 91.44 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 298.45 91.44 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 298.45 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "838f3ab5-9326-4e4d-8fca-23b4e655355a")
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "NEG3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:Fiducial")
-		(at 247.65 83.82 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d76b4f2")
-		(property "Reference" "F1"
-			(at 249.809 82.6516 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Fiducial"
-			(at 249.809 84.963 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 247.65 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 247.65 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 247.65 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "F1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:Fiducial")
-		(at 247.65 90.17 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d79e5eb")
-		(property "Reference" "F2"
-			(at 249.809 89.0016 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Fiducial"
-			(at 249.809 91.313 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 247.65 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 247.65 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 247.65 90.17 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "F2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:Fiducial")
-		(at 247.65 96.52 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d7a2ccb")
-		(property "Reference" "F3"
-			(at 249.809 95.3516 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Fiducial"
-			(at 249.809 97.663 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 247.65 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 247.65 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 247.65 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(instances
-			(project ""
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0"
-					(reference "F3")
 					(unit 1)
 				)
 			)
