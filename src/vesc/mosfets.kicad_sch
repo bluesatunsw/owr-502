@@ -636,123 +636,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:Net-Tie_2"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "NT"
-				(at 0 1.27 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Device_Net-Tie_2"
-				(at 0 -1.27 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Net*Tie*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Net-Tie_2_0_1"
-				(polyline
-					(pts
-						(xy -1.27 0) (xy 1.27 0)
-					)
-					(stroke
-						(width 0.254)
-						(type solid)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Net-Tie_2_1_1"
-				(pin passive line
-					(at -2.54 0 0)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 0 180)
-					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:Q_NMOS_GDS"
 			(pin_names
 				(offset 0)
@@ -1543,16 +1426,6 @@
 	)
 	(wire
 		(pts
-			(xy 90.17 139.7) (xy 95.25 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "026c961a-97a0-4e2d-af97-0c558c643a80")
-	)
-	(wire
-		(pts
 			(xy 127 59.69) (xy 127 58.42)
 		)
 		(stroke
@@ -1703,7 +1576,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 142.24) (xy 153.67 142.24)
+			(xy 149.86 142.24) (xy 162.56 142.24)
 		)
 		(stroke
 			(width 0)
@@ -1933,17 +1806,7 @@
 	)
 	(wire
 		(pts
-			(xy 223.52 142.24) (xy 227.33 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "44c71f58-e4d6-47a7-b4f4-6b2f0ef7bacc")
-	)
-	(wire
-		(pts
-			(xy 149.86 130.81) (xy 153.67 130.81)
+			(xy 149.86 130.81) (xy 162.56 130.81)
 		)
 		(stroke
 			(width 0)
@@ -2293,7 +2156,7 @@
 	)
 	(wire
 		(pts
-			(xy 214.63 142.24) (xy 218.44 142.24)
+			(xy 214.63 142.24) (xy 227.33 142.24)
 		)
 		(stroke
 			(width 0)
@@ -2340,16 +2203,6 @@
 			(type default)
 		)
 		(uuid "8c150fa2-c8b2-4afc-8eb3-6f5a0c7766b9")
-	)
-	(wire
-		(pts
-			(xy 90.17 129.54) (xy 95.25 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8c4006c5-85c1-469b-9dc9-98eb40fe94f4")
 	)
 	(wire
 		(pts
@@ -2463,7 +2316,7 @@
 	)
 	(wire
 		(pts
-			(xy 214.63 132.08) (xy 218.44 132.08)
+			(xy 214.63 132.08) (xy 227.33 132.08)
 		)
 		(stroke
 			(width 0)
@@ -2703,16 +2556,6 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 142.24) (xy 162.56 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cd796858-ece2-4895-be51-059e4c0c3c48")
-	)
-	(wire
-		(pts
 			(xy 213.36 82.55) (xy 214.63 82.55)
 		)
 		(stroke
@@ -2793,7 +2636,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 139.7) (xy 85.09 139.7)
+			(xy 81.28 139.7) (xy 95.25 139.7)
 		)
 		(stroke
 			(width 0)
@@ -2843,16 +2686,6 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 130.81) (xy 162.56 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e43ddd90-356e-40d3-8c7e-13b4e6cf600d")
-	)
-	(wire
-		(pts
 			(xy 214.63 106.68) (xy 218.44 106.68)
 		)
 		(stroke
@@ -2883,7 +2716,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 129.54) (xy 85.09 129.54)
+			(xy 81.28 129.54) (xy 95.25 129.54)
 		)
 		(stroke
 			(width 0)
@@ -3000,16 +2833,6 @@
 			(type default)
 		)
 		(uuid "f5db0d3e-2b4b-4afd-9f73-4506c69fa799")
-	)
-	(wire
-		(pts
-			(xy 223.52 132.08) (xy 227.33 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f6befab2-a69b-43dd-971c-2a96ff97d0fc")
 	)
 	(wire
 		(pts
@@ -5680,402 +5503,6 @@
 				)
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
 					(reference "#PWR060")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 87.63 129.54 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d92b4f7")
-		(property "Reference" "NT1"
-			(at 87.63 128.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 87.63 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 87.63 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 87.63 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 87.63 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "8d79d977-0d27-486b-afae-5318fd209476")
-		)
-		(pin "2"
-			(uuid "9971e4c9-2c6a-4b63-b17b-d4034054492f")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 87.63 139.7 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d92e642")
-		(property "Reference" "NT4"
-			(at 87.63 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 87.63 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 87.63 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 87.63 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 87.63 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "81ca6500-513c-428e-8c6b-f57f6e8416f1")
-		)
-		(pin "2"
-			(uuid "ad5de500-9e26-468e-bce8-a83473cb371e")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 156.21 130.81 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d93075d")
-		(property "Reference" "NT2"
-			(at 156.21 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 156.21 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 156.21 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 156.21 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "56fddec5-8d01-4f81-8643-94d6f2761b11")
-		)
-		(pin "2"
-			(uuid "e94d3527-54bc-4800-9708-47761cb02e41")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 156.21 142.24 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d932a45")
-		(property "Reference" "NT5"
-			(at 156.21 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 156.21 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 156.21 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 156.21 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b8445987-a9cf-404d-ba5a-243f5727f6df")
-		)
-		(pin "2"
-			(uuid "6073c72e-888a-4e0b-b82e-ea5aae8b97c0")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 220.98 132.08 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d934a76")
-		(property "Reference" "NT3"
-			(at 220.98 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 220.98 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 220.98 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 220.98 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 220.98 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "fd616657-f9cd-4932-9372-f7e816169b33")
-		)
-		(pin "2"
-			(uuid "887b532c-af3d-4ff9-993b-7539ef79cdea")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Net-Tie_2")
-		(at 220.98 142.24 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005d936bf5")
-		(property "Reference" "NT6"
-			(at 220.98 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Net-Tie_2"
-			(at 220.98 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "NetTie:NetTie-2_SMD_Pad0.5mm"
-			(at 220.98 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 220.98 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 220.98 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f8d8dd9b-a130-488c-b464-9c8f80ae68a8")
-		)
-		(pin "2"
-			(uuid "1d3e233d-1c19-4636-9445-5c6eca1d7a9d")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f826dc"
-					(reference "NT6")
 					(unit 1)
 				)
 			)

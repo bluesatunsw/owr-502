@@ -2823,6 +2823,12 @@
 		(uuid "387b12e9-ab4d-45f5-8568-842a7222af01")
 	)
 	(junction
+		(at 264.16 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "41b35ac1-5809-42ac-888a-516e3817b15c")
+	)
+	(junction
 		(at 245.11 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2863,6 +2869,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "807d428f-f004-4486-a661-2183b8c23961")
+	)
+	(junction
+		(at 264.16 25.4)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8ebf5210-0b8c-4cc1-a775-c51a631c0a4d")
 	)
 	(junction
 		(at 238.76 40.64)
@@ -2986,6 +2998,16 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 25.4) (xy 270.51 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09eec40f-498d-4843-a690-e2eed62cb8fe")
+	)
+	(wire
+		(pts
 			(xy 231.14 25.4) (xy 238.76 25.4)
 		)
 		(stroke
@@ -2993,6 +3015,16 @@
 			(type default)
 		)
 		(uuid "0c0fcb10-d9d4-43b0-a961-3f9d3ba1f944")
+	)
+	(wire
+		(pts
+			(xy 270.51 40.64) (xy 270.51 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c181ed1-5b55-4e09-9088-fa1d1cbffbcd")
 	)
 	(wire
 		(pts
@@ -3073,6 +3105,16 @@
 			(type default)
 		)
 		(uuid "12da0ad1-02d8-404f-9e94-8b060aa2170a")
+	)
+	(wire
+		(pts
+			(xy 264.16 40.64) (xy 270.51 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "178b3728-ed94-4125-a395-60a6709c1b7a")
 	)
 	(wire
 		(pts
@@ -3873,6 +3915,16 @@
 			(type default)
 		)
 		(uuid "eeaec4ef-c070-4ddc-9217-4c21574d69dd")
+	)
+	(wire
+		(pts
+			(xy 264.16 25.4) (xy 270.51 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eff7b751-8998-4fb9-8f0a-2171f85dfa1e")
 	)
 	(wire
 		(pts
@@ -9098,6 +9150,74 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
 					(reference "#PWR0502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
+		(at 270.51 33.02 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dde30ab1-36e1-4a90-a5a2-980cbc19b5b0")
+		(property "Reference" "C9"
+			(at 269.24 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 269.24 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 270.51 33.02 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 270.51 33.02 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 270.51 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "86f5ed0c-375a-4409-8c7c-38726636fa0d")
+		)
+		(pin "2"
+			(uuid "70dc95c6-4c8c-4a4a-84c9-338c47a49ed3")
+		)
+		(instances
+			(project "Cheap FOCer 2 60mm"
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
+					(reference "C9")
 					(unit 1)
 				)
 			)
