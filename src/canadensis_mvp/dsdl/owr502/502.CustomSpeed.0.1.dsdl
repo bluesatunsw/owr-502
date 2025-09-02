@@ -1,0 +1,9 @@
+# in Q16.16
+owr502.BaseSpeed.1.0 rad_per_sec
+
+# current types: 0x0 = 'v', 0x1 = 'i'
+uint4 TORQUE_MODE_VOLTAGE = 0x0
+uint4 TORQUE_MODE_CURRENT = 0x1
+uint4 torque_mode
+
+@extent 16 * 8

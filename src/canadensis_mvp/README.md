@@ -59,7 +59,9 @@ follows:
 6. Wrap the `CoreNode` in a `canadensis::node::BasicNode` with the `NodeInfo` struct.
 7. Run the node event loop indefinitely. You're probably running `node.receive()`, `node.run_per_second_tasks()` and
    `node.flush()` at minimum; see [the docs](https://docs.rs/canadensis/0.3.3/canadensis/node/struct.BasicNode.html)
-   for further functionality. Example code for Linux follows.
+   for further functionality. To actually send messages, call
+   `node.start_publishing()` on setup and then publish with the resulting
+   publish token. Example code for Linux follows.
 
 ```
 let start_time = std::time::Instant::now();
@@ -131,3 +133,39 @@ here
 The version on `master` on the GitHub passes extra arguments to `generate()`,
 but this isn't currently part of a published version of `canadensis_macro`.
 
+## Using Rust DSDL codegen
+
+See the [`canadensis_codegen_rust`
+documentation](https://github.com/samcrow/canadensis/tree/master/canadensis_codegen_rust).
+For a summary, read on.
+
+Calling `types_from_dsdl!` creates a Rust module with the same name as the
+directory under the dsdl directory it was called with (i.e. the DSDL
+namespace). For instance, if you have `/path/to/dsdl/owr502` and all your
+`*.dsdl` files are under `dsdl/owr502`, then calling `types_from_dsdl!` on
+`/path/to/dsdl` will create a module with name "owr502", corresponding to the
+"owr502" DSDL namespace.
+
+Suppose we have a DSDL file called `TurboEncabulator_Capacitance.1.2.dsdl` in
+the `owr502` namespace. The generated Rust module name is
+`turbo_encabulator_capacitance_1_2` (submodule of `owr502`) and the struct it
+contains is `TurboEncabulator_Capacitance`.
+
+To use the generated type(s), you will have something like
+
+```
+use crate::owr502::turbo_encabulator_capacitance_1_2::TurboEncabulator_Capacitance;
+```
+
+at the top of your program, after the `types_from_dsdl!` call.
+
+For services, append either `Request` or `Response` to the base type name to
+get the corresponding struct type.
+
+Fixed port-ID values specified as part of the DSDL file name (e.g.
+"1337.CoolType.4.2.dsdl") can be accessed directly as SubjectId or ServiceId
+objects via `cooltype_4_2::SUBJECT` or `cooltype_4_2::SERVICE` depending on
+whether the DSDL describes a subject or service.
+
+Use `cargo expand --bin <canadensis_mvp>` (`cargo install cargo-expand`) if
+you need to confirm what `canadensis_macro` generates.
