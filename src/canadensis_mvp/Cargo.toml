@@ -2,7 +2,7 @@
 authors = ["Jonah Hopkin <jonahhopkin@gmail.com>"]
 edition = "2018"
 readme = "README.md"
-name = "rustybp"
+name = "canadensis_mvp"
 version = "0.1.0"
 
 [dependencies]
@@ -31,9 +31,6 @@ features = ["critical-section-single-core"]
 # Uncomment for the panic example.
 # panic-itm = "0.4.1"
 
-# Uncomment for the allocator example.
-# embedded-alloc = "0.6.0"
-
 # Uncomment for the device example.
 # Update `memory.x`, set target to `thumbv7em-none-eabihf` in `.cargo/config`,
 # and then use `cargo build --example device` to build it.
@@ -43,7 +40,7 @@ features = ["critical-section-single-core"]
 
 # this lets you use `cargo fix`!
 [[bin]]
-name = "rustybp"
+name = "canadensis_mvp"
 test = false
 bench = false
 
