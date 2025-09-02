@@ -191,6 +191,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ff16b62a9697bb76a7e24e91b1e75396b138af488a172bbd5afd911737111c1"
 
 [[package]]
+name = "canadensis_mvp"
+version = "0.1.0"
+dependencies = [
+ "bxcan",
+ "canadensis",
+ "canadensis_bxcan",
+ "canadensis_can",
+ "canadensis_data_types",
+ "cortex-m",
+ "cortex-m-rt",
+ "cortex-m-semihosting",
+ "embedded-alloc",
+ "fugit",
+ "heapless",
+ "nb 1.1.0",
+ "panic-halt",
+ "stm32f1xx-hal",
+]
+
+[[package]]
 name = "canadensis_pnp_client"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -495,26 +515,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cfcb3a22ef46e85b45de6ee7e79d063319ebb6594faafcf1c225ea92ab6e9b92"
 dependencies = [
  "semver 1.0.26",
-]
-
-[[package]]
-name = "rustybp"
-version = "0.1.0"
-dependencies = [
- "bxcan",
- "canadensis",
- "canadensis_bxcan",
- "canadensis_can",
- "canadensis_data_types",
- "cortex-m",
- "cortex-m-rt",
- "cortex-m-semihosting",
- "embedded-alloc",
- "fugit",
- "heapless",
- "nb 1.1.0",
- "panic-halt",
- "stm32f1xx-hal",
 ]
 
 [[package]]
