@@ -1,4 +1,8 @@
 //! Cyphal (canadensis) demo program for the STM32F103.
+//!
+//! For the purpose of the MVP, this is a "motor controller":
+//!     - Sends "speed" packets with dummy data at 100 Hz
+//!     - Listens for a file and blinks LED if checksum matches expected
 
 // Have to remove the following attribute since it's apparently incompatible with the
 // embedded_alloc allocator.
@@ -22,6 +26,7 @@ use canadensis::{Node, ResponseToken, TransferHandler};
 use canadensis_bxcan::{self as cbxcan, BxCanDriver};
 use canadensis_can::{self, CanReceiver, CanTransmitter};
 use canadensis_data_types::uavcan::node::get_info_1_0::GetInfoResponse;
+use canadensis_macro::types_from_dsdl;
 use core::cell::RefCell;
 use core::panic;
 use cortex_m::interrupt::Mutex;
@@ -42,6 +47,14 @@ use stm32f1xx_hal::{
     timer,
     timer::{counter, Timer},
 };
+
+// Set up custom Cyphal data types.
+types_from_dsdl! {
+    package($CARGO_MANIFEST_DIR, "/dsdl")
+    generate()
+}
+use crate::owr502::custom_speed_0_1;
+use crate::owr502::custom_speed_0_1::CustomSpeed;
 
 // The Cyphal node ID that this device operates as.
 const NODE_ID: u8 = 1;
@@ -213,7 +226,7 @@ fn main() -> ! {
     // Assemble and enable the CAN peripheral.
     let mut gpioa = dp.GPIOA.split();
     let can_tx = gpioa.pa12.into_alternate_open_drain(&mut gpioa.crh);
-    let can_rx =2415919104 gpioa.pa11.into_floating_input(&mut gpioa.crh);
+    let can_rx = gpioa.pa11.into_floating_input(&mut gpioa.crh);
     let can: can::Can<pac::CAN1> = can::Can::new(dp.CAN1, dp.USB);
     let mut afio = dp.AFIO.constrain();
     can.assign_pins((can_tx, can_rx), &mut afio.mapr);
@@ -257,6 +270,7 @@ fn main() -> ! {
     };
     let mut node = node::BasicNode::new(core_node, info).unwrap();
 
+        // Initialise timestamps.
     let start_time = cortex_m::interrupt::free(|cs| {
         if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
             cyphal_clock.now()
@@ -264,8 +278,17 @@ fn main() -> ! {
             panic!("Could not borrow global cyphal clock")
         }
     });
-    let mut prev_seconds = 0;
+    let mut heartbeat_time_s = 0;
+    let mut speed_time_s = start_time;
     hprintln!("start time is {}", start_time);
+
+    // Start publishing!
+    let publish_token = node.start_publishing::<CustomSpeed>(
+        custom_speed_0_1::SUBJECT,
+        cyphal_time::MicrosecondDuration48::new(cyphal_time::u48::U48::from(1_000_000u32)), // I don't know what a sensible timeout should be.
+                                               // One second?
+        canadensis::core::Priority::Nominal,
+    ).unwrap();
 
     loop {
         match node.receive(&mut EmptyHandler) {
@@ -282,10 +305,18 @@ fn main() -> ! {
         });
 
         hprintln!("current time is {}", seconds);
-        hprintln!("previous heartbeat target time is {}", prev_seconds);
+        hprintln!("previous heartbeat target time is {}", heartbeat_time_s);
 
-        if seconds >= prev_seconds + 1_000_000 {
-            prev_seconds += 1_000_000;
+        if seconds >= speed_time_s + 10_000 {
+            speed_time_s += 10_000;
+            // send speed data packet
+            // create type
+            // serialise
+            // send type
+        }
+
+        if seconds >= heartbeat_time_s + 1_000_000 {
+            heartbeat_time_s += 1_000_000;
             hprintln!("running once-per-second tasks");
             node.run_per_second_tasks().unwrap();
             node.flush().unwrap();
