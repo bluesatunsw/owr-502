@@ -943,6 +943,107 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "power:PWR_FLAG"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "powerport:+3V3"
 			(power)
 			(pin_names
@@ -1852,10 +1953,22 @@
 		(uuid "24b9c598-4e0d-4126-b541-b8ec3a9edf01")
 	)
 	(junction
+		(at 15.24 64.77)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "903ed2bf-d4d2-4409-851d-e6bb2b6ca8d9")
+	)
+	(junction
 		(at 15.24 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9345e05f-4ca5-4d1a-8c6d-aafc1a91b6c4")
+	)
+	(junction
+		(at 15.24 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a8119fc1-a414-4715-b257-b515bdacc0d3")
 	)
 	(junction
 		(at 15.24 62.23)
@@ -1879,16 +1992,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 83.82) (xy 115.57 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "020791f0-5d81-42e5-989b-448f7a65719c")
-	)
-	(wire
-		(pts
 			(xy 229.87 132.08) (xy 229.87 142.24)
 		)
 		(stroke
@@ -1906,16 +2009,6 @@
 			(type default)
 		)
 		(uuid "099ab795-3266-4a18-9ec9-c140c416e58d")
-	)
-	(wire
-		(pts
-			(xy 113.03 81.28) (xy 115.57 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0e83556d-46ed-495e-a820-bb54165b35d4")
 	)
 	(wire
 		(pts
@@ -1986,16 +2079,6 @@
 			(type default)
 		)
 		(uuid "31709aa8-fb0d-40c7-8999-d05a9f651c5a")
-	)
-	(wire
-		(pts
-			(xy 142.24 78.74) (xy 151.13 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "34e2fde7-668f-4969-b141-c3a85a0f3a26")
 	)
 	(wire
 		(pts
@@ -2279,26 +2362,6 @@
 	)
 	(wire
 		(pts
-			(xy 142.24 81.28) (xy 151.13 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cf603e10-7ba1-4630-9261-ad4ce0e1b7f4")
-	)
-	(wire
-		(pts
-			(xy 113.03 78.74) (xy 115.57 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d54f49fd-ee68-4a48-89cb-4ac00c479349")
-	)
-	(wire
-		(pts
 			(xy 113.03 69.85) (xy 115.57 69.85)
 		)
 		(stroke
@@ -2337,16 +2400,6 @@
 		)
 		(uuid "7b5ec2a7-1da6-4cc0-abfe-428980392ecb")
 	)
-	(label "CAN2_L"
-		(at 151.13 81.28 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "8746046a-fc71-421d-8f0d-25a17b865533")
-	)
 	(label "USB_N"
 		(at 55.88 67.31 180)
 		(effects
@@ -2357,15 +2410,72 @@
 		)
 		(uuid "d9fab3c2-1f6f-4b5f-9bba-84802631201c")
 	)
-	(label "CAN2_H"
-		(at 151.13 78.74 180)
-		(effects
-			(font
-				(size 1.27 1.27)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 15.24 78.74 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "17420a45-6ea1-486b-b781-335d38dc4d9a")
+		(property "Reference" "#FLG01"
+			(at 15.24 76.835 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
 			)
-			(justify right bottom)
 		)
-		(uuid "dfd25303-b796-4b2a-93ad-0aa6cf034f07")
+		(property "Value" "PWR_FLAG"
+			(at 15.24 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 15.24 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 15.24 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b347400f-70d6-4df1-8d22-f088d3987587")
+		)
+		(instances
+			(project ""
+				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "wuerth:629722000214_pasteInHole")
@@ -3088,6 +3198,73 @@
 			(project "candleLightfd-S01"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
 					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 15.24 64.77 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "61d733b7-9a69-428d-aa0f-27dba707ce4b")
+		(property "Reference" "#FLG03"
+			(at 15.24 66.675 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 15.24 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 15.24 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 15.24 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Special symbol for telling ERC where power comes from"
+			(at 15.24 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d6f16356-994d-4921-8300-d685c331dc91")
+		)
+		(instances
+			(project ""
+				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55"
+					(reference "#FLG03")
 					(unit 1)
 				)
 			)
@@ -4259,56 +4436,6 @@
 				(justify right)
 			)
 		)
-		(pin "CAN2_H" bidirectional
-			(at 142.24 78.74 0)
-			(uuid "2e1237f2-9a86-4eee-badb-d7a435109f27")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CAN2_L" bidirectional
-			(at 142.24 81.28 0)
-			(uuid "e3294ed9-7eec-40f4-8475-827a95e2b86a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CAN2_TX" input
-			(at 115.57 78.74 180)
-			(uuid "7340aa3c-541c-48a1-888c-c2fdfccf45cd")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "CAN2_RX" output
-			(at 115.57 81.28 180)
-			(uuid "fcd6da3b-5b3b-40fe-bffb-ed462523cba5")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "CAN2_S" input
-			(at 115.57 83.82 180)
-			(uuid "7dfbe386-c324-4930-bbf6-c556e0a27327")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "CAN1_RX" output
 			(at 115.57 67.31 180)
 			(uuid "05b12ebc-5539-497f-8d66-aec48df3095a")
@@ -4411,26 +4538,6 @@
 				(justify right)
 			)
 		)
-		(pin "CAN2_RX" input
-			(at 113.03 81.28 0)
-			(uuid "9da09905-e424-4481-a2be-734ba0ce8942")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CAN2_TX" output
-			(at 113.03 78.74 0)
-			(uuid "5ef77aef-267a-4147-a8cc-b52694fc8eb9")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
 		(pin "CAN1_TX" output
 			(at 113.03 64.77 0)
 			(uuid "9b47dba0-4c3b-428c-af7c-9e8ab3e9109c")
@@ -4444,16 +4551,6 @@
 		(pin "CAN1_S" output
 			(at 113.03 69.85 0)
 			(uuid "a9cb7044-61e5-4833-b6bf-7c4fd4b3958f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(pin "CAN2_S" output
-			(at 113.03 83.82 0)
-			(uuid "5c75457d-5f63-4931-a743-b76b19552624")
 			(effects
 				(font
 					(size 1.27 1.27)

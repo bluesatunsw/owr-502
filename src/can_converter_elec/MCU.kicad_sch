@@ -2727,6 +2727,10 @@
 		(uuid "21b61db9-1818-4a0f-b885-35a10c6043a3")
 	)
 	(no_connect
+		(at 115.57 21.59)
+		(uuid "2cea4c72-77fa-4cd4-97d4-7176ea1d01ec")
+	)
+	(no_connect
 		(at 165.1 50.8)
 		(uuid "2cf485ba-8175-43e3-90fa-dadb959fdc43")
 	)
@@ -2741,6 +2745,10 @@
 	(no_connect
 		(at 157.48 25.4)
 		(uuid "4f329137-0802-4f30-bda8-19f31616a64e")
+	)
+	(no_connect
+		(at 67.31 46.99)
+		(uuid "562f9caf-9ebf-4ae0-966c-8b50167088ce")
 	)
 	(no_connect
 		(at 115.57 27.94)
@@ -2803,12 +2811,24 @@
 		(uuid "c9a39771-590e-4e31-9ebc-d93610ec4245")
 	)
 	(no_connect
+		(at 115.57 19.05)
+		(uuid "ce195761-597b-4a23-af91-09ce450f73f7")
+	)
+	(no_connect
 		(at 115.57 52.07)
 		(uuid "d0f0044e-f8f1-4435-944f-4fbc1eedf452")
 	)
 	(no_connect
+		(at 115.57 24.13)
+		(uuid "d83f8285-8ba6-446f-ae4b-b049611b9284")
+	)
+	(no_connect
 		(at 157.48 30.48)
 		(uuid "e1a4e18e-c371-494f-8c1b-b7bab09389be")
+	)
+	(no_connect
+		(at 67.31 43.18)
+		(uuid "ff1a3f77-7b44-4d12-a36a-0deb082abf45")
 	)
 	(wire
 		(pts
@@ -2849,16 +2869,6 @@
 			(type default)
 		)
 		(uuid "04b4fd9e-d9bb-45a1-b23f-84b8817bca07")
-	)
-	(wire
-		(pts
-			(xy 111.76 19.05) (xy 115.57 19.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0a57fc6d-2501-470c-b423-22cfa82a0012")
 	)
 	(wire
 		(pts
@@ -3232,16 +3242,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 21.59) (xy 115.57 21.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cceb5c41-a556-4a8a-9db8-cfb13160520f")
-	)
-	(wire
-		(pts
 			(xy 127 120.65) (xy 127 123.19)
 		)
 		(stroke
@@ -3282,16 +3282,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 24.13) (xy 115.57 24.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f364fac8-cfb7-4cec-a6e6-61cf5830f067")
-	)
-	(wire
-		(pts
 			(xy 40.64 57.15) (xy 67.31 57.15)
 		)
 		(stroke
@@ -3320,16 +3310,6 @@
 		)
 		(uuid "ff5a4c62-9c79-4d9d-9afe-513a62aae816")
 	)
-	(label "TX"
-		(at 67.31 43.18 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "0958fbb8-6fc4-4395-9e59-879ce566af71")
-	)
 	(label "SWCLK"
 		(at 59.69 57.15 0)
 		(effects
@@ -3349,16 +3329,6 @@
 			(justify right bottom)
 		)
 		(uuid "5b5c9956-6218-4b3d-8b7c-123d6a70c0f9")
-	)
-	(label "RX"
-		(at 67.31 46.99 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "79d2494e-e04c-499a-bcda-e591feaa4b4a")
 	)
 	(label "NRST"
 		(at 156.21 107.95 0)
@@ -3453,17 +3423,6 @@
 		)
 		(uuid "35c6b6e5-6947-43d7-8223-6597bb5d4765")
 	)
-	(hierarchical_label "CAN2_S"
-		(shape output)
-		(at 111.76 24.13 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "3de10bb9-290a-42bb-9ef3-4423e87e7ec3")
-	)
 	(hierarchical_label "CAN1_RX"
 		(shape input)
 		(at 158.75 45.72 180)
@@ -3474,17 +3433,6 @@
 			(justify right)
 		)
 		(uuid "4a914dae-75dc-45a8-bf6a-6ff39664b29e")
-	)
-	(hierarchical_label "CAN2_RX"
-		(shape input)
-		(at 111.76 19.05 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "6515999f-ddb6-4210-ae91-5d87c4726724")
 	)
 	(hierarchical_label "LED_RX"
 		(shape output)
@@ -3518,17 +3466,6 @@
 			(justify right)
 		)
 		(uuid "89339ec7-a3e1-4658-85ec-f8a98de28f11")
-	)
-	(hierarchical_label "CAN2_TX"
-		(shape output)
-		(at 111.76 21.59 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "d6befa4e-3f51-4612-a4f1-a0ff1b0bbec4")
 	)
 	(symbol
 		(lib_id "powerport:GND")
