@@ -7,9 +7,13 @@ Power input from the battery is provided via a male XT90 connector and each of t
 ## Switching
 Power to each of the subcircuits can be toggled by the MCU. Triggering the estop, a normally closed contact wired to the device, removes power from all subcircuits bypassing the control of the MCU. The MCU is always powered. As implied by the connector name, each channel is able to output 60A peak and 40A continuous.
 
-Unlike other power hub devices, the switching of channels is instant (it lacks a soft start).
+Switching on ramps slowly (soft pullup resistor + gate capacitance), switching off is instantaneous.
+
+Power MOSFET: C2902884
+https://www.lcsc.com/datasheet/C2902884.pdf
+
+Gate drive voltage is provided by a charge pump circuit that sums the battery voltage + the 12V rail.
+The gate driver is a simple BJT pullup configuration.
 
 ## Monitoring
 The total input current of the rover and output current of each channel is monitored.
-
-**[TODO] Explain how this will be implemented**
