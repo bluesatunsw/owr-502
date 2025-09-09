@@ -10,7 +10,6 @@ version = "0.1.0"
 bxcan = "0.7.0"
 canadensis = "0.3.3"
 canadensis_bxcan = "0.3.1"
-canadensis_can = "0.3.1"
 canadensis_data_types = "0.3.2"
 canadensis_macro = "0.3.2"
 cortex-m-rt = "0.7.5"
@@ -31,6 +30,10 @@ canadensis_core = "0.3.1"
 canadensis_bit_length_set = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
 canadensis_dsdl_frontend = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
 canadensis_codegen_rust = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
+
+[dependencies.canadensis_can]
+version = "0.3.1"
+features = ["can-fd"]
 
 [dependencies.stm32f1xx-hal]
 version = "0.10.0"
