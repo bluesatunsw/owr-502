@@ -10,7 +10,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 40.64 10.16 0)
+			(at 27.94 10.16 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -18,7 +18,7 @@
 			)
 		)
 		(property "Value" "STM32G474RBT6"
-			(at 40.64 7.62 0)
+			(at 27.94 7.62 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -26,7 +26,7 @@
 			)
 		)
 		(property "Footprint" "LQFP64-10x10mm"
-			(at 0.762 10.414 0)
+			(at -2.286 14.986 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -36,7 +36,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
-			(at -0.762 7.874 0)
+			(at -2.032 20.574 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -83,7 +83,7 @@
 		(symbol "STM32G474RBT6_1_1"
 			(polyline
 				(pts
-					(xy 7.62 5.08) (xy 7.62 -99.06)
+					(xy 7.62 5.08) (xy 7.62 -113.03)
 				)
 				(stroke
 					(width 0.127)
@@ -95,7 +95,7 @@
 			)
 			(polyline
 				(pts
-					(xy 7.62 -99.06) (xy 73.66 -99.06)
+					(xy 7.62 -113.03) (xy 48.26 -113.03)
 				)
 				(stroke
 					(width 0.127)
@@ -107,7 +107,7 @@
 			)
 			(polyline
 				(pts
-					(xy 73.66 5.08) (xy 7.62 5.08)
+					(xy 48.26 5.08) (xy 7.62 5.08)
 				)
 				(stroke
 					(width 0.127)
@@ -119,7 +119,7 @@
 			)
 			(polyline
 				(pts
-					(xy 73.66 -99.06) (xy 73.66 5.08)
+					(xy 48.26 -113.03) (xy 48.26 5.08)
 				)
 				(stroke
 					(width 0.127)
@@ -129,7 +129,7 @@
 					(type none)
 				)
 			)
-			(pin input line
+			(pin unspecified line
 				(at 0 0 0)
 				(length 7.62)
 				(name "vbus_sense"
@@ -147,116 +147,8 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 0 -13.97 0)
-				(length 7.62)
-				(name "gpio_spare_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 0 -16.51 0)
-				(length 7.62)
-				(name "gpio_spare_2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "62"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 0 -33.02 0)
-				(length 7.62)
-				(name "dbg_swdio"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "49"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 0 -35.56 0)
-				(length 7.62)
-				(name "dbg_swclk"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "50"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 0 -39.37 0)
-				(length 7.62)
-				(name "dbg_swo"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "56"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 0 -41.91 0)
-				(length 7.62)
-				(name "dbg_nrst"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "7"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 0 -55.88 0)
+			(pin unspecified line
+				(at 0 -6.35 0)
 				(length 7.62)
 				(name "boot0"
 					(effects
@@ -273,17 +165,17 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 0 -63.5 0)
+			(pin unspecified line
+				(at 0 -24.13 0)
 				(length 7.62)
-				(name "opamp_vout_1"
+				(name "osc_in"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "14"
+				(number "5"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -291,17 +183,17 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 0 -66.04 0)
+			(pin unspecified line
+				(at 0 -26.67 0)
 				(length 7.62)
-				(name "opamp_vout_2"
+				(name "osc_out"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "20"
+				(number "6"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -309,17 +201,17 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 0 -68.58 0)
+			(pin unspecified line
+				(at 0 -53.34 0)
 				(length 7.62)
-				(name "opamp_vout_4"
+				(name "dbg_swdio"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "42"
+				(number "49"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -327,17 +219,17 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 0 -71.12 0)
+			(pin unspecified line
+				(at 0 -55.88 0)
 				(length 7.62)
-				(name "opamp_vout_3"
+				(name "dbg_swclk"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "34"
+				(number "50"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -345,17 +237,17 @@
 					)
 				)
 			)
-			(pin input line
-				(at 0 -80.01 0)
+			(pin unspecified line
+				(at 0 -58.42 0)
 				(length 7.62)
-				(name "PC14-OSC32_IN"
+				(name "nrst"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "3"
+				(number "7"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -363,17 +255,89 @@
 					)
 				)
 			)
-			(pin output line
-				(at 0 -82.55 0)
+			(pin unspecified line
+				(at 0 -60.96 0)
 				(length 7.62)
-				(name "PC15-OSC32_OUT"
+				(name "dbg_swo"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "4"
+				(number "56"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 0 -83.82 0)
+				(length 7.62)
+				(name "gpio_spare_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "36"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 0 -86.36 0)
+				(length 7.62)
+				(name "gpio_spare_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "53"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 0 -106.68 0)
+				(length 7.62)
+				(name "fdcan_rx"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "45"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 0 -109.22 0)
+				(length 7.62)
+				(name "fdcan_tx"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "46"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -382,7 +346,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PC2"
 					(effects
@@ -400,7 +364,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PA0"
 					(effects
@@ -418,25 +382,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
-				(length 7.62)
-				(name "PA3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "17"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PA4"
 					(effects
@@ -454,7 +400,25 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
+				(length 7.62)
+				(name "PC4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "22"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB0"
 					(effects
@@ -472,7 +436,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB2"
 					(effects
@@ -490,7 +454,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB13"
 					(effects
@@ -508,7 +472,25 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
+				(length 7.62)
+				(name "PB15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "37"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin no_connect line
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PA10"
 					(effects
@@ -526,16 +508,16 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
-				(name "PA12"
+				(name "PC10"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "46"
+				(number "52"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -544,16 +526,16 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
-				(name "PA15"
+				(name "PC12"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "51"
+				(number "54"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -562,7 +544,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PD2"
 					(effects
@@ -580,7 +562,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB4"
 					(effects
@@ -598,7 +580,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB5"
 					(effects
@@ -616,7 +598,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PB6"
 					(effects
@@ -634,25 +616,7 @@
 				)
 			)
 			(pin no_connect line
-				(at 0 -96.52 0)
-				(length 7.62)
-				(name "PC0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "8"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -96.52 0)
+				(at 0 -113.03 0)
 				(length 7.62)
 				(name "PC1"
 					(effects
@@ -669,8 +633,8 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 0 180)
+			(pin unspecified line
+				(at 55.88 0 180)
 				(length 7.62)
 				(name "cp_pulse_gen"
 					(effects
@@ -687,10 +651,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -6.35 180)
+			(pin unspecified line
+				(at 55.88 -6.35 180)
 				(length 7.62)
-				(name "channel_1"
+				(name "channel_0"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -705,10 +669,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -8.89 180)
+			(pin unspecified line
+				(at 55.88 -8.89 180)
 				(length 7.62)
-				(name "opamp_vinp_1"
+				(name "opamp_vinp_0"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -723,10 +687,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -11.43 180)
+			(pin unspecified line
+				(at 55.88 -11.43 180)
 				(length 7.62)
-				(name "opamp_vinm_1"
+				(name "opamp_vinm_0"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -741,10 +705,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -17.78 180)
+			(pin unspecified line
+				(at 55.88 -16.51 180)
 				(length 7.62)
-				(name "channel_2"
+				(name "channel_1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -759,10 +723,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -20.32 180)
+			(pin unspecified line
+				(at 55.88 -19.05 180)
 				(length 7.62)
-				(name "opamp_vinp_2"
+				(name "opamp_vinp_1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -777,10 +741,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -22.86 180)
+			(pin unspecified line
+				(at 55.88 -21.59 180)
 				(length 7.62)
-				(name "opamp_vinm_2"
+				(name "opamp_vinm_1"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -795,10 +759,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -30.48 180)
+			(pin unspecified line
+				(at 55.88 -26.67 180)
 				(length 7.62)
-				(name "channel_3"
+				(name "channel_2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -813,10 +777,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -33.02 180)
+			(pin unspecified line
+				(at 55.88 -29.21 180)
 				(length 7.62)
-				(name "opamp_vinp_3"
+				(name "opamp_vinp_2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -831,10 +795,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -35.56 180)
+			(pin unspecified line
+				(at 55.88 -31.75 180)
 				(length 7.62)
-				(name "opamp_vinm_3"
+				(name "opamp_vinm_2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -849,10 +813,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -43.18 180)
+			(pin unspecified line
+				(at 55.88 -36.83 180)
 				(length 7.62)
-				(name "channel_4"
+				(name "channel_3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -867,10 +831,10 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -45.72 180)
+			(pin unspecified line
+				(at 55.88 -39.37 180)
 				(length 7.62)
-				(name "opamp_vinp_4"
+				(name "opamp_vinp_3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -885,17 +849,17 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -48.26 180)
+			(pin unspecified line
+				(at 55.88 -41.91 180)
 				(length 7.62)
-				(name "opamp_vinm_4"
+				(name "opamp_vinm_3"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "37"
+				(number "17"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -903,10 +867,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -55.88 180)
+			(pin unspecified line
+				(at 55.88 -52.07 180)
 				(length 7.62)
-				(name "i2c_sclk"
+				(name "usart_led"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -921,8 +885,44 @@
 					)
 				)
 			)
-			(pin bidirectional line
-				(at 81.28 -58.42 180)
+			(pin output line
+				(at 55.88 -95.25 180)
+				(length 7.62)
+				(name "i2c_wp"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 55.88 -97.79 180)
+				(length 7.62)
+				(name "i2c_sclk"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "51"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 55.88 -100.33 180)
 				(length 7.62)
 				(name "i2c_sda"
 					(effects
@@ -931,7 +931,7 @@
 						)
 					)
 				)
-				(number "5"
+				(number "62"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -939,17 +939,17 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -67.31 180)
+			(pin unspecified line
+				(at 55.88 -102.87 180)
 				(length 7.62)
-				(name "usart_led"
+				(name "i2c_a0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "22"
+				(number "4"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -957,17 +957,17 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -77.47 180)
+			(pin unspecified line
+				(at 55.88 -105.41 180)
 				(length 7.62)
-				(name "spi1_sck"
+				(name "i2c_a1"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "6"
+				(number "3"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -975,17 +975,17 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -80.01 180)
+			(pin unspecified line
+				(at 55.88 -107.95 180)
 				(length 7.62)
-				(name "spi1_mosi"
+				(name "i2c_a2"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "45"
+				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -993,17 +993,17 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -82.55 180)
+			(pin unspecified line
+				(at 57.15 -68.58 180)
 				(length 7.62)
-				(name "sp1i_miso"
+				(name "opamp_vout_0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "36"
+				(number "14"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1011,17 +1011,17 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -91.44 180)
+			(pin unspecified line
+				(at 57.15 -71.12 180)
 				(length 7.62)
-				(name "spi2_sck"
+				(name "opamp_vout_1"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "52"
+				(number "20"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1029,17 +1029,17 @@
 					)
 				)
 			)
-			(pin output line
-				(at 81.28 -93.98 180)
+			(pin unspecified line
+				(at 57.15 -73.66 180)
 				(length 7.62)
-				(name "spi2_mosi"
+				(name "opamp_vout_2"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "54"
+				(number "34"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1047,17 +1047,17 @@
 					)
 				)
 			)
-			(pin input line
-				(at 81.28 -96.52 180)
+			(pin unspecified line
+				(at 57.15 -76.2 180)
 				(length 7.62)
-				(name "spi2_miso"
+				(name "opamp_vout_3"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "53"
+				(number "42"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1188,7 +1188,25 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -12.7 0)
+				(at 0 -10.16 0)
+				(length 7.62)
+				(name "VBAT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 -16.51 0)
 				(length 7.62)
 				(name "VDDA"
 					(effects
@@ -1206,16 +1224,16 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -17.78 0)
+				(at 0 -19.05 0)
 				(length 7.62)
-				(name "VBAT"
+				(name "VREF+"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "1"
+				(number "28"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1306,24 +1324,6 @@
 					)
 				)
 				(number "27"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin power_in line
-				(at 40.64 -17.78 180)
-				(length 7.62)
-				(name "VREF+"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "28"
 					(effects
 						(font
 							(size 1.27 1.27)
