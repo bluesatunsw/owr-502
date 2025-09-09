@@ -1093,9 +1093,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "40V Rating Minimum"
+	(text "40V"
 		(exclude_from_sim no)
-		(at 158.242 97.79 0)
+		(at 157.48 94.234 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1103,9 +1103,9 @@
 		)
 		(uuid "31f4cae3-d491-4315-84ae-5c0e6a8756db")
 	)
-	(text "40V Rating Minimum"
+	(text "40V"
 		(exclude_from_sim no)
-		(at 130.81 97.79 0)
+		(at 131.064 95.504 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1130,6 +1130,16 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c67f7549-a9ea-42ca-baff-33e3b51a644e")
+	)
+	(wire
+		(pts
+			(xy 105.41 104.14) (xy 110.49 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0abfb4ec-aa3a-4b22-8f0a-a3eb87e97d7c")
 	)
 	(wire
 		(pts
@@ -1203,16 +1213,6 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 97.79) (xy 104.14 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5538715a-7f7f-424a-8038-c73842831401")
-	)
-	(wire
-		(pts
 			(xy 127 82.55) (xy 127 83.82)
 		)
 		(stroke
@@ -1220,6 +1220,16 @@
 			(type default)
 		)
 		(uuid "55aa2d5c-ac8e-465c-a0be-d06ccd742c55")
+	)
+	(wire
+		(pts
+			(xy 104.14 97.79) (xy 104.14 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6f530e42-ceb3-4869-ae1b-8d03d30b1c57")
 	)
 	(wire
 		(pts
@@ -1253,13 +1263,13 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 104.14) (xy 110.49 104.14)
+			(xy 104.14 102.87) (xy 105.41 104.14)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cbb042b3-09c7-4c34-acd9-dabda87e0443")
+		(uuid "ddf4d2cc-95b3-444f-a5d2-69592edab96a")
 	)
 	(wire
 		(pts
@@ -1293,7 +1303,7 @@
 		(uuid "11e10356-d960-46fe-a6dd-4a2aa8773242")
 	)
 	(hierarchical_label "Vdrv"
-		(shape input)
+		(shape output)
 		(at 172.72 83.82 0)
 		(effects
 			(font
@@ -1322,7 +1332,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "NMOS"
+		(property "Value" "SSM3K333R"
 			(at 130.81 115.5699 0)
 			(effects
 				(font
@@ -1483,10 +1493,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "2509ca40-6b8b-4790-a7d5-3be2a1c8b870")
 		(property "Reference" "D1"
-			(at 129.54 77.7874 90)
+			(at 110.998 77.724 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1494,8 +1503,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "D_Schottky"
-			(at 129.54 80.3274 90)
+		(property "Value" "SBR0560S1-7"
+			(at 110.998 80.264 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1898,7 +1907,7 @@
 				)
 			)
 		)
-		(property "Value" "D_Schottky"
+		(property "Value" "SBR0560S1-7"
 			(at 147.6375 80.01 0)
 			(effects
 				(font
