@@ -13,7 +13,7 @@
 
 use canadensis::node::data_types::Version;
 // TODO: Set a more stable panic behaviour.
-use panic_halt as _;
+use panic_semihosting as _;
 
 extern crate alloc;
 
@@ -55,6 +55,7 @@ types_from_dsdl! {
 }
 use crate::owr502::custom_speed_0_1;
 use crate::owr502::custom_speed_0_1::CustomSpeed;
+use crate::owr502::base_speed_1_0::BaseSpeed;
 
 // The Cyphal node ID that this device operates as.
 const NODE_ID: u8 = 1;
@@ -280,6 +281,7 @@ fn main() -> ! {
     });
     let mut heartbeat_time_s = 0;
     let mut speed_time_s = start_time;
+    let mut speed_packets_sent: u64 = 0;
     hprintln!("start time is {}", start_time);
 
     // Start publishing!
@@ -309,16 +311,29 @@ fn main() -> ! {
 
         if seconds >= speed_time_s + 10_000 {
             speed_time_s += 10_000;
-            // send speed data packet
-            // create type
-            // serialise
-            // send type
+            let speed_packet = CustomSpeed {
+                rad_per_sec: BaseSpeed {
+                    integer: 0x1337,
+                    fraction: 0xcafe,
+                },
+                torque_mode: 0b1111,
+            };
+            match node.publish::<CustomSpeed>(&publish_token, &speed_packet) {
+                Ok(()) => {
+                    speed_packets_sent += 1;
+                },
+                Err(error) => hprintln!("Problem sending speed packet: {:?}", error),
+            };
+        }
+
+        if speed_packets_sent % 100 == 0 {
+            hprintln!("sent {} speed packets so far", speed_packets_sent);
         }
 
         if seconds >= heartbeat_time_s + 1_000_000 {
             heartbeat_time_s += 1_000_000;
             hprintln!("running once-per-second tasks");
-            node.run_per_second_tasks().unwrap();
+            while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {};
             node.flush().unwrap();
             hprintln!("finished tasks");
         }
