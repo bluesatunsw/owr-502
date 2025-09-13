@@ -4,14 +4,9 @@
 //!     - Sends "speed" packets with dummy data at 100 Hz
 //!     - Listens for a file and blinks LED if checksum matches expected
 
-// Have to remove the following attribute since it's apparently incompatible with the
-// embedded_alloc allocator.
-//#![deny(unsafe_code)]
-
 #![no_std]
 #![no_main]
 
-use canadensis::node::data_types::Version;
 // TODO: Set a more stable panic behaviour.
 use panic_semihosting as _;
 
@@ -21,31 +16,35 @@ use bxcan;
 use canadensis::core::time as cyphal_time;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
 use canadensis::core::transport::Transport;
+use canadensis::node::data_types::Version;
 use canadensis::node;
 use canadensis::{Node, ResponseToken, TransferHandler};
 use canadensis_bxcan::{self as cbxcan, BxCanDriver};
 use canadensis_can::{self, CanReceiver, CanTransmitter};
 use canadensis_data_types::uavcan::node::get_info_1_0::GetInfoResponse;
 use canadensis_macro::types_from_dsdl;
-use core::cell::RefCell;
 use core::panic;
-use cortex_m::interrupt::Mutex;
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
-use cyphal_time::Clock;
 use cyphal_time::Instant;
+use cyphal_time::u48::U48;
 use embedded_alloc::LlffHeap as Heap;
 use heapless;
 use nb::block;
-use stm32f1xx_hal::pac::interrupt;
+
+#[cfg(feature = "stm32f103")]
+use crate::boards::stm32f103::{CyphalClock, GeneralClock};
+
+pub mod boards;
+
+#[cfg(feature = "stm32f103")]
 use stm32f1xx_hal::time as hw_time;
+#[cfg(feature = "stm32f103")]
 use stm32f1xx_hal::{
     can, pac,
     prelude::*,
     rcc,
-    rcc::{Enable, Reset},
-    timer,
-    timer::{counter, Timer},
+    timer::Timer,
 };
 
 // Set up custom Cyphal data types.
@@ -62,6 +61,7 @@ const NODE_ID: u8 = 1;
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 8;
 const CYPHAL_NUM_SERVICES: usize = 8;
+const SPEED_PUBLISH_TIMEOUT_US: u32 = 1_000_000;
 
 // Global allocator -- required by canadensis.
 #[global_allocator]
@@ -72,122 +72,6 @@ fn initialise_allocator() {
     const HEAP_SIZE: usize = 1024;
     static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
     unsafe { HEAP.init(&raw mut HEAP_MEM as usize, HEAP_SIZE) }
-}
-
-//////////////////////////////////////////////////////////////////////////////
-// Implementations of platform-specific constructs that canadensis requires //
-//////////////////////////////////////////////////////////////////////////////
-
-struct STM32F103CyphalClock {
-    // TIM2 allocated to the microsecond Cyphal timer, lower 16 bits
-    hw_timer_lower: pac::TIM2,
-    // TIM3 allocated to the microsecond Cyphal timer, upper 16 bits
-    hw_timer_upper: pac::TIM3,
-    // TODO: Add either interrupt handling (as per previous iteration of this program) or chain a
-    // third timer to extend this timer to 48 bits.
-}
-
-// Internal 1 MHz timer to provide time instants for Cyphal.
-impl STM32F103CyphalClock {
-    fn new(tim2: pac::TIM2, tim3: pac::TIM3) -> Self {
-        // Enable and reset the timer peripheral.
-        unsafe {
-            let rcc_ptr = &(*pac::RCC::ptr());
-            pac::TIM2::enable(rcc_ptr);
-            pac::TIM3::enable(rcc_ptr);
-            pac::TIM2::reset(rcc_ptr);
-            pac::TIM3::reset(rcc_ptr);
-            Self {
-                hw_timer_lower: tim2,
-                hw_timer_upper: tim3,
-            }
-        }
-    }
-
-    // Configure timers: count up lower at 1 MHz, wraparound and update upper on overflow.
-    fn start(&mut self) {
-        // updates on overflow happen automatically
-        // set frequency to external clock (8MHz)
-        self.hw_timer_lower.smcr.write(|w| w.sms().bits(0b000)); // select CK_INT
-        self.hw_timer_lower.psc.write(|w| w.psc().bits(0x0007)); // scale 8MHz to 1MHz
-
-        // See STM RM0008 Section 15.3.15 Timer synchronization,
-        // "Using one timer as prescaler for another timer" for hints on this section.
-        // Configure lower timer to generate external trigger output on update (i.e. overflow).
-        self.hw_timer_lower.cr2.write(|w| w.mms().bits(0b010));
-        // Configure upper timer to be in external clock mode, clocked by ITR1
-        // => TIM3 clocked by TIM2 updates (Table 86)
-        unsafe {
-            self.hw_timer_upper
-                .smcr
-                .write(|w| w.ts().bits(0b001).sms().bits(0b111));
-        }
-        // set counters to 0 initially
-        self.hw_timer_lower.cnt.write(|w| w.cnt().bits(0));
-        self.hw_timer_upper.cnt.write(|w| w.cnt().bits(0));
-        // start timers
-        self.hw_timer_lower
-            .cr1
-            .write(|w| w.urs().set_bit().cen().set_bit());
-        self.hw_timer_upper.cr1.write(|w| w.cen().set_bit());
-        // desired defaults:
-        // DIR = 0 -> count up
-        // CMS = 00 -> edge-aligned mode
-        // OPM = 0
-    }
-
-    fn now(&self) -> u32 {
-        // somewhat hacky purposes
-        // TODO: need same edge case fix as for CyphalClock::now()
-        (self.hw_timer_upper.cnt.read().bits() << 16) + self.hw_timer_lower.cnt.read().bits()
-    }
-}
-
-// make clock globally available, so we can write the interrupt handler for it
-static G_CYPHAL_CLOCK: Mutex<RefCell<Option<STM32F103CyphalClock>>> =
-    Mutex::new(RefCell::new(None));
-
-struct CyphalClock {}
-
-// exists to be instantiable locally but passes everything through to global state
-// (state has to be global to be modifiable by interrupt handler)
-impl CyphalClock {
-    fn new_singleton(tim2: pac::TIM2, tim3: pac::TIM3) -> Self {
-        // takes in a few hardware peripherals
-        cortex_m::interrupt::free(|cs| {
-            *G_CYPHAL_CLOCK.borrow(cs).borrow_mut() = Some(STM32F103CyphalClock::new(tim2, tim3))
-        });
-        CyphalClock {}
-    }
-
-    fn start(&self) {
-        cortex_m::interrupt::free(|cs| {
-            G_CYPHAL_CLOCK
-                .borrow(cs)
-                .borrow_mut()
-                .as_mut()
-                .unwrap()
-                .start()
-        });
-    }
-}
-
-impl cyphal_time::Clock for CyphalClock {
-    type Instant = cyphal_time::Microseconds48;
-
-    fn now(&mut self) -> Self::Instant {
-        // TODO: Handle edge case where timer overflows in between reading upper and lower bits
-        cortex_m::interrupt::free(|cs| {
-            if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
-                let lower_time = cyphal_clock.hw_timer_lower.cnt.read().bits();
-                cyphal_time::Microseconds48::new(cyphal_time::u48::U48::from(
-                    (cyphal_clock.hw_timer_upper.cnt.read().bits() << 16) + lower_time,
-                ))
-            } else {
-                panic!("Could not borrow global cyphal clock")
-            }
-        })
-    }
 }
 
 ///////////
@@ -271,24 +155,19 @@ fn main() -> ! {
     };
     let mut node = node::BasicNode::new(core_node, info).unwrap();
 
-        // Initialise timestamps.
-    let start_time = cortex_m::interrupt::free(|cs| {
-        if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
-            cyphal_clock.now()
-        } else {
-            panic!("Could not borrow global cyphal clock")
-        }
-    });
-    let mut heartbeat_time_s = 0;
-    let mut speed_time_s = start_time;
+    // Initialise timestamps.
+    let start_time: u64 = GeneralClock::now().as_microseconds().into();
+    let mut heartbeat_target_time_us: u64 = start_time + 1_000_000u64;
+    let mut speed_time_us: u64 = start_time;
     let mut speed_packets_sent: u64 = 0;
+    let mut loop_iters: u32 = 0;
+    let mut would_block: u32 = 0;
     hprintln!("start time is {}", start_time);
 
     // Start publishing!
     let publish_token = node.start_publishing::<CustomSpeed>(
         custom_speed_0_1::SUBJECT,
-        cyphal_time::MicrosecondDuration48::new(cyphal_time::u48::U48::from(1_000_000u32)), // I don't know what a sensible timeout should be.
-                                               // One second?
+        cyphal_time::MicrosecondDuration48::new(U48::from(SPEED_PUBLISH_TIMEOUT_US)),
         canadensis::core::Priority::Nominal,
     ).unwrap();
 
@@ -298,19 +177,35 @@ fn main() -> ! {
             Err(e) => panic!("{:?}", e),
         }
 
-        let seconds = cortex_m::interrupt::free(|cs| {
-            if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
-                cyphal_clock.now()
-            } else {
-                panic!("Could not borrow global cyphal clock")
+        // Make an effort to avoid missing heartbeats
+        let useconds: u64 = GeneralClock::now().as_microseconds().into();
+        let mut missed_heartbeats = 0;
+        if useconds >= heartbeat_target_time_us {
+            heartbeat_target_time_us += 1_000_000;
+            while useconds >= heartbeat_target_time_us {
+                missed_heartbeats += 1;
+                heartbeat_target_time_us += 1_000_000;
             }
-        });
+            while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
+                // block on handling heartbeat
+            };
+            node.flush().unwrap();
+            hprintln!("Once-per-second tasks run at {}", useconds);
+            if missed_heartbeats > 0 {
+                hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
+            }
+            if (useconds / 1_000_000) % 5 == 0 {
+                hprintln!("{} in {}; {} wb", speed_packets_sent, loop_iters, would_block);
+            }
+        }
 
-        hprintln!("current time is {}", seconds);
-        hprintln!("previous heartbeat target time is {}", heartbeat_time_s);
-
-        if seconds >= speed_time_s + 10_000 {
-            speed_time_s += 10_000;
+        // Handle remaining tasks/messages on a best-effort basis
+        if useconds >= speed_time_us + 10_000 {
+            speed_time_us += 10_000;
+            if useconds > speed_time_us {
+                // in case we've fallen behind schedule
+                speed_time_us = useconds + 10_000;
+            }
             let speed_packet = CustomSpeed {
                 rad_per_sec: BaseSpeed {
                     integer: 0x1337,
@@ -322,21 +217,15 @@ fn main() -> ! {
                 Ok(()) => {
                     speed_packets_sent += 1;
                 },
+                Err(canadensis::core::nb::Error::WouldBlock) => {
+                    // just skip publishing if blocking
+                    would_block += 1;
+                },
                 Err(error) => hprintln!("Problem sending speed packet: {:?}", error),
             };
         }
 
-        if speed_packets_sent % 100 == 0 {
-            hprintln!("sent {} speed packets so far", speed_packets_sent);
-        }
-
-        if seconds >= heartbeat_time_s + 1_000_000 {
-            heartbeat_time_s += 1_000_000;
-            hprintln!("running once-per-second tasks");
-            while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {};
-            node.flush().unwrap();
-            hprintln!("finished tasks");
-        }
+        loop_iters += 1;
     }
 }
 
