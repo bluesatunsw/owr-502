@@ -3586,12 +3586,6 @@
 		(uuid "f2de146d-f4d8-40e1-a8df-a6f3906e4c0d")
 	)
 	(junction
-		(at 29.21 81.28)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f4ca3c52-7992-42ea-9d75-791df027d791")
-	)
-	(junction
 		(at 185.42 39.37)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3608,6 +3602,10 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fe6b4cfa-ad45-46df-91cf-c51b5d520eee")
+	)
+	(no_connect
+		(at 30.48 86.36)
+		(uuid "243dfb92-78ba-4714-a8da-368dce72c362")
 	)
 	(wire
 		(pts
@@ -3728,16 +3726,6 @@
 			(type default)
 		)
 		(uuid "1ac70a3f-68a0-45e2-bfd2-59e35a8cdb79")
-	)
-	(wire
-		(pts
-			(xy 30.48 86.36) (xy 29.21 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1cbb5174-c81e-4c51-aef4-b6dca0d907d2")
 	)
 	(wire
 		(pts
@@ -4001,7 +3989,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 81.28) (xy 30.48 81.28)
+			(xy 26.67 81.28) (xy 30.48 81.28)
 		)
 		(stroke
 			(width 0)
@@ -4351,16 +4339,6 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 81.28) (xy 29.21 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b2329bbb-a593-4d21-9ed1-f075f07be6b2")
-	)
-	(wire
-		(pts
 			(xy 185.42 35.56) (xy 185.42 39.37)
 		)
 		(stroke
@@ -4458,16 +4436,6 @@
 			(type default)
 		)
 		(uuid "cd45eb2d-e14d-4823-929c-5f180a239238")
-	)
-	(wire
-		(pts
-			(xy 26.67 81.28) (xy 29.21 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ce009b70-857a-4826-8462-1f409bb5343d")
 	)
 	(wire
 		(pts
@@ -7909,7 +7877,7 @@
 	)
 	(symbol
 		(lib_id "Device:D_TVS_Small")
-		(at 55.88 33.02 90)
+		(at 55.88 33.02 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -7917,7 +7885,7 @@
 		(dnp no)
 		(uuid "a12c2fd3-b1db-4312-9055-e27c4f3cdbde")
 		(property "Reference" "D3"
-			(at 57.912 33.02 90)
+			(at 53.848 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7926,7 +7894,7 @@
 			)
 		)
 		(property "Value" "30V"
-			(at 57.912 35.56 90)
+			(at 53.848 30.48 90)
 			(effects
 				(font
 					(size 1.27 1.27)

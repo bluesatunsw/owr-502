@@ -5,6 +5,148 @@
 	(uuid "26aebe79-19f5-4d35-a1d9-00f6d008e0b3")
 	(paper "A4")
 	(lib_symbols
+		(symbol "Bluesat:C_CompactH"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.762 0.889 0)
+				(do_not_autoplace)
+				(effects
+					(font
+						(size 1.016 1.016)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_CompactH"
+				(at -0.762 0.889 0)
+				(do_not_autoplace)
+				(effects
+					(font
+						(size 1.016 1.016)
+					)
+					(justify right)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Unpolarized capacitor, compact symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "capacitor cap"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_CompactH_0_1"
+				(polyline
+					(pts
+						(xy -0.508 -1.524) (xy -0.508 1.524)
+					)
+					(stroke
+						(width 0.3048)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.508 -1.524) (xy 0.508 1.524)
+					)
+					(stroke
+						(width 0.3302)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_CompactH_1_1"
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.032)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 2.032)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Bluesat:R_CompactH"
 			(pin_numbers
 				(hide yes)
@@ -1211,9 +1353,9 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "470K * 1.6nF (Cgd, nominal) = 500us.\nIn practice capacitance is larger so switch on will take longer."
+	(text "470K * 100nF = 50ms."
 		(exclude_from_sim no)
-		(at 61.214 60.452 0)
+		(at 80.01 64.77 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1229,16 +1371,32 @@
 		(uuid "2d4f76eb-4797-44b3-aeb4-04bf4c961ac1")
 	)
 	(junction
-		(at 113.03 68.58)
+		(at 96.52 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "85cc7c4d-3498-41e3-aea9-d9e7e5dfe9ad")
+		(uuid "8c02b437-118c-458b-a172-33787bf8895e")
+	)
+	(junction
+		(at 109.22 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b5a73947-478b-4c5d-b29e-c0b0292d28d9")
 	)
 	(junction
 		(at 125.73 76.2)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d40203f3-a4de-4613-8786-ce7e6a48b82a")
+	)
+	(wire
+		(pts
+			(xy 109.22 68.58) (xy 109.22 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "330f1c2e-480d-4632-ad9f-08bc3a87e173")
 	)
 	(wire
 		(pts
@@ -1252,7 +1410,17 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 68.58) (xy 113.03 68.58)
+			(xy 109.22 78.74) (xy 109.22 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44de5597-50d3-4188-8360-e9918ce5f708")
+	)
+	(wire
+		(pts
+			(xy 92.71 68.58) (xy 96.52 68.58)
 		)
 		(stroke
 			(width 0)
@@ -1272,6 +1440,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 68.58) (xy 118.11 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5bd6006b-693d-4bac-8522-9c86e69aaeba")
+	)
+	(wire
+		(pts
 			(xy 125.73 73.66) (xy 125.73 76.2)
 		)
 		(stroke
@@ -1282,7 +1460,7 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 68.58) (xy 113.03 73.66)
+			(xy 96.52 68.58) (xy 96.52 73.66)
 		)
 		(stroke
 			(width 0)
@@ -1292,7 +1470,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 74.93) (xy 97.79 76.2)
+			(xy 82.55 74.93) (xy 81.28 76.2)
 		)
 		(stroke
 			(width 0)
@@ -1312,7 +1490,7 @@
 	)
 	(wire
 		(pts
-			(xy 95.25 68.58) (xy 104.14 68.58)
+			(xy 78.74 68.58) (xy 87.63 68.58)
 		)
 		(stroke
 			(width 0)
@@ -1342,7 +1520,17 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 93.98) (xy 97.79 96.52)
+			(xy 96.52 68.58) (xy 109.22 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a44fddbe-21f7-4b65-9dc9-de339de1a72d")
+	)
+	(wire
+		(pts
+			(xy 81.28 93.98) (xy 81.28 96.52)
 		)
 		(stroke
 			(width 0)
@@ -1362,7 +1550,7 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 74.93) (xy 99.06 74.93)
+			(xy 95.25 74.93) (xy 82.55 74.93)
 		)
 		(stroke
 			(width 0)
@@ -1372,7 +1560,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 88.9) (xy 90.17 88.9)
+			(xy 67.31 88.9) (xy 73.66 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1402,17 +1590,7 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 68.58) (xy 118.11 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e82b4829-adbb-4569-a72d-72e26ee948a2")
-	)
-	(wire
-		(pts
-			(xy 113.03 73.66) (xy 111.76 74.93)
+			(xy 96.52 73.66) (xy 95.25 74.93)
 		)
 		(stroke
 			(width 0)
@@ -1422,7 +1600,7 @@
 	)
 	(wire
 		(pts
-			(xy 97.79 76.2) (xy 97.79 83.82)
+			(xy 81.28 76.2) (xy 81.28 83.82)
 		)
 		(stroke
 			(width 0)
@@ -1463,7 +1641,7 @@
 	)
 	(hierarchical_label "Vdrv"
 		(shape input)
-		(at 95.25 68.58 180)
+		(at 78.74 68.58 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1485,7 +1663,7 @@
 	)
 	(hierarchical_label "~{chan_on}"
 		(shape input)
-		(at 83.82 88.9 180)
+		(at 67.31 88.9 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1496,7 +1674,7 @@
 	)
 	(symbol
 		(lib_id "Simulation_SPICE:NPN")
-		(at 95.25 88.9 0)
+		(at 78.74 88.9 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1505,7 +1683,7 @@
 		(fields_autoplaced yes)
 		(uuid "009b337a-af09-48a2-b037-87d2e535598a")
 		(property "Reference" "Q4"
-			(at 100.33 87.6299 0)
+			(at 83.82 87.6299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1514,7 +1692,7 @@
 			)
 		)
 		(property "Value" "BC846s"
-			(at 100.33 90.1699 0)
+			(at 83.82 90.1699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1523,7 +1701,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 158.75 88.9 0)
+			(at 142.24 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1532,7 +1710,7 @@
 			)
 		)
 		(property "Datasheet" "https://ngspice.sourceforge.io/docs/ngspice-html-manual/manual.xhtml#cha_BJTs"
-			(at 158.75 88.9 0)
+			(at 142.24 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1541,7 +1719,7 @@
 			)
 		)
 		(property "Description" "Bipolar transistor symbol for simulation only, substrate tied to the emitter"
-			(at 95.25 88.9 0)
+			(at 78.74 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1550,7 +1728,7 @@
 			)
 		)
 		(property "Sim.Device" "NPN"
-			(at 95.25 88.9 0)
+			(at 78.74 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1559,7 +1737,7 @@
 			)
 		)
 		(property "Sim.Type" "GUMMELPOON"
-			(at 95.25 88.9 0)
+			(at 78.74 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1568,7 +1746,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=C 2=B 3=E"
-			(at 95.25 88.9 0)
+			(at 78.74 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1601,6 +1779,84 @@
 				)
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/de2b0476-3be6-4d7d-9434-3efc0916db08"
 					(reference "Q6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 109.22 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "311b1a10-d759-47e5-be76-abd1becfb00b")
+		(property "Reference" "#PWR048"
+			(at 109.22 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 109.22 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 109.22 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e0754567-f53d-4c6d-9e52-2be107cf5628")
+		)
+		(instances
+			(project ""
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/5eb3b45e-ce0d-438f-8855-7a1a2a4397a6"
+					(reference "#PWR051")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/c36d76ea-44e9-4d64-b46e-ad2297433d21"
+					(reference "#PWR049")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/d7476164-5218-41ec-b025-95e58a333636"
+					(reference "#PWR048")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/de2b0476-3be6-4d7d-9434-3efc0916db08"
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -1798,7 +2054,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 97.79 96.52 0)
+		(at 81.28 96.52 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1807,7 +2063,7 @@
 		(fields_autoplaced yes)
 		(uuid "c661e885-f440-4df0-9053-f3359f9cfe79")
 		(property "Reference" "#PWR034"
-			(at 97.79 102.87 0)
+			(at 81.28 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1816,7 +2072,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 97.79 101.6 0)
+			(at 81.28 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1824,7 +2080,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 97.79 96.52 0)
+			(at 81.28 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1833,7 +2089,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 97.79 96.52 0)
+			(at 81.28 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1842,7 +2098,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 97.79 96.52 0)
+			(at 81.28 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1875,8 +2131,92 @@
 		)
 	)
 	(symbol
+		(lib_id "Bluesat:C_CompactH")
+		(at 109.22 76.2 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ca4f86be-3ec6-4449-987b-a7ca70c6f5e5")
+		(property "Reference" "C19"
+			(at 108.331 75.438 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 108.331 76.962 0)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 109.22 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 109.22 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 109.22 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "1f0310ac-07a3-454f-940e-bebe2387c7ef")
+		)
+		(pin "1"
+			(uuid "7d732895-b18c-412a-b672-6e0caa4443b7")
+		)
+		(instances
+			(project ""
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/5eb3b45e-ce0d-438f-8855-7a1a2a4397a6"
+					(reference "C22")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/c36d76ea-44e9-4d64-b46e-ad2297433d21"
+					(reference "C20")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/d7476164-5218-41ec-b025-95e58a333636"
+					(reference "C19")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/de2b0476-3be6-4d7d-9434-3efc0916db08"
+					(reference "C21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:R_CompactH")
-		(at 106.68 68.58 0)
+		(at 90.17 68.58 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1885,7 +2225,7 @@
 		(fields_autoplaced yes)
 		(uuid "cfb0651f-6395-4a7a-a97e-dbec4735e58d")
 		(property "Reference" "R5"
-			(at 108.5215 68.3895 0)
+			(at 92.0115 68.3895 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -1895,7 +2235,7 @@
 			)
 		)
 		(property "Value" "470k"
-			(at 106.68 68.58 0)
+			(at 90.17 68.58 0)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -1904,7 +2244,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 106.68 68.58 90)
+			(at 90.17 68.58 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1913,7 +2253,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 106.68 68.58 90)
+			(at 90.17 68.58 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1922,7 +2262,7 @@
 			)
 		)
 		(property "Description" "Resistor, compact symbol"
-			(at 106.4895 68.3895 0)
+			(at 89.9795 68.3895 0)
 			(effects
 				(font
 					(size 1.27 1.27)
