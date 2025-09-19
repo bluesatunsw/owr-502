@@ -2067,7 +2067,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:Opamp_Dual_Generic"
+		(symbol "Device:Opamp_Dual"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -2080,7 +2080,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Device_Opamp_Dual_Generic"
+			(property "Value" "Opamp_Dual"
 				(at 0 -5.08 0)
 				(effects
 					(font
@@ -2098,7 +2098,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
+			(property "Datasheet" "~"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2107,7 +2107,43 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
+			(property "Description" "Dual operational amplifier"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Name" "kicad_builtin_opamp_dual"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Device" "SUBCKT"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2124,6 +2160,15 @@
 					)
 				)
 			)
+			(property "ki_keywords" "dual opamp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
 			(property "ki_fp_filters" "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm* MSOP*3x3mm*P0.65mm* SSOP*2.95x2.8mm*P0.65mm* TSSOP*3x3mm*P0.65mm* VSSOP*P0.5mm* TO?99*"
 				(at 0 0 0)
 				(effects
@@ -2133,14 +2178,14 @@
 					(hide yes)
 				)
 			)
-			(symbol "Opamp_Dual_Generic_1_1"
+			(symbol "Opamp_Dual_1_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
 					)
 					(stroke
 						(width 0.254)
-						(type solid)
+						(type default)
 					)
 					(fill
 						(type background)
@@ -2201,14 +2246,14 @@
 					)
 				)
 			)
-			(symbol "Opamp_Dual_Generic_2_1"
+			(symbol "Opamp_Dual_2_1"
 				(polyline
 					(pts
 						(xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08)
 					)
 					(stroke
 						(width 0.254)
-						(type solid)
+						(type default)
 					)
 					(fill
 						(type background)
@@ -2269,7 +2314,7 @@
 					)
 				)
 			)
-			(symbol "Opamp_Dual_Generic_3_1"
+			(symbol "Opamp_Dual_3_1"
 				(pin power_in line
 					(at -2.54 7.62 270)
 					(length 3.81)
@@ -7689,176 +7734,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Opamp_Dual_Generic")
-		(at 38.1 176.53 0)
-		(unit 2)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005dcffcfe")
-		(property "Reference" "U3B1"
-			(at 40.64 180.34 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "TP2604-SR"
-			(at 40.64 182.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_SO:SOP-8_3.76x4.96mm_P1.27mm"
-			(at 38.1 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ina181.pdf"
-			(at 38.1 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 38.1 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "c8af388b-19ff-40a4-9137-d8191ccb3693")
-		)
-		(pin "2"
-			(uuid "968b12cf-cb82-4d32-8127-55a03d13d03c")
-		)
-		(pin "1"
-			(uuid "a2c1b8af-85b7-48db-8ccc-1a306bb7b8b3")
-		)
-		(pin "5"
-			(uuid "ae64a6e7-d1f4-4711-827a-7eeb5651a076")
-		)
-		(pin "6"
-			(uuid "4dbe88af-1edd-4813-8af7-b7c0526307f4")
-		)
-		(pin "7"
-			(uuid "ae4b9b1a-ba2d-4eaf-b1a7-336c09c0440c")
-		)
-		(pin "8"
-			(uuid "5575d0be-ff7b-47df-8384-323e8084a0b9")
-		)
-		(pin "4"
-			(uuid "e045f7ee-acad-441f-b5eb-fd9bf83a7faa")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3B1")
-					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Opamp_Dual_Generic")
-		(at 86.36 179.07 270)
-		(unit 3)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005dd10eee")
-		(property "Reference" "U3C1"
-			(at 87.5284 178.0032 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TP2604-SR"
-			(at 85.217 178.0032 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_SO:SOP-8_3.76x4.96mm_P1.27mm"
-			(at 86.36 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ina181.pdf"
-			(at 86.36 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 86.36 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "beec7924-3f98-4161-8e56-68492c3a0d97")
-		)
-		(pin "2"
-			(uuid "5ee1462f-8a29-4455-8412-d41851c8085e")
-		)
-		(pin "1"
-			(uuid "2a9e64c6-9fcb-4e56-bdf1-2af6ca926c27")
-		)
-		(pin "5"
-			(uuid "eb0f2c21-bb79-4d2a-a3c4-d05e9290ec23")
-		)
-		(pin "6"
-			(uuid "8bbe62c6-b166-4d66-90dd-657392c936be")
-		)
-		(pin "7"
-			(uuid "e66dd23c-3570-4e6f-a936-4e8c5a2179b6")
-		)
-		(pin "8"
-			(uuid "82bed1ed-8486-40fb-9623-6ba66cdd01da")
-		)
-		(pin "4"
-			(uuid "35ce0485-c80f-414f-ba81-f98f263cbfac")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3C1")
-					(unit 3)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:R-RESCUE-BLDC_4")
 		(at 110.49 60.96 270)
 		(unit 1)
@@ -10460,92 +10335,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Opamp_Dual_Generic")
-		(at 57.15 165.1 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "00000000-0000-0000-0000-00005f0dcf20")
-		(property "Reference" "U3A1"
-			(at 50.8 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TP2604-SR"
-			(at 53.34 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_SO:SOP-8_3.76x4.96mm_P1.27mm"
-			(at 55.88 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/ina181.pdf"
-			(at 53.34 168.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 57.15 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "1e3b97d8-be0f-4a74-955b-586785507cae")
-		)
-		(pin "2"
-			(uuid "df686eae-8178-46bf-a9fe-9aaa49d51cfc")
-		)
-		(pin "1"
-			(uuid "ddcb884d-fcdd-41a4-b284-ccbf2b2dbbbe")
-		)
-		(pin "5"
-			(uuid "6ece782f-a8d6-47d6-bed3-0f356833f04a")
-		)
-		(pin "6"
-			(uuid "09a3e75c-32f2-441b-8175-04a39a59f4f2")
-		)
-		(pin "7"
-			(uuid "d72b2955-d07b-4ae2-a244-57a6e493860f")
-		)
-		(pin "8"
-			(uuid "ec03db24-902a-4606-a45f-973fcf764ae9")
-		)
-		(pin "4"
-			(uuid "cb128f82-a621-45e6-bb0a-5fbc0016edc9")
-		)
-		(instances
-			(project "Cheap FOCer 2 60mm"
-				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
-					(reference "U3A1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "BLDC_4-rescue:VCC")
 		(at 96.52 176.53 270)
 		(unit 1)
@@ -10933,6 +10722,249 @@
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "#PWR04")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Opamp_Dual")
+		(at 57.15 165.1 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1d1644d4-4ef2-4e02-ac4c-215131d7460d")
+		(property "Reference" "U4"
+			(at 57.15 156.972 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TP2604-SR"
+			(at 57.404 159.258 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Dual operational amplifier"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Name" "kicad_builtin_opamp_dual"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "SUBCKT"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
+			(at 57.15 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "e6b5284f-8e2a-4c49-bc7a-6a644b54c0ff")
+		)
+		(pin "2"
+			(uuid "07cda956-8f05-4e8e-b5f0-5ae1efc03d54")
+		)
+		(pin "1"
+			(uuid "c4169512-c2d1-4f11-8cc6-2b7d6008216c")
+		)
+		(pin "5"
+			(uuid "2c3791f0-f11a-4409-9a88-514903ecc27d")
+		)
+		(pin "6"
+			(uuid "617b64d6-f139-424d-b23d-184ceeec2093")
+		)
+		(pin "8"
+			(uuid "816511ee-9003-41f9-bdfb-5c7a933690a4")
+		)
+		(pin "4"
+			(uuid "4e09ea31-a51b-45ca-b7b3-aab7eab9ff05")
+		)
+		(pin "7"
+			(uuid "5e4a31d8-d5f8-4876-947a-32e4d55ed629")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "U4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Opamp_Dual")
+		(at 86.36 179.07 270)
+		(unit 3)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2c1e6a9d-f486-4bae-8686-ce44e245a521")
+		(property "Reference" "U4"
+			(at 86.36 171.45 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TP2604-SR"
+			(at 86.36 173.99 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Dual operational amplifier"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Name" "kicad_builtin_opamp_dual"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "SUBCKT"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
+			(at 86.36 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "e6b5284f-8e2a-4c49-bc7a-6a644b54c0ff")
+		)
+		(pin "2"
+			(uuid "07cda956-8f05-4e8e-b5f0-5ae1efc03d54")
+		)
+		(pin "1"
+			(uuid "c4169512-c2d1-4f11-8cc6-2b7d6008216c")
+		)
+		(pin "5"
+			(uuid "2c3791f0-f11a-4409-9a88-514903ecc27d")
+		)
+		(pin "6"
+			(uuid "617b64d6-f139-424d-b23d-184ceeec2093")
+		)
+		(pin "8"
+			(uuid "816511ee-9003-41f9-bdfb-5c7a933690a4")
+		)
+		(pin "4"
+			(uuid "4e09ea31-a51b-45ca-b7b3-aab7eab9ff05")
+		)
+		(pin "7"
+			(uuid "5e4a31d8-d5f8-4876-947a-32e4d55ed629")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "U4")
+					(unit 3)
 				)
 			)
 		)
@@ -11668,6 +11700,128 @@
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
 					(reference "#PWR0203")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Opamp_Dual")
+		(at 38.1 176.53 0)
+		(unit 2)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ea33e416-8b59-4c5f-afd4-5e0d24bde549")
+		(property "Reference" "U4"
+			(at 38.1 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TP2604-SR"
+			(at 38.1 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Dual operational amplifier"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Library" "${KICAD9_SYMBOL_DIR}/Simulation_SPICE.sp"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Name" "kicad_builtin_opamp_dual"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "SUBCKT"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=out1 2=in1- 3=in1+ 4=vee 5=in2+ 6=in2- 7=out2 8=vcc"
+			(at 38.1 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "e6b5284f-8e2a-4c49-bc7a-6a644b54c0ff")
+		)
+		(pin "2"
+			(uuid "07cda956-8f05-4e8e-b5f0-5ae1efc03d54")
+		)
+		(pin "1"
+			(uuid "c4169512-c2d1-4f11-8cc6-2b7d6008216c")
+		)
+		(pin "5"
+			(uuid "2c3791f0-f11a-4409-9a88-514903ecc27d")
+		)
+		(pin "6"
+			(uuid "617b64d6-f139-424d-b23d-184ceeec2093")
+		)
+		(pin "8"
+			(uuid "816511ee-9003-41f9-bdfb-5c7a933690a4")
+		)
+		(pin "4"
+			(uuid "4e09ea31-a51b-45ca-b7b3-aab7eab9ff05")
+		)
+		(pin "7"
+			(uuid "5e4a31d8-d5f8-4876-947a-32e4d55ed629")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-0000504f83be"
+					(reference "U4")
+					(unit 2)
 				)
 			)
 		)
