@@ -2363,1338 +2363,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Main_Power_Module:STM32G474RBT6"
-			(pin_names
-				(offset 0.254)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at 27.94 10.16 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Value" "STM32G474RBT6"
-				(at 27.94 7.62 0)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-				)
-			)
-			(property "Footprint" "LQFP64-10x10mm"
-				(at -2.286 14.986 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-						(italic yes)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
-				(at -2.032 20.574 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-						(italic yes)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_locked" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "STM32G474RBT6"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "LQFP64-10x10mm"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "STM32G474RBT6_1_1"
-				(polyline
-					(pts
-						(xy 7.62 5.08) (xy 7.62 -86.36)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -86.36) (xy 48.26 -86.36)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 48.26 5.08) (xy 7.62 5.08)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 48.26 -86.36) (xy 48.26 5.08)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin unspecified line
-					(at 0 0 0)
-					(length 7.62)
-					(name "vbus_sense"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "25"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -6.35 0)
-					(length 7.62)
-					(name "boot0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "61"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -17.78 0)
-					(length 7.62)
-					(name "osc_in"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -20.32 0)
-					(length 7.62)
-					(name "osc_out"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -31.75 0)
-					(length 7.62)
-					(name "dbg_swdio"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "49"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -34.29 0)
-					(length 7.62)
-					(name "dbg_swclk"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "50"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -36.83 0)
-					(length 7.62)
-					(name "nrst"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -39.37 0)
-					(length 7.62)
-					(name "dbg_swo"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "56"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -50.8 0)
-					(length 7.62)
-					(name "opamp_vout_0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -53.34 0)
-					(length 7.62)
-					(name "opamp_vout_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "20"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -55.88 0)
-					(length 7.62)
-					(name "opamp_vout_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "34"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -58.42 0)
-					(length 7.62)
-					(name "opamp_vout_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "42"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -67.31 0)
-					(length 7.62)
-					(name "gpio_spare_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "36"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -69.85 0)
-					(length 7.62)
-					(name "gpio_spare_0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "53"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -78.74 0)
-					(length 7.62)
-					(name "fdcan_rx"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "45"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 0 -81.28 0)
-					(length 7.62)
-					(name "fdcan_tx"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "46"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PC2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PA0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PA4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "18"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PC4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "22"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "24"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "26"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "35"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "37"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PA10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "44"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PC10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "52"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PC12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "54"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PD2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "55"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "57"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "58"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PB6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "59"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 0 -86.36 0)
-					(length 7.62)
-					(name "PC1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 0 180)
-					(length 7.62)
-					(name "cp_pulse_gen"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "60"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -6.35 180)
-					(length 7.62)
-					(name "channel_0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "41"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -8.89 180)
-					(length 7.62)
-					(name "opamp_vinp_0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -11.43 180)
-					(length 7.62)
-					(name "opamp_vinm_0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "23"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -16.51 180)
-					(length 7.62)
-					(name "channel_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "40"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -19.05 180)
-					(length 7.62)
-					(name "opamp_vinp_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "21"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -21.59 180)
-					(length 7.62)
-					(name "opamp_vinm_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "19"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -26.67 180)
-					(length 7.62)
-					(name "channel_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "39"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -29.21 180)
-					(length 7.62)
-					(name "opamp_vinp_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "33"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -31.75 180)
-					(length 7.62)
-					(name "opamp_vinm_2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "30"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -36.83 180)
-					(length 7.62)
-					(name "channel_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "38"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -39.37 180)
-					(length 7.62)
-					(name "opamp_vinp_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -41.91 180)
-					(length 7.62)
-					(name "opamp_vinm_3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "17"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -55.88 180)
-					(length 7.62)
-					(name "usart_led"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "43"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 55.88 -68.58 180)
-					(length 7.62)
-					(name "i2c_wp"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -71.12 180)
-					(length 7.62)
-					(name "i2c_sclk"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "51"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -73.66 180)
-					(length 7.62)
-					(name "i2c_sda"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "62"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -76.2 180)
-					(length 7.62)
-					(name "i2c_a0"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -78.74 180)
-					(length 7.62)
-					(name "i2c_a1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
-					(at 55.88 -81.28 180)
-					(length 7.62)
-					(name "i2c_a2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "STM32G474RBT6_2_1"
-				(polyline
-					(pts
-						(xy 7.62 5.08) (xy 7.62 -22.86)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -22.86) (xy 33.02 -22.86)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 33.02 5.08) (xy 7.62 5.08)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 33.02 -22.86) (xy 33.02 5.08)
-					)
-					(stroke
-						(width 0.127)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin power_in line
-					(at 0 0 0)
-					(length 7.62)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -2.54 0)
-					(length 7.62)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "32"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -5.08 0)
-					(length 7.62)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "48"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -7.62 0)
-					(length 7.62)
-					(name "VDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "64"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -10.16 0)
-					(length 7.62)
-					(name "VBAT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -16.51 0)
-					(length 7.62)
-					(name "VDDA"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "29"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -19.05 0)
-					(length 7.62)
-					(name "VREF+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "28"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 40.64 0 180)
-					(length 7.62)
-					(name "VSS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 40.64 -2.54 180)
-					(length 7.62)
-					(name "VSS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "31"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 40.64 -5.08 180)
-					(length 7.62)
-					(name "VSS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "47"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 40.64 -7.62 180)
-					(length 7.62)
-					(name "VSS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "63"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 40.64 -12.7 180)
-					(length 7.62)
-					(name "VSSA"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "27"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Memory_EEPROM:24LC128"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -3920,7 +2588,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "STM32G474RBT6_1"
+		(symbol "STM32G474RBT6_2"
 			(pin_names
 				(offset 0.254)
 			)
@@ -3998,7 +2666,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "STM32G474RBT6_1_1_1"
+			(symbol "STM32G474RBT6_2_1_1"
 				(polyline
 					(pts
 						(xy 7.62 5.08) (xy 7.62 -113.03)
@@ -4047,7 +2715,7 @@
 						(type none)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 0 0)
 					(length 7.62)
 					(name "PB1-vbus_sense"
@@ -4065,7 +2733,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -6.35 0)
 					(length 7.62)
 					(name "PB8-boot0"
@@ -4083,7 +2751,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -24.13 0)
 					(length 7.62)
 					(name "PF0-osc_in"
@@ -4101,7 +2769,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -26.67 0)
 					(length 7.62)
 					(name "PF1-osc_out"
@@ -4119,7 +2787,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin bidirectional line
 					(at 0 -53.34 0)
 					(length 7.62)
 					(name "PA13-dbg_swdio"
@@ -4137,7 +2805,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -55.88 0)
 					(length 7.62)
 					(name "PA14-dbg_swclk"
@@ -4155,7 +2823,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -58.42 0)
 					(length 7.62)
 					(name "PG10-nrst"
@@ -4173,7 +2841,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 0 -60.96 0)
 					(length 7.62)
 					(name "PB3-dbg_swo"
@@ -4191,7 +2859,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin bidirectional line
 					(at 0 -83.82 0)
 					(length 7.62)
 					(name "PB14-gpio_spare_1"
@@ -4209,7 +2877,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin bidirectional line
 					(at 0 -86.36 0)
 					(length 7.62)
 					(name "PC11-gpio_spare_0"
@@ -4227,7 +2895,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 0 -106.68 0)
 					(length 7.62)
 					(name "PA11-fdcan_rx"
@@ -4245,7 +2913,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 0 -109.22 0)
 					(length 7.62)
 					(name "PA12-fdcan_tx"
@@ -4320,6 +2988,24 @@
 				(pin no_connect line
 					(at 0 -113.03 0)
 					(length 7.62)
+					(name "PC13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 0 -113.03 0)
+					(length 7.62)
 					(name "PC4"
 						(effects
 							(font
@@ -4374,6 +3060,24 @@
 				(pin no_connect line
 					(at 0 -113.03 0)
 					(length 7.62)
+					(name "PC14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 0 -113.03 0)
+					(length 7.62)
 					(name "PB13"
 						(effects
 							(font
@@ -4400,6 +3104,24 @@
 						)
 					)
 					(number "37"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 0 -113.03 0)
+					(length 7.62)
+					(name "PC15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4551,61 +3273,7 @@
 						)
 					)
 				)
-				(pin no_connect line
-					(at 3.81 -113.03 0)
-					(length 7.62)
-					(name "PC13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 3.81 -113.03 0)
-					(length 7.62)
-					(name "PC14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin no_connect line
-					(at 3.81 -113.03 0)
-					(length 7.62)
-					(name "PC15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 0 180)
 					(length 7.62)
 					(name "PB7-cp_pulse_gen"
@@ -4623,7 +3291,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -6.35 180)
 					(length 7.62)
 					(name "PC9-channel_0"
@@ -4641,7 +3309,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -8.89 180)
 					(length 7.62)
 					(name "PA1-opamp_vinp_0"
@@ -4659,7 +3327,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -11.43 180)
 					(length 7.62)
 					(name "PC5-opamp_vinm_0"
@@ -4677,7 +3345,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -16.51 180)
 					(length 7.62)
 					(name "PC8-channel_1"
@@ -4695,7 +3363,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -19.05 180)
 					(length 7.62)
 					(name "PA7-opamp_vinp_1"
@@ -4713,7 +3381,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -21.59 180)
 					(length 7.62)
 					(name "PA5-opamp_vinm_1"
@@ -4731,7 +3399,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -26.67 180)
 					(length 7.62)
 					(name "PC7-channel_2"
@@ -4749,7 +3417,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -29.21 180)
 					(length 7.62)
 					(name "PB11-opamp_vinp_2"
@@ -4767,7 +3435,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -31.75 180)
 					(length 7.62)
 					(name "PB10-opamp_vinm_2"
@@ -4785,7 +3453,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -36.83 180)
 					(length 7.62)
 					(name "PC6-channel_3"
@@ -4803,7 +3471,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -39.37 180)
 					(length 7.62)
 					(name "PC3-opamp_vinp_3"
@@ -4821,7 +3489,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin input line
 					(at 55.88 -41.91 180)
 					(length 7.62)
 					(name "PA3-opamp_vinm_3"
@@ -4839,7 +3507,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -52.07 180)
 					(length 7.62)
 					(name "PA9-usart_led"
@@ -4857,7 +3525,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -68.58 180)
 					(length 7.62)
 					(name "PA2-opamp_vout_0"
@@ -4875,7 +3543,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -71.12 180)
 					(length 7.62)
 					(name "PA6-opamp_vout_1"
@@ -4893,7 +3561,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -73.66 180)
 					(length 7.62)
 					(name "PB12-opamp_vout_2"
@@ -4911,7 +3579,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -76.2 180)
 					(length 7.62)
 					(name "PA8-opamp_vout_3"
@@ -4947,7 +3615,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -97.79 180)
 					(length 7.62)
 					(name "PA15-i2c_sclk"
@@ -4965,7 +3633,7 @@
 						)
 					)
 				)
-				(pin unspecified line
+				(pin output line
 					(at 55.88 -100.33 180)
 					(length 7.62)
 					(name "PB9-i2c_sda"
@@ -4984,7 +3652,7 @@
 					)
 				)
 			)
-			(symbol "STM32G474RBT6_1_2_1"
+			(symbol "STM32G474RBT6_2_2_1"
 				(polyline
 					(pts
 						(xy 7.62 5.08) (xy 7.62 -22.86)
@@ -5832,6 +4500,12 @@
 		(uuid "4916d038-04d9-475d-977c-2739bdceb03c")
 	)
 	(junction
+		(at 80.01 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4d81f433-9219-4bc5-bebf-342aef5ee434")
+	)
+	(junction
 		(at 180.34 33.02)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5962,6 +4636,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e14f6bb1-e215-4a29-9428-7d3c14b6b0ab")
+	)
+	(junction
+		(at 81.28 57.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e29021b0-defc-4f4a-8d70-4aa65eb9061b")
 	)
 	(junction
 		(at 245.11 33.02)
@@ -6559,6 +5239,16 @@
 	)
 	(wire
 		(pts
+			(xy 80.01 55.88) (xy 81.28 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "181760c9-3f07-44fd-a3aa-b7cbd4539464")
+	)
+	(wire
+		(pts
 			(xy 128.27 173.99) (xy 129.54 173.99)
 		)
 		(stroke
@@ -6596,6 +5286,16 @@
 			(type default)
 		)
 		(uuid "1a9b921b-5ef4-41da-8821-1f9a63711408")
+	)
+	(wire
+		(pts
+			(xy 80.01 57.15) (xy 80.01 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1b2fcb07-5b0c-4a58-8898-afaa3d5b317d")
 	)
 	(wire
 		(pts
@@ -6909,7 +5609,7 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 54.61) (xy 81.28 57.15)
+			(xy 78.74 54.61) (xy 80.01 55.88)
 		)
 		(stroke
 			(width 0)
@@ -7476,6 +6176,16 @@
 			(type default)
 		)
 		(uuid "7b8af598-8534-4765-8454-68ad884ba50e")
+	)
+	(wire
+		(pts
+			(xy 81.28 57.15) (xy 80.01 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c734df3-cff9-4530-9f28-707aafbff552")
 	)
 	(wire
 		(pts
@@ -9471,6 +8181,263 @@
 		)
 	)
 	(symbol
+		(lib_name "STM32G474RBT6_2")
+		(lib_id "Main_Power_Module:STM32G474RBT6")
+		(at 81.28 33.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0d3dcf71-561e-47d7-83b8-7525b98acec7")
+		(property "Reference" "U2"
+			(at 109.22 24.13 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Value" "STM32G474RBT6"
+			(at 109.22 26.67 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Footprint" "LQFP64-10x10mm"
+			(at 78.994 18.034 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
+			(at 79.248 12.446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 81.28 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "47"
+			(uuid "cf2aa221-cced-4472-8563-b86f38e622b9")
+		)
+		(pin "56"
+			(uuid "bac449fa-9897-4490-9720-90ace602bbd6")
+		)
+		(pin "51"
+			(uuid "fdf23c22-dc16-48af-96ec-a805de51971c")
+		)
+		(pin "21"
+			(uuid "a9d0d652-ab28-472c-9c57-32c4df914dc1")
+		)
+		(pin "39"
+			(uuid "ed683d36-0e47-4d89-9785-71160394a7ea")
+		)
+		(pin "12"
+			(uuid "d2b7ef72-4965-4b44-9a76-a20fc6188a0d")
+		)
+		(pin "14"
+			(uuid "3f8778bd-03d8-44f7-b6a2-3353e8821d07")
+		)
+		(pin "31"
+			(uuid "b4486cac-33ed-4ad0-ac74-6d95da59ed8a")
+		)
+		(pin "63"
+			(uuid "50138d6e-4358-4109-88df-480aa3882272")
+		)
+		(pin "43"
+			(uuid "42b7483e-dc64-43f6-b23e-6cf845b1004f")
+		)
+		(pin "45"
+			(uuid "c75bb1a6-3ee8-4c78-b91b-122a1bb9da55")
+		)
+		(pin "46"
+			(uuid "b73b0f08-a708-4948-8459-3746d0c6ff9a")
+		)
+		(pin "27"
+			(uuid "36c24d1a-6be5-411d-be94-a119c0319f25")
+		)
+		(pin "42"
+			(uuid "7e4e2402-0add-467b-9c13-cb3d8812b8db")
+		)
+		(pin "32"
+			(uuid "e3a3421d-71c8-41d5-a663-b03bcfaca5e6")
+		)
+		(pin "30"
+			(uuid "b718a5b3-c2e6-4688-991e-8a590a89da19")
+		)
+		(pin "20"
+			(uuid "e322d3ab-697a-4879-8569-28c6344f0d74")
+		)
+		(pin "16"
+			(uuid "2a8373f5-d0b0-4f6c-b4e5-c06215cd7b01")
+		)
+		(pin "60"
+			(uuid "dfbcc07d-76cf-445d-ac16-9e92e3530de6")
+		)
+		(pin "15"
+			(uuid "8c7ab38d-562f-4234-a257-6b9d78fcc3cc")
+		)
+		(pin "34"
+			(uuid "5561d4f1-5f0d-4d51-be20-27b43b08f915")
+		)
+		(pin "55"
+			(uuid "8e36bfac-0463-4e8a-8cd6-3944d7e186d9")
+		)
+		(pin "38"
+			(uuid "f1945692-b089-4f76-92ff-4d45a812eb7d")
+		)
+		(pin "19"
+			(uuid "e714399b-f9a9-43bd-877b-cde2c00c19b6")
+		)
+		(pin "57"
+			(uuid "99c9b779-09e2-4fa7-8911-8f3aed52336a")
+		)
+		(pin "52"
+			(uuid "a4d1a968-5ac3-4f66-8dba-f4c924c4fa5e")
+		)
+		(pin "40"
+			(uuid "48536f47-9cbb-4a1a-b119-0c14995d503c")
+		)
+		(pin "10"
+			(uuid "99ef4e2c-8b89-4f18-8a7b-0d2f9ed55762")
+		)
+		(pin "64"
+			(uuid "fd4a63fe-80a5-4abf-83d1-684bc4b3ca3c")
+		)
+		(pin "61"
+			(uuid "be080082-aba8-43f0-96ac-36f85d769630")
+		)
+		(pin "25"
+			(uuid "3db2db97-1b66-4f00-8d36-522d0e6909ed")
+		)
+		(pin "6"
+			(uuid "ecf62bc6-31d2-46e7-9a74-2a028e81ee62")
+		)
+		(pin "37"
+			(uuid "dff1cbdc-d303-4847-a294-4ad7bdb00fc3")
+		)
+		(pin "8"
+			(uuid "86e3bc90-62c7-415b-adb3-f57f40b607ff")
+		)
+		(pin "62"
+			(uuid "6d7ab133-1023-4dc5-985b-0d6371bffe56")
+		)
+		(pin "49"
+			(uuid "f8bcaf3b-d20b-4fe6-89d0-519dff3c3726")
+		)
+		(pin "53"
+			(uuid "021b96e8-e735-4992-b205-2127b5360238")
+		)
+		(pin "28"
+			(uuid "9a09e969-203b-4cc1-8b38-e7581ba577b1")
+		)
+		(pin "9"
+			(uuid "8d35085c-8e36-4ec2-90f2-95d45d13ac4a")
+		)
+		(pin "59"
+			(uuid "c248b4e4-a14d-4052-985b-a505ab2851e5")
+		)
+		(pin "26"
+			(uuid "7b9339a4-1adc-44b7-95c7-392d27456ac2")
+		)
+		(pin "7"
+			(uuid "9aef3ea3-5fc8-4e38-8fa8-f7f54d764ce2")
+		)
+		(pin "5"
+			(uuid "6b283dce-ee8f-4d34-b148-0968ce8ab0f3")
+		)
+		(pin "2"
+			(uuid "50f0eb78-97cd-4628-94e4-b3679a9ca72d")
+		)
+		(pin "50"
+			(uuid "93864722-3280-4ec2-b113-6ed90c7fd17a")
+		)
+		(pin "35"
+			(uuid "5480f207-541c-41cd-bc99-109306ea8db7")
+		)
+		(pin "23"
+			(uuid "ef254e62-3203-44ca-b9a3-1453805c8294")
+		)
+		(pin "22"
+			(uuid "73ccbcbc-c794-4b4e-88c9-076c145ef4ef")
+		)
+		(pin "54"
+			(uuid "d3d1473f-186e-473f-9755-f7027bec446d")
+		)
+		(pin "24"
+			(uuid "524970f8-2237-4ac8-a38e-6ecd9fa9e857")
+		)
+		(pin "17"
+			(uuid "1af7afff-c675-4ce9-ba20-1bee920a1322")
+		)
+		(pin "3"
+			(uuid "e4f3d6bc-c8ce-4e66-9747-0e1024017417")
+		)
+		(pin "1"
+			(uuid "0da4061a-9d63-418d-b2c0-0ace0ce292bf")
+		)
+		(pin "18"
+			(uuid "67626bf4-3f58-4f6b-94a7-71e05072218e")
+		)
+		(pin "36"
+			(uuid "f578143f-2ae4-4f3e-8141-cd2664c8ac5d")
+		)
+		(pin "33"
+			(uuid "5e10f760-dabc-4db4-a4aa-edcfbd658a43")
+		)
+		(pin "58"
+			(uuid "a3b7ab22-0a61-4078-951d-08a23366d472")
+		)
+		(pin "4"
+			(uuid "74a816df-9682-49e0-bada-329fa558e5ac")
+		)
+		(pin "13"
+			(uuid "f3331378-5c5a-40f1-9a7a-f07e854fa2cc")
+		)
+		(pin "11"
+			(uuid "6a814f26-10a5-4bdd-a6db-90c519bd1c23")
+		)
+		(pin "41"
+			(uuid "4f99fc4e-fe9b-49c0-88b3-b0c537ea1e21")
+		)
+		(pin "29"
+			(uuid "e4bf9b26-e1cb-4fc9-8bb3-aed68e5b62d0")
+		)
+		(pin "48"
+			(uuid "d8bde5ca-538c-43d6-a822-7986b505df1d")
+		)
+		(pin "44"
+			(uuid "9ba96c5d-65a1-49c7-b32d-80e6b6315c0f")
+		)
+		(instances
+			(project ""
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 49.53 134.62 0)
 		(unit 1)
@@ -11215,7 +10182,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Value" "100R"
+		(property "Value" "470R"
 			(at 72.39 62.23 0)
 			(do_not_autoplace yes)
 			(effects
@@ -11416,6 +10383,263 @@
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR052")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "STM32G474RBT6_2")
+		(lib_id "Main_Power_Module:STM32G474RBT6")
+		(at 87.63 166.37 0)
+		(unit 2)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6e6573e4-f651-4321-8356-feb0e4632775")
+		(property "Reference" "U2"
+			(at 107.95 157.48 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Value" "STM32G474RBT6"
+			(at 107.95 160.02 0)
+			(effects
+				(font
+					(size 1.524 1.524)
+				)
+			)
+		)
+		(property "Footprint" "LQFP64-10x10mm"
+			(at 85.344 151.384 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
+			(at 85.598 145.796 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 87.63 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "47"
+			(uuid "cf2aa221-cced-4472-8563-b86f38e622ba")
+		)
+		(pin "56"
+			(uuid "bac449fa-9897-4490-9720-90ace602bbd7")
+		)
+		(pin "51"
+			(uuid "fdf23c22-dc16-48af-96ec-a805de51971d")
+		)
+		(pin "21"
+			(uuid "a9d0d652-ab28-472c-9c57-32c4df914dc2")
+		)
+		(pin "39"
+			(uuid "ed683d36-0e47-4d89-9785-71160394a7eb")
+		)
+		(pin "12"
+			(uuid "d2b7ef72-4965-4b44-9a76-a20fc6188a0e")
+		)
+		(pin "14"
+			(uuid "3f8778bd-03d8-44f7-b6a2-3353e8821d08")
+		)
+		(pin "31"
+			(uuid "b4486cac-33ed-4ad0-ac74-6d95da59ed8b")
+		)
+		(pin "63"
+			(uuid "50138d6e-4358-4109-88df-480aa3882273")
+		)
+		(pin "43"
+			(uuid "42b7483e-dc64-43f6-b23e-6cf845b10050")
+		)
+		(pin "45"
+			(uuid "c75bb1a6-3ee8-4c78-b91b-122a1bb9da56")
+		)
+		(pin "46"
+			(uuid "b73b0f08-a708-4948-8459-3746d0c6ff9b")
+		)
+		(pin "27"
+			(uuid "36c24d1a-6be5-411d-be94-a119c0319f26")
+		)
+		(pin "42"
+			(uuid "7e4e2402-0add-467b-9c13-cb3d8812b8dc")
+		)
+		(pin "32"
+			(uuid "e3a3421d-71c8-41d5-a663-b03bcfaca5e7")
+		)
+		(pin "30"
+			(uuid "b718a5b3-c2e6-4688-991e-8a590a89da1a")
+		)
+		(pin "20"
+			(uuid "e322d3ab-697a-4879-8569-28c6344f0d75")
+		)
+		(pin "16"
+			(uuid "2a8373f5-d0b0-4f6c-b4e5-c06215cd7b02")
+		)
+		(pin "60"
+			(uuid "dfbcc07d-76cf-445d-ac16-9e92e3530de7")
+		)
+		(pin "15"
+			(uuid "8c7ab38d-562f-4234-a257-6b9d78fcc3cd")
+		)
+		(pin "34"
+			(uuid "5561d4f1-5f0d-4d51-be20-27b43b08f916")
+		)
+		(pin "55"
+			(uuid "8e36bfac-0463-4e8a-8cd6-3944d7e186da")
+		)
+		(pin "38"
+			(uuid "f1945692-b089-4f76-92ff-4d45a812eb7e")
+		)
+		(pin "19"
+			(uuid "e714399b-f9a9-43bd-877b-cde2c00c19b7")
+		)
+		(pin "57"
+			(uuid "99c9b779-09e2-4fa7-8911-8f3aed52336b")
+		)
+		(pin "52"
+			(uuid "a4d1a968-5ac3-4f66-8dba-f4c924c4fa5f")
+		)
+		(pin "40"
+			(uuid "48536f47-9cbb-4a1a-b119-0c14995d503d")
+		)
+		(pin "10"
+			(uuid "99ef4e2c-8b89-4f18-8a7b-0d2f9ed55763")
+		)
+		(pin "64"
+			(uuid "fd4a63fe-80a5-4abf-83d1-684bc4b3ca3d")
+		)
+		(pin "61"
+			(uuid "be080082-aba8-43f0-96ac-36f85d769631")
+		)
+		(pin "25"
+			(uuid "3db2db97-1b66-4f00-8d36-522d0e6909ee")
+		)
+		(pin "6"
+			(uuid "ecf62bc6-31d2-46e7-9a74-2a028e81ee63")
+		)
+		(pin "37"
+			(uuid "dff1cbdc-d303-4847-a294-4ad7bdb00fc4")
+		)
+		(pin "8"
+			(uuid "86e3bc90-62c7-415b-adb3-f57f40b60800")
+		)
+		(pin "62"
+			(uuid "6d7ab133-1023-4dc5-985b-0d6371bffe57")
+		)
+		(pin "49"
+			(uuid "f8bcaf3b-d20b-4fe6-89d0-519dff3c3727")
+		)
+		(pin "53"
+			(uuid "021b96e8-e735-4992-b205-2127b5360239")
+		)
+		(pin "28"
+			(uuid "9a09e969-203b-4cc1-8b38-e7581ba577b2")
+		)
+		(pin "9"
+			(uuid "8d35085c-8e36-4ec2-90f2-95d45d13ac4b")
+		)
+		(pin "59"
+			(uuid "c248b4e4-a14d-4052-985b-a505ab2851e6")
+		)
+		(pin "26"
+			(uuid "7b9339a4-1adc-44b7-95c7-392d27456ac3")
+		)
+		(pin "7"
+			(uuid "9aef3ea3-5fc8-4e38-8fa8-f7f54d764ce3")
+		)
+		(pin "5"
+			(uuid "6b283dce-ee8f-4d34-b148-0968ce8ab0f4")
+		)
+		(pin "2"
+			(uuid "50f0eb78-97cd-4628-94e4-b3679a9ca72e")
+		)
+		(pin "50"
+			(uuid "93864722-3280-4ec2-b113-6ed90c7fd17b")
+		)
+		(pin "35"
+			(uuid "5480f207-541c-41cd-bc99-109306ea8db8")
+		)
+		(pin "23"
+			(uuid "ef254e62-3203-44ca-b9a3-1453805c8295")
+		)
+		(pin "22"
+			(uuid "73ccbcbc-c794-4b4e-88c9-076c145ef4f0")
+		)
+		(pin "54"
+			(uuid "d3d1473f-186e-473f-9755-f7027bec446e")
+		)
+		(pin "24"
+			(uuid "524970f8-2237-4ac8-a38e-6ecd9fa9e858")
+		)
+		(pin "17"
+			(uuid "1af7afff-c675-4ce9-ba20-1bee920a1323")
+		)
+		(pin "3"
+			(uuid "e4f3d6bc-c8ce-4e66-9747-0e1024017418")
+		)
+		(pin "1"
+			(uuid "0da4061a-9d63-418d-b2c0-0ace0ce292c0")
+		)
+		(pin "18"
+			(uuid "67626bf4-3f58-4f6b-94a7-71e05072218f")
+		)
+		(pin "36"
+			(uuid "f578143f-2ae4-4f3e-8141-cd2664c8ac5e")
+		)
+		(pin "33"
+			(uuid "5e10f760-dabc-4db4-a4aa-edcfbd658a44")
+		)
+		(pin "58"
+			(uuid "a3b7ab22-0a61-4078-951d-08a23366d473")
+		)
+		(pin "4"
+			(uuid "74a816df-9682-49e0-bada-329fa558e5ad")
+		)
+		(pin "13"
+			(uuid "f3331378-5c5a-40f1-9a7a-f07e854fa2cd")
+		)
+		(pin "11"
+			(uuid "6a814f26-10a5-4bdd-a6db-90c519bd1c24")
+		)
+		(pin "41"
+			(uuid "4f99fc4e-fe9b-49c0-88b3-b0c537ea1e22")
+		)
+		(pin "29"
+			(uuid "e4bf9b26-e1cb-4fc9-8bb3-aed68e5b62d1")
+		)
+		(pin "48"
+			(uuid "d8bde5ca-538c-43d6-a822-7986b505df1e")
+		)
+		(pin "44"
+			(uuid "9ba96c5d-65a1-49c7-b32d-80e6b6315c10")
+		)
+		(instances
+			(project ""
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "U2")
+					(unit 2)
 				)
 			)
 		)
@@ -12500,262 +11724,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Main_Power_Module:STM32G474RBT6")
-		(at 87.63 166.37 0)
-		(unit 2)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b4bd5801-6b09-4416-82d0-f60f2cd4b6ac")
-		(property "Reference" "U1"
-			(at 107.95 156.21 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Value" "STM32G474RBT6"
-			(at 107.95 158.75 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Footprint" "LQFP64-10x10mm"
-			(at 88.392 155.956 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
-			(at 86.868 158.496 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 87.63 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "20"
-			(uuid "1e4ddb47-c59d-4273-9b2b-0e53ea2429c3")
-		)
-		(pin "37"
-			(uuid "7e257d0f-0d03-4b55-8f8b-c7ffd24204c5")
-		)
-		(pin "30"
-			(uuid "b687efab-90fc-4040-9078-089ad50c7692")
-		)
-		(pin "17"
-			(uuid "1d130ddc-fb01-4958-ab60-8796d4971f3c")
-		)
-		(pin "33"
-			(uuid "35c326da-c711-4347-b443-dc50ea02c48e")
-		)
-		(pin "3"
-			(uuid "c4a86385-790c-4b9d-8279-d2e0125ba3a0")
-		)
-		(pin "2"
-			(uuid "b32e6d2c-ec34-42df-b01f-d47eff3f7664")
-		)
-		(pin "25"
-			(uuid "fce59349-a629-40f6-bc33-5742ba27fe8c")
-		)
-		(pin "28"
-			(uuid "47d0f4d3-1b74-49fe-9934-c42ac0c69aee")
-		)
-		(pin "12"
-			(uuid "4d987bf9-801b-4fb1-8883-dd80b0e40e4a")
-		)
-		(pin "8"
-			(uuid "fc448b1b-2377-45b3-8dd2-df542f16b335")
-		)
-		(pin "47"
-			(uuid "93bcf632-eb70-4ad2-902a-fc0defd55d74")
-		)
-		(pin "49"
-			(uuid "7be95a23-266b-478f-b154-1c0bce473487")
-		)
-		(pin "14"
-			(uuid "ac242b75-1a65-46cb-9aff-5cf21512416c")
-		)
-		(pin "31"
-			(uuid "22f50342-50db-424d-8599-773ba081dd94")
-		)
-		(pin "46"
-			(uuid "dad51118-433d-4ce5-a04d-3a642e6ae9c2")
-		)
-		(pin "7"
-			(uuid "484cbe88-d9c2-4aa2-ab2f-e56aa1033ccd")
-		)
-		(pin "58"
-			(uuid "da6765fd-d4bd-4d72-8bfa-8b7d44786b9a")
-		)
-		(pin "45"
-			(uuid "27aea0a2-0dae-431b-a4d3-dda24b845f19")
-		)
-		(pin "51"
-			(uuid "5dcb75e4-f9ff-43fd-ba95-d9472cc6db34")
-		)
-		(pin "16"
-			(uuid "78fd5d8b-a8f5-440e-a6d1-32d2ba09d601")
-		)
-		(pin "54"
-			(uuid "444f125f-5f1c-4f3e-8685-a079dbc9c5b0")
-		)
-		(pin "59"
-			(uuid "dce4db27-04a6-4813-8d84-ef703aab5d2c")
-		)
-		(pin "4"
-			(uuid "a3e061d5-46f4-4f76-a0f1-693110ef562b")
-		)
-		(pin "9"
-			(uuid "76aa4242-f8de-4782-8dd5-ad8b761cfa8a")
-		)
-		(pin "27"
-			(uuid "538a32fe-31e0-403b-bb00-7d1569f19bf9")
-		)
-		(pin "42"
-			(uuid "33c71c7b-6d0a-4d59-adf9-35241733aedf")
-		)
-		(pin "34"
-			(uuid "22bf9663-54f6-4e1b-bbdc-f1b0595c4952")
-		)
-		(pin "48"
-			(uuid "6cf781dd-5a83-4e44-9476-b947dd32d2c6")
-		)
-		(pin "60"
-			(uuid "7683685d-bacd-4a1b-a54f-ac75512a3622")
-		)
-		(pin "1"
-			(uuid "a7d9f5c9-6f46-426f-ad7e-83f17f73471f")
-		)
-		(pin "36"
-			(uuid "44fc92af-726d-4441-8cf0-8ebd1f1e6ea7")
-		)
-		(pin "13"
-			(uuid "fc2472bd-347b-4032-b94e-c11234bdb307")
-		)
-		(pin "39"
-			(uuid "fccbe7a9-41f0-4f17-b593-bf1af199e9c2")
-		)
-		(pin "38"
-			(uuid "524bb0f9-d61e-4e94-956d-e738fe10246e")
-		)
-		(pin "64"
-			(uuid "6d01ea68-1483-4d6e-a1b9-909349ca7f68")
-		)
-		(pin "55"
-			(uuid "4be60464-fc65-46f8-abda-d025fd84aed9")
-		)
-		(pin "43"
-			(uuid "8274fd12-5423-4699-be0d-6a3075bf98e3")
-		)
-		(pin "57"
-			(uuid "e2e2ea46-7294-44a0-9cd4-1a71e476e5ab")
-		)
-		(pin "62"
-			(uuid "5d46a4ae-179d-437e-9b54-f342b2fa65ca")
-		)
-		(pin "56"
-			(uuid "353f03d4-9def-4550-9d3e-a32e2937a0a2")
-		)
-		(pin "53"
-			(uuid "632a951a-45ad-435d-bf5e-05858068d714")
-		)
-		(pin "35"
-			(uuid "a15281ac-43d7-47d6-b50f-2c2fbb64726d")
-		)
-		(pin "6"
-			(uuid "4cc8a466-e644-49cc-956f-04e5020240c3")
-		)
-		(pin "24"
-			(uuid "1ea1a8ef-1dc1-49e6-bf2a-dce986e0f4ed")
-		)
-		(pin "21"
-			(uuid "3cf38e76-6465-46ad-8158-38627ce47b48")
-		)
-		(pin "19"
-			(uuid "36e9c3b5-e511-453d-baa4-fa780d8d6625")
-		)
-		(pin "15"
-			(uuid "f7dceab5-a7ca-467d-b9d2-7b4ec5ed1ba7")
-		)
-		(pin "18"
-			(uuid "dc554213-413b-4c66-bb77-b636ff1aa9c7")
-		)
-		(pin "5"
-			(uuid "3a2dcdb0-bba2-4088-8bc9-ce1cf05d2d43")
-		)
-		(pin "32"
-			(uuid "04e3812a-8b62-46a1-897b-548940ef2caa")
-		)
-		(pin "50"
-			(uuid "ba4fbf0f-4f0c-4f1d-9aa5-e18d14f36030")
-		)
-		(pin "61"
-			(uuid "e3df808b-e0eb-43e8-ab7d-f331500d4124")
-		)
-		(pin "63"
-			(uuid "280386dc-d6a6-4bb6-a81f-f8fc90db05d3")
-		)
-		(pin "44"
-			(uuid "2b1f2262-e984-4f69-a144-600a53cfa9be")
-		)
-		(pin "23"
-			(uuid "1d4c3aa0-13af-4ed0-aac7-655a06d113b3")
-		)
-		(pin "41"
-			(uuid "b686f186-7330-4713-9162-7bc2d95f55b6")
-		)
-		(pin "52"
-			(uuid "8edf408b-1d55-4446-85db-eff37418a3c4")
-		)
-		(pin "22"
-			(uuid "99f8f059-942b-474c-9ca2-bbef210f755e")
-		)
-		(pin "29"
-			(uuid "fbfffb59-133e-4582-b411-ff2cc62d144c")
-		)
-		(pin "26"
-			(uuid "51a21396-b040-4a19-95cd-c1bccddada86")
-		)
-		(pin "10"
-			(uuid "d3228e3e-3edd-48e9-a61f-19cf48753ca3")
-		)
-		(pin "40"
-			(uuid "9b2a2162-6489-4734-b550-56b88a3a7868")
-		)
-		(pin "11"
-			(uuid "3a78277f-746a-47e3-afd7-55823291b1f8")
-		)
-		(instances
-			(project ""
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "U1")
-					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactH")
 		(at 62.23 62.23 0)
 		(unit 1)
@@ -13231,263 +12199,6 @@
 			(project ""
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_name "STM32G474RBT6_1")
-		(lib_id "Main_Power_Module:STM32G474RBT6")
-		(at 81.28 33.02 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d0abadd7-f729-4b82-a7a0-7173b4dbf256")
-		(property "Reference" "U1"
-			(at 105.4417 22.86 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Value" "STM32G474RBT6"
-			(at 105.4417 25.4 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Footprint" "LQFP64-10x10mm"
-			(at 78.994 18.034 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
-			(at 79.248 12.446 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-					(italic yes)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 81.28 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "31"
-			(uuid "e08ee8fc-cbaf-4169-b755-db410c0c3104")
-		)
-		(pin "62"
-			(uuid "6fd4bc84-a0ad-4285-9cb5-0d5a4d8656c7")
-		)
-		(pin "17"
-			(uuid "ce2f893e-3ec1-4600-a541-6520aba861a0")
-		)
-		(pin "63"
-			(uuid "c2873730-5417-41d0-acf9-bf1651e1859b")
-		)
-		(pin "18"
-			(uuid "2037e005-2e0c-481b-b352-7db327230463")
-		)
-		(pin "40"
-			(uuid "c7579271-fc63-44e8-97f4-014d5d1815dc")
-		)
-		(pin "30"
-			(uuid "2faab642-6e39-4278-bc2d-7500acdde360")
-		)
-		(pin "64"
-			(uuid "6ac580b7-f5fd-4aa7-9104-1b428e7e727d")
-		)
-		(pin "2"
-			(uuid "bedd71b0-7637-43ef-93ef-f801ca3672fa")
-		)
-		(pin "43"
-			(uuid "5751551c-96ed-483e-a6e0-f70767ded83c")
-		)
-		(pin "8"
-			(uuid "30df4dea-4942-4bb1-be00-efe40cc09c0a")
-		)
-		(pin "39"
-			(uuid "6d752ed5-c50e-4bf9-ade9-e1037d5174f5")
-		)
-		(pin "55"
-			(uuid "62f565d9-1c97-4f62-ac23-048fe92498c9")
-		)
-		(pin "16"
-			(uuid "3f32eb55-2975-47ed-959a-c10daf6eba31")
-		)
-		(pin "26"
-			(uuid "28678abf-263c-4f63-8b7f-2730673ad17b")
-		)
-		(pin "52"
-			(uuid "55eac503-90e1-46f7-b813-14861e009fec")
-		)
-		(pin "29"
-			(uuid "63d821d2-c961-46f9-8f80-2331ac06f6cd")
-		)
-		(pin "23"
-			(uuid "82a5f2e0-de54-4b1c-be7d-7d9e2601fa6f")
-		)
-		(pin "5"
-			(uuid "88423813-1760-4b55-8c9e-c4629e955efb")
-		)
-		(pin "4"
-			(uuid "9d131e5f-bcb2-44a6-8f7b-83d329ca636a")
-		)
-		(pin "7"
-			(uuid "1cf8da2c-2f47-4ee6-aba6-077ee99015dd")
-		)
-		(pin "53"
-			(uuid "c5c27d6a-88cf-47e5-9f06-f4f759f5602d")
-		)
-		(pin "14"
-			(uuid "734db061-00b8-40d2-84c2-8d05c3b5bc9b")
-		)
-		(pin "45"
-			(uuid "f98798a5-2d6b-4f25-997a-2857d5075ed0")
-		)
-		(pin "56"
-			(uuid "58fe4681-09b1-46b5-8931-f82abcc529cc")
-		)
-		(pin "54"
-			(uuid "f240fc98-33b3-43c7-a260-3202fd66ecb8")
-		)
-		(pin "1"
-			(uuid "dc38e532-9b68-47f9-830c-06cf7787139f")
-		)
-		(pin "42"
-			(uuid "b0dca7fd-0da2-4a8a-bcb2-892ddae5ac0c")
-		)
-		(pin "57"
-			(uuid "c9fa16f8-0734-478f-b2b2-4115da0f9dc9")
-		)
-		(pin "35"
-			(uuid "d9692afe-1b84-41e6-89eb-07efaa384433")
-		)
-		(pin "21"
-			(uuid "fd99d19a-6879-4177-8dc8-d19c8d4a77ce")
-		)
-		(pin "28"
-			(uuid "49ca7d40-5e60-4c6d-a1d0-1e5a1c532875")
-		)
-		(pin "25"
-			(uuid "833962bd-0600-423b-944f-7fe6124c5975")
-		)
-		(pin "61"
-			(uuid "d8f783cf-00e6-4bfd-a5cf-29133d512ec2")
-		)
-		(pin "11"
-			(uuid "4e1c8aca-a7f1-4765-8136-9746a0a46bff")
-		)
-		(pin "33"
-			(uuid "b7e9a3ca-a956-4413-9af9-4dc2c11b9d73")
-		)
-		(pin "3"
-			(uuid "0f5634fc-2bde-4b21-a099-fa15624fb7b9")
-		)
-		(pin "60"
-			(uuid "23cb0418-6a7e-448e-b7aa-bfa5763f8cdd")
-		)
-		(pin "19"
-			(uuid "49763791-999c-4a4e-89e9-312469e9c223")
-		)
-		(pin "50"
-			(uuid "5398de27-7900-4b1a-81e3-21ff4a607752")
-		)
-		(pin "44"
-			(uuid "eeefd318-3759-42b6-8410-1c416ca6aa14")
-		)
-		(pin "47"
-			(uuid "89a0afa9-1b44-41c2-afb5-70f3f65292e6")
-		)
-		(pin "49"
-			(uuid "553c8f07-609b-4227-8c49-cd23379bc60f")
-		)
-		(pin "22"
-			(uuid "80951589-61ba-42c7-aecc-f31afa27c9c6")
-		)
-		(pin "51"
-			(uuid "323c557f-d2d8-453b-8c64-3bd05bd9c772")
-		)
-		(pin "15"
-			(uuid "11e685f8-f2fe-495b-98a1-97c7e2aee876")
-		)
-		(pin "58"
-			(uuid "7c4c8f24-0a7a-4eb1-8889-b39a5c9c8cc8")
-		)
-		(pin "59"
-			(uuid "6830d3fe-51b1-45c4-959b-1a05c601b0ff")
-		)
-		(pin "20"
-			(uuid "f41b5443-4b00-4ed9-a291-1e1620e8bc4a")
-		)
-		(pin "34"
-			(uuid "020ef948-2470-4bec-93e2-c07fce651371")
-		)
-		(pin "46"
-			(uuid "a5093f95-5cad-455a-a2be-7d496be20364")
-		)
-		(pin "41"
-			(uuid "85af4bf9-2a04-4524-9e1a-15b0cd9ae2cb")
-		)
-		(pin "9"
-			(uuid "a2a3f6a7-2e6c-4cec-9453-94d3e073fac6")
-		)
-		(pin "38"
-			(uuid "2b0e5985-446e-4ae6-b55f-c7b4aa042079")
-		)
-		(pin "36"
-			(uuid "87e4c58c-8da0-49dd-9efe-cf52a1350e67")
-		)
-		(pin "32"
-			(uuid "addcbc1d-ade7-4639-9fcf-72949916bf1d")
-		)
-		(pin "6"
-			(uuid "699c4be0-6a94-492e-9840-153ea1853850")
-		)
-		(pin "13"
-			(uuid "7abb4426-6819-4c79-b9ee-442021f66900")
-		)
-		(pin "12"
-			(uuid "e3c229ef-6439-46f2-b29c-97ab8835d4d4")
-		)
-		(pin "10"
-			(uuid "2cb1f3eb-683b-4d19-9525-5b8638854f52")
-		)
-		(pin "27"
-			(uuid "88744138-aeff-40ab-81d2-6a9d3e313604")
-		)
-		(pin "24"
-			(uuid "842b5e97-56f1-4b5c-8337-9358bbd06f4b")
-		)
-		(pin "37"
-			(uuid "48d7a7d6-b968-40b6-8e9e-130810d7cb9f")
-		)
-		(pin "48"
-			(uuid "c9cce50c-4c73-4aae-a32d-efb1146f5263")
-		)
-		(instances
-			(project ""
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "U1")
 					(unit 1)
 				)
 			)
