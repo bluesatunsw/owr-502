@@ -2501,10 +2501,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:Crystal_Small"
-			(pin_numbers
-				(hide yes)
-			)
+		(symbol "Device:Crystal_GND24_Small"
 			(pin_names
 				(offset 1.016)
 				(hide yes)
@@ -2513,19 +2510,21 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "Y"
-				(at 0 2.54 0)
+				(at 1.27 4.445 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "Crystal_Small"
-				(at 0 -2.54 0)
+			(property "Value" "Crystal_GND24_Small"
+				(at 1.27 2.54 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Footprint" ""
@@ -2546,7 +2545,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Two pin crystal, small symbol"
+			(property "Description" "Four pin crystal, GND on pins 2 and 4, small symbol"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2573,13 +2572,37 @@
 					(hide yes)
 				)
 			)
-			(symbol "Crystal_Small_0_1"
+			(symbol "Crystal_GND24_Small_0_1"
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 1.905) (xy 1.27 1.905) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(polyline
 					(pts
 						(xy -1.27 -0.762) (xy -1.27 0.762)
 					)
 					(stroke
 						(width 0.381)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy -1.27 -1.905) (xy 1.27 -1.905) (xy 1.27 -1.27)
+					)
+					(stroke
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -2610,11 +2633,171 @@
 					)
 				)
 			)
-			(symbol "Crystal_Small_1_1"
+			(symbol "Crystal_GND24_Small_1_1"
 				(pin passive line
 					(at -2.54 0 0)
 					(length 1.27)
 					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 0.762 0.762)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 2.54 270)
+					(length 0.635)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 0.762 0.762)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 0.635)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 0.762 0.762)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 1.27)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 0.762 0.762)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2630,9 +2813,9 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 0 180)
+					(at 0 -3.81 90)
 					(length 1.27)
-					(name "2"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3278,6 +3461,16 @@
 	)
 	(wire
 		(pts
+			(xy 186.69 52.07) (xy 196.85 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "46b62cbe-86e5-487c-a9f8-787f0d170f4f")
+	)
+	(wire
+		(pts
 			(xy 179.07 62.23) (xy 177.8 62.23)
 		)
 		(stroke
@@ -3318,7 +3511,7 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 52.07) (xy 215.9 57.15)
+			(xy 215.9 52.07) (xy 215.9 58.42)
 		)
 		(stroke
 			(width 0)
@@ -3478,7 +3671,7 @@
 	)
 	(wire
 		(pts
-			(xy 199.39 57.15) (xy 199.39 54.61)
+			(xy 199.39 58.42) (xy 199.39 54.61)
 		)
 		(stroke
 			(width 0)
@@ -3618,7 +3811,7 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 52.07) (xy 196.85 52.07)
+			(xy 177.8 52.07) (xy 179.07 52.07)
 		)
 		(stroke
 			(width 0)
@@ -3818,11 +4011,11 @@
 	)
 	(polyline
 		(pts
-			(xy 191.77 58.42) (xy 222.25 58.42)
+			(xy 191.77 59.69) (xy 222.25 59.69)
 		)
 		(stroke
 			(width 0)
-			(type dash)
+			(type solid)
 		)
 		(uuid "cb4d482a-4f34-48f5-aba4-8a320e6fe1f8")
 	)
@@ -3838,7 +4031,7 @@
 	)
 	(polyline
 		(pts
-			(xy 222.25 58.42) (xy 222.25 38.1)
+			(xy 222.25 59.69) (xy 222.25 38.1)
 		)
 		(stroke
 			(width 0)
@@ -3858,7 +4051,7 @@
 	)
 	(wire
 		(pts
-			(xy 215.9 57.15) (xy 199.39 57.15)
+			(xy 215.9 58.42) (xy 199.39 58.42)
 		)
 		(stroke
 			(width 0)
@@ -3898,7 +4091,7 @@
 	)
 	(polyline
 		(pts
-			(xy 191.77 38.1) (xy 191.77 58.42)
+			(xy 191.77 38.1) (xy 191.77 59.69)
 		)
 		(stroke
 			(width 0)
@@ -8772,75 +8965,65 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Crystal_Small")
-		(at 207.01 52.07 0)
+		(lib_id "power:GND")
+		(at 207.01 54.61 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "00000000-0000-0000-0000-0000540978a3")
-		(property "Reference" "X1"
-			(at 207.01 49.784 0)
+		(uuid "08022075-0d4d-4118-b037-81146c900743")
+		(property "Reference" "#PWR014"
+			(at 207.01 60.96 0)
 			(effects
 				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Value" "24MHz"
-			(at 200.66 54.61 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Crystal:Crystal_SMD_2016-4Pin_2.0x1.6mm"
-			(at 207.01 52.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
+					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 207.01 52.07 0)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 207.01 52.07 0)
+		(property "Value" "GND"
+			(at 211.074 56.896 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "mfg#" "ABM3B-8.0-10-1UT"
-			(at 207.01 52.07 0)
+		(property "Footprint" ""
+			(at 207.01 54.61 0)
 			(effects
 				(font
-					(size 1.524 1.524)
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 207.01 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 207.01 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
 		)
 		(pin "1"
-			(uuid "2a5a7588-3b46-4e6b-b542-f139835455f0")
-		)
-		(pin "2"
-			(uuid "8a8c5bb6-12cd-4343-9995-34f191bd7124")
+			(uuid "104014a6-9d96-4d08-8a41-b6f3ea7a8832")
 		)
 		(instances
-			(project "Cheap FOCer 2 60mm"
+			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
-					(reference "X1")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -9036,7 +9219,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_1.27mm:PinHeader_2x03_P1.27mm_Vertical_SMD"
+		(property "Footprint" "Bluesat:IDC6"
 			(at 248.92 78.74 0)
 			(effects
 				(font
@@ -9085,6 +9268,80 @@
 			(project ""
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
 					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Crystal_GND24_Small")
+		(at 207.01 52.07 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8766b56a-bd8c-414e-9116-fab9909335d0")
+		(property "Reference" "Y1"
+			(at 219.71 46.3482 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Crystal_GND24_Small"
+			(at 219.71 48.8882 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Crystal:Crystal_SMD_2016-4Pin_2.0x1.6mm"
+			(at 207.01 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 207.01 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Four pin crystal, GND on pins 2 and 4, small symbol"
+			(at 207.01 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "de95bc28-5a3f-4d39-b886-4f47a0bbfdbf")
+		)
+		(pin "3"
+			(uuid "0ba089dd-8280-4a55-9b6b-9893a986c2a1")
+		)
+		(pin "4"
+			(uuid "6fec278e-5428-4465-b261-16987459655c")
+		)
+		(pin "1"
+			(uuid "b822d468-a1d0-4efe-82cc-a59f5ae15dc6")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
+					(reference "Y1")
 					(unit 1)
 				)
 			)
@@ -9150,6 +9407,139 @@
 			(project "Cheap FOCer 2 60mm"
 				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
 					(reference "#PWR0502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 207.01 49.53 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b2361a73-2137-4427-b7d8-7dd67a4e3e0a")
+		(property "Reference" "#PWR015"
+			(at 207.01 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 207.01 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 207.01 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c304dec5-3dd4-4359-8759-6e882908b66c")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
+					(reference "#PWR015")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 182.88 52.07 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dafe8743-9870-41d8-87f6-b06ece286b4d")
+		(property "Reference" "R5"
+			(at 183.134 54.102 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470R"
+			(at 182.88 49.784 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 182.88 53.848 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 182.88 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 182.88 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8f1e42dc-d5f2-4fa2-bcb3-e7ad4ed9101f")
+		)
+		(pin "2"
+			(uuid "8a6451fc-af10-42e5-a449-2523d49c7484")
+		)
+		(instances
+			(project ""
+				(path "/8b53313b-c20e-4d2c-aeda-56c30dbca1c0/00000000-0000-0000-0000-000053f7501a"
+					(reference "R5")
 					(unit 1)
 				)
 			)
