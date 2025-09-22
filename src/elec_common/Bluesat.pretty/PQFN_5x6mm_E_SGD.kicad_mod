@@ -27,7 +27,7 @@
 			)
 		)
 	)
-	(property "Datasheet" "https://www.infineon.com/assets/row/public/documents/24/42/an-1136j.pdf?fileId=5546d46256fb43b301574c5f123f7bde"
+	(property "Datasheet" ""
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
@@ -40,7 +40,7 @@
 			)
 		)
 	)
-	(property "Description" "Infineon PQFN 5x6mm MOSFET package"
+	(property "Description" ""
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")
@@ -54,21 +54,6 @@
 		)
 	)
 	(attr smd)
-	(fp_poly
-		(pts
-			(xy -2.915 1.6925) (xy -2.265 1.6925) (xy -2.265 0.8725) (xy -2.915 0.8725) (xy -2.915 0.4225) (xy -2.265 0.4225)
-			(xy -2.265 -0.3975) (xy -2.915 -0.3975) (xy -2.915 -0.8475) (xy -2.265 -0.8475) (xy -2.265 -1.6675)
-			(xy -2.915 -1.6675) (xy -2.915 -2.1175) (xy -2.19 -2.1175) (xy 1.265 -2.1175) (xy 1.265 2.1425) (xy -2.265 2.1425)
-			(xy -2.915 2.1425)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Mask")
-		(uuid "e1803b7b-899f-413e-92be-e86cb9d96104")
-	)
 	(fp_rect
 		(start -3.4375 -2.625)
 		(end 4.0875 2.675)
@@ -79,102 +64,6 @@
 		(fill no)
 		(layer "F.SilkS")
 		(uuid "4087724d-c4a7-4d1d-9c13-acd1e7af1153")
-	)
-	(fp_poly
-		(pts
-			(xy -2.915 -2.1175) (xy -2.265 -2.1175) (xy -2.265 -1.6675) (xy -2.915 -1.6675)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "e32ca76d-4024-4872-ba09-b6b812aeca8f")
-	)
-	(fp_poly
-		(pts
-			(xy -2.915 -0.8475) (xy -2.265 -0.8475) (xy -2.265 -0.3975) (xy -2.915 -0.3975)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "cf445c98-5abb-4b37-b9e3-4937dd11953b")
-	)
-	(fp_poly
-		(pts
-			(xy -2.915 0.4225) (xy -2.265 0.4225) (xy -2.265 0.8725) (xy -2.915 0.8725)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "0bb3710d-8aa2-4f46-bd96-6aee54cf062f")
-	)
-	(fp_poly
-		(pts
-			(xy -2.915 1.6925) (xy -2.265 1.6925) (xy -2.265 2.1425) (xy -2.915 2.1425)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "042d23e5-8f11-481c-8b1f-129cd595a3f8")
-	)
-	(fp_poly
-		(pts
-			(xy -2.265 -2.1175) (xy -0.765 -2.1175) (xy -0.765 -0.2475) (xy -2.265 -0.2475)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "59b86016-e592-4a90-8cd7-40bb81f1b463")
-	)
-	(fp_poly
-		(pts
-			(xy -2.265 0.2725) (xy -0.765 0.2725) (xy -0.765 2.1425) (xy -2.265 2.1425)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "490135e2-b2c7-420a-9494-3e6c9811b0a9")
-	)
-	(fp_poly
-		(pts
-			(xy -0.235 -2.1175) (xy 1.265 -2.1175) (xy 1.265 -0.2475) (xy -0.235 -0.2475)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "1a11ce46-81f4-4dc9-99f3-bbcc9bc8a6db")
-	)
-	(fp_poly
-		(pts
-			(xy -0.235 0.2725) (xy 1.265 0.2725) (xy 1.265 2.1425) (xy -0.235 2.1425)
-		)
-		(stroke
-			(width 0)
-			(type solid)
-		)
-		(fill yes)
-		(layer "F.Paste")
-		(uuid "b7e585f1-7914-4132-94b0-09a0010c8e3f")
 	)
 	(fp_rect
 		(start -3.2625 -2.45)
@@ -226,7 +115,7 @@
 	(pad "3" smd custom
 		(at -0.5 0.0125 180)
 		(size 3.53 4.26)
-		(layers "F.Cu" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
 		(options
 			(clearance outline)
 			(anchor rect)
@@ -257,7 +146,7 @@
 				(fill yes)
 			)
 		)
-		(uuid "392fa3c9-88c9-487c-bf0f-570488f4d0f6")
+		(uuid "981ac7f4-7239-41c5-9dd0-6ceb42f3f765")
 	)
 	(embedded_fonts no)
 )
