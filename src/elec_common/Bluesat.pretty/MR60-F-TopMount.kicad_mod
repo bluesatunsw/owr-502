@@ -1,0 +1,105 @@
+(footprint "MR60-F-TopMount"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -0.5 8.75 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "49ac125a-02c2-419d-bf30-c6c285de2cb6")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "MR60-F-TopMount"
+		(at -0.5 10.25 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "cb5530e9-3e35-4f04-9376-e764db1cff85")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at -0.5 9.25 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "bc55639e-c1db-40b3-a73f-9d3edb142438")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at -0.5 9.25 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4ab0c835-8d3c-4a62-ba9b-235279a3def3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_rect
+		(start -10.1 -5)
+		(end 10.1 5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "4c496955-22eb-447d-aa5b-fcf7e8d8cb9d")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -0.5 11.75 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "0d1f9cc2-7eae-4638-a0db-0ebc0041f8dc")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at 5.5 0)
+		(size 5 5)
+		(drill 3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "8811b491-3f02-4094-95e9-a8e2f0984667")
+	)
+	(pad "2" thru_hole circle
+		(at 0 0)
+		(size 5 5)
+		(drill 3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "0fdf3106-8b65-4b81-80fd-955ccc834579")
+	)
+	(pad "3" thru_hole circle
+		(at -5.5 0)
+		(size 5 5)
+		(drill 3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "3b3e384d-f39c-4e30-9509-71c2076cc4d3")
+	)
+	(embedded_fonts no)
+)
