@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<joint name="camera_joint_1" type="fixed">
+		<parent link="chassis"/>
+		<child link="camera_link_1"/>
+		<!--Got lazy to do proper links, will fix-->
+		<!--origin xyz="${chassis_length/2} ${chassis_width/2} ${chassis_height/2}" rpy="0 0 0"/-->
+		<origin xyz="${0.6/2-0.07/2} ${0} ${0.2/2+0.05/2}" rpy="0 0 0"/>
+	</joint>
+
+	<link name="camera_link_1">
+		<visual>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+			<material name ="blue"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="camera_optical_joint_1" type="fixed">
+		<parent link="camera_link_1"/>
+		<child link="camera_link_optical_1"/>
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+	</joint>
+	<link name="camera_link_optical_1"></link>
+
+
+
+	<gazebo reference="camera_link_1">
+        <material>Gazebo/Red</material>
+		<sensor name="camera_1" type="depth">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <camera>
+                <horizontal_fov>1.089</horizontal_fov>
+                <image>
+                    <format>B8G8R8</format>
+                    <width>640</width>
+                    <height>480</height>
+                </image>
+                <clip>
+                    <near>0.005</near>
+                    <far>8.0</far>
+                </clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+				<ros>
+					<remapping>/camera/points:=/camera_1/depth/color/points</remapping>
+					<remapping>/camera/depth/image_raw:=/camera_1/color/image_raw</remapping>
+					<remapping>/camera/camera_info:=/camera_1/color/camera_info</remapping>
+					<remapping>/camera/image_raw:=/camera_1/realigned_depth_to_color/image_raw</remapping>
+
+				</ros>
+				<frame_name>camera_link_optical_1</frame_name>
+				<min_depth>0.1</min_depth>
+				<max_depth>100.0</max_depth>
+            </plugin>
+        </sensor>
+	</gazebo>
+
+	<joint name="camera_joint_2" type="fixed">
+		<parent link="chassis"/>
+		<child link="camera_link_2"/>
+		<!--Got lazy to do proper links, will fix-->
+		<!--origin xyz="${chassis_length/2} ${chassis_width/2} ${chassis_height/2}" rpy="0 0 0"/-->
+		<origin xyz="${0.45/2-0.07} ${(0.45/2-0.07/2)} ${0.2/2+0.05/2}" rpy="0 0 ${pi/2}"/>
+	</joint>
+
+	<link name="camera_link_2">
+		<visual>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+			<material name ="blue"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="camera_optical_joint_2" type="fixed">
+		<parent link="camera_link_2"/>
+		<child link="camera_link_optical_2"/>
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+	</joint>
+	<link name="camera_link_optical_2"></link>
+
+
+
+	<gazebo reference="camera_link_2">
+        <material>Gazebo/Red</material>
+		<sensor name="camera_2" type="depth">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <camera>
+                <horizontal_fov>1.089</horizontal_fov>
+                <image>
+                    <format>B8G8R8</format>
+                    <width>640</width>
+                    <height>480</height>
+                </image>
+                <clip>
+                    <near>0.005</near>
+                    <far>8.0</far>
+                </clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+				<ros>
+					<remapping>/camera/points:=/camera_2/depth/color/points</remapping>
+					<remapping>/camera/depth/image_raw:=/camera_2/color/image_raw</remapping>
+					<remapping>/camera/camera_info:=/camera_2/color/camera_info</remapping>
+					<remapping>/camera/image_raw:=/camera_2/realigned_depth_to_color/image_raw</remapping>
+
+				</ros>
+				<frame_name>camera_link_optical_2</frame_name>
+				<min_depth>0.1</min_depth>
+				<max_depth>100.0</max_depth>
+            </plugin>
+        </sensor>
+    	</gazebo>
+
+	<joint name="camera_joint_3" type="fixed">
+		<parent link="chassis"/>
+		<child link="camera_link_3"/>
+		<!--Got lazy to do proper links, will fix-->
+		<!--origin xyz="${chassis_length/2} ${chassis_width/2} ${chassis_height/2}" rpy="0 0 0"/-->
+		<origin xyz="${0.45/2-0.07} ${-(0.45/2-0.07/2)} ${0.2/2+0.05/2}" rpy="0 0 ${-pi/2}"/>
+	</joint>
+
+	<link name="camera_link_3">
+		<visual>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+			<material name ="blue"/>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.07 0.236 0.05" rpy="0 0 0"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="camera_optical_joint_3" type="fixed">
+		<parent link="camera_link_3"/>
+		<child link="camera_link_optical_3"/>
+		<origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+	</joint>
+	<link name="camera_link_optical_3"></link>
+
+
+
+	<gazebo reference="camera_link_3">
+        <material>Gazebo/Red</material>
+		<sensor name="camera_3" type="depth">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <camera>
+                <horizontal_fov>1.089</horizontal_fov>
+                <image>
+                    <format>B8G8R8</format>
+                    <width>640</width>
+                    <height>480</height>
+                </image>
+                <clip>
+                    <near>0.005</near>
+                    <far>8.0</far>
+                </clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+				<ros>
+					<remapping>/camera/points:=/camera_3/depth/color/points</remapping>
+					<remapping>/camera/depth/image_raw:=/camera_3/color/image_raw</remapping>
+					<remapping>/camera/camera_info:=/camera_3/color/camera_info</remapping>
+					<remapping>/camera/image_raw:=/camera_3/realigned_depth_to_color/image_raw</remapping>
+
+				</ros>
+				<frame_name>camera_link_optical_3</frame_name>
+				<min_depth>0.1</min_depth>
+				<max_depth>100.0</max_depth>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+
+</robot>

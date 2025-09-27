@@ -1,25 +1,26 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
     <!-- flipped = -1, normal = 1 for flip_x and isrear -->
-    <xacro:macro name="db_module_corner" params="prefix parent flip_x:=1 isrear:=1">
+	<xacro:macro name="db_module_corner" params="prefix parent flip_x:=1 isrear:=1">
+	<!-- This is the pivot point -->
         <joint name="${prefix}_joint" type="fixed">
             <parent link="${parent}"/>
             <child link="${prefix}"/>
-            <origin xyz="${isrear*(diff_bar_length/2 + 0.056/2)*cos(pi/6)} ${(diff_bar_length/2 + 0.056/2)*sin(pi/6)} 0" rpy="0 0 ${isrear*pi/6}" />
+            <origin xyz="${isrear*(diff_bar_length/2 + 0.056/2)} 0 0" rpy="0 0 0" />
         </joint>
 
-        <!-- TODO: Fix xyz -->
+        <!-- This is the "arms" connected to the steering joint -->
         <joint name="${prefix}_bar_smount_joint" type="fixed">
             <parent link="${prefix}"/>
             <child link="${prefix}_smount"/>
-            <origin xyz="${isrear*diff_bar_length/2} ${0.05} ${(0.0425 + 0.02975)*flip_x}" rpy="${pi/2} 0 ${isrear*(pi/-6)}" />
+            <origin xyz="${isrear*0.865/8} ${0.04} ${(0.04)*flip_x}" rpy="${pi/2} 0 0" />
         </joint>
 
         <!-- This is the steering joint -->
         <joint name="${prefix}_smount_fork_joint" type="revolute">
             <parent link="${prefix}_smount"/>
             <child link="${prefix}_wheel_fork"/>
-            <origin xyz="0 0 ${-0.213/2 - 0.03/2}" rpy="0 0 0" />
+	    <origin xyz="${0} ${0} ${-0.213/2 - 0.03/2}" rpy="0 0 0"/>
             <axis xyz="0 0 1"/>
             <limit lower="${-pi/2}" upper="${pi/2}" effort="40.0" velocity="12.8"/>
         </joint>
@@ -34,20 +35,21 @@
 
 
         <!-- ALL LINKS BELOW THIS LINE -->
-
+	<!-- arm -->
         <link name="${prefix}">
             <visual>
                 <geometry>
-                    <box size="${diff_bar_length} ${diff_bar_bearing_seat_width} ${diff_bar_bearing_seat_width}"/>
-                </geometry>
+			<box size="${0.865/2} ${diff_bar_bearing_seat_width} ${diff_bar_bearing_seat_width}"/>
+		</geometry>
+		<origin xyz="${isrear*-0.865/1.5} 0 0" rpy="0 0 0"/>
                 <material name="orange"/>
             </visual>
-            <xacro:inertial_box mass="2" x="${diff_bar_length}" y="${diff_bar_bearing_seat_width}" z="${diff_bar_bearing_seat_width}">
-                <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <xacro:inertial_box mass="2" x="${0.865/2}" y="${diff_bar_bearing_seat_width}" z="${diff_bar_bearing_seat_width}">
+		    <origin xyz="${isrear*-0.865/1.5} 0 0" rpy="0 0 0"/>
             </xacro:inertial_box>
         </link>
 
-        <!-- Steering mount -->
+        <!-- Steering motor mount -->
         <link name="${prefix}_smount">
             <visual>
                 <geometry>
@@ -74,13 +76,13 @@
         <link name="${prefix}_tyre">
             <visual>
                 <geometry>
-                    <cylinder radius="${0.125}" length="0.150"/>
+			<cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
                 </geometry>
                 <material name="black"/>
             </visual>
             <collision>
                 <geometry>
-                    <sphere radius="${0.125}"/>
+                    <sphere radius="${wheel_radius}"/>
                 </geometry>
             </collision>
             <xacro:inertial_sphere mass="2.5" radius="${0.125}" >
