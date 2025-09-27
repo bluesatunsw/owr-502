@@ -7868,26 +7868,6 @@
 				(justify left top)
 			)
 		)
-		(pin "USB_DM" tri_state
-			(at 161.29 120.65 180)
-			(uuid "5a128ec1-fcaa-4995-8f94-448abeba566e")
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
-		(pin "USB_DP" tri_state
-			(at 161.29 123.19 180)
-			(uuid "0063f9b5-c891-496b-8d67-ee0bcb037bfb")
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(justify left)
-			)
-		)
 		(pin "HALL_1" input
 			(at 161.29 170.18 180)
 			(uuid "4a19febb-1b34-42a0-9fed-7d76ac964f66")
@@ -8221,6 +8201,36 @@
 		(pin "PA15" input
 			(at 161.29 148.59 180)
 			(uuid "c8c28125-c8d7-4566-b420-fe6d06af61f7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "USB_D+" bidirectional
+			(at 161.29 123.19 180)
+			(uuid "744c981f-8012-4057-9086-4c6284688ba9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SERVO" output
+			(at 161.29 113.03 180)
+			(uuid "d9380d58-5b58-448c-95f5-db679b07241c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "USB_D-" bidirectional
+			(at 161.29 120.65 180)
+			(uuid "43a117d2-8d10-4f01-b507-e39d9c887245")
 			(effects
 				(font
 					(size 1.27 1.27)
