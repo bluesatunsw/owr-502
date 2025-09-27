@@ -10,7 +10,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 27.94 10.16 0)
+			(at 0 5.334 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -18,14 +18,14 @@
 			)
 		)
 		(property "Value" "STM32G474RBT6"
-			(at 27.94 7.62 0)
+			(at 0 2.794 0)
 			(effects
 				(font
 					(size 1.524 1.524)
 				)
 			)
 		)
-		(property "Footprint" "LQFP64-10x10mm"
+		(property "Footprint" "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm"
 			(at -2.286 14.986 0)
 			(effects
 				(font
@@ -81,57 +81,20 @@
 			)
 		)
 		(symbol "STM32G474RBT6_1_1"
-			(polyline
-				(pts
-					(xy 7.62 5.08) (xy 7.62 -113.03)
-				)
+			(rectangle
+				(start -20.32 0)
+				(end 20.32 -88.9)
 				(stroke
-					(width 0.127)
-					(type default)
+					(width 0)
+					(type solid)
 				)
 				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 7.62 -113.03) (xy 48.26 -113.03)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 48.26 5.08) (xy 7.62 5.08)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 48.26 -113.03) (xy 48.26 5.08)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
+					(type background)
 				)
 			)
 			(pin input line
-				(at 0 0 0)
-				(length 7.62)
+				(at -22.86 -2.54 0)
+				(length 2.54)
 				(name "PB1-vbus_sense"
 					(effects
 						(font
@@ -148,8 +111,8 @@
 				)
 			)
 			(pin input line
-				(at 0 -6.35 0)
-				(length 7.62)
+				(at -22.86 -6.35 0)
+				(length 2.54)
 				(name "PB8-boot0"
 					(effects
 						(font
@@ -166,8 +129,8 @@
 				)
 			)
 			(pin input line
-				(at 0 -24.13 0)
-				(length 7.62)
+				(at -22.86 -16.51 0)
+				(length 2.54)
 				(name "PF0-osc_in"
 					(effects
 						(font
@@ -184,8 +147,8 @@
 				)
 			)
 			(pin input line
-				(at 0 -26.67 0)
-				(length 7.62)
+				(at -22.86 -19.05 0)
+				(length 2.54)
 				(name "PF1-osc_out"
 					(effects
 						(font
@@ -202,8 +165,8 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -53.34 0)
-				(length 7.62)
+				(at -22.86 -33.02 0)
+				(length 2.54)
 				(name "PA13-dbg_swdio"
 					(effects
 						(font
@@ -220,8 +183,8 @@
 				)
 			)
 			(pin input line
-				(at 0 -55.88 0)
-				(length 7.62)
+				(at -22.86 -35.56 0)
+				(length 2.54)
 				(name "PA14-dbg_swclk"
 					(effects
 						(font
@@ -238,8 +201,8 @@
 				)
 			)
 			(pin input line
-				(at 0 -58.42 0)
-				(length 7.62)
+				(at -22.86 -38.1 0)
+				(length 2.54)
 				(name "PG10-nrst"
 					(effects
 						(font
@@ -256,8 +219,8 @@
 				)
 			)
 			(pin output line
-				(at 0 -60.96 0)
-				(length 7.62)
+				(at -22.86 -40.64 0)
+				(length 2.54)
 				(name "PB3-dbg_swo"
 					(effects
 						(font
@@ -274,44 +237,8 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -83.82 0)
-				(length 7.62)
-				(name "PB14-gpio_spare_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "36"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 0 -86.36 0)
-				(length 7.62)
-				(name "PC11-gpio_spare_0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "53"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 0 -106.68 0)
-				(length 7.62)
+				(at -22.86 -54.61 0)
+				(length 2.54)
 				(name "PA11-fdcan_rx"
 					(effects
 						(font
@@ -327,9 +254,9 @@
 					)
 				)
 			)
-			(pin output line
-				(at 0 -109.22 0)
-				(length 7.62)
+			(pin bidirectional line
+				(at -22.86 -57.15 0)
+				(length 2.54)
 				(name "PA12-fdcan_tx"
 					(effects
 						(font
@@ -345,341 +272,17 @@
 					)
 				)
 			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC2"
+			(pin output line
+				(at -22.86 -81.28 0)
+				(length 2.54)
+				(name "PB9-i2c_sda"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "10"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PA0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "12"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PA4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "18"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC13"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "22"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "24"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "26"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC14"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB13"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "35"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB15"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "37"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC15"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PA10"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "44"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC10"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "52"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC12"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "54"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PD2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "55"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "57"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB5"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "58"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PB6"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "59"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin no_connect line
-				(at 0 -113.03 0)
-				(length 7.62)
-				(name "PC1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "9"
+				(number "62"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -688,350 +291,8 @@
 				)
 			)
 			(pin output line
-				(at 55.88 0 180)
-				(length 7.62)
-				(name "PB7-cp_pulse_gen"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "60"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -6.35 180)
-				(length 7.62)
-				(name "PC9-channel_0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "41"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -8.89 180)
-				(length 7.62)
-				(name "PA1-opamp_vinp_0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "13"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -11.43 180)
-				(length 7.62)
-				(name "PC5-opamp_vinm_0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "23"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -16.51 180)
-				(length 7.62)
-				(name "PC8-channel_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "40"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -19.05 180)
-				(length 7.62)
-				(name "PA7-opamp_vinp_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "21"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -21.59 180)
-				(length 7.62)
-				(name "PA5-opamp_vinm_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "19"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -26.67 180)
-				(length 7.62)
-				(name "PC7-channel_2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "39"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -29.21 180)
-				(length 7.62)
-				(name "PB11-opamp_vinp_2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "33"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -31.75 180)
-				(length 7.62)
-				(name "PB10-opamp_vinm_2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "30"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -36.83 180)
-				(length 7.62)
-				(name "PC6-channel_3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "38"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -39.37 180)
-				(length 7.62)
-				(name "PC3-opamp_vinp_3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "11"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 55.88 -41.91 180)
-				(length 7.62)
-				(name "PA3-opamp_vinm_3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "17"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -52.07 180)
-				(length 7.62)
-				(name "PA9-usart_led"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "43"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -68.58 180)
-				(length 7.62)
-				(name "PA2-opamp_vout_0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "14"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -71.12 180)
-				(length 7.62)
-				(name "PA6-opamp_vout_1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "20"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -73.66 180)
-				(length 7.62)
-				(name "PB12-opamp_vout_2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "34"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -76.2 180)
-				(length 7.62)
-				(name "PA8-opamp_vout_3"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "42"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -95.25 180)
-				(length 7.62)
-				(name "PC0-i2c_wp"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "8"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 55.88 -97.79 180)
-				(length 7.62)
+				(at -22.86 -83.82 0)
+				(length 2.54)
 				(name "PA15-i2c_sclk"
 					(effects
 						(font
@@ -1048,16 +309,322 @@
 				)
 			)
 			(pin output line
-				(at 55.88 -100.33 180)
-				(length 7.62)
-				(name "PB9-i2c_sda"
+				(at 22.86 -2.54 180)
+				(length 2.54)
+				(name "PB7-cp_pulse_gen"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "62"
+				(number "60"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -8.89 180)
+				(length 2.54)
+				(name "PC9-channel_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "41"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -11.43 180)
+				(length 2.54)
+				(name "PA1-opamp_vinp_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -13.97 180)
+				(length 2.54)
+				(name "PC5-opamp_vinm_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "23"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -19.05 180)
+				(length 2.54)
+				(name "PC8-channel_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "40"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -21.59 180)
+				(length 2.54)
+				(name "PA7-opamp_vinp_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "21"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -24.13 180)
+				(length 2.54)
+				(name "PA5-opamp_vinm_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "19"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -29.21 180)
+				(length 2.54)
+				(name "PC7-channel_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "39"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -31.75 180)
+				(length 2.54)
+				(name "PB11-opamp_vinp_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "33"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -34.29 180)
+				(length 2.54)
+				(name "PB10-opamp_vinm_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "30"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -39.37 180)
+				(length 2.54)
+				(name "PC6-channel_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "38"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -41.91 180)
+				(length 2.54)
+				(name "PC3-opamp_vinp_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -44.45 180)
+				(length 2.54)
+				(name "PA3-opamp_vinm_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "17"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -52.07 180)
+				(length 2.54)
+				(name "PA2-opamp_vout_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -54.61 180)
+				(length 2.54)
+				(name "PA6-opamp_vout_1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "20"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -57.15 180)
+				(length 2.54)
+				(name "PB12-opamp_vout_2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "34"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -59.69 180)
+				(length 2.54)
+				(name "PA8-opamp_vout_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "42"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -77.47 180)
+				(length 2.54)
+				(name "PA9-usart_led"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "43"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1067,57 +634,20 @@
 			)
 		)
 		(symbol "STM32G474RBT6_2_1"
-			(polyline
-				(pts
-					(xy 7.62 5.08) (xy 7.62 -22.86)
-				)
+			(rectangle
+				(start -10.16 0)
+				(end 10.16 -25.4)
 				(stroke
-					(width 0.127)
-					(type default)
+					(width 0)
+					(type solid)
 				)
 				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 7.62 -22.86) (xy 33.02 -22.86)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 33.02 5.08) (xy 7.62 5.08)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
-				)
-			)
-			(polyline
-				(pts
-					(xy 33.02 -22.86) (xy 33.02 5.08)
-				)
-				(stroke
-					(width 0.127)
-					(type default)
-				)
-				(fill
-					(type none)
+					(type background)
 				)
 			)
 			(pin power_in line
-				(at 0 0 0)
-				(length 7.62)
+				(at -12.7 -2.54 0)
+				(length 2.54)
 				(name "VDD"
 					(effects
 						(font
@@ -1134,8 +664,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -2.54 0)
-				(length 7.62)
+				(at -12.7 -5.08 0)
+				(length 2.54)
 				(name "VDD"
 					(effects
 						(font
@@ -1152,8 +682,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -5.08 0)
-				(length 7.62)
+				(at -12.7 -7.62 0)
+				(length 2.54)
 				(name "VDD"
 					(effects
 						(font
@@ -1170,8 +700,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -7.62 0)
-				(length 7.62)
+				(at -12.7 -10.16 0)
+				(length 2.54)
 				(name "VDD"
 					(effects
 						(font
@@ -1188,8 +718,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -10.16 0)
-				(length 7.62)
+				(at -12.7 -12.7 0)
+				(length 2.54)
 				(name "VBAT"
 					(effects
 						(font
@@ -1206,8 +736,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -16.51 0)
-				(length 7.62)
+				(at -12.7 -19.05 0)
+				(length 2.54)
 				(name "VDDA"
 					(effects
 						(font
@@ -1224,8 +754,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -19.05 0)
-				(length 7.62)
+				(at -12.7 -21.59 0)
+				(length 2.54)
 				(name "VREF+"
 					(effects
 						(font
@@ -1242,8 +772,8 @@
 				)
 			)
 			(pin power_in line
-				(at 40.64 0 180)
-				(length 7.62)
+				(at 12.7 -2.54 180)
+				(length 2.54)
 				(name "VSS"
 					(effects
 						(font
@@ -1260,8 +790,8 @@
 				)
 			)
 			(pin power_in line
-				(at 40.64 -2.54 180)
-				(length 7.62)
+				(at 12.7 -5.08 180)
+				(length 2.54)
 				(name "VSS"
 					(effects
 						(font
@@ -1278,8 +808,8 @@
 				)
 			)
 			(pin power_in line
-				(at 40.64 -5.08 180)
-				(length 7.62)
+				(at 12.7 -7.62 180)
+				(length 2.54)
 				(name "VSS"
 					(effects
 						(font
@@ -1296,8 +826,8 @@
 				)
 			)
 			(pin power_in line
-				(at 40.64 -7.62 180)
-				(length 7.62)
+				(at 12.7 -10.16 180)
+				(length 2.54)
 				(name "VSS"
 					(effects
 						(font
@@ -1314,8 +844,8 @@
 				)
 			)
 			(pin power_in line
-				(at 40.64 -12.7 180)
-				(length 7.62)
+				(at 12.7 -15.24 180)
+				(length 2.54)
 				(name "VSSA"
 					(effects
 						(font
