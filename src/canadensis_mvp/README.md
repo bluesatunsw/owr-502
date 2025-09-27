@@ -61,28 +61,7 @@ follows:
    `node.flush()` at minimum; see [the docs](https://docs.rs/canadensis/0.3.3/canadensis/node/struct.BasicNode.html)
    for further functionality. To actually send messages, call
    `node.start_publishing()` on setup and then publish with the resulting
-   publish token. Example code for Linux follows.
-
-```
-let start_time = std::time::Instant::now();
-    let mut prev_seconds = 0;
-    loop {
-        match node.receive(&mut EmptyHandler) {
-            Ok(_) => {}
-            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
-            Err(e) => panic!("{:?}", e),
-        }
-
-        let seconds = std::time::Instant::now()
-            .duration_since(start_time)
-            .as_secs();
-        if seconds != prev_seconds {
-            prev_seconds = seconds;
-            node.run_per_second_tasks().unwrap();
-            node.flush().unwrap();
-        }
-    }
-```
+   publish token. See the MVP code for an example.
 
 ## Using custom data types
 
@@ -165,7 +144,46 @@ get the corresponding struct type.
 Fixed port-ID values specified as part of the DSDL file name (e.g.
 "1337.CoolType.4.2.dsdl") can be accessed directly as SubjectId or ServiceId
 objects via `cooltype_4_2::SUBJECT` or `cooltype_4_2::SERVICE` depending on
-whether the DSDL describes a subject or service.
+whether the DSDL describes a subject or service. (There are some caveats to
+services that I haven't fully explored.)
 
 Use `cargo expand --bin <canadensis_mvp>` (`cargo install cargo-expand`) if
 you need to confirm what `canadensis_macro` generates.
+
+## Running testing on a local CAN network from a host computer
+
+These instructions apply to both the Bluesat CAN converter and a generic
+CANable clone. They are likely broadly similar to any other kinds of devices
+you want to test with.
+
+Bring up the CAN network interface after you plug it in:
+
+```
+sudo ip link set can0 type can bitrate 1000000
+sudo ip link set up can0
+
+# optional but recommended
+sudo ifconfig can0 txqueuelen 1000
+```
+
+If using [yakut](https://github.com/OpenCyphal/yakut), **actually follow the
+"Adding DSDL namespaces" directions in the README** and set up `CYPHAL_PATH` with the
+standard `uavcan` regulated data types etc.
+
+Anonymously monitor the network:
+```
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',8),None)" monitor
+```
+
+Monitor the network with node ID 100:
+```
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',8),100)" monitor
+```
+
+I recommend you make aliases for `yakut -i <can interface specification>` so
+you can run various yakut commands from the command line more smoothly.
+
+Publish a test message from a host computer on subject 49 every 5 seconds:
+```
+yak100 pub -T 5 49:uavcan.primitive.scalar.real64 '{value: 1}'
+```
