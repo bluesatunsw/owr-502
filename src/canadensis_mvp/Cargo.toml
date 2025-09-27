@@ -6,7 +6,8 @@ name = "canadensis_mvp"
 version = "0.1.0"
 
 [features]
-# NOTE: these should be mutually exclusive. if multiple board features enabled, only the board listed first below will apply
+# NOTE: these should be mutually exclusive. if multiple board features enabled, only the board listed first below will apply.
+# Only stm32f103 actually has any code right now.
 default = ["stm32f103"]
 # STM32 Blue Pill, CAN only -- prototyping
 stm32f103 = []
@@ -36,6 +37,7 @@ canadensis_core = "0.3.1"
 # This patch is due to PR #47 (dependency issue with dsdl_frontend) not being pushed to crates.io yet.
 # Other two branches need to be included due to other changes on master.
 # Should be able to remove this section once dsdl_frontend version updated to 0.4.3.
+# UPDATE: dsdl_frontend (and a few other crates) updated to 0.5.0. TODO: migration.
 [patch.crates-io]
 canadensis_bit_length_set = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
 canadensis_dsdl_frontend = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
@@ -53,17 +55,7 @@ features = ["rt", "stm32f103", "medium"]
 version = "0.7.7"
 features = ["critical-section-single-core"]
 
-# Uncomment for the panic example.
-# panic-itm = "0.4.1"
-
-# Uncomment for the device example.
-# Update `memory.x`, set target to `thumbv7em-none-eabihf` in `.cargo/config`,
-# and then use `cargo build --example device` to build it.
-# [dependencies.stm32f3]
-# features = ["stm32f303", "rt"]
-# version = "0.7.1"
-
-# this lets you use `cargo fix`!
+# allows use of `cargo fix`
 [[bin]]
 name = "canadensis_mvp"
 test = false
