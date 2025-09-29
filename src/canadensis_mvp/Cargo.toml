@@ -18,38 +18,29 @@ stm32g431 = []
 
 [dependencies]
 # NOTE: stm32f1xx-hal should really re-export their version of bxcan
-bxcan = "0.7.0"
-canadensis = "0.3.3"
-canadensis_bxcan = "0.3.1"
-canadensis_data_types = "0.3.2"
-canadensis_macro = "0.3.2"
+bxcan = "0.8.0"
+canadensis = "0.5.0"
+canadensis_bxcan = "0.5.0"
+canadensis_data_types = "0.5.0"
+canadensis_macro = "0.5.0"
 cortex-m-rt = "0.7.5"
 cortex-m-semihosting = "0.5.0"
 embedded-alloc = "0.6.0"
 fugit = "0.3.7"
-heapless = "0.7.17"
+heapless = "0.9.1"
 nb = "1.1.0"
 panic-semihosting = "0.6.0"
-zerocopy = "0.6.0"
-canadensis_encoding = "0.3.2"
-canadensis_core = "0.3.1"
-
-# This patch is due to PR #47 (dependency issue with dsdl_frontend) not being pushed to crates.io yet.
-# Other two branches need to be included due to other changes on master.
-# Should be able to remove this section once dsdl_frontend version updated to 0.4.3.
-# UPDATE: dsdl_frontend (and a few other crates) updated to 0.5.0. TODO: migration.
-[patch.crates-io]
-canadensis_bit_length_set = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
-canadensis_dsdl_frontend = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
-canadensis_codegen_rust = { git = "https://github.com/samcrow/canadensis", rev = "68f5d78" }
+zerocopy = "0.8.26"
+canadensis_encoding = "0.5.0"
+canadensis_core = "0.5.0"
 
 [dependencies.canadensis_can]
-version = "0.3.1"
+version = "0.5.0"
 features = ["can-fd"]
 
 [dependencies.stm32f1xx-hal]
-version = "0.10.0"
-features = ["rt", "stm32f103", "medium"]
+version = "0.11.0"
+features = ["stm32f103", "medium"]
 
 [dependencies.cortex-m]
 version = "0.7.7"
