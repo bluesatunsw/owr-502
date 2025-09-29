@@ -23,15 +23,11 @@ use canadensis::{Node, ResponseToken, TransferHandler};
 use canadensis_bxcan::{self as cbxcan, BxCanDriver};
 use canadensis_can::{self, CanReceiver, CanTransmitter};
 use canadensis_data_types::uavcan::node::get_info_1_0::GetInfoResponse;
-use canadensis_data_types::uavcan::diagnostic::record_1_1;
 use canadensis_data_types::uavcan::primitive::scalar::real64_1_0;
 use canadensis_macro::types_from_dsdl;
-use canadensis_encoding::Deserialize;
-use core::panic;
+use canadensis::encoding::Deserialize;
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
-use cyphal_time::Instant;
-use cyphal_time::u48::U48;
 use embedded_alloc::LlffHeap as Heap;
 use heapless;
 use nb::block;
@@ -41,8 +37,6 @@ use crate::boards::stm32f103::{CyphalClock, GeneralClock};
 
 pub mod boards;
 
-#[cfg(feature = "stm32f103")]
-use stm32f1xx_hal::time as hw_time;
 #[cfg(feature = "stm32f103")]
 use stm32f1xx_hal::{
     can, pac,
@@ -54,7 +48,11 @@ use stm32f1xx_hal::{
 // Set up custom Cyphal data types.
 types_from_dsdl! {
     package($CARGO_MANIFEST_DIR, "/dsdl")
-    generate()
+    generate({
+        // TODO: what are these?
+        allow_utf8_and_byte: true,
+        allow_saturated_bool: false,
+    })
 }
 use crate::owr502::custom_speed_0_1;
 use crate::owr502::custom_speed_0_1::CustomSpeed;
@@ -63,7 +61,7 @@ use crate::owr502::base_speed_1_0::BaseSpeed;
 // The Cyphal node ID that this device operates as.
 const NODE_ID: u8 = 1;
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
-const CYPHAL_NUM_TOPICS: usize = 16;
+const CYPHAL_NUM_TOPICS: usize = 8;
 const CYPHAL_NUM_SERVICES: usize = 8;
 const SPEED_PUBLISH_TIMEOUT_US: u32 = 1_000_000;
 
@@ -73,7 +71,7 @@ static HEAP: Heap = Heap::empty();
 
 fn initialise_allocator() {
     use core::mem::MaybeUninit;
-    const HEAP_SIZE: usize = 2048;
+    const HEAP_SIZE: usize = 4096;
     static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
     unsafe { HEAP.init(&raw mut HEAP_MEM as usize, HEAP_SIZE) }
 }
@@ -91,34 +89,31 @@ fn main() -> ! {
     let cp = pac::CorePeripherals::take().unwrap();
 
     let mut flash = dp.FLASH.constrain();
-    let rcc: rcc::Rcc = dp.RCC.constrain();
-
-    let clocks = rcc
-        .cfgr
+    let mut rcc: rcc::Rcc = dp.RCC.freeze(
         // STM32F103 board we're using has 8 MHz external clock; use that.
-        .use_hse(hw_time::Hertz::MHz(8))
-        .pclk1(hw_time::Hertz::MHz(8)) // for APB1, which CAN is on.
-        .freeze(&mut flash.acr);
+        rcc::Config::hse(8.MHz())
+            .pclk1(8.MHz()), // for APB1, which CAN is on.
+        &mut flash.acr);
 
     // Set up microsecond clock for Cyphal.
     // TODO: Use singleton pattern so we can get an actual local object that we can pass through to
     // canadensis?
-    let tim2 = dp.TIM2;
-    let tim3 = dp.TIM3;
-    let cyphal_clock = CyphalClock::new_singleton(tim2, tim3);
+    let cyphal_clock = CyphalClock::new_singleton(dp.TIM2, dp.TIM3, &mut rcc);
     cyphal_clock.start();
 
     // 1 Hz timer for debugging only
-    let mut other_timer = Timer::syst(cp.SYST, &clocks).counter_hz();
+    let mut other_timer = Timer::syst(cp.SYST, &rcc.clocks).counter_hz();
     other_timer.start(1.Hz()).unwrap();
 
     // Assemble and enable the CAN peripheral.
-    let mut gpioa = dp.GPIOA.split();
-    let can_tx = gpioa.pa12.into_alternate_open_drain(&mut gpioa.crh);
-    let can_rx = gpioa.pa11.into_floating_input(&mut gpioa.crh);
-    let can: can::Can<pac::CAN1> = can::Can::new(dp.CAN1, dp.USB);
-    let mut afio = dp.AFIO.constrain();
-    can.assign_pins((can_tx, can_rx), &mut afio.mapr);
+    let gpioa = dp.GPIOA.split(&mut rcc);
+    let can: can::Can<pac::CAN> = can::Can::new(
+        dp.CAN,
+        dp.USB,
+        (gpioa.pa12, gpioa.pa11), // Tx and Rx pins respectively
+        &mut rcc
+    );
+
     // Calculated for bit rate 1000 kbps, PCLK1 = 8 MHz, sample-point 87.5%, SJW = 1
     // See http://www.bittiming.can-wiki.info/, https://docs.rs/bxcan/0.7.0/bxcan/struct.CanBuilder.html
     let livecan = bxcan::Can::builder(can)
@@ -130,17 +125,17 @@ fn main() -> ! {
     // Set up Cyphal; refer to README.
     let id = canadensis_can::CanNodeId::from_truncating(NODE_ID);
     let transmitter = canadensis_can::CanTransmitter::new(canadensis_can::Mtu::Can8);
-    let receiver = canadensis_can::CanReceiver::new(id, canadensis_can::Mtu::Can8);
+    let receiver = canadensis_can::CanReceiver::new(id);
     let driver = cbxcan::BxCanDriver::new(livecan);
     let core_node: node::CoreNode<
         CyphalClock,
-        CanTransmitter<CyphalClock, BxCanDriver<CyphalClock, can::Can<pac::CAN1>>>,
-        CanReceiver<CyphalClock, BxCanDriver<CyphalClock, can::Can<pac::CAN1>>>,
+        CanTransmitter<CyphalClock, BxCanDriver<can::Can<pac::CAN>>>,
+        CanReceiver<CyphalClock, BxCanDriver<can::Can<pac::CAN>>>,
         canadensis::requester::TransferIdFixedMap<
             canadensis_can::CanTransport,
             CYPHAL_CONCURRENT_TRANSFERS,
         >,
-        BxCanDriver<CyphalClock, can::Can<pac::CAN1>>,
+        BxCanDriver<can::Can<pac::CAN>>,
         CYPHAL_NUM_TOPICS,
         CYPHAL_NUM_SERVICES,
     > = node::CoreNode::new(cyphal_clock, id, transmitter, receiver, driver);
@@ -161,27 +156,28 @@ fn main() -> ! {
     let mut node = node::BasicNode::new(core_node, info).unwrap();
 
     // Initialise timestamps.
-    let start_time: u64 = GeneralClock::now().as_microseconds().into();
+    let start_time: u64 = GeneralClock::now().ticks().into();
     let mut heartbeat_target_time_us: u64 = start_time + 1_000_000u64;
     let mut speed_time_us: u64 = start_time;
-    let mut speed_packets_sent: u64 = 0;
-    let mut loop_iters: u32 = 0;
-    let mut would_block: u32 = 0;
     hprintln!("start time is {}", start_time);
 
+    // Variables for debugging only
+    let mut _speed_packets_sent: u64 = 0;
+    let mut _loop_iters: u32 = 0;
+
     // Start publishing!
-    let publish_token = node.start_publishing::<CustomSpeed>(
+    node.start_publishing(
         custom_speed_0_1::SUBJECT,
-        cyphal_time::MicrosecondDuration48::new(U48::from(SPEED_PUBLISH_TIMEOUT_US)),
+        cyphal_time::MicrosecondDuration32::from_ticks(SPEED_PUBLISH_TIMEOUT_US),
         canadensis::core::Priority::Nominal,
     ).unwrap();
 
     // leave a like and subscribe
     node.subscribe_message(
-        canadensis::core::SubjectId::from_truncating(49), 8,
-        cyphal_time::MicrosecondDuration48::new(U48::from(1_000u32))
+        canadensis::core::SubjectId::from_truncating(2),
+        8, // max payload size. shouldn't this be a value we can pull from the type?
+        cyphal_time::MicrosecondDuration32::from_ticks(1_000u32)
     ).unwrap();
-
     // If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
     loop {
@@ -204,7 +200,7 @@ fn main() -> ! {
         }
 
         // Make an effort to avoid missing heartbeats
-        let useconds: u64 = GeneralClock::now().as_microseconds().into();
+        let useconds: u64 = GeneralClock::now().ticks().into();
         let mut missed_heartbeats = 0;
         if useconds >= heartbeat_target_time_us {
             heartbeat_target_time_us += 1_000_000;
@@ -216,7 +212,6 @@ fn main() -> ! {
                 // block on handling heartbeat
             };
             node.flush().unwrap();
-            //hprintln!("Once-per-second tasks run at {}", useconds);
             if missed_heartbeats > 0 {
                 hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
             }
@@ -236,29 +231,28 @@ fn main() -> ! {
                 },
                 torque_mode: 0b1111,
             };
-            match node.publish::<CustomSpeed>(&publish_token, &speed_packet) {
+            match node.publish::<CustomSpeed>(custom_speed_0_1::SUBJECT, &speed_packet) {
                 Ok(()) => {
-                    speed_packets_sent += 1;
+                    _speed_packets_sent += 1;
                 },
                 Err(canadensis::core::nb::Error::WouldBlock) => {
                     // just skip publishing if blocking
-                    would_block += 1;
                 },
                 Err(error) => hprintln!("Problem sending speed packet: {:?}", error),
             };
         }
 
-        loop_iters += 1;
+        _loop_iters += 1;
     }
 }
 
 struct RecvHandler;
 
-impl<I: Instant, T: Transport> TransferHandler<I, T> for RecvHandler {
+impl<T: Transport> TransferHandler<T> for RecvHandler {
     fn handle_message<N>(
         &mut self,
         _node: &mut N,
-        transfer: &MessageTransfer<alloc::vec::Vec<u8>, I, T>,
+        transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool
     where
         N: Node<Transport = T>,
@@ -274,7 +268,7 @@ impl<I: Instant, T: Transport> TransferHandler<I, T> for RecvHandler {
         &mut self,
         _node: &mut N,
         _token: ResponseToken<T>,
-        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, I, T>,
+        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool
     where
         N: Node<Transport = T>,
@@ -286,7 +280,7 @@ impl<I: Instant, T: Transport> TransferHandler<I, T> for RecvHandler {
     fn handle_response<N>(
         &mut self,
         _node: &mut N,
-        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, I, T>,
+        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool
     where
         N: Node<Transport = T>,

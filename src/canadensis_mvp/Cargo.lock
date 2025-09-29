@@ -11,7 +11,7 @@ dependencies = [
  "cfg-if",
  "once_cell",
  "version_check",
- "zerocopy 0.8.27",
+ "zerocopy",
 ]
 
 [[package]]
@@ -80,15 +80,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "atomic-polyfill"
-version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8cf2bce30dfe09ef0bfaef228b9d414faaf7e563035494d7fe092dba54b300f4"
-dependencies = [
- "critical-section",
-]
-
-[[package]]
 name = "autocfg"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -100,14 +91,8 @@ version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5deb64efa5bd81e31fcd1938615a6d98c82eafcbcd787162b6f63b91d6bac5b3"
 dependencies = [
- "rustc_version 0.2.3",
+ "rustc_version",
 ]
-
-[[package]]
-name = "bare-metal"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8fe8f5a8a398345e52358e18ff07cc17a568fbca5c6f73873d3a62056309603"
 
 [[package]]
 name = "base64"
@@ -138,12 +123,12 @@ dependencies = [
 
 [[package]]
 name = "bxcan"
-version = "0.7.0"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40ac3d0c0a542d0ab5521211f873f62706a7136df415676f676d347e5a41dd80"
+checksum = "3110c36f496cf7110ab17c48ad714225330862101ec30197a9898006cd3e2862"
 dependencies = [
  "bitflags",
- "embedded-hal",
+ "embedded-can",
  "nb 1.1.0",
  "vcell",
 ]
@@ -156,25 +141,26 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "canadensis"
-version = "0.3.3"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2acb8ef422f901de210fdb708dbfe3281b46888fb9ffe8fb24285b81a344d1d"
+checksum = "57d4fe670aabc97b7106736b25a2c5ebed6c566a623fb50f07fc3acaba377d72"
 dependencies = [
  "canadensis_core",
  "canadensis_data_types",
  "canadensis_derive_register_block",
  "canadensis_encoding",
+ "crc-any",
  "fallible_collections",
  "half",
- "hash32",
- "heapless",
+ "heapless 0.9.1",
  "log",
 ]
 
 [[package]]
 name = "canadensis_bit_length_set"
-version = "0.3.1"
-source = "git+https://github.com/samcrow/canadensis?rev=68f5d78#68f5d78afa841c4b86a7db175d464b36093a209e"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1454bc1ea612585d2b8fa3a7737306a95cb53fdf820159fdb4e6cf863427641"
 dependencies = [
  "itertools",
  "num-integer",
@@ -182,9 +168,9 @@ dependencies = [
 
 [[package]]
 name = "canadensis_bxcan"
-version = "0.3.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5c2673f42893fb1b0e44a205c32d19b0947d4664c8fabd08506b22874aee292"
+checksum = "3d478b71cdd098f3ee980c0a4f262e5ad6436c0a1464f2999388e0978f55459b"
 dependencies = [
  "bxcan",
  "canadensis",
@@ -193,30 +179,29 @@ dependencies = [
  "canadensis_pnp_client",
  "cortex-m",
  "fallible_collections",
- "heapless",
+ "heapless 0.9.1",
  "log",
  "nb 1.1.0",
 ]
 
 [[package]]
 name = "canadensis_can"
-version = "0.3.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b77adc6665341c2810771a9df9a24d81d73545f363a473a44ef48d73c553b7e"
+checksum = "2452fde3f853a174ba7616091b4ea446692ad2b728ade27ea3729d6ca1fce2af"
 dependencies = [
  "canadensis_core",
  "canadensis_filter_config",
  "fallible_collections",
- "hash32",
- "hash32-derive",
- "heapless",
+ "heapless 0.9.1",
  "log",
 ]
 
 [[package]]
 name = "canadensis_codegen_rust"
-version = "0.4.3"
-source = "git+https://github.com/samcrow/canadensis?rev=68f5d78#68f5d78afa841c4b86a7db175d464b36093a209e"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c7b392683574652a1d2c1432a8fa97cffc5dbecaf243cbae6d3ebb8963b15d1"
 dependencies = [
  "canadensis_bit_length_set",
  "canadensis_dsdl_frontend",
@@ -224,41 +209,40 @@ dependencies = [
  "heck",
  "num-bigint",
  "regex",
- "thiserror 1.0.69",
+ "thiserror",
 ]
 
 [[package]]
 name = "canadensis_core"
-version = "0.3.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d2ff79532f3dce6736b120516eed425582a94f1b579fc799a2af9dde41078b1"
+checksum = "e2865cb1ac9c94c98554fb061c7c02cee7eca36cd7c9857dd48f647e17791c57"
 dependencies = [
  "fallible_collections",
- "hash32",
- "hash32-derive",
- "heapless",
+ "fugit",
+ "heapless 0.9.1",
  "log",
  "nb 1.1.0",
 ]
 
 [[package]]
 name = "canadensis_data_types"
-version = "0.3.2"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ffeb753b7e68288e1a5f025092c87205062dbbec2bb501551ef6d0b171cd3d8"
+checksum = "e40dfb7e9be176a6069ddfd368e8ed7b66f82fd8ee6c6039abc762002fb0948a"
 dependencies = [
  "canadensis_core",
  "canadensis_encoding",
  "half",
- "heapless",
- "zerocopy 0.6.6",
+ "heapless 0.9.1",
+ "zerocopy",
 ]
 
 [[package]]
 name = "canadensis_derive_register_block"
-version = "0.2.2"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1907280f8cc8643c196231e5f94826c389e95966736c79f99119025f8a6a137"
+checksum = "edceb5463d29ff783b5e5d036641b2abab83c9a85c31fa9e2f16e9eb18bdb51c"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -267,8 +251,9 @@ dependencies = [
 
 [[package]]
 name = "canadensis_dsdl_frontend"
-version = "0.4.2"
-source = "git+https://github.com/samcrow/canadensis?rev=68f5d78#68f5d78afa841c4b86a7db175d464b36093a209e"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c9e26b69ef242bf2e72505eb5175e2acee72e37f695cf5bc22d02670177d8a7c"
 dependencies = [
  "canadensis_bit_length_set",
  "canadensis_dsdl_parser",
@@ -278,15 +263,16 @@ dependencies = [
  "num-traits",
  "once_cell",
  "regex",
- "thiserror 1.0.69",
+ "thiserror",
  "unicode-normalization",
  "walkdir",
 ]
 
 [[package]]
 name = "canadensis_dsdl_parser"
-version = "0.3.0"
-source = "git+https://github.com/samcrow/canadensis?rev=68f5d78#68f5d78afa841c4b86a7db175d464b36093a209e"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eedda2e33fcffb08ac6d55bb4150c672906d7c6ab12c82ee2516f4a27d49f37a"
 dependencies = [
  "num-bigint",
  "num-rational",
@@ -297,25 +283,25 @@ dependencies = [
 
 [[package]]
 name = "canadensis_encoding"
-version = "0.3.2"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "832ac9d184954bf0735a6a7044104d69ff00012499a7469d8be72f75d3b25536"
+checksum = "3c3e8300df81e1cff14c6fb894b8d4adc2c8e9a9698a1f1c27d82e0997939c8f"
 dependencies = [
  "half",
- "zerocopy 0.6.6",
+ "zerocopy",
 ]
 
 [[package]]
 name = "canadensis_filter_config"
-version = "0.2.2"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ff16b62a9697bb76a7e24e91b1e75396b138af488a172bbd5afd911737111c1"
+checksum = "4d265ccd922d8029e1b9832f91b2f3b82e1d62383c93823a80ad8acfa074ed27"
 
 [[package]]
 name = "canadensis_macro"
-version = "0.3.2"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "24b1d687b085398fc772ad811b9f9df58c1a90c7a605df75fc338209b279cc80"
+checksum = "665b7bd6daa7b058bab7dc174bd944ca76dd983a035107cf48f0bb60ca8ed976"
 dependencies = [
  "canadensis_codegen_rust",
  "canadensis_dsdl_frontend",
@@ -341,24 +327,24 @@ dependencies = [
  "cortex-m-semihosting",
  "embedded-alloc",
  "fugit",
- "heapless",
+ "heapless 0.9.1",
  "nb 1.1.0",
  "panic-semihosting",
  "stm32f1xx-hal",
- "zerocopy 0.6.6",
+ "zerocopy",
 ]
 
 [[package]]
 name = "canadensis_pnp_client"
-version = "0.3.0"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c44f25f81ff8f9afef4b48da1c5242bf0c50150707624e71ad7bfe7eea619253"
+checksum = "f87c80371e72df0c00c42f3041a6c1d9b2d0ce54a7045475d4f4c1cbe87f93b5"
 dependencies = [
  "canadensis",
  "canadensis_data_types",
  "canadensis_filter_config",
  "crc-any",
- "heapless",
+ "heapless 0.9.1",
 ]
 
 [[package]]
@@ -412,10 +398,10 @@ version = "0.7.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ec610d8f49840a5b376c69663b6369e71f4b34484b9b2eb29fb918d92516cb9"
 dependencies = [
- "bare-metal 0.2.5",
+ "bare-metal",
  "bitfield",
  "critical-section",
- "embedded-hal",
+ "embedded-hal 0.2.7",
  "volatile-register",
 ]
 
@@ -514,6 +500,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "embedded-can"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e9d2e857f87ac832df68fa498d18ddc679175cf3d2e4aa893988e5601baf9438"
+dependencies = [
+ "nb 1.1.0",
+]
+
+[[package]]
 name = "embedded-dma"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -531,6 +526,28 @@ dependencies = [
  "nb 0.1.3",
  "void",
 ]
+
+[[package]]
+name = "embedded-hal"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "361a90feb7004eca4019fb28352a9465666b24f840f5c3cddf0ff13920590b89"
+
+[[package]]
+name = "embedded-hal-nb"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fba4268c14288c828995299e59b12babdbe170f6c6d73731af1b4648142e8605"
+dependencies = [
+ "embedded-hal 1.0.0",
+ "nb 1.1.0",
+]
+
+[[package]]
+name = "embedded-io"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 
 [[package]]
 name = "fallible_collections"
@@ -578,33 +595,22 @@ dependencies = [
 
 [[package]]
 name = "half"
-version = "2.4.1"
+version = "2.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6dd08c532ae367adf81c312a4580bc67f1d0fe8bc9c460520283f4c0ff277888"
+checksum = "459196ed295495a68f7d7fe1d84f6c4b7ff0e21fe3017b2f283c6fac3ad803c9"
 dependencies = [
  "cfg-if",
  "crunchy",
- "zerocopy 0.6.6",
+ "zerocopy",
 ]
 
 [[package]]
 name = "hash32"
-version = "0.2.1"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0c35f58762feb77d74ebe43bdbc3210f09be9fe6742234d573bacc26ed92b67"
+checksum = "47d60b12902ba28e2730cd37e95b8c9223af2808df9e902d4df49588d1470606"
 dependencies = [
  "byteorder",
-]
-
-[[package]]
-name = "hash32-derive"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "59d2aba832b60be25c1b169146b27c64115470981b128ed84c8db18c1b03c6ff"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -619,22 +625,29 @@ dependencies = [
 
 [[package]]
 name = "heapless"
-version = "0.7.17"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cdc6457c0eb62c71aac4bc17216026d8410337c4126773b9c5daba343f17964f"
+checksum = "0bfb9eb618601c89945a70e254898da93b13be0388091d42117462b265bb3fad"
 dependencies = [
- "atomic-polyfill",
  "hash32",
- "rustc_version 0.4.1",
- "spin",
+ "stable_deref_trait",
+]
+
+[[package]]
+name = "heapless"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1edcd5a338e64688fbdcb7531a846cfd3476a54784dcb918a0844682bc7ada5"
+dependencies = [
+ "hash32",
  "stable_deref_trait",
 ]
 
 [[package]]
 name = "heck"
-version = "0.4.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
+checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "is_terminal_polyfill"
@@ -644,9 +657,9 @@ checksum = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
 
 [[package]]
 name = "itertools"
-version = "0.10.5"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473"
+checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
 dependencies = [
  "either",
 ]
@@ -662,16 +675,6 @@ name = "linked_list_allocator"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9afa463f5405ee81cdb9cc2baf37e08ec7e4c8209442b5d72c04cfb2cd6e6286"
-
-[[package]]
-name = "lock_api"
-version = "0.4.13"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96936507f153605bddfcda068dd804796c84324ed2510809e5b2a624c81da765"
-dependencies = [
- "autocfg",
- "scopeguard",
-]
 
 [[package]]
 name = "log"
@@ -768,7 +771,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1db05f56d34358a8b1066f67cbb203ee3e7ed2ba674a6263a1d5ec6db2204323"
 dependencies = [
  "memchr",
- "thiserror 2.0.16",
+ "thiserror",
  "ucd-trie",
 ]
 
@@ -804,6 +807,12 @@ dependencies = [
  "pest",
  "sha2",
 ]
+
+[[package]]
+name = "portable-atomic"
+version = "1.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f84267b20a16ea918e43c6a88433c2d54fa145c92a811b5b047ccbe153674483"
 
 [[package]]
 name = "proc-macro2"
@@ -870,16 +879,7 @@ version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "138e3e0acb6c9fb258b19b67cb8abd63c00679d2851805ea151465464fe9030a"
 dependencies = [
- "semver 0.9.0",
-]
-
-[[package]]
-name = "rustc_version"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfcb3a22ef46e85b45de6ee7e79d063319ebb6594faafcf1c225ea92ab6e9b92"
-dependencies = [
- "semver 1.0.26",
+ "semver",
 ]
 
 [[package]]
@@ -892,12 +892,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "scopeguard"
-version = "1.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
-
-[[package]]
 name = "semver"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -905,12 +899,6 @@ checksum = "1d7eb9ef2c18661902cc47e535f9bc51b78acd254da71d375c2f6720d9a40403"
 dependencies = [
  "semver-parser",
 ]
-
-[[package]]
-name = "semver"
-version = "1.0.26"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "56e6fa9c48d24d85fb3de5ad847117517440f6beceb7798af16b4a87d616b8d0"
 
 [[package]]
 name = "semver-parser"
@@ -930,15 +918,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "spin"
-version = "0.9.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
-dependencies = [
- "lock_api",
-]
-
-[[package]]
 name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -946,9 +925,9 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "stm32-usbd"
-version = "0.6.0"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6c94998f166d66b210a164648a0b7866428d8f1e0740bf8a4c5edd89d4750c1"
+checksum = "e633d559b5fe03caed24e1df85c9fa3916fe6191fc7099ac6fcb0281f380e9f0"
 dependencies = [
  "cortex-m",
  "usb-device",
@@ -957,33 +936,38 @@ dependencies = [
 
 [[package]]
 name = "stm32f1"
-version = "0.15.1"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f2dc80735831c28fe85384e1e28428fb6d201f67c696e369a239ed9c5eba369d"
+checksum = "8f2b32d5afdbd179dbfa05ad835e4623fb3790c187c2a8d6301eff1507b2c6c9"
 dependencies = [
- "bare-metal 1.0.0",
  "cortex-m",
  "cortex-m-rt",
+ "critical-section",
+ "portable-atomic",
  "vcell",
 ]
 
 [[package]]
 name = "stm32f1xx-hal"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30845662b9ce46a2ec04da97666a2b32458bee5032bb0452d0caf1536a96a542"
+checksum = "5f15ad470c8df998f9ef3a28dd625c7696179f091122235a971266999f8b0a66"
 dependencies = [
  "bitflags",
  "bxcan",
  "cortex-m",
  "cortex-m-rt",
  "embedded-dma",
- "embedded-hal",
+ "embedded-hal 0.2.7",
+ "embedded-hal 1.0.0",
+ "embedded-hal-nb",
+ "embedded-io",
  "fugit",
  "fugit-timer",
  "nb 1.1.0",
  "stm32-usbd",
  "stm32f1",
+ "vcell",
  "void",
 ]
 
@@ -1030,31 +1014,11 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.69"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52"
-dependencies = [
- "thiserror-impl 1.0.69",
-]
-
-[[package]]
-name = "thiserror"
 version = "2.0.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0"
 dependencies = [
- "thiserror-impl 2.0.16",
-]
-
-[[package]]
-name = "thiserror-impl"
-version = "1.0.69"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.106",
+ "thiserror-impl",
 ]
 
 [[package]]
@@ -1118,9 +1082,13 @@ checksum = "7dd6e30e90baa6f72411720665d41d89b9a3d039dc45b8faea1ddd07f617f6af"
 
 [[package]]
 name = "usb-device"
-version = "0.2.9"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f6cc3adc849b5292b4075fc0d5fdcf2f24866e88e336dd27a8943090a520508"
+checksum = "98816b1accafbb09085168b90f27e93d790b4bfa19d883466b5e53315b5f06a6"
+dependencies = [
+ "heapless 0.8.0",
+ "portable-atomic",
+]
 
 [[package]]
 name = "utf8parse"
@@ -1271,32 +1239,11 @@ checksum = "271414315aff87387382ec3d271b52d7ae78726f5d44ac98b4f4030c91880486"
 
 [[package]]
 name = "zerocopy"
-version = "0.6.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "854e949ac82d619ee9a14c66a1b674ac730422372ccb759ce0c39cabcf2bf8e6"
-dependencies = [
- "byteorder",
- "zerocopy-derive 0.6.6",
-]
-
-[[package]]
-name = "zerocopy"
 version = "0.8.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0894878a5fa3edfd6da3f88c4805f4c8558e2b996227a3d864f47fe11e38282c"
 dependencies = [
- "zerocopy-derive 0.8.27",
-]
-
-[[package]]
-name = "zerocopy-derive"
-version = "0.6.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "125139de3f6b9d625c39e2efdd73d41bdac468ccd556556440e322be0e1bbd91"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.106",
+ "zerocopy-derive",
 ]
 
 [[package]]
