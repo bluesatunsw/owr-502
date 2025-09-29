@@ -23,7 +23,6 @@ RUN apt-get install -y ros-jazzy-desktop
 # Install additional ros packages
 RUN apt-get install -y ros-jazzy-xacro \ 
     ros-jazzy-joint-state-publisher \
-    ros-jazzy-librealsense2 ros-jazzy-realsense2-camera \
     ros-jazzy-usb-cam \
     python3-pydantic # usb-cam dependency
 
@@ -33,6 +32,12 @@ RUN apt-get install -y ros-jazzy-ros-gz
 # Ros2Control
 RUN apt-get install -y ros-jazzy-gz-ros2-control ros-jazzy-joint-state-broadcaster \
     ros-jazzy-diff-drive-controller
+
+# Lichtblick data viewer
+RUN apt-get install -y xdg-utils ros-jazzy-foxglove-bridge
+RUN curl "https://github.com/lichtblick-suite/lichtblick/releases/latest/download/$(curl https://github.com/lichtblick-suite/lichtblick/releases/latest/download/latest-linux.yml -qL 2>/dev/null| grep url | cut -d ':' -f 2 | tr -d ' ')" -Lo lichtblick.deb \ 
+    && dpkg -i lichtblick.deb \
+    && rm lichtblick.deb
 
 
 RUN echo '* soft rtprio 99\n\
