@@ -22,11 +22,11 @@ def generate_launch_description():
     # Get URDF via xacro
     robot_description_content = Command(
         [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
+            PathJoinSubstitution([FindExecutable(name="xacro")]), " ",
             PathJoinSubstitution(
                 [FindPackageShare("rover"), "description", "robot.urdf.xacro"]
             ),
+            " is_simulation:=true"
         ]
     )
     robot_description = {
@@ -60,20 +60,6 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    [
-                        PathJoinSubstitution(
-                            [FindPackageShare("realsense2_camera"), "launch", "rs_launch.py"]
-                        )
-                    ]
-                ),
-                launch_arguments={
-                    "enable_color": "true",
-                    "enable_depth": "true",
-                    "pointcloud.enable": "true"
-                }.items(),
-            ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     [
