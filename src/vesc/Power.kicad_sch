@@ -2591,6 +2591,17 @@
 		)
 		(uuid "6d151dcb-ecd2-450b-9d78-21c6e6c1b078")
 	)
+	(text "Phase 1 and 3 switched on MOSFET side:\n- Driver BST,GH,SH,GL,SL\n- Phase sense voltage dividers\n- SNC to driver amp and SNA to external amp"
+		(exclude_from_sim no)
+		(at 53.594 88.646 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "9a3e3179-9ec2-478e-b39c-e9c64499b72b")
+	)
 	(text "Op Amp Current Sense for 3rd Phase"
 		(exclude_from_sim no)
 		(at 30.48 138.43 0)
@@ -2650,7 +2661,7 @@
 		(uuid "0c3b92c1-2e8b-45a5-aafe-4cb3f360c1f1")
 	)
 	(junction
-		(at 193.04 92.71)
+		(at 193.04 67.31)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0ca570c4-e0d6-4b5d-a2d0-4c99b2fc3d41")
@@ -2740,7 +2751,7 @@
 		(uuid "6fd859cd-0697-4ec5-9c69-b20eaca56dbf")
 	)
 	(junction
-		(at 193.04 67.31)
+		(at 193.04 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "716f1aa0-88ef-4239-abd1-6a1337054933")
@@ -3057,7 +3068,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 90.17) (xy 171.45 90.17)
+			(xy 173.99 64.77) (xy 171.45 64.77)
 		)
 		(stroke
 			(width 0)
@@ -3077,7 +3088,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 67.31) (xy 198.12 67.31)
+			(xy 193.04 92.71) (xy 198.12 92.71)
 		)
 		(stroke
 			(width 0)
@@ -3147,7 +3158,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 62.23) (xy 193.04 67.31)
+			(xy 193.04 87.63) (xy 193.04 92.71)
 		)
 		(stroke
 			(width 0)
@@ -3217,7 +3228,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 87.63) (xy 193.04 92.71)
+			(xy 193.04 62.23) (xy 193.04 67.31)
 		)
 		(stroke
 			(width 0)
@@ -3287,7 +3298,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 87.63) (xy 181.61 87.63)
+			(xy 171.45 62.23) (xy 181.61 62.23)
 		)
 		(stroke
 			(width 0)
@@ -3577,7 +3588,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 87.63) (xy 191.77 87.63)
+			(xy 193.04 62.23) (xy 191.77 62.23)
 		)
 		(stroke
 			(width 0)
@@ -3677,7 +3688,7 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 97.79) (xy 190.5 97.79)
+			(xy 186.69 97.79) (xy 194.31 97.79)
 		)
 		(stroke
 			(width 0)
@@ -3807,7 +3818,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 97.79) (xy 173.99 97.79)
+			(xy 171.45 72.39) (xy 173.99 72.39)
 		)
 		(stroke
 			(width 0)
@@ -3837,7 +3848,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 69.85) (xy 171.45 69.85)
+			(xy 173.99 95.25) (xy 171.45 95.25)
 		)
 		(stroke
 			(width 0)
@@ -3927,7 +3938,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 92.71) (xy 193.04 92.71)
+			(xy 171.45 67.31) (xy 193.04 67.31)
 		)
 		(stroke
 			(width 0)
@@ -4017,7 +4028,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 64.77) (xy 171.45 64.77)
+			(xy 173.99 90.17) (xy 171.45 90.17)
 		)
 		(stroke
 			(width 0)
@@ -4147,7 +4158,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 72.39) (xy 173.99 72.39)
+			(xy 171.45 97.79) (xy 173.99 97.79)
 		)
 		(stroke
 			(width 0)
@@ -4237,7 +4248,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 67.31) (xy 193.04 67.31)
+			(xy 171.45 92.71) (xy 193.04 92.71)
 		)
 		(stroke
 			(width 0)
@@ -4707,7 +4718,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 95.25) (xy 171.45 95.25)
+			(xy 173.99 69.85) (xy 171.45 69.85)
 		)
 		(stroke
 			(width 0)
@@ -4777,7 +4788,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 62.23) (xy 171.45 62.23)
+			(xy 181.61 87.63) (xy 171.45 87.63)
 		)
 		(stroke
 			(width 0)
@@ -4867,7 +4878,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 92.71) (xy 198.12 92.71)
+			(xy 193.04 67.31) (xy 198.12 67.31)
 		)
 		(stroke
 			(width 0)
@@ -4897,7 +4908,7 @@
 	)
 	(wire
 		(pts
-			(xy 193.04 62.23) (xy 191.77 62.23)
+			(xy 193.04 87.63) (xy 191.77 87.63)
 		)
 		(stroke
 			(width 0)
@@ -5227,7 +5238,7 @@
 	)
 	(global_label "SNC"
 		(shape input)
-		(at 97.79 156.21 0)
+		(at 194.31 97.79 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5236,7 +5247,7 @@
 		)
 		(uuid "86e0ae31-2f52-45dd-b7b8-afa2988436c7")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 97.79 156.21 0)
+			(at 194.31 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5247,7 +5258,7 @@
 	)
 	(global_label "SNA"
 		(shape input)
-		(at 190.5 97.79 0)
+		(at 97.79 156.21 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5256,7 +5267,7 @@
 		)
 		(uuid "a008ece3-2537-4b65-b848-ba9c1799bec8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 190.5 97.79 0)
+			(at 97.79 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5287,7 +5298,7 @@
 	)
 	(hierarchical_label "H3_LOW"
 		(shape passive)
-		(at 173.99 97.79 0)
+		(at 173.99 72.39 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5298,7 +5309,7 @@
 	)
 	(hierarchical_label "GH_A"
 		(shape output)
-		(at 173.99 64.77 0)
+		(at 173.99 90.17 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5342,7 +5353,7 @@
 	)
 	(hierarchical_label "GH_C"
 		(shape output)
-		(at 173.99 90.17 0)
+		(at 173.99 64.77 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5419,7 +5430,7 @@
 	)
 	(hierarchical_label "H1_LOW"
 		(shape passive)
-		(at 173.99 72.39 0)
+		(at 173.99 97.79 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5441,7 +5452,7 @@
 	)
 	(hierarchical_label "H3_VS"
 		(shape input)
-		(at 259.08 115.57 0)
+		(at 259.08 91.44 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5485,7 +5496,7 @@
 	)
 	(hierarchical_label "GL_C"
 		(shape output)
-		(at 173.99 95.25 0)
+		(at 173.99 69.85 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5518,7 +5529,7 @@
 	)
 	(hierarchical_label "H1_VS"
 		(shape input)
-		(at 259.08 91.44 0)
+		(at 259.08 115.57 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5540,7 +5551,7 @@
 	)
 	(hierarchical_label "H3_VS"
 		(shape output)
-		(at 198.12 92.71 0)
+		(at 198.12 67.31 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5551,7 +5562,7 @@
 	)
 	(hierarchical_label "H1_VS"
 		(shape output)
-		(at 198.12 67.31 0)
+		(at 198.12 92.71 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -5595,7 +5606,7 @@
 	)
 	(hierarchical_label "GL_A"
 		(shape output)
-		(at 173.99 69.85 0)
+		(at 173.99 95.25 0)
 		(effects
 			(font
 				(size 1.524 1.524)
@@ -8658,7 +8669,7 @@
 	)
 	(symbol
 		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 186.69 87.63 90)
+		(at 186.69 62.23 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8666,7 +8677,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005e7defc5")
 		(property "Reference" "C27"
-			(at 191.77 86.36 90)
+			(at 191.77 60.96 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8675,7 +8686,7 @@
 			)
 		)
 		(property "Value" "330n"
-			(at 193.04 88.9 90)
+			(at 193.04 63.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8684,7 +8695,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 186.69 87.63 0)
+			(at 186.69 62.23 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -8693,7 +8704,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 186.69 87.63 0)
+			(at 186.69 62.23 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -8702,7 +8713,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 186.69 87.63 0)
+			(at 186.69 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8794,7 +8805,7 @@
 	)
 	(symbol
 		(lib_id "BLDC_4-rescue:C-RESCUE-BLDC_4")
-		(at 186.69 62.23 90)
+		(at 186.69 87.63 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8802,7 +8813,7 @@
 		(dnp no)
 		(uuid "00000000-0000-0000-0000-00005e9b88a2")
 		(property "Reference" "C18"
-			(at 191.77 60.96 90)
+			(at 191.77 86.36 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8811,7 +8822,7 @@
 			)
 		)
 		(property "Value" "330n"
-			(at 193.04 63.5 90)
+			(at 193.04 88.9 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8820,7 +8831,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 186.69 62.23 0)
+			(at 186.69 87.63 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -8829,7 +8840,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 186.69 62.23 0)
+			(at 186.69 87.63 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -8838,7 +8849,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 186.69 62.23 0)
+			(at 186.69 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
