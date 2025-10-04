@@ -5000,6 +5000,12 @@
 		(uuid "4a158425-c7fb-4e88-9fd3-0d03ba339d99")
 	)
 	(junction
+		(at 158.75 116.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "514613a3-8b58-48a1-8e17-8b8c44ff35fd")
+	)
+	(junction
 		(at 105.41 123.19)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5618,6 +5624,16 @@
 	)
 	(wire
 		(pts
+			(xy 158.75 116.84) (xy 161.29 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c1a9202-3738-4b32-ab06-9132f92ec0a4")
+	)
+	(wire
+		(pts
 			(xy 222.25 127) (xy 238.76 127)
 		)
 		(stroke
@@ -5638,7 +5654,7 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 116.84) (xy 157.48 116.84)
+			(xy 157.48 116.84) (xy 158.75 116.84)
 		)
 		(stroke
 			(width 0)
@@ -6505,6 +6521,16 @@
 			(type default)
 		)
 		(uuid "d10e4e1b-d8ef-4ff7-b6b1-0dc6a8a1d665")
+	)
+	(wire
+		(pts
+			(xy 158.75 115.57) (xy 158.75 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1827fee-e023-4bf6-9573-dcc104e16854")
 	)
 	(wire
 		(pts
@@ -7524,7 +7550,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm"
+		(property "Footprint" "Package_QFP:LQFP-64_10x10mm_P0.5mm"
 			(at 132.334 24.384 0)
 			(effects
 				(font
@@ -8631,6 +8657,71 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 158.75 110.49 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2d0c5c99-bcea-4a7a-ad63-6aa6cf0bf1db")
+		(property "Reference" "#PWR03"
+			(at 158.75 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 158.75 107.315 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 158.75 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 158.75 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 158.75 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "391c53d0-775f-4a28-bf61-0d2d1d5c3280")
+		)
+		(instances
+			(project "main_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -11019,7 +11110,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_QFP:LQFP-64-1EP_10x10mm_P0.5mm_EP5x5mm"
+		(property "Footprint" "Package_QFP:LQFP-64_10x10mm_P0.5mm"
 			(at 250.444 33.274 0)
 			(effects
 				(font
@@ -12607,72 +12698,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VDD")
-		(at 264.16 109.22 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "abe7b59e-4c00-4f8b-a804-53e14cc96182")
-		(property "Reference" "#PWR03"
-			(at 260.35 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 269.24 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 264.16 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 264.16 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 264.16 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "e055b72a-25ec-4877-bf5b-a59eedcea110")
-		)
-		(instances
-			(project ""
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "#PWR03")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 67.31 163.83 0)
 		(unit 1)
@@ -13088,6 +13113,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+5V")
+		(at 264.16 109.22 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c2980e32-df72-4264-a835-75f0965971cc")
+		(property "Reference" "#PWR071"
+			(at 260.35 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 267.335 109.22 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 264.16 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 264.16 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 264.16 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6a8a285d-1ab4-40ec-8ab2-aa3ff8315aa7")
+		)
+		(instances
+			(project "main_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR071")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VDD")
 		(at 27.94 82.55 0)
 		(unit 1)
@@ -13149,6 +13239,77 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR037")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Bluesat:R_CompactV")
+		(at 158.75 113.03 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cac51130-3407-4dd9-9303-b6194986676f")
+		(property "Reference" "R17"
+			(at 157.861 113.03 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify bottom)
+			)
+		)
+		(property "Value" "1k"
+			(at 158.75 113.03 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
+			(at 158.75 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 158.75 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, compact symbol"
+			(at 158.75 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "9fd461b4-e41c-4446-b9a2-25809c340271")
+		)
+		(pin "1"
+			(uuid "9bca1650-03cd-4993-8a97-a507fb3ca1d4")
+		)
+		(instances
+			(project "main_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "R17")
 					(unit 1)
 				)
 			)
