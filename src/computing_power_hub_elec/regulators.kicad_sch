@@ -4010,7 +4010,7 @@
 		)
 		(uuid "7ace405a-714f-4872-ba58-300e1e3e8b00")
 	)
-	(text "Capacitor C210, C213 and C214 must be 50V rated.\nInductor L210 must be 10A rated."
+	(text "Capacitor C210 and C214 must be 50V rated.\nInductor L210 must be 10A rated."
 		(exclude_from_sim no)
 		(at 26.67 74.93 0)
 		(effects
@@ -4421,18 +4421,6 @@
 		(uuid "a941e05b-e1ab-4745-a723-8e2be9e9771d")
 	)
 	(junction
-		(at 49.53 137.16)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a958c473-477d-47f1-af3c-c7f2e4262429")
-	)
-	(junction
-		(at 49.53 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ab43a3c5-87fd-4599-adff-1a786a316319")
-	)
-	(junction
 		(at 29.21 88.9)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4449,12 +4437,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c3073ebe-999b-48db-895c-dda4d822e83c")
-	)
-	(junction
-		(at 139.7 133.35)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e00ae8ed-ab0f-4353-ad7e-67edb999525f")
 	)
 	(junction
 		(at 50.8 40.64)
@@ -4516,15 +4498,17 @@
 		(color 0 0 0 0)
 		(uuid "fa2cb6a4-3940-4b86-bd2a-6a0f7606b94d")
 	)
-	(wire
-		(pts
-			(xy 50.8 142.24) (xy 49.53 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0113b215-a6cc-4a76-9d84-939a939a20d0")
+	(no_connect
+		(at 50.8 142.24)
+		(uuid "533b944b-52ce-4dbc-b541-71b493e9403d")
+	)
+	(no_connect
+		(at 50.8 93.98)
+		(uuid "8d36b061-fd83-4c1c-95a4-79bbda6f6783")
+	)
+	(no_connect
+		(at 140.97 138.43)
+		(uuid "ea289187-d067-4d0a-993e-91056e4ed2ab")
 	)
 	(wire
 		(pts
@@ -4555,16 +4539,6 @@
 			(type default)
 		)
 		(uuid "0318b5da-85d4-4985-95d2-012163ce213b")
-	)
-	(wire
-		(pts
-			(xy 29.21 137.16) (xy 49.53 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "037b3f3a-d722-43a1-ad03-6a014aba041e")
 	)
 	(wire
 		(pts
@@ -4635,16 +4609,6 @@
 			(type default)
 		)
 		(uuid "09bfca77-9533-41a2-a1da-44808a20f4ed")
-	)
-	(wire
-		(pts
-			(xy 49.53 93.98) (xy 49.53 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0a122fc7-fb22-46f5-b45b-d0ad30e244a1")
 	)
 	(wire
 		(pts
@@ -4795,16 +4759,6 @@
 			(type default)
 		)
 		(uuid "1a7f0a36-e108-4511-b2fb-ee6c25f2ece7")
-	)
-	(wire
-		(pts
-			(xy 50.8 93.98) (xy 49.53 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ad5cd2e-b2fc-4bde-9502-429f98085112")
 	)
 	(wire
 		(pts
@@ -5148,7 +5102,7 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 133.35) (xy 140.97 133.35)
+			(xy 137.16 133.35) (xy 140.97 133.35)
 		)
 		(stroke
 			(width 0)
@@ -5255,16 +5209,6 @@
 			(type default)
 		)
 		(uuid "4c82337d-3cc2-44ad-bc9d-2d81643119c3")
-	)
-	(wire
-		(pts
-			(xy 49.53 142.24) (xy 49.53 137.16)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e9a9978-e03b-4af1-b3e2-3f2d28dab2e3")
 	)
 	(wire
 		(pts
@@ -5388,16 +5332,6 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 133.35) (xy 139.7 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5c15fdbe-8f86-4b4c-8c34-4ab328e9dc67")
-	)
-	(wire
-		(pts
 			(xy 160.02 83.82) (xy 160.02 91.44)
 		)
 		(stroke
@@ -5465,16 +5399,6 @@
 			(type default)
 		)
 		(uuid "62db4723-841c-4fd7-9435-aaab67470de0")
-	)
-	(wire
-		(pts
-			(xy 49.53 88.9) (xy 50.8 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6380c208-4eba-439e-9711-e4e5f5a8a4c3")
 	)
 	(wire
 		(pts
@@ -5888,7 +5812,7 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 88.9) (xy 49.53 88.9)
+			(xy 29.21 88.9) (xy 50.8 88.9)
 		)
 		(stroke
 			(width 0)
@@ -6498,7 +6422,7 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 137.16) (xy 50.8 137.16)
+			(xy 29.21 137.16) (xy 50.8 137.16)
 		)
 		(stroke
 			(width 0)
@@ -6888,16 +6812,6 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 138.43) (xy 139.7 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f3e754a4-3742-4a3f-a07f-db5c8da919a5")
-	)
-	(wire
-		(pts
 			(xy 39.37 106.68) (xy 39.37 111.76)
 		)
 		(stroke
@@ -6945,16 +6859,6 @@
 			(type default)
 		)
 		(uuid "fc7f14ff-0787-4971-82ef-f711742bfc2c")
-	)
-	(wire
-		(pts
-			(xy 137.16 133.35) (xy 139.7 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ffbb1e35-589d-4b35-b537-78a374d9881a")
 	)
 	(label "24V_{FBLM}"
 		(at 207.01 110.49 0)
