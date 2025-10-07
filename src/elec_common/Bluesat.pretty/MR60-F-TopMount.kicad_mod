@@ -54,6 +54,18 @@
 		)
 	)
 	(attr smd)
+	(fp_poly
+		(pts
+			(xy 5.5 5.5) (xy 5 6) (xy 6 6)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill yes)
+		(layer "F.SilkS")
+		(uuid "00cc077c-2f5a-4351-a9be-93bd4bf7043c")
+	)
 	(fp_rect
 		(start -10.1 -5)
 		(end 10.1 5)
@@ -77,28 +89,31 @@
 			)
 		)
 	)
-	(pad "1" thru_hole circle
+	(pad "1" thru_hole roundrect
 		(at 5.5 0)
-		(size 5 5)
-		(drill 3)
+		(size 5.25 5.25)
+		(drill 4.5)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
 		(uuid "8811b491-3f02-4094-95e9-a8e2f0984667")
 	)
-	(pad "2" thru_hole circle
+	(pad "2" thru_hole roundrect
 		(at 0 0)
-		(size 5 5)
-		(drill 3)
+		(size 5.25 5.25)
+		(drill 4.5)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
 		(uuid "0fdf3106-8b65-4b81-80fd-955ccc834579")
 	)
-	(pad "3" thru_hole circle
+	(pad "3" thru_hole roundrect
 		(at -5.5 0)
-		(size 5 5)
-		(drill 3)
+		(size 5.25 5.25)
+		(drill 4.5)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
+		(roundrect_rratio 0.25)
 		(uuid "3b3e384d-f39c-4e30-9509-71c2076cc4d3")
 	)
 	(embedded_fonts no)
