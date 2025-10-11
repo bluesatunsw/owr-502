@@ -965,7 +965,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_SGD"
+		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -982,7 +982,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_SGD"
+			(property "Value" "Q_NMOS_DGS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -1009,7 +1009,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, source/gate/drain"
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1027,7 +1027,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_SGD_0_1"
+			(symbol "Q_NMOS_DGS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -1194,10 +1194,10 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_SGD_1_1"
+			(symbol "Q_NMOS_DGS_1_1"
 				(pin input line
 					(at -5.08 0 0)
-					(length 5.08)
+					(length 2.54)
 					(name "G"
 						(effects
 							(font
@@ -1223,7 +1223,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1241,7 +1241,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2563,7 +2563,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_SGD")
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
 		(at 138.43 60.96 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2608,7 +2608,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, source/gate/drain"
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
 			(at 138.43 60.96 0)
 			(effects
 				(font
@@ -3465,7 +3465,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6"
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 110.49 123.19 0)
 			(effects
 				(font
@@ -3551,7 +3551,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6"
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 110.49 66.04 0)
 			(effects
 				(font
@@ -4266,7 +4266,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_SGD")
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
 		(at 138.43 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -4311,7 +4311,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, source/gate/drain"
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
 			(at 138.43 118.11 0)
 			(effects
 				(font
