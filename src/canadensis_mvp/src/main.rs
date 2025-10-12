@@ -35,6 +35,12 @@ use nb::block;
 #[cfg(feature = "stm32f103")]
 use crate::boards::stm32f103::{CyphalClock, GeneralClock};
 
+#[cfg(feature = "stm32g474")]
+use crate::boards::stm32g474::{CyphalClock, GeneralClock};
+
+#[cfg(feature = "stm32g431")]
+use crate::boards::stm32g431::{CyphalClock, GeneralClock};
+
 pub mod boards;
 
 #[cfg(feature = "stm32f103")]
