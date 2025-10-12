@@ -1,17 +1,17 @@
 [target.thumbv7m-none-eabi]
-# uncomment this to make `cargo run` execute programs on QEMU
-# runner = "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel"
 rustflags = [
     "-C", "opt-level=s",       # Optimize for size ('s') or 'z' for even more
     "-C", "panic=abort",       # No panic unwinding (reduces size)
 ]
 
+[target.thumbv7em-none-eabihf]
+rustflags = [
+    "-C", "opt-level=s",
+    "-C", "panic=abort",
+]
+
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-# uncomment ONE of these three option to make `cargo run` start a GDB session
-# which option to pick depends on your system
-# runner = "arm-none-eabi-gdb -q -x openocd.gdb"
 runner = "gdb-multiarch -q -x openocd.gdb"
-# runner = "gdb -q -x openocd.gdb"
 
 rustflags = [
   # Previously, the linker arguments --nmagic and -Tlink.x were set here.
@@ -31,4 +31,5 @@ rustflags = [
 ]
 
 [build]
-target = "thumbv7m-none-eabi"        # Cortex-M3
+target = "thumbv7m-none-eabi"  		# Cortex-M3
+# We also support Cortex-M4 with FPU.

@@ -6,15 +6,21 @@ name = "canadensis_mvp"
 version = "0.1.0"
 
 [features]
-# NOTE: these should be mutually exclusive. if multiple board features enabled, only the board listed first below will apply.
-# Only stm32f103 actually has any code right now.
+# NOTE: These should be mutually exclusive. If multiple board features enabled,
+# only the board listed first below will apply.
+# NOTE: Only stm32f103 actually has any code right now.
 default = ["stm32f103"]
-# STM32 Blue Pill, CAN only -- prototyping
+
+# DEV BOARD 			FEATURES 	ARCh APPLICATION
+# -----------------------------------------------------------------------------
+# STM32 Blue Pill, 		bxCAN ONLY, 	prototyping only
 stm32f103 = []
-# Mellow FLY-DP5 stepper board, CAN FD -- prototyping
-stm32f072 = []
-# Actual G431 custom ESCs to be used on the 2026 rover, CAN FD
+# WeAct STM32G431 core board, 	FDCAN, 		prototyping only
 stm32g431 = []
+# Nucleo-G474RE, 		FDCAN, 		ARCh2026 stepper, main power, system etc. boards
+stm32g474 = []
+# TBD, 				FDCAN, 		ARCh2026+ VESCs
+stm32f405 = []
 
 [dependencies]
 # NOTE: stm32f1xx-hal should really re-export their version of bxcan

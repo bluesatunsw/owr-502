@@ -1,18 +1,40 @@
-# A rough outline to working with canadensis, the Cyphal driver written in Rust
+This is a perpetually incomplete draft. Please let Jonah know if you think this
+is missing useful or important things.
 
-This is an incomplete draft. Please let Jonah know if you think this is missing
-useful or important things.
+## Setting up the development environment
 
-## Misc. notes
+This is an embedded Rust project. Install Rust with the relevant
+cross-compilers. Install OpenOCD too.
+
+It is assumed that you are using an STLINK V2 (or clone) with one of a very
+particular set of hardware boards/platforms (run `run.sh` without arguments
+or examine the `Cargo.toml` features for details).
+
+`openocd -f openocd/board/<board>.cfg` should start OpenOCD and connect to the
+relevant board/platform.
+
+Running the `run.sh` script with one of the board identifiers as an argument
+will compile the firmware, connect to the board with GDB, load the firmware and
+await your debugging input. It uses `cargo run` under the hood. Note that
+`cargo run --release` is necessary to apply the necessary memory optimisations
+to actually fit onto pretty much any device we're using.
+
+## Working with canadensis
+
+### Misc. notes
 
 [There are examples!](https://github.com/samcrow/canadensis/blob/master/canadensis/examples/basic_node.rs)
 - But be careful looking at the master branch, as it incorporates changes that
   aren't found in the latest released version; treat it as experimental.
 
-CAN FD support is enabled by a feature flag; see [crate features](https://docs.rs/crate/canadensis_can/0.3.1/features).
-In the source, CAN FD-specific code is annotated with `#[cfg(feature = "can-fd")]`.
+CAN FD (FDCAN) support is enabled by a feature flag; see [crate
+features](https://docs.rs/crate/canadensis_can/0.3.1/features). In the source,
+CAN FD-specific code is annotated with `#[cfg(feature = "can-fd")]`. There are
+very few instances of this; the definition of the `FRAME_CAPACITY` constant is
+one of them. In any case, there are no extant CAN FD drivers for canadensis for
+any of our MCUs, so we will need to write these ourselves.
 
-## Getting online
+### Getting online
 
 So you want your embedded system to present itself as one or more Cyphal nodes
 on one or more CAN interfaces. You can create a fully-featured Cyphal node as
@@ -63,7 +85,7 @@ follows:
    `node.start_publishing()` on setup and then publish with the resulting
    publish token. See the MVP code for an example.
 
-## Using custom data types
+### Using custom data types
 
 The standard platform-independent way you do this is you have a `.dsdl` file
 and then run some kind of compiler on it in your language to get a language
@@ -82,7 +104,7 @@ for hints on usage.
 
 ### Crude syntax guide
 
-For `canadensis_macro` v0.3.2.
+For `canadensis_macro` v0.5.0.
 
 ```
 types_from_dsdl! {
@@ -104,15 +126,15 @@ dsdl
 goes
 here
     "# }
-<generate_statement> : generate()
+<generate_statement> : generate({
+        allow_utf8_and_byte: <bool>,
+        allow_saturated_bool: <bool>,
+    })
 ```
 
 [`make_external`](https://github.com/samcrow/canadensis/tree/master/canadensis_codegen_rust)
 
-The version on `master` on the GitHub passes extra arguments to `generate()`,
-but this isn't currently part of a published version of `canadensis_macro`.
-
-## Using Rust DSDL codegen
+### Using Rust DSDL codegen
 
 See the [`canadensis_codegen_rust`
 documentation](https://github.com/samcrow/canadensis/tree/master/canadensis_codegen_rust).
