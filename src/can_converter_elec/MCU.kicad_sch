@@ -717,174 +717,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Res_1Percent_E24_0603_100mW_-40C-90C:10k_0603_100mW_1%_E24_Chip-Resistor"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "R"
-				(at 2.032 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "10k_0603_100mW_1%_E24_Chip-Resistor"
-				(at -3.4544 0.0254 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Footprint" "Resistors_SMD:R_0603"
-				(at -1.778 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 2.032 0 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "10k, 0603, 100mW, 1%, E24, Chip Resistor"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "MPN" "any"
-				(at 4.572 2.54 90)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "Manufacturer" "any"
-				(at 7.112 5.08 90)
-				(effects
-					(font
-						(size 1.524 1.524)
-					)
-					(hide yes)
-				)
-			)
-			(property "DisplayValue" "10k"
-				(at -0.0254 -0.0508 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Fit" "fit: "
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-				)
-			)
-			(property "State" "legacy"
-				(at 7.62 -3.81 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "Package" "0603"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 0.635 0.635)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "R_0603*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "10k_0603_100mW_1%_E24_Chip-Resistor_0_1"
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "10k_0603_100mW_1%_E24_Chip-Resistor_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "ST:STM32G0B1CBT"
 			(pin_names
 				(offset 1.016)
@@ -2892,26 +2724,6 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 73.66) (xy 40.64 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "20d33c3f-a675-422c-9157-cce4c07342ec")
-	)
-	(wire
-		(pts
-			(xy 40.64 57.15) (xy 40.64 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "21087c90-563d-4fea-b43a-3e1118daba88")
-	)
-	(wire
-		(pts
 			(xy 63.5 29.21) (xy 67.31 29.21)
 		)
 		(stroke
@@ -2999,6 +2811,16 @@
 			(type default)
 		)
 		(uuid "3c644aeb-f70d-45eb-a720-699af16bde7d")
+	)
+	(wire
+		(pts
+			(xy 59.69 57.15) (xy 67.31 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3c70c4ac-9e60-4991-ba16-de41305cd1cd")
 	)
 	(wire
 		(pts
@@ -3279,16 +3101,6 @@
 			(type default)
 		)
 		(uuid "efff17bb-bf5e-4541-8ca2-538198874e1c")
-	)
-	(wire
-		(pts
-			(xy 40.64 57.15) (xy 67.31 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "facf38b3-77d3-4f08-8f66-9ff6b90dd9ae")
 	)
 	(wire
 		(pts
@@ -4961,129 +4773,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Res_1Percent_E24_0603_100mW_-40C-90C:10k_0603_100mW_1%_E24_Chip-Resistor")
-		(at 40.64 69.85 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7bdb8ef7-f64f-444d-bf4d-40cb9412076c")
-		(property "Reference" "R6"
-			(at 43.18 67.945 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "10K"
-			(at 37.1856 69.8246 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 38.862 69.85 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 42.672 69.85 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 40.64 69.85 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "any"
-			(at 45.212 67.31 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer" "any"
-			(at 47.752 64.77 90)
-			(effects
-				(font
-					(size 1.524 1.524)
-				)
-				(hide yes)
-			)
-		)
-		(property "DisplayValue" "10k"
-			(at 43.18 70.485 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Fit" "fit: "
-			(at 43.18 72.39 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(justify left)
-			)
-		)
-		(property "State" "legacy"
-			(at 48.26 73.66 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(property "Package" "0402"
-			(at 40.64 69.85 0)
-			(effects
-				(font
-					(size 0.635 0.635)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "56217abe-8826-497e-baf6-ecb648f7e99b")
-		)
-		(pin "2"
-			(uuid "22b0fab7-5a4c-4824-a72f-7f76bfeb09cc")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
-					(reference "R6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "powerport:GND")
 		(at 160.02 90.17 0)
 		(unit 1)
@@ -5212,69 +4901,6 @@
 			(project "can_converter"
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
 					(reference "R7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "powerport:GND")
-		(at 40.64 76.2 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a28619ce-6db9-4c6a-b773-dcb09029806a")
-		(property "Reference" "#PWR018"
-			(at 40.64 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 40.64 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 40.64 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 40.64 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 40.64 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "f640d18e-ab67-47d6-aa57-989a69a413fe")
-		)
-		(instances
-			(project "candleLightfd-S01"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/c754f27f-d753-4109-9c59-639a39396c66"
-					(reference "#PWR018")
 					(unit 1)
 				)
 			)
