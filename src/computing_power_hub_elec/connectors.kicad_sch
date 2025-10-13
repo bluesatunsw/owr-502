@@ -1400,27 +1400,27 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:D_TVS_Small"
+		(symbol "Device:D_Zener_Small"
 			(pin_numbers
 				(hide yes)
 			)
 			(pin_names
-				(offset 1.016)
+				(offset 0.254)
 				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "D"
-				(at 0 2.54 0)
+				(at 0 2.286 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "D_TVS_Small"
-				(at 0 -2.54 0)
+			(property "Value" "D_Zener_Small"
+				(at 0 -2.286 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1428,7 +1428,7 @@
 				)
 			)
 			(property "Footprint" ""
-				(at 0 0 0)
+				(at 0 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1437,6 +1437,15 @@
 				)
 			)
 			(property "Datasheet" "~"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Zener diode, small symbol"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1445,16 +1454,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS thyrector"
+			(property "ki_keywords" "diode"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1472,10 +1472,10 @@
 					(hide yes)
 				)
 			)
-			(symbol "D_TVS_Small_0_1"
+			(symbol "D_Zener_Small_0_1"
 				(polyline
 					(pts
-						(xy -1.27 1.016) (xy -1.27 -1.016) (xy 1.27 1.016) (xy 1.27 -1.016) (xy -1.27 1.016)
+						(xy -0.254 1.016) (xy -0.762 1.016) (xy -0.762 -1.016)
 					)
 					(stroke
 						(width 0.254)
@@ -1487,7 +1487,19 @@
 				)
 				(polyline
 					(pts
-						(xy -1.27 0) (xy 1.27 0)
+						(xy 0.762 1.016) (xy -0.762 0) (xy 0.762 -1.016) (xy 0.762 1.016)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0) (xy -0.762 0)
 					)
 					(stroke
 						(width 0)
@@ -1497,24 +1509,12 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 0.508 1.016) (xy 0 1.016) (xy 0 -1.016) (xy -0.508 -1.016)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
 			)
-			(symbol "D_TVS_Small_1_1"
+			(symbol "D_Zener_Small_1_1"
 				(pin passive line
 					(at -2.54 0 0)
-					(length 1.27)
-					(name "A1"
+					(length 1.778)
+					(name "K"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1531,8 +1531,8 @@
 				)
 				(pin passive line
 					(at 2.54 0 180)
-					(length 1.27)
-					(name "A2"
+					(length 1.778)
+					(name "A"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4233,7 +4233,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_GSD"
+		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -4250,7 +4250,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_GSD"
+			(property "Value" "Q_NMOS_DGS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -4277,7 +4277,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, gate/source/drain"
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -4295,7 +4295,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_GSD_0_1"
+			(symbol "Q_NMOS_DGS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -4462,7 +4462,7 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_GSD_1_1"
+			(symbol "Q_NMOS_DGS_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
@@ -4473,7 +4473,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4491,7 +4491,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4509,7 +4509,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7654,7 +7654,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Transformer_SMD:Transformer_Ethernet_YDS_30F-51NL_SO-24_7.1x15.1mm"
+		(property "Footprint" "Bluesat:Transformer_Ethernet"
 			(at 160.02 44.45 0)
 			(effects
 				(font
@@ -8343,7 +8343,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:FG RJ-064-1"
 			(at 185.42 51.435 90)
 			(effects
 				(font
@@ -8398,6 +8398,75 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600/fcae8f75-3f79-40cf-823d-66a8972288db"
 					(reference "J321")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener_Small")
+		(at 46.99 38.1 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2054b1cb-42eb-4ccd-86fc-f4251f0133f6")
+		(property "Reference" "D310"
+			(at 48.26 37.338 90)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "30V"
+			(at 48.26 38.862 90)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SMF"
+			(at 46.99 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 46.99 38.1 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Zener diode, small symbol"
+			(at 46.99 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2802018e-b8aa-416b-a339-b801a8257097")
+		)
+		(pin "1"
+			(uuid "411dd9e5-9f7d-4e7e-bb50-34dd95cd3f71")
+		)
+		(instances
+			(project ""
+				(path "/294cc751-7444-4d80-b629-85aa96521600/fcae8f75-3f79-40cf-823d-66a8972288db"
+					(reference "D310")
 					(unit 1)
 				)
 			)
@@ -8502,7 +8571,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:BM03B-PASS"
 			(at 86.36 96.52 0)
 			(effects
 				(font
@@ -8839,7 +8908,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:FG RJ-064-1"
 			(at 102.87 51.435 90)
 			(effects
 				(font
@@ -8926,7 +8995,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 50.8 104.14 0)
 			(effects
 				(font
@@ -9283,7 +9352,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
 			(at 66.04 115.57 0)
 			(effects
 				(font
@@ -9638,7 +9707,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:BM03B-PASS"
 			(at 181.61 96.52 0)
 			(effects
 				(font
@@ -9981,7 +10050,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_2512_6332Metric"
+		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
 			(at 40.64 74.93 0)
 			(effects
 				(font
@@ -10331,7 +10400,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:BM03B-PASS"
 			(at 149.86 96.52 0)
 			(effects
 				(font
@@ -10651,7 +10720,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
 		(at 58.42 100.33 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -10677,7 +10746,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
 			(at 63.5 97.79 0)
 			(effects
 				(font
@@ -10695,7 +10764,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
 			(at 58.42 100.33 0)
 			(effects
 				(font
@@ -11619,75 +11688,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_TVS_Small")
-		(at 46.99 38.1 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c954c624-3205-4b4f-a9c9-d6b7f5b92a05")
-		(property "Reference" "D310"
-			(at 48.26 37.465 90)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "30V"
-			(at 48.26 38.735 90)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMF"
-			(at 46.99 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 46.99 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
-			(at 46.99 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1ac1e343-bc1e-4963-a61d-59ad00a9fbad")
-		)
-		(pin "2"
-			(uuid "24c79977-2f22-4b3c-b2f9-097af6041273")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600/fcae8f75-3f79-40cf-823d-66a8972288db"
-					(reference "D310")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 48.26 111.76 0)
 		(unit 1)
@@ -11844,7 +11844,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:BM03B-PASS"
 			(at 118.11 96.52 0)
 			(effects
 				(font
@@ -12645,7 +12645,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 66.04 137.16 0)
 			(effects
 				(font
@@ -12673,22 +12673,22 @@
 			)
 		)
 		(pin "4"
-			(uuid "d7a46336-b3c2-45d2-90b4-26fd20f1c87c")
+			(uuid "d7a46336-b3c2-45d2-90b4-26fd20f1c87d")
 		)
 		(pin "3"
-			(uuid "ca5294cc-1ae1-4933-ab2e-13edd1b5693c")
+			(uuid "ca5294cc-1ae1-4933-ab2e-13edd1b5693d")
 		)
 		(pin "5"
-			(uuid "474c7d02-d0c5-4f1e-af63-e7f8f0df8d3c")
+			(uuid "474c7d02-d0c5-4f1e-af63-e7f8f0df8d3d")
 		)
 		(pin "1"
-			(uuid "ffd4ffa5-7e5e-4a4a-939c-60752ed10c30")
+			(uuid "ffd4ffa5-7e5e-4a4a-939c-60752ed10c31")
 		)
 		(pin "2"
-			(uuid "baed579b-1149-478d-8262-f70a22bc1b60")
+			(uuid "baed579b-1149-478d-8262-f70a22bc1b61")
 		)
 		(pin "6"
-			(uuid "4f7ff5a9-7e58-447d-af6c-19f849c9ab8a")
+			(uuid "4f7ff5a9-7e58-447d-af6c-19f849c9ab8b")
 		)
 		(instances
 			(project ""
@@ -12726,7 +12726,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Bluesat:S2P-VH"
 			(at 46.99 69.85 0)
 			(effects
 				(font

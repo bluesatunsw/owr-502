@@ -642,6 +642,25 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 1.27 -31.75 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin input line
 					(at 12.7 -2.54 180)
 					(length 2.54)
@@ -904,15 +923,15 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at 0 10.668 0)
+				(at 0 8.89 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "TPS61175"
-				(at 0 8.89 0)
+			(property "Value" ""
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -994,7 +1013,7 @@
 						)
 					)
 				)
-				(pin output line
+				(pin passive line
 					(at -12.7 0 0)
 					(length 2.54)
 					(name "FREQ"
@@ -1012,7 +1031,7 @@
 						)
 					)
 				)
-				(pin output line
+				(pin passive line
 					(at -12.7 -2.54 0)
 					(length 2.54)
 					(name "SS"
@@ -1049,7 +1068,26 @@
 					)
 				)
 				(pin power_in line
-					(at -2.54 -10.16 90)
+					(at -1.27 -10.16 90)
+					(length 2.54)
+					(hide yes)
+					(name "EP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -1.27 -10.16 90)
 					(length 2.54)
 					(name "AGND"
 						(effects
@@ -1066,45 +1104,8 @@
 						)
 					)
 				)
-				(pin passive line
-					(at 0 -10.16 90)
-					(length 2.54)
-					(name "EP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -10.16 90)
-					(length 2.54)
-					(hide yes)
-					(name "RES"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin power_in line
-					(at 2.54 -10.16 90)
+					(at 1.27 -10.16 90)
 					(length 2.54)
 					(name "PGND"
 						(effects
@@ -1122,7 +1123,7 @@
 					)
 				)
 				(pin power_in line
-					(at 2.54 -10.16 90)
+					(at 1.27 -10.16 90)
 					(length 2.54)
 					(hide yes)
 					(name "PGND"
@@ -1141,7 +1142,7 @@
 					)
 				)
 				(pin power_in line
-					(at 2.54 -10.16 90)
+					(at 1.27 -10.16 90)
 					(length 2.54)
 					(hide yes)
 					(name "PGND"
@@ -1177,7 +1178,7 @@
 						)
 					)
 				)
-				(pin power_out line
+				(pin passive line
 					(at 12.7 5.08 180)
 					(length 2.54)
 					(hide yes)
@@ -1214,7 +1215,7 @@
 						)
 					)
 				)
-				(pin output line
+				(pin passive line
 					(at 12.7 -2.54 180)
 					(length 2.54)
 					(name "COMP"
@@ -2650,7 +2651,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_GSD"
+		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -2667,7 +2668,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_GSD"
+			(property "Value" "Q_NMOS_DGS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -2694,7 +2695,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, gate/source/drain"
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2712,7 +2713,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_GSD_0_1"
+			(symbol "Q_NMOS_DGS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -2879,7 +2880,7 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_GSD_1_1"
+			(symbol "Q_NMOS_DGS_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
@@ -2890,7 +2891,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2908,7 +2909,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2926,7 +2927,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7953,7 +7954,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
 		(at 110.49 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -7979,7 +7980,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
 			(at 115.57 41.91 0)
 			(effects
 				(font
@@ -7997,7 +7998,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
 			(at 110.49 44.45 0)
 			(effects
 				(font
@@ -8672,7 +8673,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 35.56 43.18 90)
 			(effects
 				(font
@@ -8804,7 +8805,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR4020S"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR5040S"
 			(at 172.72 133.35 0)
 			(effects
 				(font
@@ -8940,7 +8941,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 95.25 58.42 0)
 			(effects
 				(font
@@ -9281,7 +9282,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL1040"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL0630"
 			(at 87.63 142.24 0)
 			(effects
 				(font
@@ -10031,7 +10032,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL1040"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL1360"
 			(at 116.84 38.1 0)
 			(effects
 				(font
@@ -10577,7 +10578,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:Texas_R-PDSO-G8_EP2.95x4.9mm_Mask2.4x3.1mm_ThermalVias"
+		(property "Footprint" "Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm"
 			(at 63.5 139.7 0)
 			(effects
 				(font
@@ -10808,7 +10809,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FXL1040"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR4020S"
 			(at 87.63 93.98 0)
 			(effects
 				(font
@@ -11135,7 +11136,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:Texas_R-PDSO-G8_EP2.95x4.9mm_Mask2.4x3.1mm_ThermalVias"
+		(property "Footprint" "Package_SO:SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.41x3.3mm"
 			(at 63.5 91.44 0)
 			(effects
 				(font
@@ -11787,7 +11788,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 67.31 60.96 0)
 			(effects
 				(font
@@ -12327,7 +12328,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 62.23 58.42 0)
 			(effects
 				(font
@@ -13969,7 +13970,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR4020S"
+		(property "Footprint" "Inductor_SMD:L_Changjiang_FNR5040S"
 			(at 173.99 83.82 0)
 			(effects
 				(font
@@ -14298,7 +14299,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_SO:Texas_HTSSOP-14-1EP_4.4x5mm_P0.65mm_EP3.4x5mm_Mask3.155x3.255mm_ThermalVias"
+		(property "Footprint" "Bluesat:HTSSOP-14_4.4x5.0-0.65-EP"
 			(at 173.99 96.52 0)
 			(effects
 				(font
@@ -14328,7 +14329,7 @@
 		(pin "6"
 			(uuid "4cf23277-d56a-4d96-8167-5aebbaf652b4")
 		)
-		(pin ""
+		(pin "15"
 			(uuid "17c16fa6-6b4c-4ecd-b1db-32692d596772")
 		)
 		(pin "3"
@@ -14351,9 +14352,6 @@
 		)
 		(pin "7"
 			(uuid "06858c98-6495-40b8-be45-caeffae529a9")
-		)
-		(pin "11"
-			(uuid "c22c2913-c42c-4f0d-b988-cf56e23e8c73")
 		)
 		(pin "2"
 			(uuid "3bee0665-5c9e-4fe4-9758-65f0ff18fe45")
@@ -15624,7 +15622,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 62.23 63.5 0)
 			(effects
 				(font
@@ -16034,7 +16032,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
+		(property "Footprint" "Capacitor_SMD:C_1210_3225Metric"
 			(at 132.08 43.18 90)
 			(effects
 				(font
@@ -17755,7 +17753,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
 			(at 95.25 50.8 0)
 			(effects
 				(font
@@ -18130,7 +18128,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
 		(at 110.49 31.75 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -18156,7 +18154,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
 			(at 115.57 29.21 0)
 			(effects
 				(font
@@ -18174,7 +18172,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
 			(at 110.49 31.75 0)
 			(effects
 				(font
@@ -18358,7 +18356,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DFN_QFN:Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm"
 			(at 81.28 30.48 0)
 			(effects
 				(font
@@ -18456,6 +18454,9 @@
 		)
 		(pin "19"
 			(uuid "2a99331c-e332-4c32-8916-a4179040e26c")
+		)
+		(pin "25"
+			(uuid "a72db31f-6131-4a04-beab-780357a1d7af")
 		)
 		(instances
 			(project ""
@@ -18631,7 +18632,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_1206_3216Metric"
 			(at 124.46 38.1 0)
 			(effects
 				(font
