@@ -346,10 +346,14 @@ dependencies = [
  "stm32f1xx-hal",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
  "zerocopy 0.6.6",
 >>>>>>> e62cdec (Fix dependencies in preparation for using canadensis_macro)
 =======
+=======
+ "stm32g4",
+>>>>>>> 53f17d0 (Moderately cursed refactoring into board-specific initialisation routines)
  "zerocopy",
 >>>>>>> d383820 (Upgrade to canadensis v0.5.0)
 ]
@@ -1000,6 +1004,18 @@ dependencies = [
  "stm32f1",
  "vcell",
  "void",
+]
+
+[[package]]
+name = "stm32g4"
+version = "0.16.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97bc6434066d2459f0e0834ade8b03e5c5e8d4aad84dc2ff50e56464e6104f4d"
+dependencies = [
+ "cortex-m",
+ "cortex-m-rt",
+ "critical-section",
+ "vcell",
 ]
 
 [[package]]

@@ -1,18 +1,18 @@
 WORK IN PROGRESS!!
 
+This file is not quite accurate now... see boards.rs
+
 Each module contains:
-    - a `struct CyphalClock` that implements `canadensis::core::time::Clock`
-      with `Instant` type `Microseconds48`
-        - methods: `new_singleton`, `start`
-        - (hmm, different function signatures depending on hardware... use
-          `embedded_hal`?)
+    - a `struct CyphalClock` that implements the `canadensis::core::time::Clock`
+      trait and the following methods:
+        - `new_singleton(<hardware-specific>...)`: returns a `CyphalClock`, once
+        - `start(&mut self)`: starts the `CyphalClock`
     - a `struct GeneralClock` that implements a `now()` method that just
       returns the same timestamp as the CyphalClock does
-        - panics if a struct CyphalClock was not initialised and started
-        - since the CyphalClock gets owned by the canadensis tranceiver, a
-          different means of getting the timestamp (for the main processing
-          loop) is necessary; this struct provides that means
-    - a `struct CyphalCanTransmitter` that implements
-      `canadensis_can::CanTransmitter`
-    - a `struct CyphalCanReceiver` that implements
-      `canadensis_can::CanReceiver`
+        - panics if a `CyphalClock` was not initialised and started
+        - this exists because ownership of the `CyphalClock` moves to the
+          canadensis tranceiver, so we need an additional means of getting the
+          timestamp
+    - a `struct HwCanDriver` that implements the
+      `canadensis_can::CanTransmitter` and `canadensis_can::CanReceiver` traits and the following methods:
+        - `new_singleton(<hardware-specific>...)`: returns a `HwCanDriver`, once

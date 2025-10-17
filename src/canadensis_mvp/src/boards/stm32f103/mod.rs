@@ -1,12 +1,17 @@
 //! See boards README
 
-use canadensis::core::time as cyphal_time;
+use canadensis::core::time;
+use canadensis_bxcan;
 use cortex_m::interrupt::Mutex;
 use core::cell::RefCell;
+use crate::boards::{CyphalClock, GeneralClock};
 
 use stm32f1xx_hal::{
     pac,
-    rcc::{Enable, Reset},
+    can,
+    rcc,
+    rcc::{Reset,Enable},
+    prelude::*,
 };
 
 struct STM32F103CyphalClock {
@@ -68,20 +73,22 @@ impl STM32F103CyphalClock {
 static G_CYPHAL_CLOCK: Mutex<RefCell<Option<STM32F103CyphalClock>>> =
     Mutex::new(RefCell::new(None));
 
-pub struct CyphalClock {}
+pub struct CClock {}
 
-// exists to be instantiable locally but passes everything through to global state
-// (state has to be global to be modifiable by interrupt handler)
-impl CyphalClock {
-    pub fn new_singleton(tim2: pac::TIM2, tim3: pac::TIM3, rcc: &mut pac::RCC) -> Self {
+impl CClock {
+    fn new_singleton(tim2: pac::TIM2, tim3: pac::TIM3, rcc: &mut pac::RCC) -> Self {
         // takes in a few hardware peripherals
         cortex_m::interrupt::free(|cs| {
             *G_CYPHAL_CLOCK.borrow(cs).borrow_mut() = Some(STM32F103CyphalClock::new(tim2, tim3, rcc))
         });
-        CyphalClock {}
+        CClock {}
     }
+}
 
-    pub fn start(&self) {
+// exists to be instantiable locally but passes everything through to global state
+// (state has to be global to be modifiable by interrupt handler)
+impl CyphalClock for CClock {
+    fn start(&mut self) {
         cortex_m::interrupt::free(|cs| {
             G_CYPHAL_CLOCK
                 .borrow(cs)
@@ -94,12 +101,12 @@ impl CyphalClock {
 }
 
 // panics if CyphalClock not initialised and started
-fn get_instant() -> cyphal_time::Microseconds32 {
+fn get_instant() -> time::Microseconds32 {
     // TODO: Handle edge case where timer overflows in between reading upper and lower bits
     cortex_m::interrupt::free(|cs| {
         if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
             let lower_time = cyphal_clock.hw_timer_lower.cnt().read().bits();
-            cyphal_time::Microseconds32::from_ticks(
+            time::Microseconds32::from_ticks(
                 (cyphal_clock.hw_timer_upper.cnt().read().bits() << 16) + lower_time
             )
         } else {
@@ -108,16 +115,53 @@ fn get_instant() -> cyphal_time::Microseconds32 {
     })
 }
 
-impl cyphal_time::Clock for CyphalClock {
-    fn now(&mut self) -> cyphal_time::Microseconds32 {
+impl time::Clock for CClock {
+    fn now(&mut self) -> time::Microseconds32 {
         get_instant()
     }
 }
 
-pub struct GeneralClock {}
+pub struct GClock {}
 
-impl GeneralClock {
-    pub fn now() -> cyphal_time::Microseconds32 {
+impl GeneralClock for GClock {
+    fn now(&self) -> time::Microseconds32 {
         get_instant()
     }
 }
+
+pub type CanDriver = canadensis_bxcan::BxCanDriver<can::Can<pac::CAN>>;
+
+pub fn init() -> (CClock, GClock, CanDriver) {
+    let dp = pac::Peripherals::take().unwrap();
+
+    let mut flash = dp.FLASH.constrain();
+    let mut rcc: rcc::Rcc = dp.RCC.freeze(
+        // STM32F103 board we're using has 8 MHz external clock; use that.
+        rcc::Config::hse(8.MHz())
+            .pclk1(8.MHz()), // for APB1, which CAN is on.
+        &mut flash.acr);
+
+    let cyphal_clock = CClock::new_singleton(dp.TIM2, dp.TIM3, &mut rcc);
+
+    // Assemble and enable the CAN peripheral.
+    let gpioa = dp.GPIOA.split(&mut rcc);
+    let can: can::Can<pac::CAN> = can::Can::new(
+        dp.CAN,
+        dp.USB,
+        (gpioa.pa12, gpioa.pa11), // Tx and Rx pins respectively
+        &mut rcc
+    );
+
+    // Calculated for bit rate 1000 kbps, PCLK1 = 8 MHz, sample-point 87.5%, SJW = 1
+    // See http://www.bittiming.can-wiki.info/, https://docs.rs/bxcan/0.7.0/bxcan/struct.CanBuilder.html
+    let livecan = bxcan::Can::builder(can)
+        .set_bit_timing(0x00050000)
+        .set_loopback(false)
+        .set_silent(false)
+        .enable();
+
+    let hwdriver = canadensis_bxcan::BxCanDriver::new(livecan);
+
+    (cyphal_clock, GClock {}, hwdriver)
+}
+

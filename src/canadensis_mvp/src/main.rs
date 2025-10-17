@@ -13,14 +13,12 @@ use panic_semihosting as _;
 
 extern crate alloc;
 
-use bxcan;
 use canadensis::core::time as cyphal_time;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
 use canadensis::core::transport::Transport;
 use canadensis::node::data_types::Version;
 use canadensis::node;
 use canadensis::{Node, ResponseToken, TransferHandler};
-use canadensis_bxcan::{self as cbxcan, BxCanDriver};
 use canadensis_can::{self, CanReceiver, CanTransmitter};
 use canadensis_data_types::uavcan::node::get_info_1_0::GetInfoResponse;
 use canadensis_data_types::uavcan::primitive::scalar::real64_1_0;
@@ -30,26 +28,9 @@ use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
 use heapless;
-use nb::block;
-
-#[cfg(feature = "stm32f103")]
-use crate::boards::stm32f103::{CyphalClock, GeneralClock};
-
-#[cfg(feature = "stm32g474")]
-use crate::boards::stm32g474::{CyphalClock, GeneralClock};
-
-#[cfg(feature = "stm32g431")]
-use crate::boards::stm32g431::{CyphalClock, GeneralClock};
 
 pub mod boards;
-
-#[cfg(feature = "stm32f103")]
-use stm32f1xx_hal::{
-    can, pac,
-    prelude::*,
-    rcc,
-    timer::Timer,
-};
+use crate::boards::GeneralClock;
 
 // Set up custom Cyphal data types.
 types_from_dsdl! {
@@ -91,60 +72,24 @@ fn main() -> ! {
     // Embedded boilerplate.
     initialise_allocator();
 
-    let dp = pac::Peripherals::take().unwrap();
-    let cp = pac::CorePeripherals::take().unwrap();
-
-    let mut flash = dp.FLASH.constrain();
-    let mut rcc: rcc::Rcc = dp.RCC.freeze(
-        // STM32F103 board we're using has 8 MHz external clock; use that.
-        rcc::Config::hse(8.MHz())
-            .pclk1(8.MHz()), // for APB1, which CAN is on.
-        &mut flash.acr);
-
-    // Set up microsecond clock for Cyphal.
-    // TODO: Use singleton pattern so we can get an actual local object that we can pass through to
-    // canadensis?
-    let cyphal_clock = CyphalClock::new_singleton(dp.TIM2, dp.TIM3, &mut rcc);
-    cyphal_clock.start();
-
-    // 1 Hz timer for debugging only
-    let mut other_timer = Timer::syst(cp.SYST, &rcc.clocks).counter_hz();
-    other_timer.start(1.Hz()).unwrap();
-
-    // Assemble and enable the CAN peripheral.
-    let gpioa = dp.GPIOA.split(&mut rcc);
-    let can: can::Can<pac::CAN> = can::Can::new(
-        dp.CAN,
-        dp.USB,
-        (gpioa.pa12, gpioa.pa11), // Tx and Rx pins respectively
-        &mut rcc
-    );
-
-    // Calculated for bit rate 1000 kbps, PCLK1 = 8 MHz, sample-point 87.5%, SJW = 1
-    // See http://www.bittiming.can-wiki.info/, https://docs.rs/bxcan/0.7.0/bxcan/struct.CanBuilder.html
-    let livecan = bxcan::Can::builder(can)
-        .set_bit_timing(0x00050000)
-        .set_loopback(false)
-        .set_silent(false)
-        .enable();
+    let (cyphal_clock, general_clock, hwdriver) = boards::init();
 
     // Set up Cyphal; refer to README.
     let id = canadensis_can::CanNodeId::from_truncating(NODE_ID);
-    let transmitter = canadensis_can::CanTransmitter::new(canadensis_can::Mtu::Can8);
+    let transmitter = canadensis_can::CanTransmitter::new(canadensis_can::Mtu::CanFd64);
     let receiver = canadensis_can::CanReceiver::new(id);
-    let driver = cbxcan::BxCanDriver::new(livecan);
     let core_node: node::CoreNode<
-        CyphalClock,
-        CanTransmitter<CyphalClock, BxCanDriver<can::Can<pac::CAN>>>,
-        CanReceiver<CyphalClock, BxCanDriver<can::Can<pac::CAN>>>,
+        boards::CClock,
+        CanTransmitter<boards::CClock, boards::CanDriver>,
+        CanReceiver<boards::CClock, boards::CanDriver>,
         canadensis::requester::TransferIdFixedMap<
             canadensis_can::CanTransport,
             CYPHAL_CONCURRENT_TRANSFERS,
         >,
-        BxCanDriver<can::Can<pac::CAN>>,
+        boards::CanDriver,
         CYPHAL_NUM_TOPICS,
         CYPHAL_NUM_SERVICES,
-    > = node::CoreNode::new(cyphal_clock, id, transmitter, receiver, driver);
+    > = node::CoreNode::new(cyphal_clock, id, transmitter, receiver, hwdriver);
     let info = GetInfoResponse {
         protocol_version: Version { major: 1, minor: 0 },
         hardware_version: Version { major: 1, minor: 0 },
@@ -162,7 +107,7 @@ fn main() -> ! {
     let mut node = node::BasicNode::new(core_node, info).unwrap();
 
     // Initialise timestamps.
-    let start_time: u64 = GeneralClock::now().ticks().into();
+    let start_time: u64 = general_clock.now().ticks().into();
     let mut heartbeat_target_time_us: u64 = start_time + 1_000_000u64;
     let mut speed_time_us: u64 = start_time;
     hprintln!("start time is {}", start_time);
@@ -206,7 +151,7 @@ fn main() -> ! {
         }
 
         // Make an effort to avoid missing heartbeats
-        let useconds: u64 = GeneralClock::now().ticks().into();
+        let useconds: u64 = general_clock.now().ticks().into();
         let mut missed_heartbeats = 0;
         if useconds >= heartbeat_target_time_us {
             heartbeat_target_time_us += 1_000_000;
