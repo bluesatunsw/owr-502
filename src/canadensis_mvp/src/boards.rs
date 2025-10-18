@@ -1,5 +1,7 @@
 //! Common board interface
 
+// This is getting to the point that we might want to write macros
+
 use canadensis::core::time as time;
 
 pub trait CyphalClock: time::Clock {

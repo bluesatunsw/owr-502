@@ -8,7 +8,7 @@ version = "0.1.0"
 [features]
 # NOTE: Features below should be mutually exclusive. If multiple board features
 # enabled, bad things will happen! Use the run.sh script to avoid this.
-default = []
+default = ["stm32g431"]
 
 # DEV BOARD 			FEATURES 	ARCh APPLICATION
 # -----------------------------------------------------------------------------
@@ -37,17 +37,13 @@ nb = "1.1.0"
 panic-semihosting = "0.6.0"
 zerocopy = "0.8.26"
 canadensis_encoding = "0.5.0"
-canadensis_core = "0.5.0"
+canadensis_core = "0.5.1"
 stm32g4 = { version = "0.16.0", features = ["stm32g431", "rt"], optional = true }
 stm32f1xx-hal = { version = "0.11.0", features = ["stm32f103", "medium"], optional = true }
-
-[patch.crates-io]
-# Remove these once Sam upstreams the memory usage fix
-canadensis_can = { git = "https://github.com/Keybinder/canadensis" }
-canadensis_core = { git = "https://github.com/Keybinder/canadensis" }
+canadensis_filter_config = "0.5.0"
 
 [dependencies.canadensis_can]
-version = "0.5.0"
+version = "0.5.1"
 features = ["can-fd"]
 
 [dependencies.cortex-m]

@@ -175,7 +175,7 @@ dependencies = [
  "bxcan",
  "canadensis",
  "canadensis_can",
- "canadensis_filter_config 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "canadensis_filter_config",
  "canadensis_pnp_client",
  "cortex-m",
  "fallible_collections",
@@ -186,11 +186,12 @@ dependencies = [
 
 [[package]]
 name = "canadensis_can"
-version = "0.5.0"
-source = "git+https://github.com/Keybinder/canadensis#3aa14766eed4a8422f3eac1d4b5c12dc7c414f3b"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fd3d2db72cf5e5e304740bb62a75a870263cbde4991b0cd48dc0d0e949f38c8e"
 dependencies = [
  "canadensis_core",
- "canadensis_filter_config 0.5.0 (git+https://github.com/Keybinder/canadensis)",
+ "canadensis_filter_config",
  "fallible_collections",
  "heapless 0.9.1",
  "log",
@@ -213,8 +214,9 @@ dependencies = [
 
 [[package]]
 name = "canadensis_core"
-version = "0.5.0"
-source = "git+https://github.com/Keybinder/canadensis#3aa14766eed4a8422f3eac1d4b5c12dc7c414f3b"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70646762d934bb9a2de2dd52353fd8f30ed8cc7ba7dabc2f7b6fcc83e2d2961b"
 dependencies = [
  "fallible_collections",
  "fugit",
@@ -298,6 +300,7 @@ checksum = "4d265ccd922d8029e1b9832f91b2f3b82e1d62383c93823a80ad8acfa074ed27"
 [[package]]
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 name = "canadensis_filter_config"
@@ -306,6 +309,8 @@ source = "git+https://github.com/Keybinder/canadensis#3aa14766eed4a8422f3eac1d4b
 
 [[package]]
 >>>>>>> 3b026e3 (Use temporary memory usage patch)
+=======
+>>>>>>> c3cef1a (Write untested FDCAN1 receive driver)
 name = "canadensis_macro"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -333,6 +338,7 @@ dependencies = [
  "canadensis_core",
  "canadensis_data_types",
  "canadensis_encoding",
+ "canadensis_filter_config",
  "canadensis_macro",
 >>>>>>> e62cdec (Fix dependencies in preparation for using canadensis_macro)
  "cortex-m",
@@ -366,31 +372,31 @@ checksum = "f87c80371e72df0c00c42f3041a6c1d9b2d0ce54a7045475d4f4c1cbe87f93b5"
 dependencies = [
  "canadensis",
  "canadensis_data_types",
- "canadensis_filter_config 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "canadensis_filter_config",
  "crc-any",
  "heapless 0.9.1",
 ]
 
 [[package]]
 name = "cfg-if"
-version = "1.0.3"
+version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
+checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
 name = "clap"
-version = "4.5.48"
+version = "4.5.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae"
+checksum = "f4512b90fa68d3a9932cea5184017c5d200f5921df706d45e853537dea51508f"
 dependencies = [
  "clap_builder",
 ]
 
 [[package]]
 name = "clap_builder"
-version = "4.5.48"
+version = "4.5.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9"
+checksum = "0025e98baa12e766c67ba13ff4695a887a1eba19569aad00a472546795bd6730"
 dependencies = [
  "anstream",
  "anstyle",
@@ -400,9 +406,9 @@ dependencies = [
 
 [[package]]
 name = "clap_lex"
-version = "0.7.5"
+version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
+checksum = "a1d728cc89cf3aee9ff92b05e62b19ee65a02b5702cff7d5a377e32c6ae29d8d"
 
 [[package]]
 name = "colorchoice"
@@ -609,9 +615,9 @@ checksum = "1d758ba1b47b00caf47f24925c0074ecb20d6dfcffe7f6d53395c0465674841a"
 
 [[package]]
 name = "generic-array"
-version = "0.14.7"
+version = "0.14.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
+checksum = "4bb6743198531e02858aeaea5398fcc883e71851fcbcb5a2f773e2fb6cb1edf2"
 dependencies = [
  "typenum",
  "version_check",
@@ -619,9 +625,9 @@ dependencies = [
 
 [[package]]
 name = "half"
-version = "2.7.0"
+version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e54c115d4f30f52c67202f079c5f9d8b49db4691f460fdb0b4c2e838261b2ba5"
+checksum = "6ea2d84b969582b4b1864a92dc5d27cd2b77b622a8d79306834f1be5ba20d84b"
 dependencies = [
  "cfg-if",
  "crunchy",
@@ -857,9 +863,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.12.1"
+version = "1.12.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4a52d8d02cacdb176ef4678de6c052efb4b3da14b78e4db683a4252762be5433"
+checksum = "843bc0191f75f3e22651ae5f1e72939ab2f72a4bc30fa80a066bd66edefc24d4"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -869,9 +875,9 @@ dependencies = [
 
 [[package]]
 name = "regex-automata"
-version = "0.4.12"
+version = "0.4.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "722166aa0d7438abbaa4d5cc2c649dac844e8c56d82fb3d33e9c34b5cd268fc6"
+checksum = "5276caf25ac86c8d810222b3dbb938e512c55c6831a10f3e6ed1c93b84041f1c"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -880,9 +886,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.8.7"
+version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3160422bbd54dd5ecfdca71e5fd59b7b8fe2b1697ab2baf64f6d05dcc66d298"
+checksum = "7a2d987857b319362043e95f5353c0535c1f58eec5336fdfcf626430af7def58"
 
 [[package]]
 name = "rlsf"
