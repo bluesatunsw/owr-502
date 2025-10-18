@@ -987,6 +987,254 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Jumper:SolderJumper_3_Open"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "JP"
+				(at -2.54 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SolderJumper_3_Open"
+				(at 0 2.794 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Solder Jumper, 3-pole, open"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "Solder Jumper SPDT"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SolderJumper*Open*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SolderJumper_3_Open_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy -2.032 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.016 1.016) (xy -1.016 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -1.016 -1.016)
+					(mid -2.0276 0)
+					(end -1.016 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -1.016 -1.016)
+					(mid -2.0276 0)
+					(end -1.016 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -0.508 1.016)
+					(end 0.508 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.27) (xy 0 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 1.016 1.016)
+					(mid 2.0276 0)
+					(end 1.016 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 1.016 1.016)
+					(mid 2.0276 0)
+					(end 1.016 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 1.016) (xy 1.016 -1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 2.032 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SolderJumper_3_Open_1_1"
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(no_connect
 		(at 63.5 48.26)
@@ -1009,15 +1257,71 @@
 		(uuid "a0ce1339-63cc-46bf-90ed-99dd6f2954aa")
 	)
 	(no_connect
-		(at 63.5 45.72)
-		(uuid "af38db27-ec4d-4f36-b3d9-08b83932a205")
-	)
-	(no_connect
 		(at 63.5 58.42)
 		(uuid "c85eb617-01c0-4513-905e-c46e1ca6fa32")
 	)
+	(wire
+		(pts
+			(xy 105.41 58.42) (xy 118.11 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "64c97066-a608-4890-bd8a-7addcc72809e")
+	)
+	(wire
+		(pts
+			(xy 101.6 53.34) (xy 101.6 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cc40e62-fc38-4bf2-9c50-d6dcd6b8d138")
+	)
+	(wire
+		(pts
+			(xy 63.5 45.72) (xy 101.6 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8d46bbd2-613e-47cf-90a4-84b8eaa6c2f0")
+	)
+	(wire
+		(pts
+			(xy 101.6 63.5) (xy 76.2 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac579397-6573-463e-9764-d8b35a686256")
+	)
+	(wire
+		(pts
+			(xy 63.5 60.96) (xy 76.2 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be1055f4-6c2e-46dc-957d-c866179d38d8")
+	)
+	(wire
+		(pts
+			(xy 76.2 63.5) (xy 76.2 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed39f137-a25a-4cfb-a6e4-47a9b1339cca")
+	)
 	(label "VDD"
-		(at 88.9 62.23 180)
+		(at 118.11 60.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1036,8 +1340,8 @@
 		)
 		(uuid "0f0850da-a70e-4925-901b-1f5d59f8a360")
 	)
-	(label "SWO"
-		(at 88.9 59.69 180)
+	(label "SWO{slash}UARTRX"
+		(at 118.11 58.42 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1047,7 +1351,7 @@
 		(uuid "1062f594-6766-4730-9ca6-c602a6553bed")
 	)
 	(label "SWCLK"
-		(at 88.9 67.31 180)
+		(at 118.11 66.04 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1086,6 +1390,16 @@
 		)
 		(uuid "539f51e3-4ce9-410e-96b9-4ca13b66be4c")
 	)
+	(label "UARTRX"
+		(at 63.5 45.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "56804b67-7401-44d2-b5a8-65cecf13ad13")
+	)
 	(label "SWDIO"
 		(at 63.5 71.12 0)
 		(effects
@@ -1107,7 +1421,7 @@
 		(uuid "90e75e31-046e-4e47-a584-dd7e5423ba3c")
 	)
 	(label "SWDIO"
-		(at 88.9 69.85 180)
+		(at 118.11 68.58 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1117,7 +1431,7 @@
 		(uuid "91320705-9b0a-4162-af38-1034a745b56a")
 	)
 	(label "NRST"
-		(at 88.9 57.15 180)
+		(at 118.11 55.88 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1127,7 +1441,7 @@
 		(uuid "a13fd3e8-e50f-4d93-8b9b-3e9f15fe69b6")
 	)
 	(label "GND"
-		(at 88.9 64.77 180)
+		(at 118.11 63.5 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1147,32 +1461,35 @@
 		(uuid "e70b7e0a-6750-41dd-a0c1-aaee3bedd4a7")
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x06_Pin")
-		(at 93.98 64.77 180)
+		(lib_id "Jumper:SolderJumper_3_Open")
+		(at 101.6 58.42 90)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom yes)
+		(in_bom no)
 		(on_board yes)
 		(dnp no)
-		(uuid "6b42695a-0b88-42a5-a9d6-fd05a7835f7f")
-		(property "Reference" "J101"
-			(at 93.345 74.93 0)
+		(fields_autoplaced yes)
+		(uuid "229f9550-3141-4051-b6a2-097cf621e8a1")
+		(property "Reference" "JP1"
+			(at 99.06 57.1499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "Conn_01x06_Pin"
-			(at 93.345 72.39 0)
+		(property "Value" "SolderJumper_3_Open"
+			(at 99.06 59.6899 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "Bluesat:IDC6-pad"
-			(at 93.98 64.77 0)
+		(property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm"
+			(at 101.6 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1181,7 +1498,77 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 93.98 64.77 0)
+			(at 101.6 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Solder Jumper, 3-pole, open"
+			(at 101.6 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "f97352bf-5871-4b79-a4f7-eedb15b401ff")
+		)
+		(pin "2"
+			(uuid "7d4ff854-04db-441e-9930-2c398080a737")
+		)
+		(pin "1"
+			(uuid "f406e0c7-681f-4c44-b02e-7f90bedee76b")
+		)
+		(instances
+			(project ""
+				(path "/78f0aa8e-cd0e-4760-a57c-27c4c3b8767a"
+					(reference "JP1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x06_Pin")
+		(at 123.19 63.5 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6b42695a-0b88-42a5-a9d6-fd05a7835f7f")
+		(property "Reference" "J101"
+			(at 122.555 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Conn_01x06_Pin"
+			(at 122.555 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Bluesat:IDC6-pad"
+			(at 123.19 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 123.19 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1190,7 +1577,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x06, script generated"
-			(at 93.98 64.77 0)
+			(at 123.19 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
