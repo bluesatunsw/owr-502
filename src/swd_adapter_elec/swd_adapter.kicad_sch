@@ -1262,63 +1262,13 @@
 	)
 	(wire
 		(pts
-			(xy 161.29 91.44) (xy 161.29 93.98)
+			(xy 158.75 96.52) (xy 177.8 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "0b6a172e-8ba8-4af1-b81e-1ec65b1a7531")
-	)
-	(wire
-		(pts
-			(xy 161.29 93.98) (xy 123.19 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "531a0752-67c3-4d5d-97fa-a34d42753165")
-	)
-	(wire
-		(pts
-			(xy 165.1 86.36) (xy 177.8 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "64c97066-a608-4890-bd8a-7addcc72809e")
-	)
-	(wire
-		(pts
-			(xy 161.29 81.28) (xy 161.29 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8cc40e62-fc38-4bf2-9c50-d6dcd6b8d138")
-	)
-	(wire
-		(pts
-			(xy 123.19 78.74) (xy 161.29 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8d46bbd2-613e-47cf-90a4-84b8eaa6c2f0")
-	)
-	(label "VDD"
-		(at 177.8 88.9 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "02513a2a-b76e-404f-95fa-67636f4e3616")
+		(uuid "935af1f0-f10c-4942-b13f-fb810061bc9e")
 	)
 	(label "GND"
 		(at 123.19 101.6 0)
@@ -1330,7 +1280,17 @@
 		)
 		(uuid "0f0850da-a70e-4925-901b-1f5d59f8a360")
 	)
-	(label "SWO{slash}UARTRX"
+	(label "T_VCP_TX"
+		(at 154.94 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0faac9f9-a9c1-44b2-a7a9-528c13553214")
+	)
+	(label "SWDIO"
 		(at 177.8 86.36 180)
 		(effects
 			(font
@@ -1340,7 +1300,7 @@
 		)
 		(uuid "1062f594-6766-4730-9ca6-c602a6553bed")
 	)
-	(label "SWCLK"
+	(label "NRST"
 		(at 177.8 93.98 180)
 		(effects
 			(font
@@ -1370,7 +1330,17 @@
 		)
 		(uuid "23a2177e-2bbb-4aa1-9c3e-518608145851")
 	)
-	(label "VDD"
+	(label "T_VCC"
+		(at 177.8 88.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "29aa32a2-cf6c-439c-8ecf-130b1a5ab206")
+	)
+	(label "T_VCC"
 		(at 123.19 106.68 0)
 		(effects
 			(font
@@ -1380,7 +1350,7 @@
 		)
 		(uuid "539f51e3-4ce9-410e-96b9-4ca13b66be4c")
 	)
-	(label "UARTRX"
+	(label "T_VCP_TX"
 		(at 123.19 78.74 0)
 		(effects
 			(font
@@ -1389,6 +1359,16 @@
 			(justify left bottom)
 		)
 		(uuid "56804b67-7401-44d2-b5a8-65cecf13ad13")
+	)
+	(label "SWO"
+		(at 154.94 91.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5c8ed734-0dd9-49cb-80f4-8ed27fc03a40")
 	)
 	(label "SWDIO"
 		(at 123.19 104.14 0)
@@ -1410,7 +1390,7 @@
 		)
 		(uuid "90e75e31-046e-4e47-a584-dd7e5423ba3c")
 	)
-	(label "SWDIO"
+	(label "SWO{slash}UART"
 		(at 177.8 96.52 180)
 		(effects
 			(font
@@ -1420,7 +1400,7 @@
 		)
 		(uuid "91320705-9b0a-4162-af38-1034a745b56a")
 	)
-	(label "NRST"
+	(label "SWCLK"
 		(at 177.8 83.82 180)
 		(effects
 			(font
@@ -1452,7 +1432,7 @@
 	)
 	(symbol
 		(lib_id "Jumper:SolderJumper_3_Open")
-		(at 161.29 86.36 90)
+		(at 154.94 96.52 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
@@ -1461,7 +1441,7 @@
 		(fields_autoplaced yes)
 		(uuid "229f9550-3141-4051-b6a2-097cf621e8a1")
 		(property "Reference" "JP1"
-			(at 158.75 85.0899 90)
+			(at 152.4 95.2499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1470,7 +1450,7 @@
 			)
 		)
 		(property "Value" "SolderJumper_3_Open"
-			(at 158.75 87.6299 90)
+			(at 152.4 97.7899 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1479,7 +1459,7 @@
 			)
 		)
 		(property "Footprint" "Jumper:SolderJumper-3_P1.3mm_Open_RoundedPad1.0x1.5mm"
-			(at 161.29 86.36 0)
+			(at 154.94 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1488,7 +1468,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 161.29 86.36 0)
+			(at 154.94 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1497,7 +1477,7 @@
 			)
 		)
 		(property "Description" "Solder Jumper, 3-pole, open"
-			(at 161.29 86.36 0)
+			(at 154.94 96.52 0)
 			(effects
 				(font
 					(size 1.27 1.27)
