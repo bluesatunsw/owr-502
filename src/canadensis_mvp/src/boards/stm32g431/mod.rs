@@ -14,8 +14,12 @@ use canadensis_core::subscription::Subscription;
 use cortex_m::interrupt::Mutex;
 use core::cell::RefCell;
 use crate::boards::{CyphalClock, GeneralClock};
+use cortex_m_semihosting::hprintln;
 
 use stm32g4::stm32g431 as pac;
+
+// maybe use
+// TIM3 and TIM4?? could get perfectly hardware-accurate frame timestamps...
 
 struct STM32G431CyphalClock {
     // TIM2 is a 32-bit timer on the G431
@@ -25,18 +29,23 @@ struct STM32G431CyphalClock {
 fn configure_clk(rcc: &mut pac::RCC) {
     // HSE is 8 MHz crystal on WeAct (NOTE: on the Nucleo it's 24 MHz!)
     // Set SYSCLK to 64 MHz.
+    rcc.cr().modify(|_, w| w.hseon().bit(true));       // enable hse (it's not on by default!)
     unsafe {
         rcc.pllcfgr().write(|w| {
             w
-            .pllr().bits(0b11)      // set PLL multiplier to 8x
             .pllsrc().bits(0b11)    // set oscillator input to HSE (8 MHz)
+            .plln().bits(16)        // set PLL multiplier to (16 / 1)
+            .pllm().bits(0)         // "
+            .pllr().bits(0b00)      // set PLLR division factor to 2
+                                    // so PLLR = SYSCLK = 8 MHz * 16 / 2 = 64 MHz
+            .pllren().bit(true)     // enable PLL output
         });
     }
     unsafe {
         // enable PLL
-        rcc.cr().write(|w| w.pllon().bit(true));
+        rcc.cr().modify(|_, w| w.hseon().bit(true).pllon().bit(true));
         // set PLL as SYSCLK
-        rcc.cfgr().write(|w| w.sw().bits(0b11));
+        rcc.cfgr().modify(|_, w| w.sw().bits(0b11));
     }
     // TIM2 is on APB1 (PCLK1)
     // SYSCLK -[AHB prescaler]-> HCLK -[APB1 prescaler]-> PCLK1 
@@ -44,7 +53,7 @@ fn configure_clk(rcc: &mut pac::RCC) {
 
     // set 64 MHz PCLK1 to be FDCAN clock source
     unsafe {
-        rcc.ccipr().write(|w| w.fdcansel().bits(0b10));
+        rcc.ccipr().modify(|_, w| w.fdcansel().bits(0b10));
         // other options: PLL "Q" (0b01), HSE (default on reset) (0b00)
     }
 }
@@ -53,9 +62,9 @@ fn configure_clk(rcc: &mut pac::RCC) {
 impl STM32G431CyphalClock {
     fn new(tim2: pac::TIM2, rcc: &mut pac::RCC) -> Self {
         // Reset and enable the timer peripheral.
-        rcc.apb1rstr1().write(|w| w.tim2rst().bit(true));
-        rcc.apb1rstr1().write(|w| w.tim2rst().bit(false));
-        rcc.apb1enr1().write(|w| w.tim2en().bit(true));
+        rcc.apb1rstr1().modify(|_, w| w.tim2rst().bit(true));
+        rcc.apb1rstr1().modify(|_, w| w.tim2rst().bit(false));
+        rcc.apb1enr1().modify(|_, w| w.tim2en().bit(true));
         Self {
             hw_timer: tim2,
         }
@@ -68,9 +77,13 @@ impl STM32G431CyphalClock {
         // PCLK1 is 64MHz, so prescale by /64
         unsafe {
             // scale 64MHz to 1MHz
-            self.hw_timer.psc().write(|w| w.psc().bits(0x003F));
-            // disable updates and enable timer
-            self.hw_timer.cr1().write(|w| w.udis().bit(true).cen().bit(true));
+            self.hw_timer.psc().write(|w| w.psc().bits(64 - 1));
+            // NOTE: do not disable updates, as the prescaler is loaded ON AN UPDATE EVENT
+            // so the prescaler won't actually apply until e.g. counter overflows
+            // (which we effectively set to happen immediately below)
+            self.hw_timer.cnt().write(|w| w.cnt().bits(0xFFFFFFFF));
+            // enable timer
+            self.hw_timer.cr1().write(|w| w.cen().bit(true));
         }
     }
 }
@@ -139,14 +152,14 @@ pub struct STM32G431CanDriver {
 impl STM32G431CanDriver {
     fn new_singleton(fdcan: pac::FDCAN1, gpioa: pac::GPIOA, rcc: &mut pac::RCC) -> Self {
         // Reset and enable the FDCAN1 peripheral.
-        rcc.apb1enr1().write(|w| w.fdcanen().bit(true));
-        rcc.apb1rstr1().write(|w| w.fdcanrst().bit(true));
-        rcc.apb1rstr1().write(|w| w.fdcanrst().bit(false));
+        rcc.apb1enr1().modify(|_, w| w.fdcanen().bit(true));
+        rcc.apb1rstr1().modify(|_, w| w.fdcanrst().bit(true));
+        rcc.apb1rstr1().modify(|_, w| w.fdcanrst().bit(false));
 
         // Reset and enable GPIOA.
-        rcc.ahb2enr().write(|w| w.gpioaen().bit(true));
-        rcc.ahb2rstr().write(|w| w.gpioarst().bit(true));
-        rcc.ahb2rstr().write(|w| w.gpioarst().bit(false));
+        rcc.ahb2enr().modify(|_, w| w.gpioaen().bit(true));
+        rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(true));
+        rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(false));
 
         unsafe {
             // Set PA11 and PA12 modes to alternate function
@@ -162,10 +175,9 @@ impl STM32G431CanDriver {
 
         // Configure FDCAN1.
         // Set CCE of CCCR (we just reset so INIT should be set)
-        fdcan.cccr().write(|w| w.cce().bit(true));
-        fdcan.cccr().write(|w|
-            w.cce().bit(true)   // stay in configuration mode
-            .pxhd().bit(true)   // CHECKME: disable protocol handling exception
+        fdcan.cccr().modify(|_, w| w.cce().bit(true));
+        fdcan.cccr().modify(|_, w|
+            w.pxhd().bit(true)   // CHECKME: disable protocol handling exception
             .brse().bit(true)   // enable bit rate switching for transmissions
             // keep EFBI (edge filtering) disabled, apparently there's errata
             .fdoe().bit(true)   // enable FD operation
@@ -223,7 +235,7 @@ impl STM32G431CanDriver {
             //      fdcan.ile().write(...);
 
             // Exit configuration mode and start.
-            fdcan.cccr().write(|w| w.init().bit(false));
+            fdcan.cccr().modify(|_, w| w.init().bit(false));
         }
 
         STM32G431CanDriver {
@@ -235,12 +247,12 @@ impl STM32G431CanDriver {
     fn reset_filters(&mut self) {
         unsafe {
             // put FDCAN back in configuration mode
-            self.fdcan.cccr().write(|w| w.cce().bit(true).init().bit(true));
+            self.fdcan.cccr().modify(|_, w| w.cce().bit(true).init().bit(true));
             // block on INIT bit being set
             while self.fdcan.cccr().read().init().bit() == false {}
 
             // global filter configuration
-            self.fdcan.rxgfc().write(|w|
+            self.fdcan.rxgfc().modify(|_, w|
                 w.lse().bits(0b0000)    // do not filter ExtMsgs
                 .lss().bits(0b00000)    // do not filter StdMsgs
                 //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
@@ -254,11 +266,11 @@ impl STM32G431CanDriver {
             );
 
             // and back to normal mode
-            self.fdcan.cccr().write(|w| w.init().bit(false));
+            self.fdcan.cccr().modify(|_, w| w.init().bit(false));
         }
-
     }
 
+    /// Applies extended ID filters as produced for filtering Cyphal subscriptions
     fn do_apply_filters(&mut self, filters: &[Filter]) {
         if filters.len() > 8 {
             // can't have more than 8 extended filters applied in hardware,
@@ -280,12 +292,12 @@ impl STM32G431CanDriver {
         // do filter configuration again
         unsafe {
             // put FDCAN back in configuration mode
-            self.fdcan.cccr().write(|w| w.cce().bit(true).init().bit(true));
+            self.fdcan.cccr().modify(|_, w| w.cce().bit(true).init().bit(true));
             // block on INIT bit being set
             while self.fdcan.cccr().read().init().bit() == false {}
 
             // global filter configuration
-            self.fdcan.rxgfc().write(|w|
+            self.fdcan.rxgfc().modify(|_, w|
                 w.lse().bits(filters.len() as u8)    // apply ExtMsgs filters
                 .lss().bits(0b00000)    // do not filter StdMsgs
                 //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
@@ -298,7 +310,7 @@ impl STM32G431CanDriver {
             );
 
             // and back to normal mode
-            self.fdcan.cccr().write(|w| w.init().bit(false));
+            self.fdcan.cccr().modify(|_, w| w.init().bit(false));
         }
     }
 }
@@ -341,7 +353,7 @@ impl RxFifo0 {
     }
 }
 
-// use RX FIFO 0
+/// Extremely basic driver that just uses the hardware RX FIFO 0
 impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
     type Error = OverrunError;
 
@@ -380,6 +392,7 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
     }
 }
 
+/// Extremely basic driver
 impl driver::TransmitDriver<CClock> for STM32G431CanDriver {
     // FIXME
     type Error = OverrunError;
@@ -418,7 +431,9 @@ pub fn init() -> (CClock, GClock, CanDriver)
         dp.GPIOB.moder().write(|w| w.moder8().bits(0b01));
     }
 
-    let cyphal_clock = CClock::new_singleton(dp.TIM2, &mut rcc);
+    let mut cyphal_clock = CClock::new_singleton(dp.TIM2, &mut rcc);
+
+    cyphal_clock.start();
 
     let hwdriver = STM32G431CanDriver::new_singleton(dp.FDCAN1, dp.GPIOA, &mut rcc);
 
