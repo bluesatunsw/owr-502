@@ -1370,27 +1370,27 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:D_TVS_Small"
+		(symbol "Device:D_Zener_Small"
 			(pin_numbers
 				(hide yes)
 			)
 			(pin_names
-				(offset 1.016)
+				(offset 0.254)
 				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "D"
-				(at 0 2.54 0)
+				(at 0 2.286 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "D_TVS_Small"
-				(at 0 -2.54 0)
+			(property "Value" "D_Zener_Small"
+				(at 0 -2.286 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1398,7 +1398,7 @@
 				)
 			)
 			(property "Footprint" ""
-				(at 0 0 0)
+				(at 0 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1407,6 +1407,15 @@
 				)
 			)
 			(property "Datasheet" "~"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Zener diode, small symbol"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1415,16 +1424,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS thyrector"
+			(property "ki_keywords" "diode"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1442,10 +1442,10 @@
 					(hide yes)
 				)
 			)
-			(symbol "D_TVS_Small_0_1"
+			(symbol "D_Zener_Small_0_1"
 				(polyline
 					(pts
-						(xy -1.27 1.016) (xy -1.27 -1.016) (xy 1.27 1.016) (xy 1.27 -1.016) (xy -1.27 1.016)
+						(xy -0.254 1.016) (xy -0.762 1.016) (xy -0.762 -1.016)
 					)
 					(stroke
 						(width 0.254)
@@ -1457,7 +1457,19 @@
 				)
 				(polyline
 					(pts
-						(xy -1.27 0) (xy 1.27 0)
+						(xy 0.762 1.016) (xy -0.762 0) (xy 0.762 -1.016) (xy 0.762 1.016)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0) (xy -0.762 0)
 					)
 					(stroke
 						(width 0)
@@ -1467,24 +1479,12 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy 0.508 1.016) (xy 0 1.016) (xy 0 -1.016) (xy -0.508 -1.016)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
 			)
-			(symbol "D_TVS_Small_1_1"
+			(symbol "D_Zener_Small_1_1"
 				(pin passive line
 					(at -2.54 0 0)
-					(length 1.27)
-					(name "A1"
+					(length 1.778)
+					(name "K"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1501,8 +1501,8 @@
 				)
 				(pin passive line
 					(at 2.54 0 180)
-					(length 1.27)
-					(name "A2"
+					(length 1.778)
+					(name "A"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3537,12 +3537,6 @@
 		(uuid "88136cb2-b20a-4efa-bd14-60ea9bd1be55")
 	)
 	(junction
-		(at 88.9 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "885ccb34-c003-433a-8365-34d0539a1c9b")
-	)
-	(junction
 		(at 90.17 66.04)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3577,12 +3571,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c90a48e4-7d3c-4beb-a2f0-15a6d77c6414")
-	)
-	(junction
-		(at 25.4 66.04)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "cfe70f80-8e40-4e0e-9ad3-967606100632")
 	)
 	(junction
 		(at 44.45 39.37)
@@ -3620,6 +3608,14 @@
 		(color 0 0 0 0)
 		(uuid "fc9093b3-f199-43b9-8f61-f0343e8f1739")
 	)
+	(no_connect
+		(at 90.17 33.02)
+		(uuid "2a1af7ff-8b45-4c51-8416-b8f7c2a15dde")
+	)
+	(no_connect
+		(at 26.67 71.12)
+		(uuid "4f4fa08f-35de-4d96-a20b-02066f79bfe8")
+	)
 	(wire
 		(pts
 			(xy 31.75 106.68) (xy 31.75 104.14)
@@ -3649,16 +3645,6 @@
 			(type default)
 		)
 		(uuid "01c216af-6e08-4dc1-ae8c-b0025ef906c1")
-	)
-	(wire
-		(pts
-			(xy 26.67 71.12) (xy 25.4 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "025bb91e-b448-4a1d-b54a-29d1e500c25e")
 	)
 	(wire
 		(pts
@@ -3802,16 +3788,6 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 27.94) (xy 90.17 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "25958377-3f53-4c29-985b-9a9a959b8e94")
-	)
-	(wire
-		(pts
 			(xy 19.05 104.14) (xy 21.59 104.14)
 		)
 		(stroke
@@ -3902,7 +3878,7 @@
 	)
 	(wire
 		(pts
-			(xy 25.4 66.04) (xy 26.67 66.04)
+			(xy 22.86 66.04) (xy 26.67 66.04)
 		)
 		(stroke
 			(width 0)
@@ -4002,16 +3978,6 @@
 	)
 	(wire
 		(pts
-			(xy 90.17 33.02) (xy 88.9 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4ca1437f-559a-4ee0-935f-9b3f1283f26f")
-	)
-	(wire
-		(pts
 			(xy 72.39 69.85) (xy 72.39 66.04)
 		)
 		(stroke
@@ -4022,7 +3988,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 27.94) (xy 86.36 27.94)
+			(xy 86.36 27.94) (xy 90.17 27.94)
 		)
 		(stroke
 			(width 0)
@@ -4162,16 +4128,6 @@
 	)
 	(wire
 		(pts
-			(xy 25.4 66.04) (xy 25.4 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "83708c39-725c-4122-ae88-9eecc5354ae7")
-	)
-	(wire
-		(pts
 			(xy 46.99 66.04) (xy 54.61 66.04)
 		)
 		(stroke
@@ -4239,16 +4195,6 @@
 			(type default)
 		)
 		(uuid "99bb541e-9c45-436e-9523-4e040df95d73")
-	)
-	(wire
-		(pts
-			(xy 22.86 66.04) (xy 25.4 66.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9b497347-9595-401c-ab6a-5119546f522c")
 	)
 	(wire
 		(pts
@@ -4589,16 +4535,6 @@
 			(type default)
 		)
 		(uuid "ee5dbc8a-b12d-47b9-b597-be1435b21560")
-	)
-	(wire
-		(pts
-			(xy 88.9 27.94) (xy 88.9 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f8c80d25-2537-43d1-8c46-70f48ed3882e")
 	)
 	(wire
 		(pts
@@ -6445,75 +6381,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_TVS_Small")
-		(at 35.56 35.56 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "6bf48d25-89e3-4b12-b4f6-fdcf8abb976f")
-		(property "Reference" "D210"
-			(at 36.83 34.925 90)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "30V"
-			(at 36.83 36.195 90)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMF"
-			(at 35.56 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 35.56 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
-			(at 35.56 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ca44b2d3-fda7-4c76-8fb8-f2ef630dd28b")
-		)
-		(pin "2"
-			(uuid "fd60d6b2-97c0-48a7-8ee9-584b72b1eab1")
-		)
-		(instances
-			(project ""
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/15b35f53-66e8-4f33-b39d-ce4effc92c20"
-					(reference "D210")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+12V")
 		(at 20.32 64.77 0)
 		(unit 1)
@@ -6573,6 +6440,75 @@
 			(project ""
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/15b35f53-66e8-4f33-b39d-ce4effc92c20"
 					(reference "#PWR0213")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener_Small")
+		(at 35.56 35.56 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "736e6c47-c009-461d-bcc4-e4d50b915c86")
+		(property "Reference" "D210"
+			(at 36.83 35.052 90)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "30V"
+			(at 36.83 36.322 90)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123F"
+			(at 35.56 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 35.56 35.56 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Zener diode, small symbol"
+			(at 35.56 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "aeeb8a5a-3094-4a28-9aa6-1a979867e858")
+		)
+		(pin "1"
+			(uuid "2199feea-e2b5-41ee-8775-823ed0be2d47")
+		)
+		(instances
+			(project ""
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282/15b35f53-66e8-4f33-b39d-ce4effc92c20"
+					(reference "D210")
 					(unit 1)
 				)
 			)
