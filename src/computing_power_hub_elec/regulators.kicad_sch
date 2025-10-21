@@ -276,8 +276,8 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
-				(at 0 0 0)
+			(property "Reference" "U202"
+				(at 0 3.048 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -285,14 +285,14 @@
 				)
 			)
 			(property "Value" "LM5148"
-				(at 0 0 0)
+				(at 0 1.27 0)
 				(effects
 					(font
-						(size 1.27 1.27)
+						(size 1.016 1.016)
 					)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Bluesat:RGY0024E-MFG"
 				(at 0 0 0)
 				(effects
 					(font
@@ -317,6 +317,27 @@
 						(size 1.27 1.27)
 					)
 					(hide yes)
+				)
+			)
+			(symbol "LM5148_1_0"
+				(pin passive line
+					(at 1.27 -31.75 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 			)
 			(symbol "LM5148_1_1"
@@ -635,25 +656,6 @@
 						)
 					)
 					(number "24"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 1.27 -31.75 90)
-					(length 2.54)
-					(hide yes)
-					(name "NC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "25"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -18224,7 +18226,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:Texas_RGY_R-PVQFN-N24_EP2.05x3.1mm"
+		(property "Footprint" "Bluesat:RGY0024E-MFG"
 			(at 81.28 30.48 0)
 			(effects
 				(font
