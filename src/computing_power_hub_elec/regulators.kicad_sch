@@ -4655,6 +4655,16 @@
 	)
 	(wire
 		(pts
+			(xy 152.4 59.69) (xy 152.4 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e351af4-851c-44ca-aa14-6dfb09e6072a")
+	)
+	(wire
+		(pts
 			(xy 44.45 99.06) (xy 44.45 100.33)
 		)
 		(stroke
@@ -7672,6 +7682,71 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600/94a740e7-9b11-4174-bd08-c69030daa16d"
 					(reference "R248")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 152.4 66.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0eb62f90-b672-4384-b04e-3cb1b27a740e")
+		(property "Reference" "#PWR0260"
+			(at 152.4 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 152.4 69.215 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 152.4 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a47f28cd-b9a7-4be1-a16c-82ee6a8c48b7")
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600/94a740e7-9b11-4174-bd08-c69030daa16d"
+					(reference "#PWR0260")
 					(unit 1)
 				)
 			)
@@ -17101,6 +17176,78 @@
 		)
 	)
 	(symbol
+		(lib_id "Bluesat:C_CompactV")
+		(at 152.4 63.5 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ebe15ec7-d0ae-4099-8975-1366bdb74326")
+		(property "Reference" "C201"
+			(at 151.511 62.738 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 153.289 62.738 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 152.4 63.5 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 63.5 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 152.4 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "f4ec7035-3e03-42ae-b2ce-bb4bb30f4a8c")
+		)
+		(pin "1"
+			(uuid "2c3b169b-ed5e-40d8-b74f-d39ad3ae3315")
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600/94a740e7-9b11-4174-bd08-c69030daa16d"
+					(reference "C201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 46.99 107.95 0)
 		(unit 1)
@@ -17917,6 +18064,71 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600/94a740e7-9b11-4174-bd08-c69030daa16d"
 					(reference "#FLG0101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 152.4 59.69 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f981a148-c7d6-467c-b05d-a8d7accb8372")
+		(property "Reference" "#PWR0259"
+			(at 152.4 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5V"
+			(at 152.4 55.88 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 152.4 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a0004b75-2901-433b-b77e-867ff2295d40")
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600/94a740e7-9b11-4174-bd08-c69030daa16d"
+					(reference "#PWR0259")
 					(unit 1)
 				)
 			)
