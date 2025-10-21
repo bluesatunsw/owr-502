@@ -5245,6 +5245,16 @@
 	)
 	(wire
 		(pts
+			(xy 78.74 104.14) (xy 85.09 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "139fccec-1c53-4f39-8bdc-8898c93a9db9")
+	)
+	(wire
+		(pts
 			(xy 125.73 81.28) (xy 128.27 81.28)
 		)
 		(stroke
@@ -5855,6 +5865,16 @@
 	)
 	(wire
 		(pts
+			(xy 78.74 99.06) (xy 85.09 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78e6fbac-ce5e-4ca9-9fb9-3c34f97f6ac3")
+	)
+	(wire
+		(pts
 			(xy 106.68 27.94) (xy 132.08 27.94)
 		)
 		(stroke
@@ -6225,16 +6245,6 @@
 	)
 	(wire
 		(pts
-			(xy 85.09 104.14) (xy 78.74 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9c8f7e7a-0701-4904-937c-a6fca2651ac3")
-	)
-	(wire
-		(pts
 			(xy 125.73 71.12) (xy 128.27 71.12)
 		)
 		(stroke
@@ -6582,16 +6592,6 @@
 			(type default)
 		)
 		(uuid "caff8cac-4bb8-4449-8201-6f41a228eb6e")
-	)
-	(wire
-		(pts
-			(xy 85.09 99.06) (xy 78.74 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cc09413d-1da5-4757-b560-61e13072e253")
 	)
 	(wire
 		(pts
@@ -10325,8 +10325,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 97.79 101.6 90)
-		(mirror x)
+		(at 85.09 101.6 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10334,7 +10333,7 @@
 		(dnp no)
 		(uuid "4d643c0c-5b84-4cf6-8f88-541ddb0d5377")
 		(property "Reference" "#PWR0194"
-			(at 104.14 101.6 0)
+			(at 78.74 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10343,7 +10342,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 100.33 101.6 90)
+			(at 82.55 101.6 90)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -10352,7 +10351,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 97.79 101.6 0)
+			(at 85.09 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10361,7 +10360,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 97.79 101.6 0)
+			(at 85.09 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10370,7 +10369,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 97.79 101.6 0)
+			(at 85.09 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11423,7 +11422,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x03_Odd_Even")
-		(at 90.17 101.6 0)
+		(at 92.71 101.6 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11431,7 +11430,7 @@
 		(dnp no)
 		(uuid "71e11e7f-2dc0-40b7-86eb-70b9e33884cf")
 		(property "Reference" "J110"
-			(at 91.44 93.98 0)
+			(at 91.44 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11439,7 +11438,7 @@
 			)
 		)
 		(property "Value" "IDC6"
-			(at 91.44 96.52 0)
+			(at 91.44 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11447,7 +11446,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:IDC6"
-			(at 90.17 101.6 0)
+			(at 92.71 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11456,7 +11455,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 90.17 101.6 0)
+			(at 92.71 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11465,7 +11464,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x03, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 90.17 101.6 0)
+			(at 92.71 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14610,7 +14609,8 @@
 	)
 	(symbol
 		(lib_id "power:VDD")
-		(at 85.09 101.6 90)
+		(at 97.79 101.6 270)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14618,7 +14618,7 @@
 		(dnp no)
 		(uuid "f38af00c-6838-494c-8771-c12a385469b3")
 		(property "Reference" "#PWR0193"
-			(at 88.9 101.6 0)
+			(at 93.98 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14627,7 +14627,7 @@
 			)
 		)
 		(property "Value" "VDD"
-			(at 82.55 101.6 90)
+			(at 100.33 101.6 90)
 			(effects
 				(font
 					(size 1.016 1.016)
@@ -14636,7 +14636,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 85.09 101.6 0)
+			(at 97.79 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14645,7 +14645,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 85.09 101.6 0)
+			(at 97.79 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14654,7 +14654,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 85.09 101.6 0)
+			(at 97.79 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
