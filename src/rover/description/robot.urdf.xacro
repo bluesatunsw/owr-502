@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
-    <xacro:arg name="is_simulation" default="false"/>
+    <!-- DISABLED / SIMULATE / REAL --!>
+    <xacro:arg name="state_drivebase" default="DISABLED"/> 
+    <xacro:arg name="state_post_landing" default="DISABLED"/>
+    <xacro:arg name="state_space_resources" default="DISABLED"/>
+    <xacro:arg name="state_excavation_construction" default="DISABLED"/>
+    <xacro:arg name="state_mapping" default="DISABLED"/>
 
     <xacro:unless value="$(arg is_simulation)">
         <xacro:include filename="utils/bg431_motor.xacro"/>
