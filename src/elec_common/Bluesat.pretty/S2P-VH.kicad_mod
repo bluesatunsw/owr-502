@@ -55,7 +55,17 @@
 	)
 	(attr smd)
 	(fp_line
-		(start -4 8.25)
+		(start -4 16.75)
+		(end -1.875 16.75)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(layer "F.SilkS")
+		(uuid "be0edae2-fb57-4239-8c2f-7917dd00a232")
+	)
+	(fp_line
+		(start -4 16.8)
 		(end -4 0)
 		(stroke
 			(width 0.1)
@@ -65,18 +75,8 @@
 		(uuid "ee2602a8-bded-4735-b92f-cec967600cbe")
 	)
 	(fp_line
-		(start -4 8.25)
-		(end -1.875 8.25)
-		(stroke
-			(width 0.1)
-			(type default)
-		)
-		(layer "F.SilkS")
-		(uuid "be0edae2-fb57-4239-8c2f-7917dd00a232")
-	)
-	(fp_line
-		(start -1.875 9.75)
-		(end -1.875 8.25)
+		(start -1.875 18.25)
+		(end -1.875 16.75)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -85,8 +85,8 @@
 		(uuid "91052f12-c399-4c1b-a662-922fdef28914")
 	)
 	(fp_line
-		(start 1.875 8.25)
-		(end 1.875 9.75)
+		(start 1.875 16.75)
+		(end 1.875 18.25)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -96,7 +96,7 @@
 	)
 	(fp_line
 		(start 4 0)
-		(end 4 8.25)
+		(end 4 16.75)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -105,8 +105,8 @@
 		(uuid "c76a6c22-8e9e-4f21-a7ef-aebcf8149dc1")
 	)
 	(fp_line
-		(start 4 8.25)
-		(end 1.875 8.25)
+		(start 4 16.75)
+		(end 1.875 16.75)
 		(stroke
 			(width 0.1)
 			(type default)
@@ -116,7 +116,7 @@
 	)
 	(fp_poly
 		(pts
-			(xy 2.75 8.75) (xy 2.25 9.25) (xy 3.25 9.25)
+			(xy 2.75 17.25) (xy 2.25 17.75) (xy 3.25 17.75)
 		)
 		(stroke
 			(width 0.1)
@@ -128,7 +128,7 @@
 	)
 	(fp_rect
 		(start -4 0)
-		(end 4 8.25)
+		(end 4 16.75)
 		(stroke
 			(width 0.05)
 			(type default)
@@ -150,7 +150,7 @@
 		)
 	)
 	(pad "1" thru_hole circle
-		(at 1.98 5)
+		(at 1.98 13.5)
 		(size 2.5 2.5)
 		(drill 1.65)
 		(layers "*.Cu" "*.Mask")
@@ -158,7 +158,7 @@
 		(uuid "db206817-8d28-46bc-bc43-a2577caec4d3")
 	)
 	(pad "2" thru_hole circle
-		(at -1.98 5)
+		(at -1.98 13.5)
 		(size 2.5 2.5)
 		(drill 1.65)
 		(layers "*.Cu" "*.Mask")

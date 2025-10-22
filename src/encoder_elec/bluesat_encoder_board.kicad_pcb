@@ -77,7 +77,7 @@
 		(allow_soldermask_bridges_in_footprints no)
 		(tenting front back)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55555555_5755f5ff)
+			(layerselection 0x00000000_00000000_55555555_5555f551)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
@@ -109,9 +109,9 @@
 			(sketchdnponfab yes)
 			(crossoutdnponfab yes)
 			(subtractmaskfromsilk no)
-			(outputformat 1)
+			(outputformat 5)
 			(mirror no)
-			(drillshape 1)
+			(drillshape 0)
 			(scaleselection 1)
 			(outputdirectory "")
 		)
@@ -411,6 +411,7 @@
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "45d55abd-1631-41ee-9ca4-4b922adace0c")
 			(effects
 				(font
@@ -450,18 +451,6 @@
 		(sheetname "/")
 		(sheetfile "bluesat_encoder_board.kicad_sch")
 		(attr smd exclude_from_bom)
-		(fp_text user "${REFERENCE}"
-			(at 0 2.5 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(uuid "a3b99a7d-5ec5-44fd-bd82-206d13022bf8")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at 2.5 0.75)
 			(size 2.7 2.7)
@@ -492,6 +481,7 @@
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
+			(hide yes)
 			(uuid "2e920029-3318-4c20-a962-59fd0b833e32")
 			(effects
 				(font
@@ -531,18 +521,6 @@
 		(sheetname "/")
 		(sheetfile "bluesat_encoder_board.kicad_sch")
 		(attr smd exclude_from_bom)
-		(fp_text user "${REFERENCE}"
-			(at 0 2.5 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(uuid "651fb2a7-defd-4ff0-909e-86894771511c")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at -3.25 0)
 			(size 2.7 2.7)
@@ -1518,6 +1496,19 @@
 				(thickness 0.1)
 			)
 			(justify left)
+		)
+	)
+	(gr_text "Mag Encoder\nRev. A1"
+		(at 0 -4.75 0)
+		(layer "F.SilkS")
+		(uuid "47f63f44-64a8-46ec-86f2-c0e830ffe255")
+		(effects
+			(font
+				(size 1.5 1.5)
+				(thickness 0.3)
+				(bold yes)
+			)
+			(justify top)
 		)
 	)
 	(gr_text "VDD\n"
