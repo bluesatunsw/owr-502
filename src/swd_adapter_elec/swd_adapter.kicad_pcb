@@ -77,7 +77,7 @@
 		(allow_soldermask_bridges_in_footprints no)
 		(tenting front back)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55555555_5755f5ff)
+			(layerselection 0x00000000_00000000_55555555_5555f550)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
@@ -109,7 +109,7 @@
 			(sketchdnponfab yes)
 			(crossoutdnponfab yes)
 			(subtractmaskfromsilk no)
-			(outputformat 1)
+			(outputformat 5)
 			(mirror no)
 			(drillshape 0)
 			(scaleselection 1)
@@ -140,6 +140,7 @@
 		(property "Reference" "JP1"
 			(at 2.931 0.127 180)
 			(layer "F.SilkS")
+			(hide yes)
 			(uuid "267ab262-1de9-405a-8a6c-f112bae2aaf6")
 			(effects
 				(font
@@ -1816,6 +1817,29 @@
 		)
 		(layer "Edge.Cuts")
 		(uuid "eafd340b-c271-4ee1-8f8e-78aa8a3e6871")
+	)
+	(gr_text "UARTーSWO"
+		(at -3.25 -5.5 90)
+		(layer "F.SilkS")
+		(uuid "2ec93090-d317-485e-b11f-dd24994d4bbb")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+			(justify bottom)
+		)
+	)
+	(gr_text "REV. A1"
+		(at -3.25 -9.75 0)
+		(layer "F.SilkS")
+		(uuid "86153dd0-cae0-474b-a738-223167b2b2b3")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.1)
+			)
+		)
 	)
 	(segment
 		(start -4.318 -5.842)
