@@ -178,6 +178,7 @@ impl STM32G431CanDriver {
         fdcan.cccr().modify(|_, w| w.cce().bit(true));
         fdcan.cccr().modify(|_, w|
             w.pxhd().bit(true)   // CHECKME: disable protocol handling exception
+            //.niso().bit(true)
             .brse().bit(true)   // enable bit rate switching for transmissions
             // keep EFBI (edge filtering) disabled, apparently there's errata
             .fdoe().bit(true)   // enable FD operation
@@ -192,12 +193,12 @@ impl STM32G431CanDriver {
                 w.tdc().bit(false)      // CHECKME: disable transceiver delay compensation
                 .dbrp().bits(1 - 1)     // data bit rate prescaler
                                         // t_q = (0b0000 + 1) clock period(s)
-                .dtseg1().bits(55 - 1)  // data time segment before sample point
-                                        // = PROP_SEG + PHASE_SEG1 = 55 t_q
-                .dtseg2().bits(8 - 1)   // data time segment after sample point
-                                        // = PHASE_SEG2 = 8 t_q
-                .dsjw().bits(8 - 1)     // synchronisation jump width
-                                        // = 8 t_q
+                .dtseg1().bits(5 - 1)   // data time segment before sample point
+                                        // = PROP_SEG + PHASE_SEG1 = 5 t_q
+                .dtseg2().bits(2 - 1)   // data time segment after sample point
+                                        // = PHASE_SEG2 = 2 t_q
+                .dsjw().bits(2 - 1)     // synchronisation jump width
+                                        // = 2 t_q
             );
             // For nominal bit rate = 1 MHz, PCLK1 = 64 MHz:
             // (note t_q is still 15.625 ns)
@@ -205,12 +206,12 @@ impl STM32G431CanDriver {
             fdcan.nbtp().write(|w|
                 w.nbrp().bits(1 - 1)    // nominal bit rate prescaler
                                         // = 1 (no scaling)
-                .ntseg1().bits(5 - 1)   // nominal time segment before sample point
-                                        // = PROP_SEG + PHASE_SEG1 = 5 t_q
-                .ntseg2().bits(2 - 1)   // nominal time segment after sample point
-                                        // = PHASE_SEG2 = 2 t_q
-                .nsjw().bits(2 - 1)     // nominal (re)synchronisation jump width
-                                        // = 2 t_q
+                .ntseg1().bits(55 - 1)  // nominal time segment before sample point
+                                        // = PROP_SEG + PHASE_SEG1 = 55 t_q
+                .ntseg2().bits(8 - 1)   // nominal time segment after sample point
+                                        // = PHASE_SEG2 = 8 t_q
+                .nsjw().bits(8 - 1)     // nominal (re)synchronisation jump width
+                                        // = 8 t_q
             );
 
             // CURRENTLY UNUSED CONFIGURATION REGISTERS:
