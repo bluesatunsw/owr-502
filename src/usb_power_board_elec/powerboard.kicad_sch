@@ -1962,7 +1962,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_GSD"
+		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -1979,7 +1979,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_GSD"
+			(property "Value" "Q_NMOS_DGS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -2006,7 +2006,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, gate/source/drain"
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2024,7 +2024,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_GSD_0_1"
+			(symbol "Q_NMOS_DGS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -2191,7 +2191,7 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_GSD_1_1"
+			(symbol "Q_NMOS_DGS_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
@@ -2202,7 +2202,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2220,7 +2220,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2238,7 +2238,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -6228,78 +6228,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 198.12 68.58 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "044b572e-911b-4978-b2df-e04675009f95")
-		(property "Reference" "Q203"
-			(at 202.946 67.31 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "40N06D"
-			(at 202.946 69.85 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
-			(at 203.2 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 198.12 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
-			(at 198.12 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "dcb32747-bb00-40cd-9a54-58104d9eae91")
-		)
-		(pin "3"
-			(uuid "fd006249-1705-473c-a89b-3d4984af3bf7")
-		)
-		(pin "2"
-			(uuid "2d53bd6f-0cbe-4e0e-8314-347be363ac7f")
-		)
-		(instances
-			(project "usb_power_board"
-				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
-					(reference "Q203")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 134.62 139.7 0)
 		(unit 1)
@@ -6489,78 +6417,6 @@
 			(project ""
 				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
 					(reference "#PWR0243")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 95.25 81.28 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "13aedc1a-5591-4db7-9db8-255d803e68d7")
-		(property "Reference" "Q202"
-			(at 100.076 80.01 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "40N06D"
-			(at 98.298 84.836 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
-			(at 100.33 78.74 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 95.25 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
-			(at 95.25 81.28 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "68156725-ff70-46bd-9aef-9a2dc8c4e499")
-		)
-		(pin "3"
-			(uuid "479aa8f5-f0fd-4904-bd15-6c9877f1d710")
-		)
-		(pin "2"
-			(uuid "c3725fee-330f-4ab0-bd79-dea2fc8d9185")
-		)
-		(instances
-			(project "usb_power_board"
-				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
-					(reference "Q202")
 					(unit 1)
 				)
 			)
@@ -11662,34 +11518,35 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 198.12 81.28 0)
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 198.12 68.58 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "9ddf5799-3fbd-40f9-98c8-92315b9fa55e")
-		(property "Reference" "Q204"
-			(at 202.946 80.01 0)
+		(fields_autoplaced yes)
+		(uuid "a118cd73-695c-4a46-b38d-a897a296a307")
+		(property "Reference" "Q3"
+			(at 204.47 67.9449 0)
 			(effects
 				(font
-					(size 1.016 1.016)
+					(size 1.27 1.27)
 				)
 				(justify left)
 			)
 		)
-		(property "Value" "40N06D"
-			(at 201.168 84.836 0)
+		(property "Value" "IRFH7440TRPBF"
+			(at 204.47 69.85 0)
 			(effects
 				(font
-					(size 0.508 0.508)
+					(size 0.635 0.635)
 				)
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
-			(at 203.2 78.74 0)
+		(property "Footprint" ""
+			(at 203.2 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11698,7 +11555,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 198.12 81.28 0)
+			(at 198.12 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11706,28 +11563,28 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
-			(at 198.12 81.28 0)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 198.12 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
 			)
-		)
-		(pin "1"
-			(uuid "893cd3c1-bd72-49cb-a2aa-e464c5948b07")
 		)
 		(pin "3"
-			(uuid "b76a7051-cf4f-411a-84e6-b9caa9f10144")
+			(uuid "43c0e391-5972-49ac-b205-04b57e2231da")
+		)
+		(pin "1"
+			(uuid "1725343d-c306-4bb0-b1b4-e4009c25b4ef")
 		)
 		(pin "2"
-			(uuid "716d46af-bbb8-448f-a4ca-835d5eecfb70")
+			(uuid "b5c5b041-927e-4ce0-b5b3-821a450014a5")
 		)
 		(instances
 			(project "usb_power_board"
 				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
-					(reference "Q204")
+					(reference "Q3")
 					(unit 1)
 				)
 			)
@@ -12481,6 +12338,78 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 95.25 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b346ce4e-95de-4c99-82b4-eaa904663038")
+		(property "Reference" "Q2"
+			(at 101.6 80.6449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 89.662 86.614 0)
+			(effects
+				(font
+					(size 0.635 0.635)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 95.25 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "bef7ecbd-58ab-4735-b1f2-2026d7533aca")
+		)
+		(pin "1"
+			(uuid "5b6bca83-b548-4ec9-96c1-67f81bfdc8db")
+		)
+		(pin "2"
+			(uuid "0a98f43d-699b-4bad-b015-68100b0085b3")
+		)
+		(instances
+			(project "usb_power_board"
+				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 121.92 83.82 0)
 		(unit 1)
@@ -12609,6 +12538,79 @@
 			(project "usb_power_board"
 				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
 					(reference "C208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 95.25 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b685d52e-a82a-4555-b226-b04b3939a0dc")
+		(property "Reference" "Q1"
+			(at 101.6 67.9449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 101.6 69.85 0)
+			(effects
+				(font
+					(size 0.635 0.635)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 100.33 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 95.25 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 95.25 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "1b045dd6-a45e-4f8f-8602-37a012f536d9")
+		)
+		(pin "1"
+			(uuid "83b64f51-8ef2-466d-a0df-2a5add109ce8")
+		)
+		(pin "2"
+			(uuid "f13c75c8-bc05-4905-aecc-2e667717d57c")
+		)
+		(instances
+			(project "usb_power_board"
+				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -13426,6 +13428,78 @@
 			(project "usb_power_board"
 				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
 					(reference "#PWR0246")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 198.12 81.28 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d159667c-760f-473c-b581-8922d7084dc5")
+		(property "Reference" "Q4"
+			(at 204.47 80.6449 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 192.786 86.36 0)
+			(effects
+				(font
+					(size 0.635 0.635)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 203.2 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 198.12 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 198.12 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "3661a724-292e-4cf9-b88b-7ea5aab5155b")
+		)
+		(pin "1"
+			(uuid "59be3b7b-0d8d-443b-a2a0-f6b3838d988e")
+		)
+		(pin "2"
+			(uuid "f2fe5e1d-2d04-4f48-94ed-a41ff3ef929f")
+		)
+		(instances
+			(project "usb_power_board"
+				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
+					(reference "Q4")
 					(unit 1)
 				)
 			)
@@ -14533,78 +14607,6 @@
 			(project "usb_power_board"
 				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
 					(reference "C224")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_GSD")
-		(at 95.25 68.58 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f9085659-6346-4fce-88e1-303c12333e54")
-		(property "Reference" "Q201"
-			(at 100.076 67.31 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "40N06D"
-			(at 100.076 69.85 0)
-			(effects
-				(font
-					(size 0.508 0.508)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:DFN-8-1EP_3x3mm_P0.65mm_EP1.55x2.4mm"
-			(at 100.33 66.04 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 95.25 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, gate/source/drain"
-			(at 95.25 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "59a8575d-448a-46fa-a425-253c000d87e0")
-		)
-		(pin "3"
-			(uuid "1df8d64b-d969-468a-b34a-ddddc8dcf86c")
-		)
-		(pin "2"
-			(uuid "39c18202-f6b8-4ade-a131-9b24e07fdd99")
-		)
-		(instances
-			(project "usb_power_board"
-				(path "/922f9068-b2a9-46a1-aa76-e40e554fdd94/f0e5879a-4e53-4a31-ab7c-02fb4d311f63"
-					(reference "Q201")
 					(unit 1)
 				)
 			)
