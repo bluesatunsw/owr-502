@@ -1370,156 +1370,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:D_TVS_Small"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "D_TVS_Small"
-				(at 0 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS thyrector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "D_TVS_Small_0_1"
-				(polyline
-					(pts
-						(xy -1.27 1.016) (xy -1.27 -1.016) (xy 1.27 1.016) (xy 1.27 -1.016) (xy -1.27 1.016)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 0) (xy 1.27 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.508 1.016) (xy 0 1.016) (xy 0 -1.016) (xy -0.508 -1.016)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "D_TVS_Small_1_1"
-				(pin passive line
-					(at -2.54 0 0)
-					(length 1.27)
-					(name "A1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 0 180)
-					(length 1.27)
-					(name "A2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:L_Ferrite_Small"
 			(pin_numbers
 				(hide yes)
@@ -2023,6 +1873,144 @@
 					(at 0 -2.54 90)
 					(length 0.508)
 					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Diode:SMF30A"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SMF30A"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Diode_SMD:D_SMF"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.vishay.com/doc?85881"
+				(at -1.27 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "200W unidirectional Transil Transient Voltage Suppressor, 30Vrwm, SMF"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "diode TVS voltage suppressor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "D*SMF*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SMF30A_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy -1.27 1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SMF30A_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "A1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3505,7 +3493,7 @@
 		(at 55.88 29.21)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "6a615288-3be0-4b7b-8794-bd73736f80e8")
+		(uuid "7587c2c0-7296-439b-9b34-75067e66e018")
 	)
 	(junction
 		(at 71.12 81.28)
@@ -3725,6 +3713,16 @@
 	)
 	(wire
 		(pts
+			(xy 55.88 36.83) (xy 55.88 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1b33723c-b41c-4960-8ac8-11b431a33f1b")
+	)
+	(wire
+		(pts
 			(xy 34.29 133.35) (xy 36.83 133.35)
 		)
 		(stroke
@@ -3832,16 +3830,6 @@
 			(type default)
 		)
 		(uuid "35dbd041-1100-4350-98b5-c90ba73dfe39")
-	)
-	(wire
-		(pts
-			(xy 55.88 30.48) (xy 55.88 29.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "362891e9-d187-4d4d-9246-94cd0af549c6")
 	)
 	(wire
 		(pts
@@ -4322,16 +4310,6 @@
 			(type default)
 		)
 		(uuid "a53083ed-058a-4d26-9724-ebac4dd67c62")
-	)
-	(wire
-		(pts
-			(xy 55.88 35.56) (xy 55.88 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa35c4b6-308f-46fd-8acb-0dbc6f9b4917")
 	)
 	(wire
 		(pts
@@ -6344,7 +6322,8 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x02_Pin")
-		(at 30.48 29.21 0)
+		(at 30.48 31.75 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6352,7 +6331,7 @@
 		(dnp no)
 		(uuid "5ba6c824-9297-44b8-88e1-1c12aa8225de")
 		(property "Reference" "J1"
-			(at 27.178 29.21 0)
+			(at 27.178 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6360,7 +6339,7 @@
 			)
 		)
 		(property "Value" "XT90M"
-			(at 25.908 32.512 0)
+			(at 25.908 28.448 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6368,7 +6347,7 @@
 			)
 		)
 		(property "Footprint" "Connector_AMASS:AMASS_XT90PW-M_1x02_P10.90mm_Horizontal"
-			(at 30.48 29.21 0)
+			(at 30.48 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6377,7 +6356,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 30.48 29.21 0)
+			(at 30.48 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6386,7 +6365,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 30.48 29.21 0)
+			(at 30.48 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8125,8 +8104,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D_TVS_Small")
-		(at 55.88 33.02 270)
+		(lib_id "Diode:SMF30A")
+		(at 55.88 33.02 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8134,7 +8113,7 @@
 		(dnp no)
 		(uuid "a12c2fd3-b1db-4312-9055-e27c4f3cdbde")
 		(property "Reference" "D3"
-			(at 53.848 33.02 90)
+			(at 57.912 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8143,7 +8122,7 @@
 			)
 		)
 		(property "Value" "30V"
-			(at 53.848 30.48 90)
+			(at 57.912 35.56 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8152,7 +8131,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SMF"
-			(at 55.88 33.02 0)
+			(at 60.96 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8160,8 +8139,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
-			(at 55.88 33.02 0)
+		(property "Datasheet" "https://www.vishay.com/doc?85881"
+			(at 55.88 34.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8169,7 +8148,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Bidirectional transient-voltage-suppression diode, small symbol"
+		(property "Description" "200W unidirectional Transil Transient Voltage Suppressor, 30Vrwm, SMF"
 			(at 55.88 33.02 0)
 			(effects
 				(font
