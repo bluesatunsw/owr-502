@@ -3803,6 +3803,89 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Memory_EEPROM:24LC128"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -5864,10 +5947,28 @@
 		(uuid "14bc2add-3c48-4261-bfea-a81d577855b9")
 	)
 	(junction
+		(at 111.76 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "25c04760-2af6-4a32-99b2-b3e619f21691")
+	)
+	(junction
 		(at 204.47 146.05)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "28dda102-b84e-4ea4-850e-aea904908fe4")
+	)
+	(junction
+		(at 107.95 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "31f4ef94-a33f-47a0-a093-0e3bb4a35b90")
+	)
+	(junction
+		(at 303.53 146.05)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3df4e200-7d95-443c-8713-72f61e6fca41")
 	)
 	(junction
 		(at 67.31 158.75)
@@ -5888,10 +5989,22 @@
 		(uuid "4e0995e2-37a8-4f57-bdd4-5c3d2604f284")
 	)
 	(junction
+		(at 287.02 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "66bf9964-136f-4673-87d4-cf13a01b098c")
+	)
+	(junction
 		(at 267.97 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "68506933-a117-4614-a6e8-0f4e9b2ad3ca")
+	)
+	(junction
+		(at 100.33 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6d4efa38-99cb-4ffd-9433-ab4021276311")
 	)
 	(junction
 		(at 106.68 120.65)
@@ -5918,6 +6031,12 @@
 		(uuid "7cdfaa28-5147-41c9-a2c2-45155f5c4539")
 	)
 	(junction
+		(at 336.55 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7e7a63f8-8dbd-4485-a61c-be46d3b481cf")
+	)
+	(junction
 		(at 237.49 128.27)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5942,10 +6061,22 @@
 		(uuid "9074d725-6b9a-4bc8-b5d6-70abbd5b3876")
 	)
 	(junction
+		(at 270.51 146.05)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "95da6a16-2f63-421d-942d-a98b4f357b7e")
+	)
+	(junction
 		(at 187.96 146.05)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9f214b0d-d91b-461c-8e0b-bc937539f570")
+	)
+	(junction
+		(at 303.53 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a001d72d-7b5b-48ab-a343-363771df8030")
 	)
 	(junction
 		(at 110.49 118.11)
@@ -6002,6 +6133,12 @@
 		(uuid "c86be74b-ba4e-4189-8c64-1bf88acf156b")
 	)
 	(junction
+		(at 104.14 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ccfbfb68-a463-4d52-b996-50575f3dc9b9")
+	)
+	(junction
 		(at 88.9 158.75)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6020,6 +6157,12 @@
 		(uuid "d354841b-4de0-44ee-bc4c-a848d62e415b")
 	)
 	(junction
+		(at 287.02 146.05)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d8a53de8-7fa8-484c-b2c6-7f9fa3ba9932")
+	)
+	(junction
 		(at 267.97 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6036,6 +6179,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e7d2bdef-0204-4e2d-a25b-472cc883bc56")
+	)
+	(junction
+		(at 320.04 146.05)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e996162d-a916-4e0e-bceb-c6e1d9745710")
 	)
 	(junction
 		(at 236.22 60.96)
@@ -6068,6 +6217,12 @@
 		(uuid "f76952d8-1122-42fe-ac82-49ef5ffe6679")
 	)
 	(junction
+		(at 320.04 128.27)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f8f5cfc7-3398-419f-a024-db9cc19938d0")
+	)
+	(junction
 		(at 238.76 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6080,7 +6235,7 @@
 		(uuid "fe2ac072-e9b7-477c-8062-594f7670e869")
 	)
 	(no_connect
-		(at 278.13 137.16)
+		(at 344.17 137.16)
 		(uuid "81913caf-fee5-4333-9992-c96acac3cd6a")
 	)
 	(bus_entry
@@ -6380,6 +6535,16 @@
 	)
 	(wire
 		(pts
+			(xy 303.53 146.05) (xy 320.04 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "10e61ab6-ea25-4352-af64-06a0eab7c874")
+	)
+	(wire
+		(pts
 			(xy 22.86 92.71) (xy 26.67 92.71)
 		)
 		(stroke
@@ -6670,6 +6835,16 @@
 	)
 	(wire
 		(pts
+			(xy 107.95 158.75) (xy 111.76 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "540dcc8b-1ac2-4cd5-a653-724f109d2e48")
+	)
+	(wire
+		(pts
 			(xy 238.76 45.72) (xy 238.76 48.26)
 		)
 		(stroke
@@ -6710,6 +6885,26 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 158.75) (xy 104.14 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a299ff6-ab00-4b62-ba3b-acf4092f7a6e")
+	)
+	(wire
+		(pts
+			(xy 303.53 128.27) (xy 320.04 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5abbd7f9-be4b-47fa-b70f-02d274f7b426")
+	)
+	(wire
+		(pts
 			(xy 71.12 158.75) (xy 71.12 161.29)
 		)
 		(stroke
@@ -6730,7 +6925,7 @@
 	)
 	(wire
 		(pts
-			(xy 279.4 128.27) (xy 270.51 128.27)
+			(xy 270.51 128.27) (xy 287.02 128.27)
 		)
 		(stroke
 			(width 0)
@@ -6790,6 +6985,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 158.75) (xy 104.14 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61efbaf6-8904-452b-8eb0-7ed3ce43ada6")
+	)
+	(wire
+		(pts
 			(xy 102.87 120.65) (xy 106.68 120.65)
 		)
 		(stroke
@@ -6820,6 +7025,16 @@
 	)
 	(wire
 		(pts
+			(xy 115.57 158.75) (xy 115.57 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "67cae32e-03cf-4449-afec-afb3f30639f2")
+	)
+	(wire
+		(pts
 			(xy 82.55 118.11) (xy 82.55 120.65)
 		)
 		(stroke
@@ -6837,6 +7052,16 @@
 			(type default)
 		)
 		(uuid "69510791-818d-4f5d-94a9-27a7276d4605")
+	)
+	(wire
+		(pts
+			(xy 111.76 158.75) (xy 115.57 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c6f6f26-4478-4c1b-a0e6-b09db17b98af")
 	)
 	(wire
 		(pts
@@ -6867,6 +7092,16 @@
 			(type default)
 		)
 		(uuid "73781521-69d9-4f33-8740-ad9124bae5a4")
+	)
+	(wire
+		(pts
+			(xy 287.02 128.27) (xy 287.02 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "749ecc28-0fdc-4299-86b9-6b369a1be006")
 	)
 	(wire
 		(pts
@@ -6948,6 +7183,16 @@
 		)
 		(uuid "81a0e328-be13-473b-90d6-b34db5097586")
 	)
+	(wire
+		(pts
+			(xy 111.76 158.75) (xy 111.76 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8295a94b-dd21-4450-b4ba-f49110d3e556")
+	)
 	(bus
 		(pts
 			(xy 60.96 66.04) (xy 67.31 66.04)
@@ -6970,6 +7215,26 @@
 	)
 	(wire
 		(pts
+			(xy 270.51 146.05) (xy 287.02 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8566afb6-34d5-4d16-bdf0-034c9a93ad34")
+	)
+	(wire
+		(pts
+			(xy 336.55 144.78) (xy 336.55 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87f15156-f931-46c4-b061-eb59919d7c0a")
+	)
+	(wire
+		(pts
 			(xy 55.88 158.75) (xy 59.69 158.75)
 		)
 		(stroke
@@ -6988,6 +7253,16 @@
 		)
 		(uuid "88f389cf-2889-4e3f-83ec-4f2467a0f018")
 	)
+	(wire
+		(pts
+			(xy 107.95 158.75) (xy 107.95 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "89834628-7f69-4e93-ae12-bea81bb14f3a")
+	)
 	(bus
 		(pts
 			(xy 41.91 66.04) (xy 44.45 66.04)
@@ -6997,6 +7272,16 @@
 			(type default)
 		)
 		(uuid "8b90b6fd-cab3-43c0-88b6-0ebd0007a80f")
+	)
+	(wire
+		(pts
+			(xy 336.55 128.27) (xy 336.55 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8bf52f41-6179-4da6-bad5-b7c44053ef72")
 	)
 	(wire
 		(pts
@@ -7027,6 +7312,16 @@
 			(type default)
 		)
 		(uuid "90008fe7-bb27-40a1-942c-7be9c52a1f24")
+	)
+	(wire
+		(pts
+			(xy 345.44 128.27) (xy 336.55 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "92a86ed1-3607-4415-878f-fd7aa06ca7f6")
 	)
 	(wire
 		(pts
@@ -7130,6 +7425,16 @@
 	)
 	(wire
 		(pts
+			(xy 320.04 146.05) (xy 336.55 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9edefedb-79b3-4fb2-8920-57bba13c4c73")
+	)
+	(wire
+		(pts
 			(xy 77.47 158.75) (xy 77.47 161.29)
 		)
 		(stroke
@@ -7167,6 +7472,36 @@
 			(type default)
 		)
 		(uuid "a5bb7447-ce45-46d7-a4e9-80bafa5f646a")
+	)
+	(wire
+		(pts
+			(xy 320.04 144.78) (xy 320.04 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a7ae2b7f-8485-44ce-b231-e0e4085ba4df")
+	)
+	(wire
+		(pts
+			(xy 303.53 144.78) (xy 303.53 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa045d91-cc4f-44b4-800e-fcc3869d42b8")
+	)
+	(wire
+		(pts
+			(xy 294.64 137.16) (xy 295.91 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa105ff8-3618-4fff-9b22-308f456d9478")
 	)
 	(wire
 		(pts
@@ -7300,6 +7635,26 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 158.75) (xy 107.95 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd48c976-16ed-4307-8fb3-89127336be88")
+	)
+	(wire
+		(pts
+			(xy 311.15 137.16) (xy 312.42 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bd4f30b0-9e17-44c7-9442-f4a15b73b68e")
+	)
+	(wire
+		(pts
 			(xy 107.95 50.8) (xy 113.03 50.8)
 		)
 		(stroke
@@ -7348,6 +7703,16 @@
 		)
 		(uuid "c67250de-078f-4f69-a2bc-9dd3b0b5795a")
 	)
+	(wire
+		(pts
+			(xy 320.04 128.27) (xy 336.55 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c672c7a3-cfc9-4a40-a163-c5f8e440a9cf")
+	)
 	(bus
 		(pts
 			(xy 44.45 66.04) (xy 46.99 66.04)
@@ -7367,6 +7732,16 @@
 			(type default)
 		)
 		(uuid "c7fb1bdc-3414-4909-921d-37f252c7d71a")
+	)
+	(wire
+		(pts
+			(xy 303.53 128.27) (xy 303.53 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8671a7e-faf1-4759-a5b9-8dbed81269ae")
 	)
 	(wire
 		(pts
@@ -7417,6 +7792,16 @@
 			(type default)
 		)
 		(uuid "d3674922-7ece-44bc-98b9-16c6bad1132a")
+	)
+	(wire
+		(pts
+			(xy 278.13 137.16) (xy 279.4 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d39d2202-1332-4d79-9a46-db16b593d4f6")
 	)
 	(wire
 		(pts
@@ -7480,6 +7865,16 @@
 	)
 	(wire
 		(pts
+			(xy 287.02 144.78) (xy 287.02 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc5a58ea-33ee-4580-998d-4750ac3708c3")
+	)
+	(wire
+		(pts
 			(xy 31.75 92.71) (xy 35.56 92.71)
 		)
 		(stroke
@@ -7487,6 +7882,16 @@
 			(type default)
 		)
 		(uuid "de8941a0-1fa9-4d9c-a0bc-ee0365231a07")
+	)
+	(wire
+		(pts
+			(xy 327.66 137.16) (xy 328.93 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df7a8c91-9b5e-433c-8903-719afbce046b")
 	)
 	(wire
 		(pts
@@ -7630,6 +8035,16 @@
 	)
 	(wire
 		(pts
+			(xy 287.02 128.27) (xy 303.53 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f155456c-fc17-4c35-be5e-d06ac3a5c721")
+	)
+	(wire
+		(pts
 			(xy 100.33 60.96) (xy 100.33 62.23)
 		)
 		(stroke
@@ -7650,6 +8065,16 @@
 	)
 	(wire
 		(pts
+			(xy 320.04 128.27) (xy 320.04 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4b91696-75dc-42b3-89e1-7a29fe93b1a7")
+	)
+	(wire
+		(pts
 			(xy 204.47 128.27) (xy 204.47 129.54)
 		)
 		(stroke
@@ -7667,6 +8092,16 @@
 			(type default)
 		)
 		(uuid "f5e8a941-bcb5-452c-820e-662fb73188d2")
+	)
+	(wire
+		(pts
+			(xy 287.02 146.05) (xy 303.53 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f837a910-1e40-4262-936b-302a775e2f10")
 	)
 	(wire
 		(pts
@@ -8154,6 +8589,81 @@
 		)
 	)
 	(symbol
+		(lib_id "LED:WS2812B-2020")
+		(at 303.53 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "07e13e1f-b347-4c7d-bc86-be382b646807")
+		(property "Reference" "D5"
+			(at 312.42 122.936 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 312.42 125.476 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 304.8 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(at 306.07 146.685 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(at 303.53 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "00415a9a-3fdb-44ea-aa5b-bc908f155b9e")
+		)
+		(pin "2"
+			(uuid "d77157a7-9c67-4de1-b6fb-f7c897b350ad")
+		)
+		(pin "1"
+			(uuid "476ed45d-c795-42dd-ae7d-81157e2aeffc")
+		)
+		(pin "3"
+			(uuid "06b67cb7-e1f2-44e7-8308-f9a350b23edc")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "D5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:D_TVS_Dual_Compact")
 		(at 85.09 101.6 0)
 		(unit 1)
@@ -8286,6 +8796,134 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR021")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 66.04 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0c9eeb1c-f301-49cb-a78b-0c8d8402beeb")
+		(property "Reference" "H2"
+			(at 68.58 140.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 68.58 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:M2.5"
+			(at 66.04 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 66.04 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 66.04 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "H2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 88.9 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0d48d7b5-9e00-4756-a518-361b9b1f00b5")
+		(property "Reference" "H3"
+			(at 91.44 140.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 91.44 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:M2.5"
+			(at 88.9 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 88.9 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 88.9 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "H3")
 					(unit 1)
 				)
 			)
@@ -8764,6 +9402,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 107.95 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1ea114d1-ae24-4ae0-8188-e11268f82f9d")
+		(property "Reference" "#PWR06"
+			(at 107.95 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 107.95 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 107.95 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 107.95 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 107.95 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8a9944e9-4be1-4031-9a2e-1c80a8a7c59e")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR06")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VDD")
 		(at 110.49 95.25 270)
 		(unit 1)
@@ -9106,6 +9810,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Bluesat:C_CompactV")
+		(at 115.57 163.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "29981cee-fb9a-4c9c-9b70-a4f93f661153")
+		(property "Reference" "C61"
+			(at 114.681 161.798 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 116.459 163.068 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 115.57 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 115.57 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 115.57 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c6ce65fd-cd50-4807-a862-25b2c282a5c0")
+		)
+		(pin "2"
+			(uuid "146fee1f-44e7-4d4a-9fad-fd51cf807fe5")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "C61")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 102.87 58.42 90)
 		(unit 1)
@@ -9442,6 +10217,70 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 111.76 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "37d8a1a4-39be-4b55-9852-f66cc4530957")
+		(property "Reference" "H4"
+			(at 114.3 140.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 114.3 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:M2.5"
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 111.76 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "H4")
 					(unit 1)
 				)
 			)
@@ -9918,6 +10757,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 104.14 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "43c3f6c4-9f87-4176-94f4-47a839859ef9")
+		(property "Reference" "#PWR05"
+			(at 104.14 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.14 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 104.14 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e76edfc9-f0a6-4885-ae12-9cfb887e73d6")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:C_CompactH")
 		(at 168.91 91.44 0)
 		(mirror y)
@@ -10198,6 +11103,81 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "C13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "LED:WS2812B-2020")
+		(at 320.04 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4d379023-de90-4577-b90a-ba5e761b6675")
+		(property "Reference" "D6"
+			(at 328.93 122.936 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 328.93 125.476 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 321.31 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(at 322.58 146.685 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(at 320.04 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "f564df15-1e6a-4fcd-af1e-a7544a21bac9")
+		)
+		(pin "2"
+			(uuid "96abd922-1cd0-4f78-a11e-03f19bacd63d")
+		)
+		(pin "1"
+			(uuid "2d4f792e-d2b2-457c-9eab-196c049af456")
+		)
+		(pin "3"
+			(uuid "8b8a4f54-48e9-40a1-91c9-153f1fff707c")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -10685,6 +11665,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Bluesat:C_CompactV")
+		(at 104.14 163.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "53ca4a7e-31a7-4700-a192-2f3669d264ab")
+		(property "Reference" "C32"
+			(at 103.251 161.798 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 105.029 163.068 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 104.14 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.14 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 104.14 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "494f0675-2f1f-4eaf-8f0b-d4aa976ff350")
+		)
+		(pin "2"
+			(uuid "2157c676-9ae4-4043-82de-4a2a216bc2d5")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "C32")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VDDA")
 		(at 236.22 60.96 0)
 		(unit 1)
@@ -11106,6 +12157,141 @@
 		)
 	)
 	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 41.91 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "67e41433-f232-4781-9dea-2d62f855db8d")
+		(property "Reference" "H1"
+			(at 44.45 140.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "MountingHole"
+			(at 44.45 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:M2.5"
+			(at 41.91 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 41.91 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Mounting Hole without connection"
+			(at 41.91 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "H1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Bluesat:C_CompactV")
+		(at 107.95 163.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "69420f18-e5d1-4c5d-bae7-a362f02dbb89")
+		(property "Reference" "C33"
+			(at 107.061 161.798 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 108.839 163.068 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 107.95 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 107.95 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 107.95 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b2788b6b-6fd1-4bf8-8581-c25486f76e40")
+		)
+		(pin "2"
+			(uuid "ceb36837-b36e-49ca-a313-edbe1d252689")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "C33")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 59.69 82.55 0)
 		(unit 1)
@@ -11335,7 +12521,7 @@
 		(dnp no)
 		(uuid "74534e5f-6651-4df0-8397-c5f57830ee65")
 		(property "Reference" "D16"
-			(at 279.4 122.936 0)
+			(at 278.892 122.936 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11747,6 +12933,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 111.76 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7e0293ca-ab89-4398-8390-8131349c0d27")
+		(property "Reference" "#PWR017"
+			(at 111.76 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 111.76 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 111.76 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 111.76 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 111.76 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ab91d50d-8494-49ef-939f-66aa895dcf4a")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR017")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 63.5 163.83 0)
 		(unit 1)
@@ -11977,6 +13229,72 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "D10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 115.57 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8d3912aa-ef81-4b19-9eb2-672d04f4ade4")
+		(property "Reference" "#PWR018"
+			(at 115.57 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 115.57 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 115.57 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 115.57 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 115.57 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f5946a56-dfec-4944-bc8a-6314c59cbefd")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -13032,7 +14350,7 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
-		(at 279.4 128.27 270)
+		(at 345.44 128.27 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13040,7 +14358,7 @@
 		(dnp no)
 		(uuid "c2980e32-df72-4264-a835-75f0965971cc")
 		(property "Reference" "#PWR071"
-			(at 275.59 128.27 0)
+			(at 341.63 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13049,7 +14367,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 282.575 128.27 0)
+			(at 349.758 128.27 0)
 			(effects
 				(font
 					(size 1.016 1.016)
@@ -13057,7 +14375,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 279.4 128.27 0)
+			(at 345.44 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13066,7 +14384,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 279.4 128.27 0)
+			(at 345.44 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13075,7 +14393,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 279.4 128.27 0)
+			(at 345.44 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13297,6 +14615,81 @@
 			(project ""
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "LED:WS2812B-2020")
+		(at 287.02 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cdf3daa7-5365-419f-ab25-0d8b95ea7e81")
+		(property "Reference" "D4"
+			(at 295.91 122.936 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 295.91 125.476 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 288.29 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(at 289.56 146.685 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(at 287.02 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "01ff9fe4-5c37-4598-8bcb-28ac564270fd")
+		)
+		(pin "2"
+			(uuid "82bde6fa-5fdf-4493-aba0-3a2ef41ffe29")
+		)
+		(pin "1"
+			(uuid "a361a939-f4b0-420c-a04a-16692811280a")
+		)
+		(pin "3"
+			(uuid "baab2636-66a6-448d-b691-a17a36870e89")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -14117,6 +15510,81 @@
 		)
 	)
 	(symbol
+		(lib_id "LED:WS2812B-2020")
+		(at 336.55 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f2ff1789-638d-489e-9551-4444921decdd")
+		(property "Reference" "D7"
+			(at 345.44 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "WS2812B-2020"
+			(at 345.44 125.476 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+			(at 337.82 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/product-files/4684/4684_WS2812B-2020_V1.3_EN.pdf"
+			(at 339.09 146.685 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller, 2.0 x 2.0 mm, 12 mA"
+			(at 336.55 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "5252c02e-c1e8-4823-a468-7fa214922cab")
+		)
+		(pin "2"
+			(uuid "4e212948-45cb-4930-9e1f-834dec13bef9")
+		)
+		(pin "1"
+			(uuid "60f7317c-2331-4426-8f43-a5b8e4d12464")
+		)
+		(pin "3"
+			(uuid "b6137cc0-ec51-4318-9f78-e1d50a356ce5")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "D7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_name "STM32G474RBT6_2")
 		(lib_id "CubeMX:STM32G474RBT6")
 		(at 115.57 41.91 0)
@@ -14367,6 +15835,77 @@
 			(project ""
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Bluesat:C_CompactV")
+		(at 111.76 163.83 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f99f12c1-6ac3-4b33-bbc6-a686d5a4bc60")
+		(property "Reference" "C60"
+			(at 110.871 161.798 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220n"
+			(at 112.649 163.068 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
+			(at 111.76 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 111.76 163.83 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 111.76 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "825b2e05-a505-4400-a16c-f708176fbf5c")
+		)
+		(pin "2"
+			(uuid "ec74b43e-712b-48d5-971f-e5bd8a9be268")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
+					(reference "C60")
 					(unit 1)
 				)
 			)
