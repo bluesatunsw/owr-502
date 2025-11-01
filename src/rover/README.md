@@ -14,7 +14,6 @@ Thus all 'helper' files used across multiple subfiles have been included directl
     - utils/gazebo_plugins.xacro
 
 ## Important launch files
-
 - `rsp.launch.py`
   - This will use the URDF to show a model of the rover and the full TF tree
   - Use rviz2 to view this, 

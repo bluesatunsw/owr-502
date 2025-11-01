@@ -18,45 +18,60 @@ from launch_ros.descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
-def generate_launch_description():
-    # Get URDF via xacro
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]), " ",
-            PathJoinSubstitution(
-                [FindPackageShare("rover"), "description", "robot.urdf.xacro"]
-            ),
-            " is_simulation:=true"
-        ]
-    )
-    robot_description = {
-        "robot_description": ParameterValue(robot_description_content, value_type=str)
+def get_robot_description():
+    # Robot Description URDF
+    robot_description = { "robot_description": ParameterValue(Command(
+            [
+                PathJoinSubstitution([FindExecutable(name="xacro")]), " ",
+                PathJoinSubstitution(
+                    [FindPackageShare("rover"), "description", "robot.urdf.xacro"]
+                ),
+                " is_simulation:=true"
+            ]
+        ), value_type=str)
     }
-    robot_controllers = PathJoinSubstitution(
-        [
-            FindPackageShare("rover"),
-            "config",
-            "drivebase",
-            "swerve_drive_controller.yaml",
-        ]
-    )
+    
 
-    node_robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        output="screen",
-        parameters=[robot_description],
-    )
 
-    swerve_drive_base_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[
-            "swerve_drive_base_controller",
-            "--param-file",
-            robot_controllers,
-        ],
-    )                    
+def generate_launch_description():
+    decl_args = []
+    decl_args.append(launch.actions.DeclareLaunchArgument(
+            "is_simulation",
+            default_value="false",
+            description="Start Gazebosim and set up subsystems for simulation
+            usage, combine with other arguments"
+    ))
+    
+    decl_args.append(launch.actions.DeclareLaunchArgument(
+            "task_excavation_construction",
+            default_value="false",
+    ))
+    
+    decl_args.append(launch.actions.DeclareLaunchArgument(
+            "task_mapping_autonomous",
+            default_value="false",
+    ))
+    
+    decl_args.append(launch.actions.DeclareLaunchArgument(
+            "task_post_landing",
+            default_value="false",
+    ))
+
+    decl_args.append(launch.actions.DeclareLaunchArgument(
+            "task_space_resources",
+            default_value="false",
+    ))
+
+
+
+
+    # Core systems (robot state publisher, drivebase, drivebase cameras, etc...)
+    core_subsystem = IncludeLaunchDescription(PythonLaunchDescriptionSource([
+        PathJoinSubstitution([FindPackageShare("rover"), "launch", "subsystems", "drivebase"])
+    ]))
+
+    
+
 
     return LaunchDescription(
         [
