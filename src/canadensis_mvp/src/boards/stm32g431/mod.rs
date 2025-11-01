@@ -26,6 +26,20 @@ struct STM32G431CyphalClock {
     hw_timer: pac::TIM2,
 }
 
+fn fddlc_to_bytes(dlc: u8) -> usize {
+    match dlc {
+        0..=8 => dlc as usize,
+        9 => 12,
+        10 => 16,
+        11 => 20,
+        12 => 24,
+        13 => 32,
+        14 => 48,
+        15 => 64,
+        16..=u8::MAX => unreachable!("DLC is always between 0 and 16 inclusive"),
+    }
+}
+
 fn configure_clk(rcc: &mut pac::RCC) {
     // HSE is 8 MHz crystal on WeAct (NOTE: on the Nucleo it's 24 MHz!)
     // Set SYSCLK to 64 MHz.
@@ -34,11 +48,13 @@ fn configure_clk(rcc: &mut pac::RCC) {
         rcc.pllcfgr().write(|w| {
             w
             .pllsrc().bits(0b11)    // set oscillator input to HSE (8 MHz)
-            .plln().bits(16)        // set PLL multiplier to (16 / 1)
+            .plln().bits(32)        // set PLL multiplier to (32 / 1)
             .pllm().bits(0)         // "
-            .pllr().bits(0b00)      // set PLLR division factor to 2
-                                    // so PLLR = SYSCLK = 8 MHz * 16 / 2 = 64 MHz
-            .pllren().bit(true)     // enable PLL output
+            .pllr().bits(0b01)      // set PLLR division factor to / 4
+                                    // so PLLR = SYSCLK = 8 MHz * 32 / 4 = 64 MHz
+            .pllren().bit(true)     // enable PLL output R
+            .pllq().bits(0)         // PLLQ division factor / 2 -> 128 MHz
+            .pllqen().bit(true)     // enable PLL output Q
         });
     }
     unsafe {
@@ -51,10 +67,10 @@ fn configure_clk(rcc: &mut pac::RCC) {
     // SYSCLK -[AHB prescaler]-> HCLK -[APB1 prescaler]-> PCLK1 
     // don't bother prescaling here, default /1, /1 passthrough
 
-    // set 64 MHz PCLK1 to be FDCAN clock source
+    // set 128 MHz PLLQ to be FDCAN clock source
     unsafe {
-        rcc.ccipr().modify(|_, w| w.fdcansel().bits(0b10));
-        // other options: PLL "Q" (0b01), HSE (default on reset) (0b00)
+        rcc.ccipr().modify(|_, w| w.fdcansel().bits(0b01));
+        // options: PLL "Q" (0b01), HSE (default on reset) (0b00), PCLK (0b10)
     }
 }
 
@@ -153,7 +169,7 @@ impl STM32G431CanDriver {
     fn new_singleton(fdcan: pac::FDCAN1, gpioa: pac::GPIOA, rcc: &mut pac::RCC) -> Self {
         // this is used in two different places so it's set here
         // see the DBTP section for context
-        const DATA_SAMPLE_PERIOD: u8 = 6;
+        const DATA_SAMPLE_PERIOD: u8 = 11;
 
         // Reset and enable the FDCAN1 peripheral.
         rcc.apb1enr1().modify(|_, w| w.fdcanen().bit(true));
@@ -192,16 +208,16 @@ impl STM32G431CanDriver {
             // For data bit rate = 8 MHz, PCLK1 = 64 MHz:
             // (note t_q is 15.625 ns = 1 PCLK1 period)
             // https://kvaser.com/support/calculators/can-fd-bit-timing-calculator/
-            // nominal bit sample point 87.5%
+            // nominal bit sample point 75%
             fdcan.dbtp().write(|w|
                 w.tdc().bit(true)       // enable transceiver delay compensation
                 .dbrp().bits(1 - 1)     // data bit rate prescaler
                                         // t_q = (0b0000 + 1) clock period(s)
                 .dtseg1().bits(DATA_SAMPLE_PERIOD - 1)   // data time segment before sample point
                                         // = PROP_SEG + PHASE_SEG1 = 5 t_q
-                .dtseg2().bits(1 - 1)   // data time segment after sample point
+                .dtseg2().bits(4 - 1)   // data time segment after sample point
                                         // = PHASE_SEG2 = 2 t_q
-                .dsjw().bits(1 - 1)     // synchronisation jump width
+                .dsjw().bits(2 - 1)     // synchronisation jump width
                                         // = 2 t_q
             );
             // For nominal bit rate = 1 MHz, PCLK1 = 64 MHz:
@@ -210,11 +226,11 @@ impl STM32G431CanDriver {
             fdcan.nbtp().write(|w|
                 w.nbrp().bits(1 - 1)    // nominal bit rate prescaler
                                         // = 1 (no scaling)
-                .ntseg1().bits(55 - 1)  // nominal time segment before sample point
+                .ntseg1().bits(95 - 1)  // nominal time segment before sample point
                                         // = PROP_SEG + PHASE_SEG1 = 55 t_q
-                .ntseg2().bits(8 - 1)   // nominal time segment after sample point
+                .ntseg2().bits(32 - 1)   // nominal time segment after sample point
                                         // = PHASE_SEG2 = 8 t_q
-                .nsjw().bits(8 - 1)     // nominal (re)synchronisation jump width
+                .nsjw().bits(16 - 1)     // nominal (re)synchronisation jump width
                                         // = 8 t_q
             );
 
@@ -329,7 +345,7 @@ pub struct OverrunError {}
 struct FDCanRxFifoElement {
     r0: u32,
     r1: u32,
-    data: [u8; 64],
+    data: [u32; 16],
 }
 
 #[repr(C)]
@@ -346,10 +362,10 @@ struct ExtMsgFilterElement {
 }
 
 // const FDCAN1_FLSSA: *mut StdMsgFilterElement = (0x4000_A400 + 0x0000) as *mut StdMsgFilterElement;
-const FDCAN1_FLESA: *mut ExtMsgFilterElement = (0x4000_A400 + 0x0070) as *mut ExtMsgFilterElement;
-const FDCAN1_RXFIFO0: *const FDCanRxFifoElement = (0x4000_A400 + 0x00B0) as *const FDCanRxFifoElement;
-const FDCAN1_TXFIFO: *mut FDCanTxFifoElement = (0x4000_A400 + 0x0278) as *mut FDCanTxFifoElement;
 // const FDCAN1_RXFIFO1: *const FDCanFifoElement = (0x4000_A400 + 0x0188) as *const FDCanFifoElement;
+const FDCAN1_FLESA: *mut ExtMsgFilterElement = (0x4000_A400 + 0x0070) as *mut ExtMsgFilterElement;
+const FDCAN1_TXFIFO: *mut FDCanTxFifoElement = (0x4000_A400 + 0x0278) as *mut FDCanTxFifoElement;
+const FDCAN1_RXFIFO0: *const FDCanRxFifoElement = (0x4000_A400 + 0x00B0) as *const FDCanRxFifoElement;
 
 struct RxFifo0 {}
 
@@ -360,13 +376,19 @@ impl RxFifo0 {
         if idx >= 3 {
             panic!("Index {} out of bounds for the FDCAN1 Rx FIFO 0", idx);
         }
-        let s: &[FDCanRxFifoElement] = unsafe{slice::from_raw_parts(FDCAN1_RXFIFO0, 3)};
-        let element = &s[idx];
-        let len: usize = ((element.r1 >> 16) & 0x0f) as usize;
+        let fifo: &[FDCanRxFifoElement] = unsafe{slice::from_raw_parts(FDCAN1_RXFIFO0, 3)};
+        let element = &fifo[idx];
+        let dlc: u8 = ((element.r1 >> 16) & 0x0f) as u8;
         let ext_id: u32 = element.r0 & ((1 << 29) - 1);
-        // TODO: god fucking damn it the fucking bytes are stored in little-endian order within
-        // each word fuck my entire life
-        Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element.data[0..len])
+        let mut element_data_bytes: [u8; 64] = [0; 64];
+        let mut word = 0; // bad C habits sorry
+        for i in 0..fddlc_to_bytes(dlc) {
+            if i % 4 == 0 {
+                word = element.data[i / 4];
+            }
+            element_data_bytes[i] = ((word >> ((i % 4) * 8)) & 0xff) as u8;
+        }
+        Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element_data_bytes)
     }
 }
 
@@ -376,18 +398,23 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
 
     // literally just returns a CAN frame if one is available
     fn receive(&mut self, clock: &mut CClock) -> Result<Frame, nb::Error<OverrunError>> {
+        hprintln!("receive called");
         // read some kind of register to check if CAN frames received
         let rxf0s = self.fdcan.rxf0s().read();
         // TODO: check error status register? do more error checking, fault on the FIFO being full
         if rxf0s.f0fl().bits() == 0 {
             // fill level is 0, so receiving a message would block
+            hprintln!("fill level zero, WouldBlock");
             Err(nb::Error::WouldBlock)
         } else {
             // make the frame from the data in the message RAM
             let idx: u8 = rxf0s.f0gi().bits();
-            let frame = RxFifo0::make_frame(rxf0s.f0gi().bits().into(), clock.now());
+            let frame: Frame = RxFifo0::make_frame(rxf0s.f0gi().bits().into(), clock.now());
             // acknowledge message receipt
             unsafe { self.fdcan.rxf0a().write(|w| w.f0ai().bits(idx)) };
+            if (u32::from(frame.id()) & 0x1ff00) >> 8 == 49 {
+                hprintln!("break on me!");
+            }
             Ok(frame)
         }
     }
@@ -398,6 +425,7 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
         subscriptions: S,
     )
        where S: IntoIterator<Item = Subscription> {
+        hprintln!("apply_filters called");
         if let Err(_) = optimize_filters(local_node, subscriptions, 8, |filters| self.do_apply_filters(filters)) {
             // OutOfMemory
             self.reset_filters();
@@ -405,6 +433,7 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
     }
 
     fn apply_accept_all(&mut self) {
+        hprintln!("apply_accept_all called");
         self.reset_filters();
     }
 }
@@ -444,12 +473,12 @@ impl driver::TransmitDriver<CClock> for STM32G431CanDriver {
             // set data in TX buffer appropriately
             let put_index: usize = txfqs.read().tfqpi().bits().into();
             let s: &mut [FDCanTxFifoElement] = unsafe{slice::from_raw_parts_mut(FDCAN1_TXFIFO, 3)};
-            //hprintln!("Trying to send id {:#0x}, DLC {}", u32::from(frame.id()), frame.dlc());
             //                ext. id
             s[put_index].t0 = (1 << 30) | u32::from(frame.id());
             //                CAN FD + BRS
             s[put_index].t1 = (0b11 << 20) | ((frame.dlc() as u32) << 16);
             let mut word: u32 = 0;
+            // TODO: ensure zero-padding until DLC length
             for i in 0..frame.data().len() {
                 word |= (frame.data()[i] as u32) << ((i % 4) * 8);
                 if (i % 4) == 3 {
