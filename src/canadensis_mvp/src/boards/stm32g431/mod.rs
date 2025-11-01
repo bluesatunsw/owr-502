@@ -14,7 +14,6 @@ use canadensis_core::subscription::Subscription;
 use cortex_m::interrupt::Mutex;
 use core::cell::RefCell;
 use crate::boards::{CyphalClock, GeneralClock};
-use cortex_m_semihosting::hprintln;
 
 use stm32g4::stm32g431 as pac;
 
@@ -187,9 +186,9 @@ impl STM32G431CanDriver {
             gpioa.moder().write(|w| w.moder11().bits(0b10).moder12().bits(0b10));
             // ...specifically, FDCAN1 (AF9 = 0b1001).
             gpioa.afrh().write(|w| w.afrh11().bits(0b1001).afrh12().bits(0b1001));
-            // CHECKME: Set output modes to push-pull (interface with controller)
+            // Set output modes to push-pull (interface with controller)
             gpioa.otyper().write(|w| w.ot11().bit(false).ot12().bit(false));
-            // CHECKME: Set pin speed to medium; should be acceptable for 8MHz FDCAN data rate
+            // Set pin speed to medium; should be acceptable for 8MHz FDCAN data rate
             gpioa.ospeedr().write(|w| w.ospeedr11().bits(0b01).ospeedr12().bits(0b01));
         }
 
@@ -197,12 +196,12 @@ impl STM32G431CanDriver {
         // Set CCE of CCCR (we just reset so INIT should be set)
         fdcan.cccr().modify(|_, w| w.cce().bit(true));
         fdcan.cccr().modify(|_, w|
-            w.pxhd().bit(true)   // CHECKME: disable protocol handling exception
+            w.pxhd().bit(true)   // disable protocol handling exception
             //.niso().bit(true)
             .brse().bit(true)   // enable bit rate switching for transmissions
             // keep EFBI (edge filtering) disabled, apparently there's errata
             .fdoe().bit(true)   // enable FD operation
-            .dar().bit(true)    // CHECKME: disable automatic retransmission
+            .dar().bit(true)    // disable automatic retransmission
         );
         unsafe {
             // For data bit rate = 8 MHz, PCLK1 = 64 MHz:
@@ -388,7 +387,7 @@ impl RxFifo0 {
             }
             element_data_bytes[i] = ((word >> ((i % 4) * 8)) & 0xff) as u8;
         }
-        Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element_data_bytes)
+        Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element_data_bytes[0..fddlc_to_bytes(dlc)])
     }
 }
 
@@ -398,13 +397,11 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
 
     // literally just returns a CAN frame if one is available
     fn receive(&mut self, clock: &mut CClock) -> Result<Frame, nb::Error<OverrunError>> {
-        hprintln!("receive called");
         // read some kind of register to check if CAN frames received
         let rxf0s = self.fdcan.rxf0s().read();
         // TODO: check error status register? do more error checking, fault on the FIFO being full
         if rxf0s.f0fl().bits() == 0 {
             // fill level is 0, so receiving a message would block
-            hprintln!("fill level zero, WouldBlock");
             Err(nb::Error::WouldBlock)
         } else {
             // make the frame from the data in the message RAM
@@ -412,9 +409,6 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
             let frame: Frame = RxFifo0::make_frame(rxf0s.f0gi().bits().into(), clock.now());
             // acknowledge message receipt
             unsafe { self.fdcan.rxf0a().write(|w| w.f0ai().bits(idx)) };
-            if (u32::from(frame.id()) & 0x1ff00) >> 8 == 49 {
-                hprintln!("break on me!");
-            }
             Ok(frame)
         }
     }
@@ -425,7 +419,6 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
         subscriptions: S,
     )
        where S: IntoIterator<Item = Subscription> {
-        hprintln!("apply_filters called");
         if let Err(_) = optimize_filters(local_node, subscriptions, 8, |filters| self.do_apply_filters(filters)) {
             // OutOfMemory
             self.reset_filters();
@@ -433,7 +426,6 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
     }
 
     fn apply_accept_all(&mut self) {
-        hprintln!("apply_accept_all called");
         self.reset_filters();
     }
 }
@@ -443,6 +435,7 @@ impl driver::TransmitDriver<CClock> for STM32G431CanDriver {
     // operate the TX in FIFO (transmit in order of addition) instead of queue (transmit ordered by
     // message priority/ID) mode since the latter could lead to starvation
     // CHECKME: not sure above is the right choice?
+    // TODO: update to pqueue
     type Error = OverrunError;
 
     // this is basically a no-op
