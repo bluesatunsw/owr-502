@@ -151,6 +151,10 @@ pub struct STM32G431CanDriver {
 
 impl STM32G431CanDriver {
     fn new_singleton(fdcan: pac::FDCAN1, gpioa: pac::GPIOA, rcc: &mut pac::RCC) -> Self {
+        // this is used in two different places so it's set here
+        // see the DBTP section for context
+        const DATA_SAMPLE_PERIOD: u8 = 6;
+
         // Reset and enable the FDCAN1 peripheral.
         rcc.apb1enr1().modify(|_, w| w.fdcanen().bit(true));
         rcc.apb1rstr1().modify(|_, w| w.fdcanrst().bit(true));
@@ -190,14 +194,14 @@ impl STM32G431CanDriver {
             // https://kvaser.com/support/calculators/can-fd-bit-timing-calculator/
             // nominal bit sample point 87.5%
             fdcan.dbtp().write(|w|
-                w.tdc().bit(false)      // CHECKME: disable transceiver delay compensation
+                w.tdc().bit(true)       // enable transceiver delay compensation
                 .dbrp().bits(1 - 1)     // data bit rate prescaler
                                         // t_q = (0b0000 + 1) clock period(s)
-                .dtseg1().bits(5 - 1)   // data time segment before sample point
+                .dtseg1().bits(DATA_SAMPLE_PERIOD - 1)   // data time segment before sample point
                                         // = PROP_SEG + PHASE_SEG1 = 5 t_q
-                .dtseg2().bits(2 - 1)   // data time segment after sample point
+                .dtseg2().bits(1 - 1)   // data time segment after sample point
                                         // = PHASE_SEG2 = 2 t_q
-                .dsjw().bits(2 - 1)     // synchronisation jump width
+                .dsjw().bits(1 - 1)     // synchronisation jump width
                                         // = 2 t_q
             );
             // For nominal bit rate = 1 MHz, PCLK1 = 64 MHz:
@@ -214,6 +218,11 @@ impl STM32G431CanDriver {
                                         // = 8 t_q
             );
 
+            // Transmitter delay compensation becomes necessary above a data rate of about 4.5 MHz
+            fdcan.tdcr().write(|w| w.tdco().bits(DATA_SAMPLE_PERIOD - 1).tdcf().bits(3 - 1));
+
+            // TXBC.TFQM is 0 (FIFO mode) on reset so don't change
+
             // CURRENTLY UNUSED CONFIGURATION REGISTERS:
             // Desired: Timestamp with 1 us precision
             // We may need to make some way of translating this to the Cyphal time
@@ -225,9 +234,6 @@ impl STM32G431CanDriver {
             // or automatically reset when a RX FIFO is cleared. Idea is to check for
             // liveness/FIFOs being processed. Let's not bother using it for now...
             //      fdcan.tocc().write(|w| w.top().bits(0xffff).tos().bits(0b11).etoc().bit(false));
-
-            // Ignore transmitter delay compensation for now unless we determine that we need it
-            //      fdcan.tdcr().write(|w| w.tdco().bits(0x7f).tdcf().bits(0x7f));
 
             // Ignore following, not using interrupts for now. But might want set up
             // interrupt handler to buffer more messages between receive() calls in future?
@@ -320,10 +326,17 @@ impl STM32G431CanDriver {
 pub struct OverrunError {}
 
 #[repr(C)]
-struct FDCanFifoElement {
+struct FDCanRxFifoElement {
     r0: u32,
     r1: u32,
     data: [u8; 64],
+}
+
+#[repr(C)]
+struct FDCanTxFifoElement {
+    t0: u32,
+    t1: u32,
+    data: [u32; 16],
 }
 
 #[repr(C)]
@@ -334,7 +347,8 @@ struct ExtMsgFilterElement {
 
 // const FDCAN1_FLSSA: *mut StdMsgFilterElement = (0x4000_A400 + 0x0000) as *mut StdMsgFilterElement;
 const FDCAN1_FLESA: *mut ExtMsgFilterElement = (0x4000_A400 + 0x0070) as *mut ExtMsgFilterElement;
-const FDCAN1_RXFIFO0: *const FDCanFifoElement = (0x4000_A400 + 0x00B0) as *const FDCanFifoElement;
+const FDCAN1_RXFIFO0: *const FDCanRxFifoElement = (0x4000_A400 + 0x00B0) as *const FDCanRxFifoElement;
+const FDCAN1_TXFIFO: *mut FDCanTxFifoElement = (0x4000_A400 + 0x0278) as *mut FDCanTxFifoElement;
 // const FDCAN1_RXFIFO1: *const FDCanFifoElement = (0x4000_A400 + 0x0188) as *const FDCanFifoElement;
 
 struct RxFifo0 {}
@@ -346,10 +360,12 @@ impl RxFifo0 {
         if idx >= 3 {
             panic!("Index {} out of bounds for the FDCAN1 Rx FIFO 0", idx);
         }
-        let s: &[FDCanFifoElement] = unsafe{slice::from_raw_parts(FDCAN1_RXFIFO0, 3)};
+        let s: &[FDCanRxFifoElement] = unsafe{slice::from_raw_parts(FDCAN1_RXFIFO0, 3)};
         let element = &s[idx];
         let len: usize = ((element.r1 >> 16) & 0x0f) as usize;
         let ext_id: u32 = element.r0 & ((1 << 29) - 1);
+        // TODO: god fucking damn it the fucking bytes are stored in little-endian order within
+        // each word fuck my entire life
         Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element.data[0..len])
     }
 }
@@ -395,25 +411,67 @@ impl driver::ReceiveDriver<CClock> for STM32G431CanDriver {
 
 /// Extremely basic driver
 impl driver::TransmitDriver<CClock> for STM32G431CanDriver {
-    // FIXME
+    // operate the TX in FIFO (transmit in order of addition) instead of queue (transmit ordered by
+    // message priority/ID) mode since the latter could lead to starvation
+    // CHECKME: not sure above is the right choice?
     type Error = OverrunError;
 
+    // this is basically a no-op
     fn try_reserve(&mut self, frames: usize) -> Result<(), OutOfMemoryError> {
-        // TODO
-        Ok(())
+        // the TX buffer has space for three messages
+        if frames > 3 {
+            Err(OutOfMemoryError)
+        } else {
+            Ok(())
+        }
     }
 
+    // add frame to the TX FIFO or return nb::WouldBlock if FIFO full
+    // other parts of the codebase seem to expect this to displace lower-priority frames
+    // so it returns Ok(None) if transmitted normally, Ok(Some(displaced_frame)) if transmitted
+    // successfully but frame displaced while doing it, nb::Error::WouldBlock on WouldBlock,
+    // other nb::Errors otherwise
     fn transmit(
         &mut self,
         frame: Frame,
-        clock: &mut CClock,
+        _clock: &mut CClock,
     ) -> nb::Result<Option<Frame>, Self::Error> {
-        // TODO
-        Ok(None)
+        let txfqs = self.fdcan.txfqs();
+        if txfqs.read().tfqf().bit() {
+            // queue is full
+            Err(nb::Error::WouldBlock)
+        } else {
+            // set data in TX buffer appropriately
+            let put_index: usize = txfqs.read().tfqpi().bits().into();
+            let s: &mut [FDCanTxFifoElement] = unsafe{slice::from_raw_parts_mut(FDCAN1_TXFIFO, 3)};
+            //hprintln!("Trying to send id {:#0x}, DLC {}", u32::from(frame.id()), frame.dlc());
+            //                ext. id
+            s[put_index].t0 = (1 << 30) | u32::from(frame.id());
+            //                CAN FD + BRS
+            s[put_index].t1 = (0b11 << 20) | ((frame.dlc() as u32) << 16);
+            let mut word: u32 = 0;
+            for i in 0..frame.data().len() {
+                word |= (frame.data()[i] as u32) << ((i % 4) * 8);
+                if (i % 4) == 3 {
+                    s[put_index].data[i / 4] = word;
+                    word = 0;
+                }
+            }
+            if frame.data().len() % 4 != 0 {
+                s[put_index].data[frame.data().len() / 4] = word;
+            }
+            // add TX request
+            unsafe {
+                self.fdcan.txbar().modify(|r, w| w.ar().bits(r.bits() as u8 | ((1 << put_index) as u8)));
+            }
+
+            Ok(None)
+        }
     }
 
-    fn flush(&mut self, clock: &mut CClock) -> nb::Result<(), Self::Error> {
-        // TODO
+    // busy-wait until all frames have been sent
+    fn flush(&mut self, _clock: &mut CClock) -> nb::Result<(), Self::Error> {
+        while self.fdcan.txfqs().read().tffl().bits() < 3 {}
         Ok(())
     }
 }

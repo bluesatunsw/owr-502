@@ -13,7 +13,7 @@ default = ["stm32g431"]
 # DEV BOARD 			FEATURES 	ARCh APPLICATION
 # -----------------------------------------------------------------------------
 # STM32 Blue Pill, 		bxCAN ONLY, 	prototyping only
-stm32f103 = ["dep:stm32f1xx-hal"]
+stm32f103 = ["dep:stm32f1xx-hal", "dep:canadensis_bxcan"]
 # WeAct STM32G431 core board, 	FDCAN, 		prototyping only
 stm32g431 = ["dep:stm32g4"]
 # Nucleo-G474RE, 		FDCAN, 		ARCh2026 stepper, main power, system etc. boards
@@ -25,7 +25,7 @@ stm32f405 = []
 # NOTE: stm32f1xx-hal should really re-export their version of bxcan
 bxcan = "0.8.0"
 canadensis = "0.5.0"
-canadensis_bxcan = "0.5.0"
+canadensis_bxcan = { version = "0.5.0", optional = true }
 canadensis_data_types = "0.5.0"
 canadensis_macro = "0.5.0"
 cortex-m-rt = "0.7.5"
