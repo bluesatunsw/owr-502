@@ -24,6 +24,11 @@ fn main() {
         f.write_all(include_bytes!("linker/memory_stm32g431cbu6.x")).unwrap();
         println!("cargo:rerun-if-changed=linker/memory_stm32g431cbu6.x");
     }
+    #[cfg(feature = "stm32g474")]
+    {
+        f.write_all(include_bytes!("linker/memory_stm32g474.x")).unwrap();
+        println!("cargo:rerun-if-changed=linker/memory_stm32g474.x");
+    }
 
     println!("cargo:rustc-link-search={}", out.display());
 

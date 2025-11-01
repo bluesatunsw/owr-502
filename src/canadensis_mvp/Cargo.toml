@@ -8,16 +8,16 @@ version = "0.1.0"
 [features]
 # NOTE: Features below should be mutually exclusive. If multiple board features
 # enabled, bad things will happen! Use the run.sh script to avoid this.
-default = ["stm32g431"]
+default = []
 
 # DEV BOARD 			FEATURES 	ARCh APPLICATION
 # -----------------------------------------------------------------------------
 # STM32 Blue Pill, 		bxCAN ONLY, 	prototyping only
 stm32f103 = ["dep:stm32f1xx-hal", "dep:canadensis_bxcan"]
 # WeAct STM32G431 core board, 	FDCAN, 		prototyping only
-stm32g431 = ["dep:stm32g4"]
+stm32g431 = ["stm32g4/stm32g431"]
 # Nucleo-G474RE, 		FDCAN, 		ARCh2026 stepper, main power, system etc. boards
-stm32g474 = []
+stm32g474 = ["stm32g4/stm32g474"]
 # TBD, 				FDCAN, 		ARCh2026+ VESCs
 stm32f405 = []
 
@@ -38,7 +38,7 @@ panic-semihosting = "0.6.0"
 zerocopy = "0.8.26"
 canadensis_encoding = "0.5.0"
 canadensis_core = "0.5.1"
-stm32g4 = { version = "0.16.0", features = ["stm32g431", "rt"], optional = true }
+stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
 stm32f1xx-hal = { version = "0.11.0", features = ["stm32f103", "medium"], optional = true }
 canadensis_filter_config = "0.5.0"
 

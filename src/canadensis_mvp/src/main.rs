@@ -125,7 +125,7 @@ fn main() -> ! {
 
     // leave a like and subscribe
     node.subscribe_message(
-        canadensis::core::SubjectId::from_truncating(2),
+        canadensis::core::SubjectId::from_truncating(49),
         8, // max payload size. shouldn't this be a value we can pull from the type?
         cyphal_time::MicrosecondDuration32::from_ticks(1_000u32)
     ).unwrap();

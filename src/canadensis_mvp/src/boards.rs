@@ -18,6 +18,8 @@ pub trait GeneralClock {
 mod stm32f103;
 #[cfg(feature = "stm32g431")]
 mod stm32g431;
+#[cfg(feature = "stm32g474")]
+mod stm32g474;
 
 #[cfg(feature = "stm32f103")]
 pub type CClock = stm32f103::CClock;
@@ -31,6 +33,13 @@ pub type CClock = stm32g431::CClock;
 pub type GClock = stm32g431::GClock;
 #[cfg(feature = "stm32g431")]
 pub type CanDriver = stm32g431::CanDriver;
+#[cfg(feature = "stm32g474")]
+pub type CClock = stm32g474::CClock;
+#[cfg(feature = "stm32g474")]
+pub type GClock = stm32g474::GClock;
+#[cfg(feature = "stm32g474")]
+pub type CanDriver = stm32g474::CanDriver;
+
 
 pub fn init() -> (CClock, GClock, CanDriver)
 {
@@ -41,5 +50,9 @@ pub fn init() -> (CClock, GClock, CanDriver)
     #[cfg(feature = "stm32g431")]
     {
         stm32g431::init()
+    }
+    #[cfg(feature = "stm32g474")]
+    {
+        stm32g474::init()
     }
 }
