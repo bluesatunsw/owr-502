@@ -28,9 +28,10 @@
     </xacro:if>
     <xacro:unless value="$(arg is_simulation)">
         <xacro:macro name="ros2control_swerve_module_iface" params="name drive_id turn_id">
-            <!-- TODO: set ratios correctly -->
+            <!-- TODO: set ratios correctly 
             <xacro:bg431_motor name="db_${name}_fork_tyre_joint" device_index="${drive_id}" ratio="1" use_auxilary="false"/>
             <xacro:bg431_motor name="db_${name}_smount_fork_joint" device_index="${turn_id}" ratio="1" use_auxilary="true"/>
+            -->
         </xacro:macro>
 
         <xacro:macro name="ros2control_drivebase_suspension_pivot" params="side"/>

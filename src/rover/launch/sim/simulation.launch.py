@@ -75,6 +75,13 @@ def generate_launch_description():
         ],
     )
 
+    swerve_controller_spawn_trigger =  RegisterEventHandler(
+                event_handler=OnProcessExit(
+                    target_action=gz_spawn_entity,
+                    on_exit=[swerve_drive_base_controller_spawner],
+                )
+            )
+
     swerve_drive_base_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -121,14 +128,9 @@ def generate_launch_description():
                     "on_exit_shutdown": "true",
                 }.items(),
             ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=gz_spawn_entity,
-                    on_exit=[swerve_drive_base_controller_spawner],
-                )
-            ),
             node_robot_state_publisher,
-            gz_spawn_entity,
             start_gazebo_ros_bridge_cmd,
+            gz_spawn_entity,
+            swerve_controller_spawn_trigger,
         ]
     )

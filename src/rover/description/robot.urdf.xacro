@@ -2,13 +2,16 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
     <xacro:arg name="is_simulation" default="false"/> 
 
-    <!-- DISABLED (false) / ENABLED (true) --!>
-    <!-- core subsystem can't be disabled! --!>
+    <!-- DISABLED (false) / ENABLED (true) -->
+    <!-- core subsystem can't be disabled! -->
     <xacro:arg name="state_post_landing" default="false"/>
     <xacro:arg name="state_space_resources" default="false"/>
     <xacro:arg name="state_excavation_construction" default="false"/>
     <xacro:arg name="state_mapping_autonomous" default="false"/>
 
+    <!-- utilities -->
+    <xacro:include filename="utils/inertial_macros.xacro" />
+    <xacro:include filename="utils/materials.xacro" />
     
 
     <xacro:if value="$(arg is_simulation)">
@@ -17,11 +20,9 @@
     <xacro:include filename="core/core.xacro" />
 
 
-    <xacro:include filename="cameras/depth_cams.xacro" />
-    <xacro:include filename="utils/inertial_macros.xacro" />
-    <xacro:include filename="utils/materials.xacro" />
+    <!--<xacro:include filename="cameras/depth_cams.xacro" /> -->
 
-    <!-- simulation specific global stuff --!>
+    <!-- simulation specific global stuff -->
     <xacro:if value="$(arg is_simulation)">
         <xacro:include filename="utils/gazebo_plugins.xacro" />
     </xacro:if>
