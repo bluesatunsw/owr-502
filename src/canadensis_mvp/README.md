@@ -11,7 +11,7 @@ particular set of hardware boards/platforms (run `run.sh` without arguments
 or examine the `Cargo.toml` features for details).
 
 `openocd -f openocd/board/<board>.cfg` should start OpenOCD and connect to the
-relevant board/platform.
+relevant board/platform (assuming the ST-LINK + board is plugged in).
 
 Running the `run.sh` script with one of the board identifiers as an argument
 will compile the firmware, connect to the board with GDB, load the firmware and
@@ -28,11 +28,10 @@ to actually fit onto pretty much any device we're using.
   aren't found in the latest released version; treat it as experimental.
 
 CAN FD (FDCAN) support is enabled by a feature flag; see [crate
-features](https://docs.rs/crate/canadensis_can/0.3.1/features). In the source,
+features](https://docs.rs/crate/canadensis_can/0.5.1/features). In the source,
 CAN FD-specific code is annotated with `#[cfg(feature = "can-fd")]`. There are
 very few instances of this; the definition of the `FRAME_CAPACITY` constant is
-one of them. In any case, there are no extant CAN FD drivers for canadensis for
-any of our MCUs, so we will need to write these ourselves.
+one of them.
 
 ### Getting online
 
@@ -43,18 +42,21 @@ follows:
 1. Create a node ID using `canadensis_can::CanNodeId::try_from()`.
 2. Create a struct that implements the `canadensis::core::time::Clock` trait
    for your given hardware platform.
-    - This just returns the current time with the `now()` method.
-        - The time value it returns must implement the
-          `canadensis::core::time::Instant` trait.
-        - Provided types that implement the `Instant` trait include
-          `Microseconds32`, `Microseconds48` and `Microseconds64`.
+    - This just returns the current time with the `now()` method as a
+      `canadensis::core::time::Microseconds32`.
 3. If you are on a platform where a driver has been written (i.e. STM32s with bxCAN),
    skip this step. Otherwise, create a struct that implements the
    `canadensis_can::driver::ReceiveDriver` and `::TransmitDriver` traits.
     - This encompasses `try_reserve()`, `transmit()`, `flush()` for
-      [TX](https://docs.rs/canadensis_can/0.3.1/canadensis_can/driver/trait.TransmitDriver.html)
+      [TX](https://docs.rs/canadensis_can/0.5.1/canadensis_can/driver/trait.TransmitDriver.html)
       and `receive()`, `apply_filters()` and `apply_accept_all()` for
-      [RX](https://docs.rs/canadensis_can/0.3.1/canadensis_can/driver/trait.ReceiveDriver.html).
+      [RX](https://docs.rs/canadensis_can/0.5.1/canadensis_can/driver/trait.ReceiveDriver.html).
+        - Minimal TX implementation: `try_reserve()` effectively a no-op,
+          `transmit()` adds the frame to the hardware CAN queue (assuming one
+          exists), `flush()` busy-waits for all frames in the queue to be
+          transmitted
+        - Minimal RX implementation: each of the functions does what they say
+          on the tin
 4. Create a `canadensis::node::CoreNode`. You need to create or define the following
    to pass as parameters to that struct's `new()` method:
     - `clock`: as created in step 2
@@ -80,10 +82,9 @@ follows:
 5. Set up a `canadensis_data_types::uavcan::node::get_info_1_0::GetInfoResponse` struct.
 6. Wrap the `CoreNode` in a `canadensis::node::BasicNode` with the `NodeInfo` struct.
 7. Run the node event loop indefinitely. You're probably running `node.receive()`, `node.run_per_second_tasks()` and
-   `node.flush()` at minimum; see [the docs](https://docs.rs/canadensis/0.3.3/canadensis/node/struct.BasicNode.html)
+   `node.flush()` at minimum; see [the docs](https://docs.rs/canadensis/0.5.0/canadensis/node/struct.BasicNode.html)
    for further functionality. To actually send messages, call
-   `node.start_publishing()` on setup and then publish with the resulting
-   publish token. See the MVP code for an example.
+   `node.start_publishing()` on setup and then publish. See the MVP code for an example.
 
 ### Using custom data types
 
@@ -96,11 +97,8 @@ If you are just transmitting/receiving a straight `canadensis_data_types` type,
 you are chilling, because they all implement `Serialize` and `Deserialize`, and
 you can use them directly.
 
-If you have a custom `.dsdl` file, look at `canadensis_macro`, which gives you `types_from_dsdl!()`.
-You may need to [look at the source](https://docs.rs/canadensis_macro/latest/src/canadensis_macro/lib.rs.html#18-23).
-
-See the [tests](https://github.com/samcrow/canadensis/blob/master/canadensis_macro/tests/dsdl.rs)
-for hints on usage.
+If you have a custom `.dsdl` file, look at `canadensis_macro`, which gives you
+`types_from_dsdl!()`. See the "Using Rust DSDL codegen" section below.
 
 ### Crude syntax guide
 
@@ -181,11 +179,20 @@ you want to test with.
 Bring up the CAN network interface after you plug it in:
 
 ```
-sudo ip link set can0 type can bitrate 1000000
-sudo ip link set up can0
+sudo ip link set can0 up type can bitrate 1000000 dbitrate 8000000 fd on
 
-# optional but recommended
+# if you're a lunatic and just want pure CAN without FD support:
+# sudo ip link set can0 up type can bitrate 1000000
+
+# optional but recommended in either of the cases above
 sudo ifconfig can0 txqueuelen 1000
+```
+
+If you have more than one CAN converter plugged in, use `can1`, `can2` etc.
+
+Here is another helpful command I just need to jot down somewhere:
+```
+sudo ip -details -statistics link show can0
 ```
 
 If using [yakut](https://github.com/OpenCyphal/yakut), **actually follow the
@@ -194,12 +201,15 @@ standard `uavcan` regulated data types etc.
 
 Anonymously monitor the network:
 ```
-yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',8),None)" monitor
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',64),None)" monitor
+
+# again, if you're a lunatic:
+# yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',8),None)" monitor
 ```
 
 Monitor the network with node ID 100:
 ```
-yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',8),100)" monitor
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can0',64),100)" monitor
 ```
 
 I recommend you make aliases for `yakut -i <can interface specification>` so
