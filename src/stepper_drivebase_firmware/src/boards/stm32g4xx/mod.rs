@@ -1,7 +1,7 @@
 //! Implementations of specific low-level drivers for stepper boards Rev. A2, B2 (STM32G474) and
 //! the WeAct dev board (STM32G431).
 
-use canadensis::core::time;
+use canadensis::core::time as canadensis_time;
 use canadensis::core::nb;
 use canadensis::core::time::Clock;
 use canadensis_filter_config::Filter;
@@ -30,11 +30,14 @@ use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which 
                             // specified as a feature in Cargo.toml
 use hal::{
     prelude::*,
-    time::RateExtU32,
+    time::{self, RateExtU32},
     pwr::PwrExt,
     rcc::{Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
-    gpio::{Pin, Alternate, PushPull},
+    gpio,
+    serial,
 };
+
+use embedded_io::Write; // why aren't the embedded-io traits re-exported??
 
 struct STM32G4xxMicroClock {
     // TIM2 is a 32-bit timer in the G4 series.
@@ -119,10 +122,10 @@ impl CyphalClock for STM32G4xxCyphalClock {
 }
 
 // panics if CClock not initialised and started
-fn get_instant() -> time::Microseconds32 {
+fn get_instant() -> canadensis_time::Microseconds32 {
     cortex_m::interrupt::free(|cs| {
         if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
-            time::Microseconds32::from_ticks(
+            canadensis_time::Microseconds32::from_ticks(
                 cyphal_clock.hw_timer.cnt().read().bits()
             )
         } else {
@@ -131,8 +134,8 @@ fn get_instant() -> time::Microseconds32 {
     })
 }
 
-impl time::Clock for STM32G4xxCyphalClock {
-    fn now(&mut self) -> time::Microseconds32 {
+impl canadensis_time::Clock for STM32G4xxCyphalClock {
+    fn now(&mut self) -> canadensis_time::Microseconds32 {
         get_instant()
     }
 }
@@ -141,40 +144,45 @@ impl time::Clock for STM32G4xxCyphalClock {
 pub struct STM32G4xxGeneralClock {}
 
 impl GeneralClock for STM32G4xxGeneralClock {
-    fn now(&self) -> time::Microseconds32 {
+    fn now(&self) -> canadensis_time::Microseconds32 {
         get_instant()
     }
 }
 
 pub const NUM_LEDS: usize = 6;
 
+type LedTxPin = gpio::PB6<gpio::AF7>;
+
 pub struct STM32G4xxLEDDriver {
-    usart1: pac::USART1,
-    colors: [u32; NUM_LEDS],
+    usart: hal::serial::Tx<pac::USART1, LedTxPin, serial::NoDMA>,
+    colors: [u8; NUM_LEDS * 3],
 }
 
 impl STM32G4xxLEDDriver {
-    fn new(usart1: pac::USART1, pb6: Pin<'B', 6, Alternate<6, PushPull>>, rcc: &mut Rcc) -> Self {
-        let usart1 = usart1.usart().unwrap();
-        // TODO: write a function that can just initialise TX
-        // USART1_TX on PB6 alt function
-            /*.usart(tx, rx, FullConfig::default(), &mut rcc)
-        .unwrap();*/
+    fn new(usart1: pac::USART1, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
+    {
+        const BAUDRATE: time::Bps = time::Bps(9600);
+        let config = hal::serial::config::FullConfig::default().baudrate(BAUDRATE).tx_invert();
+        let usart1 = usart1.usart_txonly(tx_pin, config, rcc).unwrap();
 
         Self {
-            usart1,
-            colors: [0; NUM_LEDS]
+            usart: usart1,
+            colors: [0; NUM_LEDS * 3]
         }
     }
 }
 
 impl RGBLEDDriver for STM32G4xxLEDDriver {
     fn set_nth_led(&mut self, n: usize, color: u32) {
-        self.colors[n] = color & 0xFFFFFF;
+        // TODO: fix
+        self.colors[n * 3] = ((color & 0xFF0000) >> 16) as u8;
+        self.colors[n * 3 + 1] = ((color & 0xFF00) >> 8) as u8;
+        self.colors[n * 3 + 2] = (color & 0xFF) as u8;
     }
 
-    fn render(&self) -> Result<(), &'static str> {
+    fn render(&mut self) -> Result<(), &'static str> {
         // TODO: actually send the signal
+        self.usart.write_all(&self.colors).unwrap();
         Ok(())
     }
 
@@ -399,7 +407,7 @@ struct RxFifo0 {}
 impl RxFifo0 {
     // Make a frame from the element at index
     // idx should indicate a valid RX FIFO message
-    fn make_frame(idx: usize, timestamp: time::Microseconds32) -> Frame {
+    fn make_frame(idx: usize, timestamp: canadensis_time::Microseconds32) -> Frame {
         if idx >= 3 {
             panic!("Index {} out of bounds for the FDCAN1 Rx FIFO 0", idx);
         }
@@ -587,8 +595,7 @@ pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDrive
 
     (cyphal_clock, STM32G4xxGeneralClock {}, can_driver, led_driver, I2CDriver {})
 
-    // Initialise communication interfaces.
+    // TODO: remaining communication interfaces.
     // I2C1: pin PA15, PB7
     // SPI: PC10, PC11, PC12, 
-    // USART for WS2812s
 }
