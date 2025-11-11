@@ -20,7 +20,7 @@ pub trait RGBLEDDriver {
 
     // Syncs the LED display state with the internal color state.
     // Err value is an error message.
-    fn render(&self) -> Result<(), &'static str>;
+    fn render(&mut self) -> Result<(), &'static str>;
 
     // for convenience
     fn set_nth_led_and_render(&mut self, n: usize, color: u32) -> Result<(), &'static str>;

@@ -6,7 +6,7 @@ name = "stepper_drivebase_firmware"
 version = "0.0.1"
 
 [features]
-default = []
+default = ["we_act_dev"]
 
 # Enable exactly one of the below features! Only the first enabled feature below will apply.
 
@@ -30,13 +30,16 @@ canadensis_encoding = "0.5.0"
 canadensis_data_types = "0.5.0"
 canadensis_filter_config = "0.5.0"
 stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
-stm32g4xx-hal = { git = "https://github.com/stm32-rs/stm32g4xx-hal", version = "0.0.2", features = ["rt"], optional = true }
+# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
+# patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
+stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"], optional = true }
 nb = "1.1.0"
 fugit = "0.3.7"
 heapless = "0.9.1"
 zerocopy = "0.8.26"
 embedded-alloc = "0.6.0"
 cfg-if = "1.0.4"
+embedded-io = "0.6.1"
 
 [dependencies.canadensis_can]
 version = "0.5.1"
