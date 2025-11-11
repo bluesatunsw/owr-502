@@ -3464,6 +3464,131 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "power:VDD"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "VDD"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"VDD\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "VDD_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "VDD_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(rectangle
 		(start -116.84 130.81)
@@ -3756,16 +3881,6 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 49.53) (xy 113.03 49.53)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4df7d5f1-2796-43c6-8286-cec4420028b1")
-	)
-	(wire
-		(pts
 			(xy 58.42 62.23) (xy 43.18 62.23)
 		)
 		(stroke
@@ -3806,7 +3921,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 49.53) (xy 81.28 54.61)
+			(xy 81.28 43.18) (xy 81.28 54.61)
 		)
 		(stroke
 			(width 0)
@@ -4464,17 +4579,6 @@
 		)
 		(uuid "ff066c26-357d-4290-a5ab-adaa3a222fec")
 	)
-	(hierarchical_label "3.3V"
-		(shape output)
-		(at 142.24 49.53 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "4604161b-0e9d-4e9f-8da8-e82ccba1cd59")
-	)
 	(hierarchical_label "IS_{24V}"
 		(shape output)
 		(at 102.87 85.09 0)
@@ -5111,6 +5215,139 @@
 			(project "owr_wifi_router"
 				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
 					(reference "R?")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VDD")
+		(at 81.28 43.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "612973ea-b03b-4221-bd83-50e138831c01")
+		(property "Reference" "#PWR01"
+			(at 81.28 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VDD-POE"
+			(at 81.28 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 81.28 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 81.28 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VDD\""
+			(at 81.28 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "904e9d3e-08e3-4b4e-bd1c-4021578e8556")
+		)
+		(instances
+			(project ""
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VDD")
+		(at 120.65 36.83 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "62a31d53-5ec1-490d-9fd7-af4ea5b37812")
+		(property "Reference" "#PWR02"
+			(at 124.46 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VDD-POE"
+			(at 116.84 36.8299 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 120.65 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 120.65 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VDD\""
+			(at 120.65 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "514c2a7f-21a4-4c8b-ae18-295375312ec5")
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -6039,7 +6276,7 @@
 		)
 	)
 	(sheet
-		(at 113.03 40.64)
+		(at 120.65 30.48)
 		(size 30.48 39.37)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6055,7 +6292,7 @@
 		)
 		(uuid "66faad57-348c-46ca-b4cd-7bbed04f6f9f")
 		(property "Sheetname" "POE_step_down"
-			(at 113.03 39.9284 0)
+			(at 120.65 29.7684 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6064,22 +6301,12 @@
 			)
 		)
 		(property "Sheetfile" "POE_step_down_sch.kicad_sch"
-			(at 113.03 80.5946 0)
+			(at 120.65 70.4346 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
-			)
-		)
-		(pin "VDD-POE" input
-			(at 113.03 49.53 180)
-			(uuid "8ef9babf-4d1e-457d-9fb9-91a13292f6f1")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 			)
 		)
 		(instances
