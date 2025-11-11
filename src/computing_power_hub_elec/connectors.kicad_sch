@@ -4301,7 +4301,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_DGS"
+		(symbol "Transistor_FET:Q_NMOS_GSD"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -4318,7 +4318,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_DGS"
+			(property "Value" "Q_NMOS_GSD"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -4345,7 +4345,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(property "Description" "N-MOSFET transistor, gate/source/drain"
 				(at 0 0 0)
 				(effects
 					(font
@@ -4363,7 +4363,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_DGS_0_1"
+			(symbol "Q_NMOS_GSD_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -4530,7 +4530,7 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_DGS_1_1"
+			(symbol "Q_NMOS_GSD_1_1"
 				(pin input line
 					(at -5.08 0 0)
 					(length 2.54)
@@ -4541,7 +4541,7 @@
 							)
 						)
 					)
-					(number "2"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4559,7 +4559,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4577,7 +4577,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -10956,7 +10956,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(lib_id "Transistor_FET:Q_NMOS_GSD")
 		(at 58.42 100.33 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -11000,7 +11000,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, drain/gate/source"
+		(property "Description" "N-MOSFET transistor, gate/source/drain"
 			(at 58.42 100.33 0)
 			(effects
 				(font
@@ -12191,7 +12191,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(lib_id "Transistor_FET:Q_NMOS_GSD")
 		(at 149.86 100.33 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -12235,7 +12235,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "N-MOSFET transistor, drain/gate/source"
+		(property "Description" "N-MOSFET transistor, gate/source/drain"
 			(at 149.86 100.33 0)
 			(effects
 				(font
