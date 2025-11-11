@@ -130,6 +130,7 @@ fn main() -> ! {
     ).unwrap();
     // NOTE: If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
+    let mut cycles = 0;
     loop {
          match node.receive(&mut RecvHandler) {
             Ok(_) => {}
@@ -162,9 +163,14 @@ fn main() -> ! {
             while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
                 // block on handling heartbeat
             };
-            // RGB LEDs!
-            let led_color: u32 = 0x1 << ((useconds / 1_000_000) % 24);
-            hled.set_nth_led_and_render(0, led_color).unwrap();
+
+            // RGB LED test routine!
+            let led_color: u32 = 0xFF0000 >> (8 * (cycles % 3));
+            let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
+            cycles += 1;
+            hled.set_nth_led(0, led_color);
+            hled.set_nth_led_and_render(1, led_color_2).unwrap();
+
             node.flush().unwrap();
             if missed_heartbeats > 0 {
                 hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
