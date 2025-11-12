@@ -3,7 +3,6 @@
 //! modules to themselves.
 
 use cfg_if::cfg_if;
-use core::fmt::Debug;
 use cortex_m_semihosting::hprintln;
 
 use crate::boards::{CyphalClock, RGBLEDDriver, RGBLEDColor};
@@ -18,12 +17,12 @@ use hal::{
     pwr::PwrExt,
     rcc::{Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
     gpio,
-    serial::{self, Error},
+    serial,
     pac,
 };
 use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which board it targets is
                             // specified as a feature in Cargo.toml
-use embedded_io::{Write, ErrorKind};     // why aren't the embedded-io traits re-exported??
+use embedded_io::Write;     // why aren't the embedded-io traits re-exported??
 
 // RGB LED (WS2812) driver.
 //
@@ -48,7 +47,11 @@ impl STM32G4xxLEDDriver {
     {
         const BAUDRATE: time::Bps = time::Bps(2_500_000);
         // Polarity of TX pin inverted so we're idle-low
-        let config = hal::serial::config::FullConfig::default().baudrate(BAUDRATE).tx_invert().stopbits(serial::config::StopBits::STOP0P5);
+        let config = hal::serial::config::FullConfig::default()
+            .baudrate(BAUDRATE)
+            .tx_invert()
+            .wordlength_7()
+            .stopbits(serial::config::StopBits::STOP1);
         let usart1 = usart1.usart_txonly(tx_pin, config, rcc).unwrap();
 
         Self {
@@ -65,23 +68,22 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
     fn render(&mut self) {
         // we squeeze three WS2812 bits per USART byte
         const TRIBIT_LUT: [u8; 8] = [
-            // 000 -> H_START L L H L L H L L [STOP]
-            // TX pin polarity inverted, so data actually 11011011
-            // ...and then bits are sent in reverse, so 11011011 (hah it's a palindrome)
-            0b11011011,
-            // 001 -> [H]LLHLLHHL -> 11011001 -> 10011011
-            0b10011011,
-            // 010 -> [H]LLHHLHLL -> 11001011 -> 11010011
-            0b11010011,
-            // 011 -> [H]LLHHLHHL -> 11001001 -> 10010011
-            0b10010011,
+            // 000 -> H_START L L H L L H L [L STOP]
+            // TX pin polarity inverted, so data actually 1101101
+            // ...and then bits are sent in reverse, so 1011011 (hah it's a palindrome)
+            0b1011011,
+            // 001 -> [H]LLHLLHH[L] -> 1101100 -> 0011011
+            0b0011011,
+            // 010 -> [H]LLHHLHL[L] -> 1100101 -> 1010011
+            0b1010011,
+            // 011 -> [H]LLHHLHH[L] -> 1100100 -> 0010011
+            0b0010011,
             // etc.
-            0b11011010,
-            0b10011010,
-            0b11010010,
-            0b10010010
+            0b1011010,
+            0b0011010,
+            0b1010010,
+            0b0010010
         ];
-        // TODO: save 1.6 microseconds per LED by using 7-bit bytes and a stop bit of length 1
         for i in 0..NUM_LEDS {
             let mut packet = [0u8; 8];
             let color = self.colors[i];
