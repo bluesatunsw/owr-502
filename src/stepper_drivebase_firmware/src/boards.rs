@@ -20,6 +20,17 @@ pub struct RGBLEDColor {
     pub blue: u8,
 }
 
+#[derive(Debug)]
+pub enum I2CError {
+    BusError,
+    Timeout,
+    InvalidAddress,
+    WriteError,
+    ReadError,
+    ImuNotReady,
+    InvalidRegister,
+}
+
 impl RGBLEDColor {
     pub fn default() -> Self {
         RGBLEDColor {
@@ -81,20 +92,45 @@ pub enum ASM330Register {
 }
 
 pub trait I2CDriver {
-    fn enable_fast_mode();
-    fn disable_fast_mode();
+    fn enable_fast_mode(&mut self);
+    fn disable_fast_mode(&mut self);
 
-    fn eeprom_read(address: u16, data: &mut [u8]);
-    fn eeprom_write(address: u16, data: &[u8]);
+    fn eeprom_read(&mut self, address: u16, data: &mut [u8]) -> Result<(), I2CError>;
+    fn eeprom_write(&mut self, address: u16, data: &[u8]) -> Result<(), I2CError>;
     // Underlying operations: byte write, page write, current address read, random read, sequential
     // read. Identification page functions not implemented.
 
-    // TODO: error types
-    fn imu_read_reg(reg: ASM330Register) -> u8;
-    fn imu_write_reg(reg: ASM330Register, data: u8);
+    fn imu_read_reg(&mut self, reg: ASM330Register) -> Result<u8, I2CError>;
+    fn imu_write_reg(&mut self, reg: ASM330Register, data: u8) -> Result<u8, I2CError>;
 
-    // TODO: convenience functions for IMU quantities, make above functions private
+    fn imu_read_axis(&mut self, low_reg: ASM330Register, high_reg: ASM330Register) -> Result<f32, I2CError> {
+        let low = self.imu_read_reg(ASM330Register::low_reg)? as u16;
+        let high = self.imu_read_reg(ASM330Register::high_reg)? as u16;
+        let raw = ((high << 8) | low) as i16;
+        Ok(raw as f32);
+    }
+
     // TODO: use bitfields internally
+    fn imu_read_temperature(&mut self) -> Result<f32, I2CError> {
+        let low = self.imu_read_reg(ASM330Register::OUT_TEMP_L)? as u16;
+        let high = self.imu_read_reg(ASM330Register::OUT_TEMP_H)? as u16;
+        let raw = ((high << 8) | low) as i16;
+        Ok(25.0 + (raw as f32) / 256.0)
+    }
+
+    fn imu_read_gyro(&mut self) -> Result<(f23, f32, f32), I2CError> {
+        let x = self.imu_read_axis(ASM330Register::OUTX_L_G, ASM330Register::OUTX_H_G)?;
+        let y = self.imu_read_axis(ASM330Register::OUTY_L_G, ASM330Register::OUTY_H_G)?;
+        let z = self.imu_read_axis(ASM330Register::OUTZ_L_G, ASM330Register::OUTZ_H_G)?;
+        Ok((x, y, z));
+    }
+
+    fn imu_read_accel(&mut self) -> Result<(), I2CError> {
+        let x = self.imu_read_axis(ASM330Register::OUTX_L_A, ASM330Register::OUTX_H_A)?;
+        let y = self.imu_read_axis(ASM330Register::OUTY_L_A, ASM330Register::OUTY_H_A)?;
+        let z = self.imu_read_axis(ASM330Register::OUTZ_L_A, ASM330Register::OUTZ_H_A)?;
+        Ok((x, y, z));
+    }
 }
 
 pub trait QSPIDriver {
