@@ -3,9 +3,10 @@
 //! modules to themselves.
 
 use cfg_if::cfg_if;
+use core::fmt::Debug;
 use cortex_m_semihosting::hprintln;
 
-use crate::boards::{CyphalClock, RGBLEDDriver};
+use crate::boards::{CyphalClock, RGBLEDDriver, RGBLEDColor};
 pub mod clock;
 pub use clock::{STM32G4xxCyphalClock, STM32G4xxGeneralClock};
 pub mod fdcan;
@@ -17,12 +18,12 @@ use hal::{
     pwr::PwrExt,
     rcc::{Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
     gpio,
-    serial,
+    serial::{self, Error},
     pac,
 };
 use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which board it targets is
                             // specified as a feature in Cargo.toml
-use embedded_io::Write;     // why aren't the embedded-io traits re-exported??
+use embedded_io::{Write, ErrorKind};     // why aren't the embedded-io traits re-exported??
 
 // RGB LED (WS2812) driver.
 //
@@ -38,7 +39,7 @@ pub const NUM_LEDS: usize = 6;  // make sure you set this correctly!
 pub struct STM32G4xxLEDDriver {
     usart: hal::serial::Tx<pac::USART1, LedTxPin, serial::NoDMA>,
     // bytes are stored G R B
-    colors: [u32; NUM_LEDS],
+    colors: [RGBLEDColor; NUM_LEDS],
 }
 
 impl STM32G4xxLEDDriver {
@@ -52,16 +53,16 @@ impl STM32G4xxLEDDriver {
 
         Self {
             usart: usart1,
-            colors: [0; NUM_LEDS]
+            colors: [RGBLEDColor::default(); NUM_LEDS]
         }
     }
 }
 impl RGBLEDDriver for STM32G4xxLEDDriver {
-    fn set_nth_led(&mut self, n: usize, color: u32) {
-        self.colors[n] = color & 0xFFFFFF;
+    fn set_nth_led(&mut self, n: usize, color: RGBLEDColor) {
+        self.colors[n] = color;
     }
 
-    fn render(&mut self) -> Result<(), &'static str> {
+    fn render(&mut self) {
         // we squeeze three WS2812 bits per USART byte
         const TRIBIT_LUT: [u8; 8] = [
             // 000 -> H_START L L H L L H L L [STOP]
@@ -85,19 +86,18 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
             let mut packet = [0u8; 8];
             let color = self.colors[i];
             // required order for WS2812: G R B
-            let shifted_color = ((color & 0xFF00) << 8) | ((color & 0xFF0000) >> 8) | (color & 0xFF);
+            let shifted_color = ((color.green as u32) << 16) | ((color.red as u32) << 8) | (color.blue as u32);
             for j in 0..8 {
                 let tribit = ((shifted_color & (0xE00000 >> (j * 3))) >> (21 - j * 3)) as usize;
                 packet[j] = TRIBIT_LUT[tribit];
             }
             self.usart.write_all(&packet).unwrap();
         }
-        Ok(())
     }
 
-    fn set_nth_led_and_render(&mut self, n: usize, color: u32) -> Result<(), &'static str> {
+    fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor) {
         self.set_nth_led(n, color);
-        self.render()
+        self.render();
     }
 }
 
