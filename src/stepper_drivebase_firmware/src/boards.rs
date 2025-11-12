@@ -66,6 +66,7 @@ pub trait RGBLEDDriver {
     fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor);
 }
 
+#[allow(non_camel_case_types)]
 pub enum ASM330Register {
     // temperature
     OUT_TEMP_L = 0x20,
@@ -137,6 +138,7 @@ pub trait QSPIDriver {
     // TODO
 }
 
+#[allow(non_camel_case_types)]
 pub enum StepperRegister {
     // global
     GCONF = 0x00,
@@ -194,6 +196,6 @@ cfg_if! {
             stm32g4xx::init()
         }
     } else {
-        compile_error!("The board that the firmware is being compiling for must be specified as a feature");
+        compile_error!("The board that the firmware is being compiled for must be specified as a feature");
     }
 }
