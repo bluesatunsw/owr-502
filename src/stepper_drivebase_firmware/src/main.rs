@@ -31,7 +31,7 @@ use canadensis_data_types::uavcan::si::unit::angular_acceleration::scalar_1_0::S
 extern crate alloc;
 
 mod boards;
-use crate::boards::{GeneralClock, RGBLEDDriver};
+use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor};
 
 // NOTE: make sure these are configured to be the right values
 const NODE_ID: u8 = 6;
@@ -165,11 +165,15 @@ fn main() -> ! {
             };
 
             // RGB LED test routine!
-            let led_color: u32 = 0xFF0000 >> (8 * (cycles % 3));
+            let led_color = RGBLEDColor {
+                red: if cycles % 3 == 0 { 0xFF } else { 0x00 },
+                blue: if cycles % 3 == 1 { 0xFF } else { 0x00 },
+                green: if cycles % 3 == 1 { 0xFF } else { 0x00 },
+            };
             let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
             cycles += 1;
             hled.set_nth_led(0, led_color);
-            hled.set_nth_led_and_render(1, led_color_2).unwrap();
+            hled.set_nth_led_and_render(1, led_color_2.into());
 
             node.flush().unwrap();
             if missed_heartbeats > 0 {
