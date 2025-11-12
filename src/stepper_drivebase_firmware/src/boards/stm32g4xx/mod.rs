@@ -26,18 +26,18 @@ use embedded_io::Write;     // why aren't the embedded-io traits re-exported??
 
 // RGB LED (WS2812) driver.
 //
-// The WS2812 protocol uses short (nominal 400 ns on/850 off) and long (800 on/ 450 ns off) pulses
+// The WS2812 protocol uses short (nominal 400 ns on/850 off) and long (800 on/450 ns off) pulses
 // to encode 0s and 1s. With a bit time of 400 ns (2.5 Mbaud), we can use three bits per WS2812 bit
-// to send these pulses over USART, using the Tx pin in inverted polarity mode and minding the
-// start and stop bits. The resulting timings are just within the WS2812 specs!
+// to send these pulses over USART, using the Tx pin in inverted polarity mode and taking the
+// start and stop bits as free high and low bit periods respectively.
+// The resulting timings are solidly within the WS2812 spec.
 
 type LedTxPin = gpio::PB6<gpio::AF7>;
 
-pub const NUM_LEDS: usize = 6;  // make sure you set this correctly!
+pub const NUM_LEDS: usize = 6;  // make sure this is set appropriately for the board
 
 pub struct STM32G4xxLEDDriver {
     usart: hal::serial::Tx<pac::USART1, LedTxPin, serial::NoDMA>,
-    // bytes are stored G R B
     colors: [RGBLEDColor; NUM_LEDS],
 }
 
@@ -46,7 +46,6 @@ impl STM32G4xxLEDDriver {
     fn new(usart1: pac::USART1, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
     {
         const BAUDRATE: time::Bps = time::Bps(2_500_000);
-        // Polarity of TX pin inverted so we're idle-low
         let config = hal::serial::config::FullConfig::default()
             .baudrate(BAUDRATE)
             .tx_invert()
@@ -68,9 +67,9 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
     fn render(&mut self) {
         // we squeeze three WS2812 bits per USART byte
         const TRIBIT_LUT: [u8; 8] = [
-            // 000 -> H_START L L H L L H L [L STOP]
+            // 000 -> H_START L L H L L H L L_STOP
             // TX pin polarity inverted, so data actually 1101101
-            // ...and then bits are sent in reverse, so 1011011 (hah it's a palindrome)
+            // ...and then bits are sent in reverse, so 1011011.
             0b1011011,
             // 001 -> [H]LLHLLHH[L] -> 1101100 -> 0011011
             0b0011011,
