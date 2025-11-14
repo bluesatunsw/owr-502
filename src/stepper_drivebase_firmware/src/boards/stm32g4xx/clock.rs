@@ -1,6 +1,13 @@
 //! Implementation of the 32-bit microsecond clock(s) necessary for Cyphal/canadensis.
+//!
+//! NOTE/TODO/WARNING/FIXME: The way that the GeneralClock/CyphalClock is done is janky and not
+//! very Rust-y, since safety can be easily violated by trying to make a GeneralClock without first
+//! making the CyphalClock and starting it. I need to rewrite this to use the Typestate pattern to
+//! make the public interface perfectly safe. Also, reading the clock from multiple threads
+//! concurrently is conceptually safe and we shouldn't *need* a Mutex... idk.
 
 use hal::pac;
+use hal::prelude::*;
 use stm32g4xx_hal as hal;
 
 use core::cell::RefCell;
@@ -98,8 +105,40 @@ impl time::Clock for STM32G4xxCyphalClock {
 
 pub struct STM32G4xxGeneralClock {}
 
+impl STM32G4xxGeneralClock {
+    pub fn new() -> Self { Self {} }
+}
+
 impl GeneralClock for STM32G4xxGeneralClock {
     fn now(&self) -> time::Microseconds32 {
         get_instant()
+    }
+}
+
+impl DelayNs for STM32G4xxGeneralClock {
+    fn delay_ns(&mut self, ns: u32) {
+        self.delay_us(ns.div_ceil(1000));
+    }
+
+    fn delay_us(&mut self, mut us: u32) {
+        let start_time: u32 = self.now().ticks();
+        // we *know* now() is later than start_time, so we can just do a wrapping_sub
+        // ...with the caveat that if us is close to u32::MAX, we could wrap around again.
+        let extra_wait: bool; // if this is true, we need to wait an additional u32::MAX / 2
+        if us > u32::MAX / 2 {
+            us = us - (u32::MAX / 2);
+            extra_wait = true;
+        } else {
+            extra_wait = false;
+        }
+        while self.now().ticks().wrapping_sub(start_time) < us {
+            // busy-wait
+        };
+        if extra_wait {
+            let extra_time = self.now().ticks();
+            while self.now().ticks().wrapping_sub(extra_time) < u32::MAX / 2 {
+                // busy-wait
+            };
+        }
     }
 }

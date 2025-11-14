@@ -3,7 +3,7 @@
 //! It has come to my attention that this was mostly wasted effort, as an FDCAN driver is in fact
 //! part of the STM32G4 Rust HAL; it's just hidden behind a feature flag. Oh well.
 
-use hal::pac;
+use hal::{pac, gpio};
 use stm32g4xx_hal as hal;
 
 use canadensis::core::{time::{self, Clock}, OutOfMemoryError, subscription::Subscription};
@@ -32,10 +32,12 @@ fn fddlc_to_bytes(dlc: u8) -> usize {
 
 pub struct STM32G4xxCanDriver {
     fdcan: pac::FDCAN1,
+    pa11: gpio::PA11<gpio::AF9>,
+    pa12: gpio::PA12<gpio::AF9>,
 }
 
 impl STM32G4xxCanDriver {
-    pub fn new_singleton(fdcan: pac::FDCAN1, gpioa: pac::GPIOA, rcc: &mut pac::RCC) -> Self {
+    pub fn new_singleton(fdcan: pac::FDCAN1, pa11: gpio::PA11<gpio::AF9>, pa12: gpio::PA12<gpio::AF9>, rcc: &mut pac::RCC) -> Self {
         // this constant is used in two different places so it's set here
         // see the DBTP section for context
         const DATA_SAMPLE_PERIOD: u8 = 11;
@@ -50,17 +52,9 @@ impl STM32G4xxCanDriver {
         rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(true));
         rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(false));
 
-        unsafe {
-            // Set PA11 and PA12 modes to alternate function
-            // On G474, these are FDCAN_RX and _TX respectively...
-            gpioa.moder().write(|w| w.moder11().bits(0b10).moder12().bits(0b10));
-            // ...specifically, FDCAN1 (AF9 = 0b1001).
-            gpioa.afrh().write(|w| w.afrh11().bits(0b1001).afrh12().bits(0b1001));
-            // Set output modes to push-pull (interface with controller)
-            gpioa.otyper().write(|w| w.ot11().bit(false).ot12().bit(false));
-            // Set pin speed to medium; should be acceptable for 8MHz FDCAN data rate
-            gpioa.ospeedr().write(|w| w.ospeedr11().bits(0b01).ospeedr12().bits(0b01));
-        }
+        // Set speeds of pins to medium; should be acceptable for 8 MHz data rate.
+        let pa11 = pa11.speed(gpio::Speed::Medium);
+        let pa12 = pa12.speed(gpio::Speed::Medium);
 
         // Configure FDCAN1.
         // Set CCE of CCCR (we just reset so INIT should be set)
@@ -131,7 +125,10 @@ impl STM32G4xxCanDriver {
         }
 
         STM32G4xxCanDriver {
-            fdcan
+            fdcan,
+            // need to take ownership of pins
+            pa11,
+            pa12
         }
     }
 
