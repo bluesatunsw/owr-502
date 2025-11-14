@@ -164,23 +164,33 @@ pub enum StepperRegister {
     // TODO: the rest, or scrap this entirely
 }
 
+// you can rename these to more helpfully refer to the physical function/location of each motor
+pub enum StepperChannel {
+    Channel1,
+    Channel2,
+    Channel3,
+    Channel4
+}
+
+pub struct Celsius(f32);
+
 pub trait StepperDriver {
     // initialisation (not part of public interface): set up clock and send initialisation commands to steppers
     // SD_MODE = 0, SPI_MODE = 1
 
     // fn stepper_cfg(channel: u8, config: StepperConfig);
 
-    fn enable_all();
-    fn disable_all();
+    fn enable_all(&mut self);
+    fn disable_all(&mut self);
 
     // also want a config function for VMAX, AMAX etc.
-    fn set_position(channel: u8, target: u32); // in what units? TODO: proper type
-    fn set_velocity(channel: u8, velocity: i32);
+    fn set_position(&mut self, channel: StepperChannel, target: u32); // in what units? TODO: proper type
+    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32);
 
-    fn read_reg(channel: u8, reg: StepperRegister) -> u32;
-    fn write_reg(channel: u8, reg: StepperRegister, data: u32);
+    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> u32;
+    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32);
 
-    fn get_temperature(channel: u8) -> u16; // via ADC
+    fn get_temperature(&mut self, channel: StepperChannel) -> Celsius; // via ADC
     // calibration? boundary setting?
 }
 
