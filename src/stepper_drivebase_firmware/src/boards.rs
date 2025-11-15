@@ -38,6 +38,12 @@ pub enum I2CError {
     InvalidRegister,
 }
 
+#[derive(Debug)]
+pub enum SPIError {
+    Overrun,
+    Other,
+}
+
 impl RGBLEDColor {
     pub fn default() -> Self {
         RGBLEDColor {
@@ -48,6 +54,7 @@ impl RGBLEDColor {
     }
 }
 
+#[derive(Debug)]
 pub struct Celsius(f32);
 
 impl From<u32> for RGBLEDColor {
@@ -179,6 +186,12 @@ pub enum StepperRegister {
     // TODO: the rest, or scrap this entirely
 }
 
+impl Into<u8> for StepperRegister {
+    fn into(self) -> u8 {
+        self as u8
+    }
+}
+
 // you can rename these to more helpfully refer to the physical function/location of each motor
 pub enum StepperChannel {
     Channel1,
@@ -197,11 +210,12 @@ pub trait StepperDriver {
     fn disable_all(&mut self);
 
     // also want a config function for VMAX, AMAX etc.
-    fn set_position(&mut self, channel: StepperChannel, target: u32); // in what units? TODO: proper type
-    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32);
+    // could set a callback on position reached???
+    fn set_position(&mut self, channel: StepperChannel, target: u32) -> Result<(), SPIError>; // in what units? TODO: proper type
+    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32) -> Result<(), SPIError>;
 
-    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> u32;
-    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32);
+    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<u32, SPIError>;
+    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<(), SPIError>;
 
     fn get_temperature(&mut self, channel: StepperChannel) -> Celsius; // via ADC
     // calibration? boundary setting?
@@ -215,7 +229,7 @@ cfg_if! {
         pub type CClock = stm32g4xx::STM32G4xxCyphalClock;
         pub type CanDriver = stm32g4xx::STM32G4xxCanDriver;
 
-        pub fn init() -> (CClock, stm32g4xx::STM32G4xxGeneralClock, CanDriver, stm32g4xx::STM32G4xxLEDDriver, stm32g4xx::I2CDriver) {
+        pub fn init() -> (CClock, stm32g4xx::STM32G4xxGeneralClock, CanDriver, stm32g4xx::STM32G4xxLEDDriver, stm32g4xx::I2CDriver, stm32g4xx::STM32G4xxStepperDriver) {
             stm32g4xx::init()
         }
     } else {
