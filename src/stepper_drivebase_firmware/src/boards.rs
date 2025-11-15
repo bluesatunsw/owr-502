@@ -20,6 +20,13 @@ pub struct RGBLEDColor {
     pub blue: u8,
 }
 
+#[derive(Copy, Clone)]
+pub struct I2CAxis {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32
+}
+
 #[derive(Debug)]
 pub enum I2CError {
     BusError,
@@ -40,6 +47,8 @@ impl RGBLEDColor {
         }
     }
 }
+
+pub struct Celsius(f32);
 
 impl From<u32> for RGBLEDColor {
     /// Given a classic RGB hex code
@@ -104,33 +113,39 @@ pub trait I2CDriver {
     fn imu_read_reg(&mut self, reg: ISM330Register) -> Result<u8, I2CError>;
     fn imu_write_reg(&mut self, reg: ISM330Register, data: u8) -> Result<u8, I2CError>;
 
-    fn imu_read_axis(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<f32, I2CError> {
-        let low = self.imu_read_reg(ISM330Register::low_reg)? as u16;
-        let high = self.imu_read_reg(ISM330Register::high_reg)? as u16;
+    fn imu_read_16bitreg(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<f32, I2CError> {
+        let low = self.imu_read_reg(low_reg)? as u16;
+        let high = self.imu_read_reg(high_reg)? as u16;
         let raw = ((high << 8) | low) as i16;
-        Ok(raw as f32);
+        Ok(raw as f32)
     }
 
     // TODO: use bitfields internally
-    fn imu_read_temperature(&mut self) -> Result<f32, I2CError> {
-        let low = self.imu_read_reg(ISM330Register::OUT_TEMP_L)? as u16;
-        let high = self.imu_read_reg(ISM330Register::OUT_TEMP_H)? as u16;
-        let raw = ((high << 8) | low) as i16;
-        Ok(25.0 + (raw as f32) / 256.0)
+    fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
+        let raw = self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
+        Ok(Celsius(25.0 + (raw as f32) / 256.0))
     }
 
-    fn imu_read_gyro(&mut self) -> Result<(f23, f32, f32), I2CError> {
-        let x = self.imu_read_axis(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)?;
-        let y = self.imu_read_axis(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)?;
-        let z = self.imu_read_axis(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)?;
-        Ok((x, y, z));
+    fn imu_read_gyro(&mut self) -> Result<I2CAxis, I2CError> {
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)?;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)?;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)?;
+        Ok(I2CAxis {
+            x: x,
+            y: y,
+            z: z
+        })
     }
 
-    fn imu_read_accel(&mut self) -> Result<(), I2CError> {
-        let x = self.imu_read_axis(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)?;
-        let y = self.imu_read_axis(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)?;
-        let z = self.imu_read_axis(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)?;
-        Ok((x, y, z));
+    fn imu_read_accel(&mut self) -> Result<I2CAxis, I2CError> {
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)?;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)?;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)?;
+        Ok(I2CAxis {
+            x: x,
+            y: y,
+            z: z
+        })
     }
 }
 
@@ -171,8 +186,6 @@ pub enum StepperChannel {
     Channel3,
     Channel4
 }
-
-pub struct Celsius(f32);
 
 pub trait StepperDriver {
     // initialisation (not part of public interface): set up clock and send initialisation commands to steppers
