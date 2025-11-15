@@ -31,7 +31,7 @@ use canadensis_data_types::uavcan::si::unit::angular_acceleration::scalar_1_0::S
 extern crate alloc;
 
 mod boards;
-use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor};
+use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, StepperRegister};
 
 // NOTE: make sure these are configured to be the right values
 const NODE_ID: u8 = 6;
@@ -60,7 +60,7 @@ fn main() -> ! {
     initialise_allocator();
 
     // Initialise all communcation interfaces and hardware drivers, including those for canadensis.
-    let (cyphal_clock, general_clock, hcan, mut hled, hi2c) = boards::init();
+    let (cyphal_clock, general_clock, hcan, mut hled, hi2c, mut hstepper) = boards::init();
 
     // Initialise canadensis node.
     let id = canadensis_can::CanNodeId::from_truncating(NODE_ID);
@@ -130,6 +130,9 @@ fn main() -> ! {
     ).unwrap();
     // NOTE: If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
+    hstepper.enable_all();
+    hprintln!("Enabled steppers");
+
     let mut cycles = 0;
     loop {
          match node.receive(&mut RecvHandler) {
@@ -155,6 +158,7 @@ fn main() -> ! {
         let useconds: u64 = general_clock.now().ticks().into();
         let mut missed_heartbeats = 0;
         if useconds >= heartbeat_target_time_us {
+            hprintln!("whoa");
             heartbeat_target_time_us += 1_000_000;
             while useconds >= heartbeat_target_time_us {
                 missed_heartbeats += 1;
@@ -163,6 +167,7 @@ fn main() -> ! {
             while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
                 // block on handling heartbeat
             };
+            hprintln!("handled tasks");
 
             // RGB LED test routine!
             let led_color = RGBLEDColor {
@@ -174,6 +179,17 @@ fn main() -> ! {
             cycles += 1;
             hled.set_nth_led(0, led_color);
             hled.set_nth_led_and_render(1, led_color_2.into());
+
+            // Stepper Driver test routine!
+            let chan1temp = hstepper.get_temperature(StepperChannel::Channel1);
+            let chan2temp = hstepper.get_temperature(StepperChannel::Channel2);
+            let chan3temp = hstepper.get_temperature(StepperChannel::Channel3);
+            let chan4temp = hstepper.get_temperature(StepperChannel::Channel4);
+            let gconf = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GCONF).unwrap();
+            let gstat = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GSTAT).unwrap();
+            let ifcnt = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IFCNT);
+            let ioin = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IOIN_OUTPUT).unwrap();
+            hprintln!("Temps: {:?} {:?} {:?} {:?} GCONF1 0x{:08x} IOIN 0x{:08x}", chan1temp, chan2temp, chan3temp, chan4temp, gconf, ioin);
 
             node.flush().unwrap();
             if missed_heartbeats > 0 {

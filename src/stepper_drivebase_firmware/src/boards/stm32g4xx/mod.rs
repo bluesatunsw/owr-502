@@ -6,7 +6,7 @@ use cfg_if::cfg_if;
 use libm::{self, Libm};
 use cortex_m_semihosting::hprintln;
 
-use crate::boards::{CyphalClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, StepperRegister, Celsius};
+use crate::boards::{CyphalClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, StepperRegister, SPIError, Celsius};
 pub mod clock;
 pub use clock::{STM32G4xxCyphalClock, STM32G4xxGeneralClock};
 pub mod fdcan;
@@ -16,11 +16,11 @@ use hal::{
     prelude::*,
     time::{self, RateExtU32},
     pwr::PwrExt,
-    rcc::{Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
+    rcc::{self, MCOExt, Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
     gpio,
     serial,
     pac,
-    adc::{Adc, AdcClaim, AdcCommonExt, config::{AdcConfig, SampleTime}, Configured},
+    adc::{Adc, AdcClaim, AdcCommonExt, config::{self, AdcConfig, SampleTime, ClockMode, ClockSource, Prescaler}, Configured},
     spi,
 };
 use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which board it targets is
@@ -114,18 +114,19 @@ pub struct I2CDriver {
 // TMC5160 stepper driver (over SPI).
 
 type EnnPin = gpio::PD2<gpio::Output>;
-type ClkPin = gpio::PA8<gpio::AF0>; // this is MCO. AF6 is TIM1CH1
+//type ClkPin = gpio::PA8<gpio::AF0>; // this is MCO. AF6 is TIM1CH1
+type ClkPin = gpio::PA8<gpio::Analog>; // this is MCO. AF6 is TIM1CH1
 type DiagPin = gpio::PA10<gpio::Input>;
 
 struct StepperTempPins(gpio::PA0, gpio::PA1, gpio::PB2, gpio::PC5);
-struct StepperCSPins(gpio::PB9<gpio::Output>, gpio::PC13<gpio::Output>, gpio::PC14<gpio::Output>, gpio::PC15<gpio::Output>);
+struct StepperCSPins(gpio::AnyPin<gpio::Output>, gpio::AnyPin<gpio::Output>, gpio::AnyPin<gpio::Output>, gpio::AnyPin<gpio::Output>);
 
 type StepperSPIPins = (gpio::PC10<gpio::AF6>, gpio::PC11<gpio::AF6>, gpio::PC12<gpio::AF6>);
 
 pub struct STM32G4xxStepperDriver {
     adc: Adc<pac::ADC2, Configured>,
     enn: EnnPin,
-    clk: ClkPin,
+    _clk: rcc::Mco<gpio::PA8<gpio::AF0>>,
     diag: DiagPin,
     temp: StepperTempPins,
     spi: spi::Spi<pac::SPI3, StepperSPIPins>,
@@ -133,17 +134,25 @@ pub struct STM32G4xxStepperDriver {
 }
 
 impl STM32G4xxStepperDriver {
-    fn new(adc_common: pac::ADC12_COMMON, adc2: pac::ADC2, spi3: pac::SPI3, uclock: &mut STM32G4xxGeneralClock, rcc: &mut Rcc, temp: StepperTempPins, enn: EnnPin, clk: ClkPin, diag: DiagPin, spi_pins: StepperSPIPins, spi_cs_pins: StepperCSPins) -> Self {
+    fn new(
+        adc_common: pac::ADC12_COMMON, adc2: pac::ADC2, spi3: pac::SPI3, uclock: &mut STM32G4xxGeneralClock, rcc: &mut Rcc,
+        temp: StepperTempPins, enn: EnnPin, clk_pin: ClkPin, diag: DiagPin, spi_pins: StepperSPIPins, spi_cs_pins: StepperCSPins
+    ) -> Self {
         // initialise the ADCs for the temperature pins
         // we intend to use them in one-shot mode
-        let adc12 = adc_common.claim(Default::default(), rcc);
+        let adc12 = adc_common.claim(
+            ClockMode::AdcKerCk {
+                // system clock is at 64 MHz, but abs max ADC clock frequency is 60 MHz, so /2
+                prescaler: Prescaler::Div_2,
+                src: ClockSource::SystemClock,
+            },
+            rcc
+        );
         let adc = adc12.claim_and_configure(adc2, AdcConfig::default(), uclock);
 
         // initialise the MCO (CLK pin)
-        // recommended 10 to 16 MHz. can use TIM1 or MCO with slightly inconvenient prescaler
-        // or mess with the PLL more...
-        // (10.67 MHz, 12.8 MHz or 16 MHz)
-        // TODO
+        // at 12 MHz
+        let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
 
         // initialise the SPI bus, SPI3
         // (using max allowable frequency)
@@ -155,11 +164,27 @@ impl STM32G4xxStepperDriver {
         STM32G4xxStepperDriver {
             adc,
             enn,
-            clk,
+            _clk: clk,
             diag,
             temp,
             spi,
             spi_cs: spi_cs_pins,
+        }
+    }
+
+    fn get_cs_pin(&mut self, channel: StepperChannel) -> &mut gpio::AnyPin<gpio::Output> {
+        match channel {
+            StepperChannel::Channel1 => &mut self.spi_cs.0,
+            StepperChannel::Channel2 => &mut self.spi_cs.1,
+            StepperChannel::Channel3 => &mut self.spi_cs.2,
+            StepperChannel::Channel4 => &mut self.spi_cs.3,
+        }
+    }
+
+    fn map_spi_error(err: spi::Error) -> SPIError {
+        match err {
+            spi::Error::Overrun => SPIError::Overrun,
+            _ => SPIError::Other,
         }
     }
 }
@@ -173,21 +198,60 @@ impl StepperDriver for STM32G4xxStepperDriver {
         self.enn.set_high();
     }
 
-    fn set_position(&mut self, channel: StepperChannel, target: u32) {
-        // TODO, but lock in public interface first
+    fn set_position(&mut self, channel: StepperChannel, target: u32) -> Result<(), SPIError> {
+        // TODO
+        Ok(())
     }
 
-    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32) {
-        // TODO, but lock in public interface first
+    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32) -> Result<(), SPIError> {
+        // TODO
+        Ok(())
     }
 
-    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> u32 {
-        // TODO, but lock in public interface first
-        0x0000000
+    // TODO: TMC5160 SPI interface sends data back on the *subsequent* read, so we could possibly
+    // set up a pipelined interface?
+    // self.start_pipeline_read(reg).continue_pipeline_read/write(reg, data).end_pipeline(data)
+    // need to fix annoying data allocation and ownership churn in above model
+    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<u32, SPIError> {
+        let cs = match channel {
+            StepperChannel::Channel1 => &mut self.spi_cs.0,
+            StepperChannel::Channel2 => &mut self.spi_cs.1,
+            StepperChannel::Channel3 => &mut self.spi_cs.2,
+            StepperChannel::Channel4 => &mut self.spi_cs.3,
+        };
+        cs.set_low();
+        // 40-bit (5 byte), first byte is address, MSB of first byte is 0 for read
+        let address: u8 = reg.into();
+        let send_data = [address, 0u8, 0u8, 0u8, 0u8];
+        let mut read_data = [0u8; 5];
+        self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        // hopefully this still works without CS going high in between?
+        self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        cs.set_high();
+        // reconstruct register
+        Ok((read_data[0] as u32) << 24 | (read_data[1] as u32) << 16 | (read_data[2] as u32) << 8 | (read_data[3] as u32))
     }
 
-    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) {
-        // TODO, but lock in public interface first
+    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<(), SPIError> {
+        let cs = match channel {
+            StepperChannel::Channel1 => &mut self.spi_cs.0,
+            StepperChannel::Channel2 => &mut self.spi_cs.1,
+            StepperChannel::Channel3 => &mut self.spi_cs.2,
+            StepperChannel::Channel4 => &mut self.spi_cs.3,
+        };
+        cs.set_low();
+        let address: u8 = reg.into();
+        let send_data = [
+            address,
+            // terrible hack, make helper function
+            ((data & 0xFF000000) >> 24) as u8,
+            ((data & 0xFF0000) >> 16) as u8,
+            ((data & 0xFF00) >> 8) as u8,
+            (data & 0xFF) as u8
+        ];
+        self.spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        cs.set_high();
+        Ok(())
     }
 
     fn get_temperature(&mut self, channel: StepperChannel) -> Celsius {
@@ -213,9 +277,9 @@ impl StepperDriver for STM32G4xxStepperDriver {
     }
 }
 
-pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDriver, STM32G4xxLEDDriver, I2CDriver) {
+pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDriver, STM32G4xxLEDDriver, I2CDriver, STM32G4xxStepperDriver) {
     // Embedded boilerplate...
-    let dp = hal::stm32::Peripherals::take().unwrap();
+    let mut dp = hal::stm32::Peripherals::take().unwrap();
     let pwr = dp.PWR.constrain().freeze();
 
     cfg_if! {
@@ -286,7 +350,7 @@ pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDrive
     let temp_pins = StepperTempPins(temp0, temp1, temp2, temp3);
 
     let enn_pin = gpiod.pd2.into_push_pull_output_in_state(gpio::PinState::High);
-    let clk_pin = gpioa.pa8.into_alternate();
+    let clk_pin = gpioa.pa8.into_analog();
     let diag_pin = gpioa.pa10.into_input();
 
     let sck = gpioc.pc10.into_alternate();
@@ -296,7 +360,7 @@ pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDrive
     let cs1 = gpioc.pc13.into_push_pull_output();
     let cs2 = gpioc.pc14.into_push_pull_output();
     let cs3 = gpioc.pc15.into_push_pull_output();
-    let cs_pins = StepperCSPins(cs0, cs1, cs2, cs3);
+    let cs_pins = StepperCSPins(cs0.into(), cs1.into(), cs2.into(), cs3.into());
     let spi_pins = (sck, miso, mosi);
 
     cyphal_clock.start();
@@ -305,7 +369,7 @@ pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDrive
 
     let stepper_driver = STM32G4xxStepperDriver::new(dp.ADC12_COMMON, dp.ADC2, dp.SPI3, &mut general_clock, &mut rcc, temp_pins, enn_pin, clk_pin, diag_pin, spi_pins, cs_pins);
 
-    (cyphal_clock, general_clock, can_driver, led_driver, I2CDriver {})
+    (cyphal_clock, general_clock, can_driver, led_driver, I2CDriver {}, stepper_driver)
 
     // TODO: remaining communication interfaces.
     // I2C1: pin PA15, PB7

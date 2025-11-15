@@ -32,8 +32,8 @@ fn fddlc_to_bytes(dlc: u8) -> usize {
 
 pub struct STM32G4xxCanDriver {
     fdcan: pac::FDCAN1,
-    pa11: gpio::PA11<gpio::AF9>,
-    pa12: gpio::PA12<gpio::AF9>,
+    _pa11: gpio::PA11<gpio::AF9>,
+    _pa12: gpio::PA12<gpio::AF9>,
 }
 
 impl STM32G4xxCanDriver {
@@ -46,11 +46,6 @@ impl STM32G4xxCanDriver {
         rcc.apb1enr1().modify(|_, w| w.fdcanen().bit(true));
         rcc.apb1rstr1().modify(|_, w| w.fdcanrst().bit(true));
         rcc.apb1rstr1().modify(|_, w| w.fdcanrst().bit(false));
-
-        // Reset and enable GPIOA.
-        rcc.ahb2enr().modify(|_, w| w.gpioaen().bit(true));
-        rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(true));
-        rcc.ahb2rstr().modify(|_, w| w.gpioarst().bit(false));
 
         // Set speeds of pins to medium; should be acceptable for 8 MHz data rate.
         let pa11 = pa11.speed(gpio::Speed::Medium);
@@ -127,8 +122,8 @@ impl STM32G4xxCanDriver {
         STM32G4xxCanDriver {
             fdcan,
             // need to take ownership of pins
-            pa11,
-            pa12
+            _pa11: pa11,
+            _pa12: pa12
         }
     }
 
