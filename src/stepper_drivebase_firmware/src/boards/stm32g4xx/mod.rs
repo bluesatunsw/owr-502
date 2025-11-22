@@ -153,6 +153,7 @@ impl STM32G4xxStepperDriver {
         // initialise the MCO (CLK pin)
         // at 12 MHz
         let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
+        clk.enable();
 
         // initialise the SPI bus, SPI3
         // (using max allowable frequency)
