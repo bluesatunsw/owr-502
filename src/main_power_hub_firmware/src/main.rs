@@ -1,4 +1,4 @@
-//! Firmware for the stepper driver board on the rover drivebase.
+//! firmware for the stepper driver board on the rover drivebase.
 //!
 //! This mainly publishes sensor data over Cyphal/CAN (on the FDCAN) on a variety of subjects
 //! and drives the stepper motors as instructed by Cyphal/CAN messages from the OBC.
@@ -61,12 +61,23 @@ fn main() -> ! {
 
 
     // Set up pins.
+    let gpioa = dp.GPIOA.split(&mut rcc);
     let gpiob = dp.GPIOB.split(&mut rcc);
+    let gpioc = dp.GPIOC.split(&mut rcc);
 
     let pin: PB7<AF10> = gpiob.pb7.into_alternate();
     let mut pwm = dp.TIM3.pwm(pin, 100.kHz(), &mut rcc);
     let _ = pwm.set_duty_cycle_percent(5);
     pwm.enable();
+
+    // J8 CH0
+    gpioc.pc9.into_push_pull_output().set_low();
+    // J9 CH1
+    gpioa.pa7.into_push_pull_output().set_high();
+    // J2 CH2
+    gpioc.pc7.into_push_pull_output().set_low();
+    // J4 CH3
+    gpioc.pc6.into_push_pull_output().set_high();
 
 
     loop {
