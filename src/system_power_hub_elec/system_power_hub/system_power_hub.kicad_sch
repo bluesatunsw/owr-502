@@ -6193,6 +6193,12 @@
 		(uuid "eb3935ef-7fb6-40d4-9052-32c6b77a49bb")
 	)
 	(junction
+		(at 100.33 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ec5f4c78-73e4-4ecf-924d-c3569e1eb19a")
+	)
+	(junction
 		(at 204.47 128.27)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6992,6 +6998,16 @@
 			(type default)
 		)
 		(uuid "61efbaf6-8904-452b-8eb0-7ed3ce43ada6")
+	)
+	(wire
+		(pts
+			(xy 110.49 95.25) (xy 110.49 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "626d675b-0a18-479f-b3ff-e5e748bdc2fc")
 	)
 	(wire
 		(pts
@@ -7982,6 +7998,16 @@
 			(type default)
 		)
 		(uuid "e71d718f-2042-4929-bc73-f62e7abd3e97")
+	)
+	(wire
+		(pts
+			(xy 110.49 100.33) (xy 100.33 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9e64c4d-a7f5-4661-929c-404c1fcf93ef")
 	)
 	(bus
 		(pts
@@ -9462,71 +9488,6 @@
 			(project "system_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR06")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VDD")
-		(at 110.49 95.25 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1ea56b24-2b2d-4ada-a9ca-2c415c6dc2ea")
-		(property "Reference" "#PWR0122"
-			(at 106.68 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 113.665 95.25 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 110.49 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 110.49 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 110.49 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "00b6c17d-eb2b-4272-8c29-9719f79004f8")
-		)
-		(instances
-			(project "main_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "#PWR0122")
 					(unit 1)
 				)
 			)
