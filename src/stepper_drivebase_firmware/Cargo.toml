@@ -13,11 +13,18 @@ default = []
 # The Quad Stepper Driver board is naturally this firmware's target hardware, and it uses the STM32G474.
 # Firmware should be exact same across the hardware revisions, but we can't be 100% sure yet (-:
 # Do try to flash the correct firmware onto the correct hardware!
-rev_a2 = ["stm32g4/stm32g474", "stm32g4xx-hal/stm32g474"]
+rev_a2 = ["stm32g4/stm32g474", "stm32g4xx-hal/stm32g474"] 	# testing in limbo since the incident
 rev_b2 = ["stm32g4/stm32g474", "stm32g4xx-hal/stm32g474"] 	# untested, since still being assembled
 
 # The WeAct board is just an STM32G431 dev board for development/prototyping only.
 we_act_dev = ["stm32g4/stm32g431", "stm32g4xx-hal/stm32g431"]
+
+# The BigTreeTech MMB CAN V2.0 is a board used by the ground station team that
+# also has TMC5160s on it, which makes it a good backup testing board.
+# Regrettably, it uses a Cortex-M0+ instead of a Cortex-M4F, so you MUST USE
+# the --target thumbv6m-none-eabi option when building for it!!
+# The G0xx Rust HAL is also pretty low quality.
+bigtree = ["stm32g0xx-hal/stm32g0b1"]
 
 [dependencies]
 cortex-m-rt = "0.7.5"
@@ -26,16 +33,18 @@ cortex-m-semihosting = "0.5.0"
 canadensis = "0.5.0"
 canadensis_data_types = "0.5.0"
 canadensis_filter_config = "0.5.0"
-stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
-# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
-# patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
-stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"], optional = true }
 nb = "1.1.0"
 heapless = "0.9.1"
 embedded-alloc = "0.6.0"
 cfg-if = "1.0.4"
 embedded-io = "0.6.1"
 libm = "0.2.15"
+# Which dependencies and which features below are enabled depends on the target.
+stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
+# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
+# patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
+stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"], optional = true }
+stm32g0xx-hal = { git = "https://github.com/stm32-rs/stm32g0xx-hal", version = "0.2.0", features = ["rt"], optional = true }
 
 [dependencies.canadensis_can]
 version = "0.5.1"

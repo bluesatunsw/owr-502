@@ -164,9 +164,9 @@ fn main() -> ! {
                 missed_heartbeats += 1;
                 heartbeat_target_time_us += 1_000_000;
             }
-            while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
+            /*while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
                 // block on handling heartbeat
-            };
+            };*/
             hprintln!("handled tasks");
 
             // RGB LED test routine!

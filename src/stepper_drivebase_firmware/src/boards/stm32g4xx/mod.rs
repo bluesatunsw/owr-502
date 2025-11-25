@@ -227,10 +227,12 @@ impl StepperDriver for STM32G4xxStepperDriver {
         let mut read_data = [0u8; 5];
         self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
         // hopefully this still works without CS going high in between?
+        cs.set_high();
+        cs.set_low();
         self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
         cs.set_high();
         // reconstruct register
-        Ok((read_data[0] as u32) << 24 | (read_data[1] as u32) << 16 | (read_data[2] as u32) << 8 | (read_data[3] as u32))
+        Ok((read_data[1] as u32) << 24 | (read_data[2] as u32) << 16 | (read_data[3] as u32) << 8 | (read_data[4] as u32))
     }
 
     fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<(), SPIError> {

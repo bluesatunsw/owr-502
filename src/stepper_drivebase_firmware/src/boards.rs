@@ -232,6 +232,17 @@ cfg_if! {
         pub fn init() -> (CClock, stm32g4xx::STM32G4xxGeneralClock, CanDriver, stm32g4xx::STM32G4xxLEDDriver, stm32g4xx::I2CDriver, stm32g4xx::STM32G4xxStepperDriver) {
             stm32g4xx::init()
         }
+    } else if #[cfg(feature = "bigtree")] {
+        mod stm32g0xx;
+
+        // these types need to be exposed to the layer that creates the canadensis/Cyphal node
+        pub type CClock = stm32g0xx::STM32G0xxCyphalClock;
+        pub type CanDriver = stm32g0xx::STM32G0xxCanDriver;
+
+        pub fn init() -> (CClock, stm32g0xx::STM32G0xxGeneralClock, CanDriver, stm32g0xx::STM32G0xxLEDDriver, stm32g0xx::I2CDriver, stm32g0xx::STM32G0xxStepperDriver) {
+            stm32g0xx::init()
+        }
+
     } else {
         compile_error!("The board that the firmware is being compiled for must be specified as a feature");
     }
