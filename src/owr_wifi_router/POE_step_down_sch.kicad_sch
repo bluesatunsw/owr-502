@@ -1940,6 +1940,12 @@
 		(uuid "cc7d2123-98f2-498a-88bd-22dbacf66427")
 	)
 	(junction
+		(at 55.88 115.57)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e009beec-8bc2-4c45-942e-58e2734c0595")
+	)
+	(junction
 		(at 83.82 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1963,7 +1969,7 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 115.57) (xy 85.09 115.57)
+			(xy 53.34 115.57) (xy 55.88 115.57)
 		)
 		(stroke
 			(width 0)
@@ -2140,6 +2146,16 @@
 			(type default)
 		)
 		(uuid "770e996d-faff-4cb3-bfbb-e8805eb96eab")
+	)
+	(wire
+		(pts
+			(xy 55.88 115.57) (xy 85.09 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7e988d2b-5959-4935-bf2a-0984a0878056")
 	)
 	(wire
 		(pts
@@ -2941,6 +2957,76 @@
 			(project "owr_wifi_router"
 				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031/66faad57-348c-46ca-b4cd-7bbed04f6f9f"
 					(reference "#PWR019")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 55.88 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "52c6dfc3-e6c0-42da-b0dc-a3f511f500cd")
+		(property "Reference" "C4"
+			(at 59.69 118.1099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 59.69 120.6499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 56.8452 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 55.88 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 55.88 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "749194dc-643e-4a5d-bb08-962824bbe110")
+		)
+		(pin "2"
+			(uuid "1bab0a15-9d28-483f-9cb4-4ddede727185")
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031/66faad57-348c-46ca-b4cd-7bbed04f6f9f"
+					(reference "C4")
 					(unit 1)
 				)
 			)
@@ -4651,6 +4737,72 @@
 			(project "owr_wifi_router"
 				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031/66faad57-348c-46ca-b4cd-7bbed04f6f9f"
 					(reference "#PWR017")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 55.88 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ecc99cfb-abed-40b0-bd22-f634890b6ad3")
+		(property "Reference" "#PWR07"
+			(at 55.88 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 55.88 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 55.88 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 55.88 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6d7ff5eb-d11c-45fa-9d2b-8e77d4b73695")
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031/66faad57-348c-46ca-b4cd-7bbed04f6f9f"
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
