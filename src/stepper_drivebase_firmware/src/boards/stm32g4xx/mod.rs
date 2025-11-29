@@ -116,6 +116,10 @@ pub struct I2CDriver {
 type EnnPin = gpio::PD2<gpio::Output>;
 //type ClkPin = gpio::PA8<gpio::AF0>; // this is MCO. AF6 is TIM1CH1
 type ClkPin = gpio::PA8<gpio::Analog>; // this is MCO. AF6 is TIM1CH1
+
+#[cfg(feature = "rev_a2")]
+type DiagPin = gpio::PA10<gpio::Output>;
+#[cfg(not(feature = "rev_a2"))]
 type DiagPin = gpio::PA10<gpio::Input>;
 
 struct StepperTempPins(gpio::PA0, gpio::PA1, gpio::PB2, gpio::PC5);
@@ -136,7 +140,7 @@ pub struct STM32G4xxStepperDriver {
 impl STM32G4xxStepperDriver {
     fn new(
         adc_common: pac::ADC12_COMMON, adc2: pac::ADC2, spi3: pac::SPI3, uclock: &mut STM32G4xxGeneralClock, rcc: &mut Rcc,
-        temp: StepperTempPins, enn: EnnPin, clk_pin: ClkPin, diag: DiagPin, spi_pins: StepperSPIPins, spi_cs_pins: StepperCSPins
+        temp: StepperTempPins, enn: EnnPin, clk_pin: ClkPin, mut diag: DiagPin, spi_pins: StepperSPIPins, spi_cs_pins: StepperCSPins
     ) -> Self {
         // initialise the ADCs for the temperature pins
         // we intend to use them in one-shot mode
@@ -152,12 +156,20 @@ impl STM32G4xxStepperDriver {
 
         // initialise the MCO (CLK pin)
         // at 12 MHz
-        let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
-        clk.enable();
+        cfg_if! {
+            // Pinout is wrong on Rev. A2 (DIAG and CLK swapped),
+            // so just use the TMC5160's internal clock.
+            if #[cfg(feature = "rev_a2")] {
+                diag.set_low();
+            } else {
+                let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
+                clk.enable();
+            }
+        }
 
         // initialise the SPI bus, SPI3
         // (using max allowable frequency)
-        let spi = spi3.spi(spi_pins, spi::MODE_3, 4.MHz(), rcc);
+        let spi = spi3.spi(spi_pins, spi::MODE_3, 2.MHz(), rcc);
 
         // do initial config of the steppers over SPI
         // TODO
@@ -170,15 +182,6 @@ impl STM32G4xxStepperDriver {
             temp,
             spi,
             spi_cs: spi_cs_pins,
-        }
-    }
-
-    fn get_cs_pin(&mut self, channel: StepperChannel) -> &mut gpio::AnyPin<gpio::Output> {
-        match channel {
-            StepperChannel::Channel1 => &mut self.spi_cs.0,
-            StepperChannel::Channel2 => &mut self.spi_cs.1,
-            StepperChannel::Channel3 => &mut self.spi_cs.2,
-            StepperChannel::Channel4 => &mut self.spi_cs.3,
         }
     }
 
@@ -211,6 +214,7 @@ impl StepperDriver for STM32G4xxStepperDriver {
 
     // TODO: TMC5160 SPI interface sends data back on the *subsequent* read, so we could possibly
     // set up a pipelined interface?
+    // TODO: better "short delay" function than the for 0..500 loops
     // self.start_pipeline_read(reg).continue_pipeline_read/write(reg, data).end_pipeline(data)
     // need to fix annoying data allocation and ownership churn in above model
     fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<u32, SPIError> {
@@ -220,17 +224,24 @@ impl StepperDriver for STM32G4xxStepperDriver {
             StepperChannel::Channel3 => &mut self.spi_cs.2,
             StepperChannel::Channel4 => &mut self.spi_cs.3,
         };
-        cs.set_low();
+        for _ in 0..500 {
+            cs.set_low();
+        }
         // 40-bit (5 byte), first byte is address, MSB of first byte is 0 for read
         let address: u8 = reg.into();
         let send_data = [address, 0u8, 0u8, 0u8, 0u8];
         let mut read_data = [0u8; 5];
-        self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        // hopefully this still works without CS going high in between?
-        cs.set_high();
-        cs.set_low();
-        self.spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        cs.set_high();
+        self.spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        for _ in 0..500 {
+            cs.set_high();
+        }
+        for _ in 0..500 {
+            cs.set_low();
+        }
+        self.spi.read(&mut read_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        for _ in 0..500 {
+            cs.set_high();
+        }
         // reconstruct register
         Ok((read_data[1] as u32) << 24 | (read_data[2] as u32) << 16 | (read_data[3] as u32) << 8 | (read_data[4] as u32))
     }
@@ -242,8 +253,10 @@ impl StepperDriver for STM32G4xxStepperDriver {
             StepperChannel::Channel3 => &mut self.spi_cs.2,
             StepperChannel::Channel4 => &mut self.spi_cs.3,
         };
-        cs.set_low();
-        let address: u8 = reg.into();
+        for _ in 0..500 {
+            cs.set_low();
+        }
+        let address: u8 = (reg as u8) + 0x80;
         let send_data = [
             address,
             // terrible hack, make helper function
@@ -253,7 +266,9 @@ impl StepperDriver for STM32G4xxStepperDriver {
             (data & 0xFF) as u8
         ];
         self.spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        cs.set_high();
+        for _ in 0..500 {
+            cs.set_high();
+        }
         Ok(())
     }
 
@@ -354,15 +369,18 @@ pub fn init() -> (STM32G4xxCyphalClock, STM32G4xxGeneralClock, STM32G4xxCanDrive
 
     let enn_pin = gpiod.pd2.into_push_pull_output_in_state(gpio::PinState::High);
     let clk_pin = gpioa.pa8.into_analog();
+    #[cfg(feature = "rev_a2")]
+    let diag_pin = gpioa.pa10.into_push_pull_output();
+    #[cfg(not(feature = "rev_a2"))]
     let diag_pin = gpioa.pa10.into_input();
 
     let sck = gpioc.pc10.into_alternate();
     let miso = gpioc.pc11.into_alternate();
     let mosi = gpioc.pc12.into_alternate();
-    let cs0 = gpiob.pb9.into_push_pull_output();
-    let cs1 = gpioc.pc13.into_push_pull_output();
-    let cs2 = gpioc.pc14.into_push_pull_output();
-    let cs3 = gpioc.pc15.into_push_pull_output();
+    let cs0 = gpiob.pb9.into_push_pull_output_in_state(gpio::PinState::High);
+    let cs1 = gpioc.pc13.into_push_pull_output_in_state(gpio::PinState::High);
+    let cs2 = gpioc.pc14.into_push_pull_output_in_state(gpio::PinState::High);
+    let cs3 = gpioc.pc15.into_push_pull_output_in_state(gpio::PinState::High);
     let cs_pins = StepperCSPins(cs0.into(), cs1.into(), cs2.into(), cs3.into());
     let spi_pins = (sck, miso, mosi);
 

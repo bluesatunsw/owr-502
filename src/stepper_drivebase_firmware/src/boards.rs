@@ -177,13 +177,28 @@ pub enum StepperRegister {
     GLOBAL_SCALER = 0x0B,
     OFFSET_READ = 0x0C,
 
+    TPOWERDOWN = 0x11,
+    TPWM_THRS = 0x13,
+
     // velocity-dependent
     IHOLD_IRUN = 0x10,
+    XACTUAL = 0x21,
+    A1 = 0x24,
+    V1 = 0x25,
+    AMAX = 0x26,
+    VMAX = 0x27,
+    DMAX = 0x28,
+    D1 = 0x2A,
+    VSTOP = 0x2B,
+    XTARGET = 0x2D,
+
     // etc.
     
     // ramp generator
     RAMPMODE = 0x20,
     // TODO: the rest, or scrap this entirely
+    CHOPCONF = 0x6C,
+    COOLCONF = 0x6D,
 }
 
 impl Into<u8> for StepperRegister {

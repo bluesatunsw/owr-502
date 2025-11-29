@@ -205,7 +205,6 @@ impl StepperDriver for STM32G0xxStepperDriver {
         let address: u8 = reg.into();
         let send_data = [address, 0u8, 0u8, 0u8, 0u8];
         let mut read_data = [0u8; 5];
-        // This doesn't work. figure out why!
         cs.set_low().unwrap();
         // send the data, ignore data returned
         self.spi.write(&send_data).map_err(STM32G0xxStepperDriver::map_spi_error)?;
@@ -251,13 +250,12 @@ pub fn init() -> (STM32G0xxCyphalClock, STM32G0xxGeneralClock, STM32G0xxCanDrive
     let dp = hal::stm32::Peripherals::take().unwrap();
 
     let mut rcc = dp.RCC.freeze(
-        // enable HSE @ ??? MHz (TODO: check what is on board)
-        // should yield 64 MHz for SYSCLK and 128 MHz for PLLQ to be sent to FDCAN should it ever
-        // be implemented
+        // enable HSE @ 8 MHz (by visually inspecting the board)
+        // should yield 64 MHz for SYSCLK and 128 MHz for PLLQ to be sent to FDCAN should it ever be implemented
         Config::pll()
             .pll_cfg(PllConfig {
-                mux: PLLSrc::HSE(24.MHz()),
-                m: PLLDiv::from(3),
+                mux: PLLSrc::HSE(8.MHz()),
+                m: PLLDiv::from(1),
                 n: PLLMul::from(32),
                 r: PLLDiv::from(4),
                 q: Some(PLLDiv::from(2)),

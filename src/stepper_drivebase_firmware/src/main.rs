@@ -130,8 +130,52 @@ fn main() -> ! {
     ).unwrap();
     // NOTE: If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
+    // direct port of Evan's bringup code
+    // GSTAT (reset flags)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
+    // GLOBAL SCALER (reduce current)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GLOBAL_SCALER, 0x00000020).unwrap();
+    // Short conf
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::SHORT_CONF, 0x00030F0F).unwrap();
+    // CHOPCONF: TOFF=3, HSTRT=4, HEND=1, TBL=2, CHM=0 (SpreadCycle)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::CHOPCONF, 0xC00100C3).unwrap();
+    // COOLCONF: StallGuard minimum sensitivity
+    // hstepper.write_reg(StepperChannel::Channel1, StepperRegister::COOLCONF, 0x003F0000).unwrap();
+    // IHOLD_IRUN: IHOLD=10, IRUN=31 (max. current), IHOLDDELAY=6
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::IHOLD_IRUN, 0x00000801).unwrap();
+    // TPOWERDOWN=10: Delay before power down in stand still
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::TPOWERDOWN, 0x00000000).unwrap();
+    // EN_PWM_MODE=1 enables StealthChop (with default PWMCONF)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GCONF, 0x00000004).unwrap();
+    // TPWM_THRS=500 yields a switching velocity about 35000 = ca. 30RPM
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::TPWM_THRS, 0x000001F4).unwrap();
+    // XACTUAL=0
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::XACTUAL, 0x00000000).unwrap();
+
+    // A1 = 1 000 First acceleration
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::A1, 0x00000400).unwrap();
+    // V1 = 50 000 Acceleration threshold velocity V1
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::V1, 0x00001000).unwrap();
+    // AMAX = 500 Acceleration above V1
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::AMAX, 0x00000200).unwrap();
+    // VMAX = 200 000
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::VMAX, 0x00080000).unwrap();
+    // DMAX = 700 Deceleration above V1
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::DMAX, 0x00000200).unwrap();
+    // D1 = 1400 Deceleration below V1
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::D1, 0x00000400).unwrap();
+    // VSTOP = 10 Stop velocity (Near to zero)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::VSTOP, 0x00000008).unwrap();
+    // RAMPMODE = 0 (Target position move)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::RAMPMODE, 0x00000000).unwrap();
+
+    // XTARGET = -51200 (Move one rotation left (200*256 microsteps)
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::XTARGET, 0xFFF00000).unwrap();
+    hprintln!("wrote to channel 1");
     hstepper.enable_all();
     hprintln!("Enabled steppers");
+
+    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
 
     let mut cycles = 0;
     loop {
@@ -158,7 +202,6 @@ fn main() -> ! {
         let useconds: u64 = general_clock.now().ticks().into();
         let mut missed_heartbeats = 0;
         if useconds >= heartbeat_target_time_us {
-            hprintln!("whoa");
             heartbeat_target_time_us += 1_000_000;
             while useconds >= heartbeat_target_time_us {
                 missed_heartbeats += 1;
@@ -167,7 +210,6 @@ fn main() -> ! {
             /*while let Err(canadensis::core::nb::Error::WouldBlock) = node.run_per_second_tasks() {
                 // block on handling heartbeat
             };*/
-            hprintln!("handled tasks");
 
             // RGB LED test routine!
             let led_color = RGBLEDColor {
@@ -185,13 +227,14 @@ fn main() -> ! {
             let chan2temp = hstepper.get_temperature(StepperChannel::Channel2);
             let chan3temp = hstepper.get_temperature(StepperChannel::Channel3);
             let chan4temp = hstepper.get_temperature(StepperChannel::Channel4);
-            let gconf = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GCONF).unwrap();
-            let gstat = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GSTAT).unwrap();
-            let ifcnt = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IFCNT);
-            let ioin = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IOIN_OUTPUT).unwrap();
-            hprintln!("Temps: {:?} {:?} {:?} {:?} GCONF1 0x{:08x} IOIN 0x{:08x}", chan1temp, chan2temp, chan3temp, chan4temp, gconf, ioin);
+            let gconf1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GCONF).unwrap();
+            let ioin1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IOIN_OUTPUT).unwrap();
+            let gstat1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GSTAT).unwrap();
+            let xactual1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::XACTUAL).unwrap();
 
-            node.flush().unwrap();
+            hprintln!("1: GCONF 0x{:08x} IOIN 0x{:08x} GSTAT 0x{:08x} XACTUAL 0x{:08x}", gconf1, ioin1, gstat1, xactual1);
+
+            //node.flush().unwrap();
             if missed_heartbeats > 0 {
                 hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
             }
