@@ -156,20 +156,20 @@ impl STM32G4xxStepperDriver {
 
         // initialise the MCO (CLK pin)
         // at 12 MHz
+        let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
         cfg_if! {
             // Pinout is wrong on Rev. A2 (DIAG and CLK swapped),
             // so just use the TMC5160's internal clock.
             if #[cfg(feature = "rev_a2")] {
                 diag.set_low();
             } else {
-                let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
                 clk.enable();
             }
         }
 
         // initialise the SPI bus, SPI3
         // (using max allowable frequency)
-        let spi = spi3.spi(spi_pins, spi::MODE_3, 2.MHz(), rcc);
+        let spi = spi3.spi(spi_pins, spi::MODE_3, 1.MHz(), rcc);
 
         // do initial config of the steppers over SPI
         // TODO
@@ -232,6 +232,10 @@ impl StepperDriver for STM32G4xxStepperDriver {
         let send_data = [address, 0u8, 0u8, 0u8, 0u8];
         let mut read_data = [0u8; 5];
         self.spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        // embedded_hal gotcha: writes may return BEFORE they've actually written out all data, so
+        // need to flush before setting CS high again.
+        // it is incredibly annoying that this line is as verbose as it is
+        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.spi).map_err(STM32G4xxStepperDriver::map_spi_error)?;
         for _ in 0..500 {
             cs.set_high();
         }
@@ -266,6 +270,7 @@ impl StepperDriver for STM32G4xxStepperDriver {
             (data & 0xFF) as u8
         ];
         self.spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.spi).map_err(STM32G4xxStepperDriver::map_spi_error)?;
         for _ in 0..500 {
             cs.set_high();
         }

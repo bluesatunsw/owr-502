@@ -175,7 +175,7 @@ fn main() -> ! {
     hstepper.enable_all();
     hprintln!("Enabled steppers");
 
-    hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
+    //hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
 
     let mut cycles = 0;
     loop {
@@ -233,6 +233,10 @@ fn main() -> ! {
             let xactual1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::XACTUAL).unwrap();
 
             hprintln!("1: GCONF 0x{:08x} IOIN 0x{:08x} GSTAT 0x{:08x} XACTUAL 0x{:08x}", gconf1, ioin1, gstat1, xactual1);
+
+            if cycles % 5 == 0 {
+                hstepper.write_reg(StepperChannel::Channel1, StepperRegister::XTARGET, 0xFFF00000).unwrap();
+            }
 
             //node.flush().unwrap();
             if missed_heartbeats > 0 {
