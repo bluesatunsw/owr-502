@@ -1,5 +1,5 @@
-// Wraps implementations of board-specific low-level drivers for various interfaces into common
-// abstract drivers for main.rs.
+//! Wraps implementations of board-specific low-level drivers for various interfaces into common
+//! abstract drivers for main.rs.
 
 use canadensis::core::time as time;
 use core::convert::From;
@@ -55,7 +55,10 @@ impl RGBLEDColor {
 }
 
 #[derive(Debug)]
-pub struct Celsius(f32);
+pub struct Celsius(pub f32);
+
+#[derive(Debug)]
+pub struct Radians(pub f32);
 
 impl From<u32> for RGBLEDColor {
     /// Given a classic RGB hex code
@@ -69,16 +72,16 @@ impl From<u32> for RGBLEDColor {
 }
 
 pub trait RGBLEDDriver {
-    // n is zero-indexed. Panics if n is greater than the number of LEDs on the board.
-    // This function does NOT change the display state. Call render() to actually send
-    // the new color signals to the LEDs.
+    /// n is zero-indexed. Panics if n is greater than the number of LEDs on the board.
+    /// This function does NOT change the display state. Call render() to actually send
+    /// the new color signals to the LEDs.
     fn set_nth_led(&mut self, n: usize, color: RGBLEDColor);
 
-    // Syncs the LED display state with the internal color state.
-    // There isn't any meaningful way we can tell if this fails.
+    /// Syncs the LED display state with the internal color state.
+    /// There isn't any meaningful way we can tell if this fails.
     fn render(&mut self);
 
-    // for convenience
+    /// For convenience.
     fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor);
 }
 
@@ -174,7 +177,7 @@ pub enum StepperRegister {
     FACTORY_CONF = 0x08,
     SHORT_CONF = 0x09,
     DRV_CONF = 0x0A,
-    GLOBAL_SCALER = 0x0B,
+    GLOBALSCALER = 0x0B,
     OFFSET_READ = 0x0C,
 
     TPOWERDOWN = 0x11,
@@ -183,6 +186,7 @@ pub enum StepperRegister {
     // velocity-dependent
     IHOLD_IRUN = 0x10,
     XACTUAL = 0x21,
+    VSTART = 0x23,
     A1 = 0x24,
     V1 = 0x25,
     AMAX = 0x26,
@@ -193,12 +197,13 @@ pub enum StepperRegister {
     XTARGET = 0x2D,
 
     // etc.
-    
+
     // ramp generator
     RAMPMODE = 0x20,
     // TODO: the rest, or scrap this entirely
     CHOPCONF = 0x6C,
     COOLCONF = 0x6D,
+    DRV_STATUS = 0x6F,
 }
 
 impl Into<u8> for StepperRegister {
@@ -208,6 +213,7 @@ impl Into<u8> for StepperRegister {
 }
 
 // you can rename these to more helpfully refer to the physical function/location of each motor
+#[derive(Copy, Clone)]
 pub enum StepperChannel {
     Channel1,
     Channel2,
@@ -215,25 +221,31 @@ pub enum StepperChannel {
     Channel4
 }
 
-pub trait StepperDriver {
-    // initialisation (not part of public interface): set up clock and send initialisation commands to steppers
-    // SD_MODE = 0, SPI_MODE = 1
+pub struct TMCFlags(u8);
 
+pub trait StepperDriver {
     // fn stepper_cfg(channel: u8, config: StepperConfig);
 
     fn enable_all(&mut self);
     fn disable_all(&mut self);
 
-    // also want a config function for VMAX, AMAX etc.
-    // could set a callback on position reached???
-    fn set_position(&mut self, channel: StepperChannel, target: u32) -> Result<(), SPIError>; // in what units? TODO: proper type
-    fn set_velocity(&mut self, channel: StepperChannel, velocity: i32) -> Result<(), SPIError>;
+    // could add a config function for the TMC's motion profiling?
 
-    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<u32, SPIError>;
-    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<(), SPIError>;
+    fn set_position(&mut self, channel: StepperChannel, target: Radians) -> Result<(), SPIError>;
+    // could set a callback on position reached??? we don't really have an execution model that
+    // could take advantage of this, though
 
-    fn get_temperature(&mut self, channel: StepperChannel) -> Celsius; // via ADC
-    // calibration? boundary setting?
+    // we might be able to make these private at some point
+    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<(u32, TMCFlags), SPIError>;
+    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<TMCFlags, SPIError>;
+
+    fn get_temperature(&mut self, channel: StepperChannel) -> Celsius;
+
+    /// Sets the internal representation of the absolute stepper position from the absolute ("true")
+    /// position as determined from the encoder, which may result in the stepper turning slightly if
+    /// a misalignment has occurred for whatever reason. To be safe, call this often, although it
+    /// won't do anything if the stepper is still rotating to carry out a command.
+    fn adjust(&mut self, channel: StepperChannel) -> Result<(), SPIError>;
 }
 
 cfg_if! {
@@ -244,17 +256,30 @@ cfg_if! {
         pub type CClock = stm32g4xx::STM32G4xxCyphalClock;
         pub type CanDriver = stm32g4xx::STM32G4xxCanDriver;
 
-        pub fn init() -> (CClock, stm32g4xx::STM32G4xxGeneralClock, CanDriver, stm32g4xx::STM32G4xxLEDDriver, stm32g4xx::I2CDriver, stm32g4xx::STM32G4xxStepperDriver) {
+        pub fn init() -> (
+            CClock,
+            stm32g4xx::STM32G4xxGeneralClock,
+            CanDriver,
+            stm32g4xx::STM32G4xxLEDDriver,
+            stm32g4xx::I2CDriver,
+            stm32g4xx::STM32G4xxStepperDriver
+        ) {
             stm32g4xx::init()
         }
     } else if #[cfg(feature = "bigtree")] {
         mod stm32g0xx;
 
-        // these types need to be exposed to the layer that creates the canadensis/Cyphal node
         pub type CClock = stm32g0xx::STM32G0xxCyphalClock;
         pub type CanDriver = stm32g0xx::STM32G0xxCanDriver;
 
-        pub fn init() -> (CClock, stm32g0xx::STM32G0xxGeneralClock, CanDriver, stm32g0xx::STM32G0xxLEDDriver, stm32g0xx::I2CDriver, stm32g0xx::STM32G0xxStepperDriver) {
+        pub fn init() -> (
+            CClock,
+            stm32g0xx::STM32G0xxGeneralClock,
+            CanDriver,
+            stm32g0xx::STM32G0xxLEDDriver,
+            stm32g0xx::I2CDriver,
+            stm32g0xx::STM32G0xxStepperDriver)
+        {
             stm32g0xx::init()
         }
 
