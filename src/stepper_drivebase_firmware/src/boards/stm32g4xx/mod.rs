@@ -41,7 +41,7 @@ const GEAR_RATIO: u32 = 60;
 const MICROSTEPS_PER_STEP: u32 = 2;
 /// If this is enabled, we run the stepper with reduced TMC5160 features to make it less likely to trip the
 /// overcurrent protection on the power supply. This shouldn't be necessary in production.
-const SAFE_MODE: bool = true;
+const SAFE_MODE: bool = false;
 /// The number of RGB LEDs (WS2812s) on the board.
 pub const NUM_LEDS: usize = 6;
 /// The number of stepper motors that the board is actually controlling, to avoid dealing with
@@ -50,7 +50,7 @@ pub const NUM_STEPPERS: usize = 4;
 /// Inverts the position convention for the motors.
 const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
 /// Inverts the position convention for the encoders.
-const INVERT_ENCODER_DIR: [bool; 4] = [false, false, false, false];
+const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// What encoder reading we interpret as an angular position of 0 for ROS purposes.
 const ENCODER_ZERO: Radians = Radians(0.0);
 
@@ -60,10 +60,12 @@ const CHANNELS: [StepperChannel; 4] = [
     StepperChannel::Channel3,
     StepperChannel::Channel4
 ];
+const PI: f32 = 3.14159;
+const MICROSTEPS_PER_REV: u32 = 200 * MICROSTEPS_PER_STEP;
 
 /// Helper function to add some short delays around changes in CS pin state for SPI.
 fn set_cs(pin: &mut gpio::AnyPin<gpio::Output>, high: bool) {
-    for _ in 0..500 {
+    for _ in 0..50 {
         if high {
             pin.set_high();
         } else {
@@ -291,7 +293,19 @@ impl STM32G4xxStepperDriver {
             self.write_reg(channel, StepperRegister::SHORT_CONF, 0x00030F0F).unwrap();
             // CHOPCONF: TOFF=3, HSTRT=4, HEND=1, TBL=2, CHM=0 (SpreadCycle)
             // also disable short protection -- it seems to be very sensitive
-            self.write_reg(channel, StepperRegister::CHOPCONF, 0xC70100C3).unwrap();
+            let microsteps_pattern = match MICROSTEPS_PER_STEP {
+                1 => 0x08000000,
+                2 => 0x07000000,
+                4 => 0x06000000,
+                8 => 0x05000000,
+                16 => 0x04000000,
+                32 => 0x03000000,
+                64 => 0x02000000,
+                128 => 0x01000000,
+                256 => 0x00000000,
+                _ => unreachable!("MICROSTEPS_PER_STEP is a power of two not greater than 256")
+            };
+            self.write_reg(channel, StepperRegister::CHOPCONF, 0xC00100C3 | microsteps_pattern).unwrap();
             // COOLCONF: StallGuard minimum sensitivity
             // self.write_reg(channel, StepperRegister::COOLCONF, 0x003F0000).unwrap();
             // IHOLD_IRUN: IHOLD=10, IRUN=31 (max. current), IHOLDDELAY=6
@@ -329,6 +343,7 @@ impl STM32G4xxStepperDriver {
     // Much like the TMC5160, we could potentially set up a pipelined read API. However, I don't
     // think we actually do chained reads in any significant quantity, so bah humbug.
     fn read_enc_reg(&mut self, channel: StepperChannel, reg: EncoderRegister) -> Result<u16, SPIError> {
+        // TODO: detect parity errors and treat as SPIError
         let cs = match channel {
             StepperChannel::Channel1 => &mut self.enc_spi_cs.0,
             StepperChannel::Channel2 => &mut self.enc_spi_cs.1,
@@ -401,11 +416,11 @@ impl STM32G4xxStepperDriver {
         hprintln!("SETTINGS2 0x{:04x} = HYS {} ABIRES {}", settings2, hys, abires);
     }
 
-    fn dgb_pretty_data(&mut self, channel: StepperChannel) {
+    fn dbg_pretty_data(&mut self, channel: StepperChannel) {
         let mag = self.read_enc_reg(channel, EncoderRegister::MAG).unwrap();
         let angleunc = self.read_enc_reg(channel, EncoderRegister::ANGLEUNC).unwrap();
         let anglecom = self.read_enc_reg(channel, EncoderRegister::ANGLECOM).unwrap();
-        hprintln!("MAG 0x{:04x} ANGLEUNC 0x{:04x} ANGLECOM 0x{:04x}", mag, angleunc, anglecom);
+        hprintln!("MAG 0x{:04x} ANGLEUNC 0x{:04x} ANGLECOM 0x{:04x}", mag & 0x3FFF, angleunc & 0x3FFF, anglecom & 0x3FFF);
     }
 
     fn init_encoders_config(&mut self) {
@@ -419,10 +434,9 @@ impl STM32G4xxStepperDriver {
                 settings1 |= 0x04;
             }
             // set hysteresis to minimum
-            settings1 |= 0x18;
-            // TODO: other fields??
+            let settings2 = 0x18;
             self.write_enc_reg(channel, EncoderRegister::SETTINGS1, settings1).unwrap();
-            // TODO: other registers??
+            self.write_enc_reg(channel, EncoderRegister::SETTINGS2, settings2).unwrap();
         }
     }
 }
@@ -437,8 +451,6 @@ impl StepperDriver for STM32G4xxStepperDriver {
     }
 
     fn set_position(&mut self, channel: StepperChannel, target: Radians) -> Result<(), SPIError> {
-        const PI: f32 = 3.14159;
-        const MICROSTEPS_PER_REV: u32 = 200 * MICROSTEPS_PER_STEP;
         if !self.position_mode {
             self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000).unwrap();
             self.position_mode = true;
@@ -471,7 +483,7 @@ impl StepperDriver for STM32G4xxStepperDriver {
             .map_err(STM32G4xxStepperDriver::map_spi_error)?;
         set_cs(cs, true);
         set_cs(cs, false);
-        self.step_spi.read(&mut read_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        self.step_spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
         set_cs(cs, true);
         // reconstruct register
         Ok((
@@ -529,6 +541,8 @@ impl StepperDriver for STM32G4xxStepperDriver {
     }
 
     fn adjust(&mut self, channel: StepperChannel) -> Result<(), SPIError> {
+        // how many steps XACTUAL must be out of place for a correction to take place
+        const MIN_MICROSTEP_DIFFERENCE: i32 = 4;
         let xtarget = self.read_reg(channel, StepperRegister::XTARGET)?;
         let xactual = self.read_reg(channel, StepperRegister::XACTUAL)?;
         if xtarget.0 != xactual.0 {
@@ -536,15 +550,17 @@ impl StepperDriver for STM32G4xxStepperDriver {
             return Ok(());
         }
         // Read position from encoder
-        let raw_pos = self.read_enc_reg(channel, EncoderRegister::ANGLECOM)?; // need to figure out
-                                                                              // if this is best
-                                                                              // register
-        let actual_pos: Radians = Radians(0.0); // TODO
-        // let expected_xactual = ...
-        // if expected_xactual != xactual.0 {
-        // self.write_reg(channel, StepperRegister::XACTUAL, expected_xactual);
-        // log error to debug
-        // }
+        let raw_pos: f32 = self.read_enc_reg(channel, EncoderRegister::ANGLECOM)? as f32;
+        let mut actual_pos = Radians(raw_pos * 2.0 * PI / (0x4000 as f32)) - ENCODER_ZERO;
+        if actual_pos.0 > 2.0 * PI {
+            actual_pos = Radians(actual_pos.0 - 2.0 * PI);
+        }
+        let expected_xactual: i32 = (actual_pos.0 * (MICROSTEPS_PER_REV as f32) * (GEAR_RATIO as f32) / (2.0 * PI)) as i32;
+        let difference_usteps: i32 = expected_xactual - (xactual.0 as i32);
+        if difference_usteps > MIN_MICROSTEP_DIFFERENCE || difference_usteps < -MIN_MICROSTEP_DIFFERENCE {
+            self.write_reg(channel, StepperRegister::XACTUAL, expected_xactual as u32).unwrap();
+            hprintln!("Corrected XACTUAL from {} to {}", xactual.0, expected_xactual);
+        }
         Ok(())
     }
 }
@@ -655,7 +671,6 @@ pub fn init() -> (
     let enc_cs_pins = EncoderCSPins(cs0.into(), cs1.into(), cs2.into(), cs3.into());
     let enc_spi_pins = (sck, miso, mosi);
 
-
     cyphal_clock.start();
 
     let mut general_clock = STM32G4xxGeneralClock::new();
@@ -679,6 +694,11 @@ pub fn init() -> (
 
     stepper_driver.init_steppers_config();
     stepper_driver.init_encoders_config();
+    
+    /* loop {
+        stepper_driver.dbg_pretty_diaagc(StepperChannel::Channel1);
+        stepper_driver.dbg_pretty_data(StepperChannel::Channel1);
+    } */
 
     (cyphal_clock, general_clock, can_driver, led_driver, I2CDriver {}, stepper_driver)
 }

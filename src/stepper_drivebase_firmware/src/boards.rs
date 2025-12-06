@@ -4,6 +4,7 @@
 use canadensis::core::time as time;
 use core::convert::From;
 use cfg_if::cfg_if;
+use core::ops::Sub;
 
 pub trait CyphalClock: time::Clock {
     fn start(&mut self);
@@ -54,11 +55,19 @@ impl RGBLEDColor {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Celsius(pub f32);
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Radians(pub f32);
+
+impl Sub for Radians {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self::Output {
+        Self(self.0 - other.0)
+    }
+}
 
 impl From<u32> for RGBLEDColor {
     /// Given a classic RGB hex code
@@ -244,7 +253,7 @@ pub trait StepperDriver {
     /// Sets the internal representation of the absolute stepper position from the absolute ("true")
     /// position as determined from the encoder, which may result in the stepper turning slightly if
     /// a misalignment has occurred for whatever reason. To be safe, call this often, although it
-    /// won't do anything if the stepper is still rotating to carry out a command.
+    /// might not do anything if the stepper is still rotating to carry out a command.
     fn adjust(&mut self, channel: StepperChannel) -> Result<(), SPIError>;
 }
 
