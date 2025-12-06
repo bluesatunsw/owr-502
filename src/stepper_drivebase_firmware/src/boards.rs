@@ -172,55 +172,6 @@ pub trait QSPIDriver {
     // TODO
 }
 
-#[allow(non_camel_case_types)]
-pub enum StepperRegister {
-    // global
-    GCONF = 0x00,
-    GSTAT = 0x01,
-    IFCNT = 0x02,
-    NODECONF = 0x03,
-    IOIN_OUTPUT = 0x04, // function depends on whether reading or writing
-    X_COMPARE = 0x05,
-    OTP_PROG = 0x06,
-    OTP_READ = 0x07,
-    FACTORY_CONF = 0x08,
-    SHORT_CONF = 0x09,
-    DRV_CONF = 0x0A,
-    GLOBALSCALER = 0x0B,
-    OFFSET_READ = 0x0C,
-
-    TPOWERDOWN = 0x11,
-    TPWM_THRS = 0x13,
-
-    // velocity-dependent
-    IHOLD_IRUN = 0x10,
-    XACTUAL = 0x21,
-    VSTART = 0x23,
-    A1 = 0x24,
-    V1 = 0x25,
-    AMAX = 0x26,
-    VMAX = 0x27,
-    DMAX = 0x28,
-    D1 = 0x2A,
-    VSTOP = 0x2B,
-    XTARGET = 0x2D,
-
-    // etc.
-
-    // ramp generator
-    RAMPMODE = 0x20,
-    // TODO: the rest, or scrap this entirely
-    CHOPCONF = 0x6C,
-    COOLCONF = 0x6D,
-    DRV_STATUS = 0x6F,
-}
-
-impl Into<u8> for StepperRegister {
-    fn into(self) -> u8 {
-        self as u8
-    }
-}
-
 // you can rename these to more helpfully refer to the physical function/location of each motor
 #[derive(Copy, Clone)]
 pub enum StepperChannel {
@@ -244,10 +195,6 @@ pub trait StepperDriver {
     // could set a callback on position reached??? we don't really have an execution model that
     // could take advantage of this, though
 
-    // we might be able to make these private at some point
-    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<(u32, TMCFlags), SPIError>;
-    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<TMCFlags, SPIError>;
-
     fn get_temperature(&mut self, channel: StepperChannel) -> Celsius;
 
     /// Sets the internal representation of the absolute stepper position from the absolute ("true")
@@ -255,6 +202,9 @@ pub trait StepperDriver {
     /// a misalignment has occurred for whatever reason. To be safe, call this often, although it
     /// might not do anything if the stepper is still rotating to carry out a command.
     fn adjust(&mut self, channel: StepperChannel) -> Result<(), SPIError>;
+
+    /// Returns true if the motor is currently engaged in movement.
+    fn is_busy(&mut self, channel: StepperChannel) -> Result<bool, SPIError>;
 }
 
 cfg_if! {

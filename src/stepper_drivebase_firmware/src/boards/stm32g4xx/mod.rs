@@ -8,7 +8,7 @@ use cortex_m_semihosting::hprintln;
 
 use crate::boards::{
     CyphalClock, RGBLEDDriver, RGBLEDColor,
-    StepperDriver, StepperChannel, StepperRegister, SPIError, TMCFlags,
+    StepperDriver, StepperChannel, SPIError, TMCFlags,
     Celsius, Radians
 };
 pub mod clock;
@@ -31,14 +31,14 @@ use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which 
                             // specified as a feature in Cargo.toml
 use embedded_io::Write;
 
-// TODO: set up TRACESWO
+// TODO: set up TRACESWO or UART for faster debug logging
 
 // Some constants for configuration.
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: u32 = 60;
 /// Number of microsteps used. Must be a power of two no greater than 256.
-const MICROSTEPS_PER_STEP: u32 = 2;
+const MICROSTEPS_PER_STEP: u32 = 4;
 /// If this is enabled, we run the stepper with reduced TMC5160 features to make it less likely to trip the
 /// overcurrent protection on the power supply. This shouldn't be necessary in production.
 const SAFE_MODE: bool = false;
@@ -73,7 +73,6 @@ fn set_cs(pin: &mut gpio::AnyPin<gpio::Output>, high: bool) {
         }
     }
 }
-
 
 type LedTxPin = gpio::PB6<gpio::AF7>;
 
@@ -188,6 +187,49 @@ enum EncoderRegister {
     ANGLECOM = 0x3FFF,
 }
 
+#[allow(non_camel_case_types)]
+enum StepperRegister {
+    // global
+    GCONF = 0x00,
+    GSTAT = 0x01,
+    IFCNT = 0x02,
+    NODECONF = 0x03,
+    IOIN_OUTPUT = 0x04, // function depends on whether reading or writing
+    X_COMPARE = 0x05,
+    OTP_PROG = 0x06,
+    OTP_READ = 0x07,
+    FACTORY_CONF = 0x08,
+    SHORT_CONF = 0x09,
+    DRV_CONF = 0x0A,
+    GLOBALSCALER = 0x0B,
+    OFFSET_READ = 0x0C,
+
+    TPOWERDOWN = 0x11,
+    TPWM_THRS = 0x13,
+
+    // velocity-dependent
+    IHOLD_IRUN = 0x10,
+    XACTUAL = 0x21,
+    VSTART = 0x23,
+    A1 = 0x24,
+    V1 = 0x25,
+    AMAX = 0x26,
+    VMAX = 0x27,
+    DMAX = 0x28,
+    D1 = 0x2A,
+    VSTOP = 0x2B,
+    XTARGET = 0x2D,
+
+    // etc.
+
+    // ramp generator
+    RAMPMODE = 0x20,
+    // TODO: the rest, or scrap this entirely
+    CHOPCONF = 0x6C,
+    COOLCONF = 0x6D,
+    DRV_STATUS = 0x6F,
+}
+
 /// TMC5160 stepper driver (over SPI).
 
 pub struct STM32G4xxStepperDriver {
@@ -270,6 +312,64 @@ impl STM32G4xxStepperDriver {
         }
     }
 
+    // TMC5160 SPI interface sends data back on the *subsequent* read. A fun exercise would be to
+    // write a pipelined API to optimise read chains using the Typestate pattern. However, we don't
+    // actually do any reads in any significant quantity, so this probably wouldn't be worth it.
+    #[allow(dead_code)]
+    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<(u32, TMCFlags), SPIError> {
+        let cs = match channel {
+            StepperChannel::Channel1 => &mut self.step_spi_cs.0,
+            StepperChannel::Channel2 => &mut self.step_spi_cs.1,
+            StepperChannel::Channel3 => &mut self.step_spi_cs.2,
+            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
+        };
+        set_cs(cs, false);
+        // 40-bit (5 byte), first byte is address, MSB of first byte is 0 for read
+        let address: u8 = reg as u8;
+        let send_data = [address, 0u8, 0u8, 0u8, 0u8];
+        let mut read_data = [0u8; 5];
+        self.step_spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        // embedded_hal gotcha: writes may return BEFORE they've actually written out all data,
+        // so we need to flush before setting CS high again.
+        // It is annoying that this line is as verbose as it is...
+        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.step_spi)
+            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        set_cs(cs, true);
+        set_cs(cs, false);
+        self.step_spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        set_cs(cs, true);
+        // reconstruct register
+        Ok((
+            (read_data[1] as u32) << 24 | (read_data[2] as u32) << 16 | (read_data[3] as u32) << 8 | (read_data[4] as u32),
+            TMCFlags(read_data[0])
+        ))
+    }
+
+    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<TMCFlags, SPIError> {
+        let cs = match channel {
+            StepperChannel::Channel1 => &mut self.step_spi_cs.0,
+            StepperChannel::Channel2 => &mut self.step_spi_cs.1,
+            StepperChannel::Channel3 => &mut self.step_spi_cs.2,
+            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
+        };
+        let address: u8 = (reg as u8) + 0x80;
+        let send_data = [
+            address,
+            // terrible, but we do this exactly once so no point making helper
+            ((data & 0xFF000000) >> 24) as u8,
+            ((data & 0xFF0000) >> 16) as u8,
+            ((data & 0xFF00) >> 8) as u8,
+            (data & 0xFF) as u8
+        ];
+        let mut read_data = [0u8; 5];
+        set_cs(cs, false);
+        self.step_spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.step_spi)
+            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
+        set_cs(cs, true);
+        Ok(TMCFlags(read_data[0]))
+    }
+
     fn init_steppers_config(&mut self) {
         // based on Evan's bringup code
         for i in 0..NUM_STEPPERS {
@@ -288,7 +388,9 @@ impl STM32G4xxStepperDriver {
             }
             // reduce current to 0x20/0x100 = 1/8th of maximum current (which is 15 A peak) = ~2A
             // this is the minimum we can reduce it to... still draws peaks above this!!!
-            self.write_reg(channel, StepperRegister::GLOBALSCALER, 0x00000020).unwrap();
+            // self.write_reg(channel, StepperRegister::GLOBALSCALER, 0x00000020).unwrap();
+            let gs = 128u32; // 32 to 255
+            self.write_reg(channel, StepperRegister::GLOBALSCALER, gs).unwrap();
             // SHORT_CONF: FET short detection lowest sensitivity, SHORTFILTER 3 us, normal shortdelay
             self.write_reg(channel, StepperRegister::SHORT_CONF, 0x00030F0F).unwrap();
             // CHOPCONF: TOFF=3, HSTRT=4, HEND=1, TBL=2, CHM=0 (SpreadCycle)
@@ -309,7 +411,10 @@ impl STM32G4xxStepperDriver {
             // COOLCONF: StallGuard minimum sensitivity
             // self.write_reg(channel, StepperRegister::COOLCONF, 0x003F0000).unwrap();
             // IHOLD_IRUN: IHOLD=10, IRUN=31 (max. current), IHOLDDELAY=6
-            self.write_reg(channel, StepperRegister::IHOLD_IRUN, 0x00000801).unwrap();
+            let ihold = 0u32;
+            let irun = 31u32 << 8; // 0..=31
+            let iholddelay = 6u32 << 16;
+            self.write_reg(channel, StepperRegister::IHOLD_IRUN, ihold | irun | iholddelay).unwrap();
             // TPOWERDOWN=10: Delay before power down in stand still
             self.write_reg(channel, StepperRegister::TPOWERDOWN, 0x00000000).unwrap();
             // TPWM_THRS=500 yields a switching velocity about 35000 = ca. 30RPM
@@ -322,12 +427,12 @@ impl STM32G4xxStepperDriver {
             self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000).unwrap();
 
             // some basic motion profiling defaults
-            self.write_reg(channel, StepperRegister::A1, 400 * MICROSTEPS_PER_STEP).unwrap();
-            self.write_reg(channel, StepperRegister::V1, 300 * MICROSTEPS_PER_STEP).unwrap();
-            self.write_reg(channel, StepperRegister::AMAX, 20 * MICROSTEPS_PER_STEP).unwrap();
-            self.write_reg(channel, StepperRegister::VMAX, 1000 * MICROSTEPS_PER_STEP).unwrap();
-            self.write_reg(channel, StepperRegister::DMAX, 20 * MICROSTEPS_PER_STEP).unwrap();
-            self.write_reg(channel, StepperRegister::D1, 100 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::A1, 50 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::V1, 500 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::AMAX, 30 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::VMAX, 2500 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::DMAX, 30 * MICROSTEPS_PER_STEP).unwrap();
+            self.write_reg(channel, StepperRegister::D1, 50 * MICROSTEPS_PER_STEP).unwrap();
             self.write_reg(channel, StepperRegister::VSTOP, 100).unwrap();
             self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000).unwrap();
         }
@@ -342,6 +447,7 @@ impl STM32G4xxStepperDriver {
 
     // Much like the TMC5160, we could potentially set up a pipelined read API. However, I don't
     // think we actually do chained reads in any significant quantity, so bah humbug.
+    #[allow(dead_code)]
     fn read_enc_reg(&mut self, channel: StepperChannel, reg: EncoderRegister) -> Result<u16, SPIError> {
         // TODO: detect parity errors and treat as SPIError
         let cs = match channel {
@@ -394,6 +500,8 @@ impl STM32G4xxStepperDriver {
         Ok((read_data[0] as u16) << 8 | (read_data[1] as u16))
     }
 
+    /// Debug function: prints contents of the encoder's DIAAGC register
+    #[allow(dead_code)]
     fn dbg_pretty_diaagc(&mut self, channel: StepperChannel) {
         let diaagc = self.read_enc_reg(channel, EncoderRegister::DIAAGC).unwrap();
         let magl = diaagc & (1 << 11) > 0;
@@ -404,6 +512,8 @@ impl STM32G4xxStepperDriver {
         hprintln!("MAGL {} MAGH {} COF {} LF {} AGC {}", magl, magh, cof, lf, agc);
     }
 
+    /// Debug function: prints contents of the encoder's SETTINGS1 and SETTINGS2 registers
+    #[allow(dead_code)]
     fn dbg_pretty_settings(&mut self, channel: StepperChannel) {
         let settings1 = self.read_enc_reg(channel, EncoderRegister::SETTINGS1).unwrap();
         let dir = settings1 & 0x04 > 0;
@@ -416,6 +526,8 @@ impl STM32G4xxStepperDriver {
         hprintln!("SETTINGS2 0x{:04x} = HYS {} ABIRES {}", settings2, hys, abires);
     }
 
+    /// Debug function: prints contents of the encoder data registers (angle readings)
+    #[allow(dead_code)]
     fn dbg_pretty_data(&mut self, channel: StepperChannel) {
         let mag = self.read_enc_reg(channel, EncoderRegister::MAG).unwrap();
         let angleunc = self.read_enc_reg(channel, EncoderRegister::ANGLEUNC).unwrap();
@@ -458,63 +570,6 @@ impl StepperDriver for STM32G4xxStepperDriver {
         let target_usteps: i32 = Libm::<f32>::round((target.0) * ((GEAR_RATIO * MICROSTEPS_PER_REV) as f32) / (PI * 2.0)) as i32;
         self.write_reg(channel, StepperRegister::XTARGET, target_usteps as u32).unwrap();
         Ok(())
-    }
-
-    // TMC5160 SPI interface sends data back on the *subsequent* read. A fun exercise would be to
-    // write a pipelined API to optimise read chains using the Typestate pattern. However, we don't
-    // actually do any reads in any significant quantity, so this probably wouldn't be worth it.
-    fn read_reg(&mut self, channel: StepperChannel, reg: StepperRegister) -> Result<(u32, TMCFlags), SPIError> {
-        let cs = match channel {
-            StepperChannel::Channel1 => &mut self.step_spi_cs.0,
-            StepperChannel::Channel2 => &mut self.step_spi_cs.1,
-            StepperChannel::Channel3 => &mut self.step_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
-        };
-        set_cs(cs, false);
-        // 40-bit (5 byte), first byte is address, MSB of first byte is 0 for read
-        let address: u8 = reg.into();
-        let send_data = [address, 0u8, 0u8, 0u8, 0u8];
-        let mut read_data = [0u8; 5];
-        self.step_spi.write(&send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        // embedded_hal gotcha: writes may return BEFORE they've actually written out all data,
-        // so we need to flush before setting CS high again.
-        // It is annoying that this line is as verbose as it is...
-        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.step_spi)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        set_cs(cs, false);
-        self.step_spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        // reconstruct register
-        Ok((
-            (read_data[1] as u32) << 24 | (read_data[2] as u32) << 16 | (read_data[3] as u32) << 8 | (read_data[4] as u32),
-            TMCFlags(read_data[0])
-        ))
-    }
-
-    fn write_reg(&mut self, channel: StepperChannel, reg: StepperRegister, data: u32) -> Result<TMCFlags, SPIError> {
-        let cs = match channel {
-            StepperChannel::Channel1 => &mut self.step_spi_cs.0,
-            StepperChannel::Channel2 => &mut self.step_spi_cs.1,
-            StepperChannel::Channel3 => &mut self.step_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
-        };
-        let address: u8 = (reg as u8) + 0x80;
-        let send_data = [
-            address,
-            // terrible, but we do this exactly once so no point making helper
-            ((data & 0xFF000000) >> 24) as u8,
-            ((data & 0xFF0000) >> 16) as u8,
-            ((data & 0xFF00) >> 8) as u8,
-            (data & 0xFF) as u8
-        ];
-        let mut read_data = [0u8; 5];
-        set_cs(cs, false);
-        self.step_spi.transfer(&mut read_data, &send_data).map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        <spi::Spi<pac::SPI3, StepperSPIPins> as SpiBus<u8>>::flush(&mut self.step_spi)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        Ok(TMCFlags(read_data[0]))
     }
 
     // TODO: this yields very incorrect values, debug
@@ -562,6 +617,12 @@ impl StepperDriver for STM32G4xxStepperDriver {
             hprintln!("Corrected XACTUAL from {} to {}", xactual.0, expected_xactual);
         }
         Ok(())
+    }
+
+    fn is_busy(&mut self, channel: StepperChannel) -> Result<bool, SPIError> {
+        let xtarget = self.read_reg(channel, StepperRegister::XTARGET)?;
+        let xactual = self.read_reg(channel, StepperRegister::XACTUAL)?;
+        Ok(xtarget.0 != xactual.0)
     }
 }
 
@@ -695,10 +756,5 @@ pub fn init() -> (
     stepper_driver.init_steppers_config();
     stepper_driver.init_encoders_config();
     
-    /* loop {
-        stepper_driver.dbg_pretty_diaagc(StepperChannel::Channel1);
-        stepper_driver.dbg_pretty_data(StepperChannel::Channel1);
-    } */
-
     (cyphal_clock, general_clock, can_driver, led_driver, I2CDriver {}, stepper_driver)
 }

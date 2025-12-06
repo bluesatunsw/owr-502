@@ -31,7 +31,7 @@ use canadensis_data_types::uavcan::si::unit::angular_acceleration::scalar_1_0::S
 extern crate alloc;
 
 mod boards;
-use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, StepperRegister, Radians};
+use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, Radians};
 
 // NOTE: make sure these are configured to be the right values
 const NODE_ID: u8 = 6;
@@ -134,6 +134,7 @@ fn main() -> ! {
     hprintln!("Enabled steppers");
 
     //hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
+    hstepper.set_position(StepperChannel::Channel1, Radians(3.14159 / 60.0)).unwrap();
 
     let mut cycles = 0;
     loop {
@@ -185,14 +186,6 @@ fn main() -> ! {
             let chan2temp = hstepper.get_temperature(StepperChannel::Channel2);
             let chan3temp = hstepper.get_temperature(StepperChannel::Channel3);
             let chan4temp = hstepper.get_temperature(StepperChannel::Channel4);
-            let gconf1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GCONF).unwrap();
-            let ioin1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::IOIN_OUTPUT).unwrap();
-            let gstat1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::GSTAT).unwrap();
-            let xactual1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::XACTUAL).unwrap();
-            let drvstat1 = hstepper.read_reg(StepperChannel::Channel1, StepperRegister::DRV_STATUS).unwrap();
-
-            //hprintln!("1: GCONF 0x{:08x} GSTAT 0x{:08x} XACTUAL 0x{:08x} DRV_STATUS 0x{:08x}", gconf1, gstat1, xactual1, drvstat1);
-            hstepper.set_position(StepperChannel::Channel1, Radians((cycles as f32) * 3.14159 / 6.0)).unwrap();
 
             //node.flush().unwrap();
             if missed_heartbeats > 0 {

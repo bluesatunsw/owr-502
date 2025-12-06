@@ -355,6 +355,7 @@ impl driver::TransmitDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver 
 
     // busy-wait until all frames have been sent
     fn flush(&mut self, _clock: &mut clock::STM32G4xxCyphalClock) -> nb::Result<(), Self::Error> {
+        // TODO: add timeout, since this blocks if there's an issue with the transceiver
         while self.fdcan.txfqs().read().tffl().bits() < 3 {}
         Ok(())
     }
