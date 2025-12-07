@@ -423,7 +423,7 @@ impl STM32G4xxStepperDriver {
 
     /// Debug function: prints contents of the encoder's DIAAGC register
     #[allow(dead_code)]
-    fn dbg_pretty_diaagc(&mut self, channel: StepperChannel) {
+    pub fn dbg_pretty_diaagc(&mut self, channel: StepperChannel) {
         let diaagc = self.read_enc_reg(channel, EncoderRegister::DIAAGC).unwrap();
         let magl = diaagc & (1 << 11) > 0;
         let magh = diaagc & (1 << 10) > 0;
@@ -435,7 +435,7 @@ impl STM32G4xxStepperDriver {
 
     /// Debug function: prints contents of the encoder's SETTINGS1 and SETTINGS2 registers
     #[allow(dead_code)]
-    fn dbg_pretty_settings(&mut self, channel: StepperChannel) {
+    pub fn dbg_pretty_settings(&mut self, channel: StepperChannel) {
         let settings1 = self.read_enc_reg(channel, EncoderRegister::SETTINGS1).unwrap();
         let dir = settings1 & 0x04 > 0;
         let daecdis = settings1 & 0x10 > 0;
@@ -449,7 +449,7 @@ impl STM32G4xxStepperDriver {
 
     /// Debug function: prints contents of the encoder data registers (angle readings)
     #[allow(dead_code)]
-    fn dbg_pretty_data(&mut self, channel: StepperChannel) {
+    pub fn dbg_pretty_data(&mut self, channel: StepperChannel) {
         let mag = self.read_enc_reg(channel, EncoderRegister::MAG).unwrap();
         let angleunc = self.read_enc_reg(channel, EncoderRegister::ANGLEUNC).unwrap();
         let anglecom = self.read_enc_reg(channel, EncoderRegister::ANGLECOM).unwrap();

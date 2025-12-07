@@ -1,12 +1,12 @@
 //! Implementations of some specific low-level drivers for stepper boards Rev. A2, B2 (STM32G474) and
-//! the WeAct dev board (STM32G431). The 32-bit microsecond clock and FDCAN driver have whole
-//! modules to themselves.
+//! the WeAct dev board (STM32G431). The 32-bit microsecond clock, FDCAN driver, TMC5160/encoder
+//! driver and I2C driver have whole modules to themselves.
 
 use cfg_if::cfg_if;
 use cortex_m_semihosting::hprintln;
 
 use crate::boards::{
-    CyphalClock, RGBLEDDriver, RGBLEDColor,
+    CyphalClock, I2CDriver, ISM330Register, RGBLEDColor, RGBLEDDriver
 };
 pub mod clock;
 pub use clock::{STM32G4xxCyphalClock, STM32G4xxGeneralClock};
@@ -14,6 +14,8 @@ pub mod fdcan;
 pub use fdcan::STM32G4xxCanDriver;
 pub mod stepper;
 pub use stepper::{STM32G4xxStepperDriver, StepperTempPins, StepperCSPins, EncoderCSPins};
+pub mod i2c;
+pub use i2c::STM32G4xxI2CDriver;
 
 use hal::{
     prelude::*,
@@ -110,19 +112,12 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
     }
 }
 
-// TODO: I2C driver
-// I2C1: pin PA15, PB7
-
-pub struct I2CDriver {
-    
-}
-
 pub fn init() -> (
     STM32G4xxCyphalClock,
     STM32G4xxGeneralClock,
     STM32G4xxCanDriver,
     STM32G4xxLEDDriver,
-    I2CDriver,
+    STM32G4xxI2CDriver,
     STM32G4xxStepperDriver
 ) {
     // Embedded boilerplate...
@@ -187,7 +182,9 @@ pub fn init() -> (
     let led_driver = STM32G4xxLEDDriver::new(usart1, led_tx_pin, &mut rcc);
 
     // I2C
-    // TODO
+    let sda = gpiob.pb7.into_alternate_open_drain();
+    let scl = gpioa.pa15.into_alternate_open_drain();
+    let mut i2c_driver = STM32G4xxI2CDriver::new(dp.I2C1, sda, scl, &mut rcc);
 
     // Steppers/SPI
     let temp0 = gpioa.pa0.into_analog();
@@ -246,6 +243,65 @@ pub fn init() -> (
 
     stepper_driver.init_steppers_config();
     stepper_driver.init_encoders_config();
-    
-    (cyphal_clock, general_clock, can_driver, led_driver, I2CDriver {}, stepper_driver)
+
+    // I2C testing -- remove once confirmed working on hardware
+    // page-aligned
+    let short_data: [u8; 8] = [0xFF, 0x55, 0xAA, 0x00, 0x13, 0x37, 0xDE, 0xAD];
+    let mut short_readback: [u8; 8] = [0x00; 8];
+    i2c_driver.eeprom_write(0x3F80, &short_data).unwrap();
+    i2c_driver.eeprom_read(0x3F80, &mut short_readback).unwrap();
+    let mut allgood = true;
+    for i in 0..short_readback.len() {
+        if short_data[i] != short_readback[i] {
+            allgood = false;
+        }
+    }
+    if allgood {
+        hprintln!("8-byte EEPROM test 1: PASS");
+    } else {
+        hprintln!("8-byte EEPROM test 1: FAIL");
+    }
+    // try across a page boundary
+    let mut short_readback = [0x00; 8];
+    i2c_driver.eeprom_write(0x1A3D, &short_data).unwrap();
+    i2c_driver.eeprom_read(0x1A3D, &mut short_readback).unwrap();
+    let mut allgood = true;
+    for i in 0..short_readback.len() {
+        if short_data[i] != short_readback[i] {
+            allgood = false;
+        }
+    }
+    if allgood {
+        hprintln!("8-byte EEPROM test 2: PASS");
+    } else {
+        hprintln!("8-byte EEPROM test 2: FAIL");
+    }
+    // try a large multi-page write/read
+    let mut long_data: [u8; 256] = [0x00; 256];
+    for i in 0..256 {
+        long_data[i] = 0;
+    }
+    let mut long_readback: [u8; 256] = [0x00; 256];
+    i2c_driver.eeprom_write(0x0440, &long_data).unwrap();
+    i2c_driver.eeprom_read(0x0440, &mut long_readback).unwrap();
+    let mut allgood = true;
+    for i in 0..long_readback.len() {
+        if long_data[i] != long_readback[i] {
+            allgood = false;
+        }
+    }
+    if allgood {
+        hprintln!("256-byte EEPROM test 1: PASS");
+    } else {
+        hprintln!("256-byte EEPROM test 1: FAIL");
+    }
+    // IMU
+    let whoami = i2c_driver.imu_read_reg(ISM330Register::WHO_AM_I).unwrap();
+    let temp = i2c_driver.imu_read_temperature().unwrap();
+    let gyro = i2c_driver.imu_read_gyro().unwrap();
+    let accel = i2c_driver.imu_read_accel().unwrap();
+    hprintln!("WHO_AM_I = {}, TEMP = {} degC, GYRO = X {} Y {} Z {}, ACCEL = X {} Y {} Z {}",
+        whoami, temp.0, gyro.x, gyro.y, gyro.z, accel.x, accel.y, accel.z);
+
+    (cyphal_clock, general_clock, can_driver, led_driver, i2c_driver, stepper_driver)
 }

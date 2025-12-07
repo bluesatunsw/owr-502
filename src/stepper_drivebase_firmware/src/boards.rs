@@ -48,9 +48,9 @@ pub enum SPIError {
 impl RGBLEDColor {
     pub fn default() -> Self {
         RGBLEDColor {
-            red: 0,
-            green: 0,
-            blue: 0
+            red: 255,
+            green: 255,
+            blue: 255
         }
     }
 }
@@ -117,53 +117,46 @@ pub enum ISM330Register {
     // Linear acceleration sensor Z-axis output register
     OUTZ_L_A = 0x2C,
     OUTZ_H_A = 0x2D,
-    // TODO: the rest, or scrap entirely
+
+    // this list is non-exhaustive, add extra registers if you need
+    WHO_AM_I = 0x0F,
 }
 
 pub trait I2CDriver {
-    fn enable_fast_mode(&mut self);
-    fn disable_fast_mode(&mut self);
-
     fn eeprom_read(&mut self, address: u16, data: &mut [u8]) -> Result<(), I2CError>;
+    /// Note that this will be most efficient if the address is 64-byte aligned.
     fn eeprom_write(&mut self, address: u16, data: &[u8]) -> Result<(), I2CError>;
-    // Underlying operations: byte write, page write, current address read, random read, sequential
-    // read. Identification page functions not implemented.
 
+    // these are deprecated as soon as the read_temperature, _gyro, _accel functions work
     fn imu_read_reg(&mut self, reg: ISM330Register) -> Result<u8, I2CError>;
-    fn imu_write_reg(&mut self, reg: ISM330Register, data: u8) -> Result<u8, I2CError>;
+    fn imu_write_reg(&mut self, reg: ISM330Register, data: u8) -> Result<(), I2CError>;
 
-    fn imu_read_16bitreg(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<f32, I2CError> {
-        let low = self.imu_read_reg(low_reg)? as u16;
-        let high = self.imu_read_reg(high_reg)? as u16;
-        let raw = ((high << 8) | low) as i16;
-        Ok(raw as f32)
-    }
+    fn imu_read_16bitreg(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<u16, I2CError>;
 
-    // TODO: use bitfields internally
     fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
         let raw = self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
         Ok(Celsius(25.0 + (raw as f32) / 256.0))
     }
 
     fn imu_read_gyro(&mut self) -> Result<I2CAxis, I2CError> {
-        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)?;
-        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)?;
-        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)?;
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)? as i16;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)? as i16;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)? as i16;
         Ok(I2CAxis {
-            x: x,
-            y: y,
-            z: z
+            x: x as f32,
+            y: y as f32,
+            z: z as f32
         })
     }
 
     fn imu_read_accel(&mut self) -> Result<I2CAxis, I2CError> {
-        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)?;
-        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)?;
-        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)?;
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)? as i16;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)? as i16;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)? as i16;
         Ok(I2CAxis {
-            x: x,
-            y: y,
-            z: z
+            x: x as f32,
+            y: y as f32,
+            z: z as f32
         })
     }
 }
@@ -220,7 +213,7 @@ cfg_if! {
             stm32g4xx::STM32G4xxGeneralClock,
             CanDriver,
             stm32g4xx::STM32G4xxLEDDriver,
-            stm32g4xx::I2CDriver,
+            stm32g4xx::STM32G4xxI2CDriver,
             stm32g4xx::STM32G4xxStepperDriver
         ) {
             stm32g4xx::init()
