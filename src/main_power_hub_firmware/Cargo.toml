@@ -1,9 +1,13 @@
 [package]
-authors = ["Jonah Hopkin <jonahhopkin@gmail.com>"]
+authors = ["Jonah Hopkin <jonahhopkin@gmail.com>", "Sean Haines <seanhaines2007@gmail.com>"]
 edition = "2018"
 readme = "README.md"
 name = "main_power_hub_firmware"
 version = "0.0.1"
+
+[features]
+
+default = ["stm32g4/stm32g474", "stm32g4xx-hal/stm32g474"]
 
 [dependencies]
 cortex-m-rt = "0.7.5"
@@ -12,7 +16,7 @@ cortex-m-semihosting = "0.5.0"
 stm32g4 = { version = "0.16.0", features = ["rt"]}
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
 # patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
-stm32g4xx-hal = { git = "https://github.com/stm32-rs/stm32g4xx-hal", version = "0.0.2", features = ["rt", "stm32g474"]}
+stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"]}
 nb = "1.1.0"
 heapless = "0.9.1"
 embedded-alloc = "0.6.0"

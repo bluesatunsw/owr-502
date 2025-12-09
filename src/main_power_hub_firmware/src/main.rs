@@ -72,8 +72,9 @@ fn main() -> ! {
     let gpioc = dp.GPIOC.split(&mut rcc);
     let gpiod = dp.GPIOD.split(&mut rcc);
 
-    // ARGB LED SETUP
-    let led_tx_pin = gpiob.pb9.into_alternate();
+                                                // The turbofish can be removed later just here to
+    // ARGB LED SETUP                           // remove the error
+    let led_tx_pin = gpiob.pb9.into_alternate::<7>();
     let usart3 = dp.USART3;
     // The third line of this is in Stepper mod file
     
@@ -98,12 +99,3 @@ fn main() -> ! {
     }
 }
 
-
-
-
-// Crude re-implementation of the LED driver from the stepper drivebase
-
-pub const NUM_LEDS: usize = 6;
-
-// This is for USART3_TX
-type LedTxPin = gpio::PB9<gpio::AF7>;
