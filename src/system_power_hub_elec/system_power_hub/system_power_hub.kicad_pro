@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.1
+          "min_clearance": 0.5
         }
       },
       "diff_pair_dimensions": [
@@ -123,11 +123,11 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.095,
-        "min_connection": 0.095,
-        "min_copper_edge_clearance": 0.25,
+        "min_clearance": 0.0,
+        "min_connection": 0.0,
+        "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
-        "min_hole_clearance": 0.2,
+        "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
         "min_microvia_diameter": 0.2,
         "min_microvia_drill": 0.1,
@@ -135,11 +135,11 @@
         "min_silk_clearance": 0.0,
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
-        "min_through_hole_diameter": 0.2,
-        "min_track_width": 0.095,
-        "min_via_annular_width": 0.125,
-        "min_via_diameter": 0.2,
-        "solder_mask_to_copper_clearance": 0.005,
+        "min_through_hole_diameter": 0.3,
+        "min_track_width": 0.0,
+        "min_via_annular_width": 0.1,
+        "min_via_diameter": 0.5,
+        "solder_mask_to_copper_clearance": 0.0,
         "use_height_for_length_calcs": true
       },
       "teardrop_options": [
@@ -191,7 +191,7 @@
         0.095,
         0.2,
         0.3,
-        0.5
+        0.4
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -223,6 +223,10 @@
         {
           "diameter": 0.0,
           "drill": 0.0
+        },
+        {
+          "diameter": 0.6,
+          "drill": 0.3
         }
       ],
       "zones_allow_external_fillets": false
@@ -234,7 +238,18 @@
       "mfg": "",
       "mpn": ""
     },
-    "layer_pairs": [],
+    "layer_pairs": [
+      {
+        "bottomLayer": 2,
+        "enabled": true,
+        "topLayer": 0
+      },
+      {
+        "bottomLayer": 8,
+        "enabled": true,
+        "topLayer": 6
+      }
+    ],
     "layer_presets": [],
     "viewports": []
   },
@@ -463,34 +478,33 @@
       "wire_dangling": "error"
     }
   },
+  "legacy": [],
   "libraries": {
-    "pinned_footprint_libs": [
-      "Bluesat"
-    ],
+    "pinned_footprint_libs": [],
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "main_power_hub.kicad_pro",
+    "filename": "system_power_hub.kicad_pro",
     "version": 3
   },
   "net_settings": {
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.095,
+        "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
-        "diff_pair_width": 0.0,
+        "diff_pair_width": 0.2,
         "line_style": 0,
-        "microvia_diameter": 0.0,
-        "microvia_drill": 0.0,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.095,
-        "via_diameter": 0.45,
-        "via_drill": 0.2,
+        "track_width": 0.2,
+        "via_diameter": 0.6,
+        "via_drill": 0.3,
         "wire_width": 6
       }
     ],
@@ -505,11 +519,11 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "./",
+      "netlist": "",
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "../../../../OneDrive/Desktop/Bluesat Step Files/main_power_hub.step",
+      "step": "../../../../OneDrive/Desktop/Bluesat Step Files/system_power_hub.step",
       "svg": "",
       "vrml": ""
     },
@@ -613,14 +627,14 @@
       "intersheets_ref_show": false,
       "intersheets_ref_suffix": "",
       "junction_size_choice": 3,
-      "label_size_ratio": 0.375,
+      "label_size_ratio": 0.25,
       "operating_point_overlay_i_precision": 3,
       "operating_point_overlay_i_range": "~A",
       "operating_point_overlay_v_precision": 3,
       "operating_point_overlay_v_range": "~V",
       "overbar_offset_ratio": 1.23,
-      "pin_symbol_size": 25.0,
-      "text_offset_ratio": 0.15
+      "pin_symbol_size": 0.0,
+      "text_offset_ratio": 0.08
     },
     "legacy_lib_dir": "",
     "legacy_lib_list": [],
@@ -628,14 +642,6 @@
       "version": 1
     },
     "net_format_name": "",
-    "ngspice": {
-      "fix_include_paths": true,
-      "meta": {
-        "version": 0
-      },
-      "model_mode": 4,
-      "workbook_filename": ""
-    },
     "page_layout_descr_file": "",
     "plot_directory": "",
     "space_save_all_events": true,
@@ -668,6 +674,14 @@
     [
       "4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a",
       "Mosfets 1"
+    ],
+    [
+      "5a174002-ffcc-4227-bd40-56b6b535d594",
+      "Mosfets 3"
+    ],
+    [
+      "f7a18f6d-784b-4045-823f-0a66708ba49a",
+      "Mosfets 4"
     ]
   ],
   "text_variables": {}
