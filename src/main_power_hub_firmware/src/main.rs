@@ -77,7 +77,7 @@ fn main() -> ! {
 
                                                 // The turbofish can be removed later just here to
     // ARGB LED SETUP                           // remove the error
-    let led_tx_pin = gpiob.pb9.into_alternate::<7>();
+    let led_tx_pin = gpiob.pb9.into_alternate();
     let usart3 = dp.USART3;
     let mut hled = STM32G4xxLEDDriver::new(usart3, led_tx_pin, &mut rcc);
     
@@ -105,17 +105,18 @@ fn main() -> ! {
                 blue: if cycles % 3 == 1 { 0xFF } else { 0x00 },
                 green: if cycles % 3 == 1 { 0xFF } else { 0x00 },
             };
-            let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
+            // This is for the other command which i commented out
+            // let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
             cycles += 1;
             hled.set_nth_led(0, led_color);
-            hled.set_nth_led(1, led_color);
-            hled.set_nth_led(2, led_color);
-            hled.set_nth_led(3, led_color);
-            hled.set_nth_led(4, led_color);
-            hled.set_nth_led(5, led_color);
-            hled.set_nth_led_and_render(1, led_color_2.into());
+            // hled.set_nth_led(1, led_color);
+            // hled.set_nth_led(2, led_color);
+            // hled.set_nth_led(3, led_color);
+            // hled.set_nth_led(4, led_color);
+            // hled.set_nth_led(5, led_color);
+            // hled.set_nth_led_and_render(1, led_color_2.into());
 
-        cortex_m::asm::nop();
+        // cortex_m::asm::nop();
 
     }
 }
