@@ -8,6 +8,8 @@ use stm32g4xx_hal::{
 
 use stm32g4xx_hal::serial::TxExt;
 
+use embedded_io::Write;
+
 // Crude re-implementation of the LED driver from the stepper drivebase
 pub const NUM_LEDS: usize = 6;
 
@@ -68,7 +70,9 @@ pub struct STM32G4xxLEDDriver {
 
 impl STM32G4xxLEDDriver {
     // Initialise the USART1 peripheral.
-    fn new(usart3: pac::USART3, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
+    // This has to be public so that the other file can access it
+    // it was private in stepper as it was initialised in the same file
+    pub fn new(usart3: pac::USART3, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
     {
         const BAUDRATE: time::Bps = time::Bps(2_500_000);
         let config = stm32g4xx_hal::serial::config::FullConfig::default()

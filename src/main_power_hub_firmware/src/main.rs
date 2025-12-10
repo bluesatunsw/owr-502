@@ -19,6 +19,9 @@ use stm32g4xx_hal::{
     pwm::PwmExt
 };
 
+use crate::boards::*;
+
+
 
 // This below is used for aavin's strange print function
 // use cortex_m_log::{destination::Itm, print, println};
@@ -76,7 +79,7 @@ fn main() -> ! {
     // ARGB LED SETUP                           // remove the error
     let led_tx_pin = gpiob.pb9.into_alternate::<7>();
     let usart3 = dp.USART3;
-    // The third line of this is in Stepper mod file
+    let mut hled = STM32G4xxLEDDriver::new(usart3, led_tx_pin, &mut rcc);
     
 
     let clock_pin: gpio::PB7<gpio::AF10> = gpiob.pb7.into_alternate();
@@ -93,9 +96,27 @@ fn main() -> ! {
     // J4 CH3
     gpioc.pc6.into_push_pull_output().set_low();
 
-
+    let mut cycles = 0;
     loop {
+
+        // RGB LED test routine!
+            let led_color = RGBLEDColor {
+                red: if cycles % 3 == 0 { 0xFF } else { 0x00 },
+                blue: if cycles % 3 == 1 { 0xFF } else { 0x00 },
+                green: if cycles % 3 == 1 { 0xFF } else { 0x00 },
+            };
+            let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
+            cycles += 1;
+            hled.set_nth_led(0, led_color);
+            hled.set_nth_led(1, led_color);
+            hled.set_nth_led(2, led_color);
+            hled.set_nth_led(3, led_color);
+            hled.set_nth_led(4, led_color);
+            hled.set_nth_led(5, led_color);
+            hled.set_nth_led_and_render(1, led_color_2.into());
+
         cortex_m::asm::nop();
+
     }
 }
 
