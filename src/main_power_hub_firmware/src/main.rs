@@ -26,6 +26,20 @@ use crate::boards::*;
 // This below is used for aavin's strange print function
 // use cortex_m_log::{destination::Itm, print, println};
 
+/* NOTE: This code does not currently work when uncommented
+// All for println omagawd
+dp.DBGMCU.cr().write(|w| unsafe {
+    w.trace_ioen().set_bit();   // Enable TPIU
+    w.trace_mode().bits(00)     // Async (SWO) Mode
+});
+
+let core_dp = cortex_m::Peripherals::take().unwrap();
+let mut log = Itm::new(core_dp.ITM);
+
+println!(log, "Amogus");
+*/
+
+
 mod boards;
 
 ///////////
@@ -35,66 +49,17 @@ mod boards;
 #[entry]
 fn main() -> ! {
     // Embedded boilerplate...
-    let dp = stm32g4xx_hal::stm32::Peripherals::take().unwrap();
-    let pwr = dp.PWR.constrain().freeze();
 
-    let mut rcc = dp.RCC.freeze(
-        // enable HSE @ 24 MHz (stepper board)
-        Config::pll()
-            .pll_cfg(PllConfig {
-                mux: PllSrc::HSE(24.MHz()),
-                m: PllMDiv::DIV_3,
-                n: PllNMul::MUL_32,
-                r: Some(PllRDiv::DIV_2), // Why limit ourselves @Jonah? :p
-                q: Some(PllQDiv::DIV_2),
-                p: None,
-            })
-            .fdcan_src(FdCanClockSource::PLLQ),
-        pwr
-    );
-
+    let (mut hled, mut pwr_channel_enable) = boards::init();
     
-    /* NOTE: This code does not currently work when uncommented
-    // All for println omagawd
-    dp.DBGMCU.cr().write(|w| unsafe {
-        w.trace_ioen().set_bit();   // Enable TPIU
-        w.trace_mode().bits(00)     // Async (SWO) Mode
-    });
-
-    let core_dp = cortex_m::Peripherals::take().unwrap();
-    let mut log = Itm::new(core_dp.ITM);
-
-    println!(log, "Amogus");
-    */
 
     hprintln!("Tesitng semihosting!");
 
-    // Set up pins.
-    let gpioa = dp.GPIOA.split(&mut rcc);
-    let gpiob = dp.GPIOB.split(&mut rcc);
-    let gpioc = dp.GPIOC.split(&mut rcc);
-    let gpiod = dp.GPIOD.split(&mut rcc);
-
-                                                // The turbofish can be removed later just here to
-    // ARGB LED SETUP                           // remove the error
-    let led_tx_pin = gpiob.pb9.into_alternate();
-    let usart3 = dp.USART3;
-    let mut hled = STM32G4xxLEDDriver::new(usart3, led_tx_pin, &mut rcc);
+    pwr_channel_enable.0.set_low();
+    pwr_channel_enable.1.set_low();
+    pwr_channel_enable.2.set_low();
+    pwr_channel_enable.3.set_low();
     
-
-    let clock_pin: gpio::PB7<gpio::AF10> = gpiob.pb7.into_alternate();
-    let mut pwm = dp.TIM3.pwm(clock_pin, 100.kHz(), &mut rcc);
-    let _ = pwm.set_duty_cycle_percent(5);
-    pwm.enable();
-
-    // J8 CH0
-    gpioc.pc9.into_push_pull_output().set_low();
-    // J9 CH1
-    gpioc.pc8.into_push_pull_output().set_low();
-    // J2 CH2
-    gpioc.pc7.into_push_pull_output().set_low();
-    // J4 CH3
-    gpioc.pc6.into_push_pull_output().set_low();
 
     let mut cycles = 0;
     loop {

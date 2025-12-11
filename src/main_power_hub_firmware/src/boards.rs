@@ -1,21 +1,35 @@
+// For now this code is not split up into boards as there will probably only be
+// the g4xx using this board
+//
+// If anything it will be the we-act using the board but that probably won't happen
+// either
+
 use stm32g4xx_hal::{
-    serial, 
+    prelude::*,
+    serial,
+    pwr::PwrExt,  
     pac, 
-    time,
-    rcc::{Rcc},
-    gpio
+    time::{self, RateExtU32},
+    rcc::*,
+    gpio,
+    pwm::PwmExt
 };
+
 
 use stm32g4xx_hal::serial::TxExt;
 
 use embedded_io::Write;
+
+
+////////////////////
+// LED CODE BLOCK //
+////////////////////
 
 // Crude re-implementation of the LED driver from the stepper drivebase
 pub const NUM_LEDS: usize = 6;
 
 // This is for USART3_TX
 type LedTxPin = gpio::PB9<gpio::AF7>;
-
 
 #[derive(Clone, Copy)]
 pub struct RGBLEDColor {
@@ -131,4 +145,75 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
         self.set_nth_led(n, color);
         self.render();
     }
+}
+
+
+//////////////////////////////
+// POWER CHANNEL CODE BLOCK //
+//////////////////////////////
+
+// TODO:
+// Implement a struct which handles the power channels
+
+
+
+// This function does all of the initialization for the board
+// This will return all of the abstracted drivers to use in main
+pub fn init() -> (
+    STM32G4xxLEDDriver,
+    (gpio::Pin<'C', 9, gpio::Output>, gpio::Pin<'C', 8, gpio::Output>, gpio::Pin<'C', 7, gpio::Output>, gpio::Pin<'C', 6, gpio::Output>)
+) {
+
+    let dp = stm32g4xx_hal::stm32::Peripherals::take().unwrap();
+    let pwr = dp.PWR.constrain().freeze();
+
+    let mut rcc = dp.RCC.freeze(
+        // enable HSE @ 24 MHz (stepper board)
+        Config::pll()
+            .pll_cfg(PllConfig {
+                mux: PllSrc::HSE(24.MHz()),
+                m: PllMDiv::DIV_3,
+                n: PllNMul::MUL_32,
+                r: Some(PllRDiv::DIV_2), // Why limit ourselves @Jonah? :p
+                q: Some(PllQDiv::DIV_2),
+                p: None,
+            })
+            .fdcan_src(FdCanClockSource::PLLQ),
+        pwr
+    );
+
+    let gpioa = dp.GPIOA.split(&mut rcc);
+    let gpiob = dp.GPIOB.split(&mut rcc);
+    let gpioc = dp.GPIOC.split(&mut rcc);
+    let gpiod = dp.GPIOD.split(&mut rcc);
+
+    // ARGB LED SETUP
+    let led_tx_pin = gpiob.pb9.into_alternate();
+    let usart3 = dp.USART3;
+    let mut hled = STM32G4xxLEDDriver::new(usart3, led_tx_pin, &mut rcc);
+
+    // Clock pin setup
+    // This will be initialised and then not be used later
+    let clock_pin: gpio::PB7<gpio::AF10> = gpiob.pb7.into_alternate();
+    let mut pwm = dp.TIM3.pwm(clock_pin, 100.kHz(), &mut rcc);
+    let _ = pwm.set_duty_cycle_percent(5);
+    pwm.enable();
+
+    // The power channel GPIO enables are initialised as a tuple
+    // This means they can be directly called by eg:
+    //          pwr_channel_enable.0.set_low();
+    let mut pwr_channel_enable  = (
+        // J8 CH0
+        gpioc.pc9.into_push_pull_output(),
+        // J9 CH1
+        gpioc.pc8.into_push_pull_output(),
+        // J2 CH2
+        gpioc.pc7.into_push_pull_output(),
+        // J4 CH3
+        gpioc.pc6.into_push_pull_output()
+    ); 
+
+
+    (hled, pwr_channel_enable)
+
 }
