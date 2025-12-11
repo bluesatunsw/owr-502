@@ -152,10 +152,23 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
 // POWER CHANNEL CODE BLOCK //
 //////////////////////////////
 
+const NUM_CHANNELS: u32 = 4;
+
 // TODO:
 // Implement a struct which handles the power channels
 
+// These channels should be marked physically so that we know which is which
+pub enum PowerChannels {
+    Channel0,
+    Channel1,
+    Channel2,
+    Channel3,
+}
 
+pub struct PowerController {
+
+
+}
 
 // This function does all of the initialization for the board
 // This will return all of the abstracted drivers to use in main
