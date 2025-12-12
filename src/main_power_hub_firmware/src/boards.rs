@@ -28,8 +28,8 @@ use embedded_io::Write;
 // Crude re-implementation of the LED driver from the stepper drivebase
 pub const NUM_LEDS: usize = 6;
 
-// This is for USART3_TX
-type LedTxPin = gpio::PB9<gpio::AF7>;
+// This is for USART1_TX
+type LedTxPin = gpio::PA9<gpio::AF7>;
 
 #[derive(Clone, Copy)]
 pub struct RGBLEDColor {
@@ -78,7 +78,7 @@ pub trait RGBLEDDriver {
 // ON THE STEPPER BOARD
 
 pub struct STM32G4xxLEDDriver {
-    usart: stm32g4xx_hal::serial::Tx<pac::USART3, LedTxPin, serial::NoDMA>,
+    usart: stm32g4xx_hal::serial::Tx<pac::USART1, LedTxPin, serial::NoDMA>,
     colors: [RGBLEDColor; NUM_LEDS],
 }
 
@@ -86,7 +86,7 @@ impl STM32G4xxLEDDriver {
     // Initialise the USART1 peripheral.
     // This has to be public so that the other file can access it
     // it was private in stepper as it was initialised in the same file
-    pub fn new(usart3: pac::USART3, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
+    pub fn new(usart1: pac::USART1, tx_pin: LedTxPin, rcc: &mut Rcc) -> Self 
     {
         const BAUDRATE: time::Bps = time::Bps(2_500_000);
         let config = stm32g4xx_hal::serial::config::FullConfig::default()
@@ -94,11 +94,11 @@ impl STM32G4xxLEDDriver {
             .tx_invert()
             .wordlength_7()
             .stopbits(serial::config::StopBits::STOP1);
-        let usart3 = usart3.usart_txonly(tx_pin, config, rcc).unwrap();
+        let usart1 = usart1.usart_txonly(tx_pin, config, rcc).unwrap();
 
 
         Self {
-            usart: usart3,
+            usart: usart1,
             colors: [RGBLEDColor::default(); NUM_LEDS]
         }
     }
@@ -165,7 +165,39 @@ pub enum PowerChannels {
     Channel3,
 }
 
+
 pub struct PowerController {
+    pwr_channel: [gpio::AnyPin<gpio::Output>; 4],
+}
+
+impl PowerController {
+
+    pub fn new() -> Self {
+
+        PowerController {
+            
+        }
+
+
+    }
+
+    pub fn enable_all(&mut self) {
+        
+        self.pwr_channel[0].set_low();
+        self.pwr_channel[1].set_low();
+        self.pwr_channel[2].set_low();
+        self.pwr_channel[3].set_low();
+
+    }
+
+    pub fn disable_all(&mut self) {
+        
+        self.pwr_channel[0].set_high();
+        self.pwr_channel[1].set_high();
+        self.pwr_channel[2].set_high();
+        self.pwr_channel[3].set_high();
+
+    }
 
 
 }
@@ -201,9 +233,10 @@ pub fn init() -> (
     let gpiod = dp.GPIOD.split(&mut rcc);
 
     // ARGB LED SETUP
-    let led_tx_pin = gpiob.pb9.into_alternate();
-    let usart3 = dp.USART3;
-    let mut hled = STM32G4xxLEDDriver::new(usart3, led_tx_pin, &mut rcc);
+    // let led_tx_pin = gpiob.pb9.into_open_drain_output().into_alternate();
+    let led_tx_pin = gpioa.pa9.into_alternate();
+    let usart1 = dp.USART1;
+    let mut hled = STM32G4xxLEDDriver::new(usart1, led_tx_pin, &mut rcc);
 
     // Clock pin setup
     // This will be initialised and then not be used later
@@ -212,19 +245,24 @@ pub fn init() -> (
     let _ = pwm.set_duty_cycle_percent(5);
     pwm.enable();
 
+
+    
+
     // The power channel GPIO enables are initialised as a tuple
     // This means they can be directly called by eg:
     //          pwr_channel_enable.0.set_low();
-    let mut pwr_channel_enable  = (
-        // J8 CH0
-        gpioc.pc9.into_push_pull_output(),
-        // J9 CH1
-        gpioc.pc8.into_push_pull_output(),
-        // J2 CH2
-        gpioc.pc7.into_push_pull_output(),
-        // J4 CH3
-        gpioc.pc6.into_push_pull_output()
-    ); 
+    // let mut pwr_channel_enable  = (
+    //     // J8 CH0
+    //     gpioc.pc9.into_push_pull_output(),
+    //     // J9 CH1
+    //     gpioc.pc8.into_push_pull_output(),
+    //     // J2 CH2
+    //     gpioc.pc7.into_push_pull_output(),
+    //     // J4 CH3
+    //     gpioc.pc6.into_push_pull_output()
+    // ); 
+
+
 
 
     (hled, pwr_channel_enable)
