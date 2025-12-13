@@ -31,7 +31,7 @@ use crate::boards::{
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: u32 = 60;
 /// Number of microsteps used. Must be a power of two no greater than 256.
-const MICROSTEPS_PER_STEP: u32 = 4;
+const MICROSTEPS_PER_STEP: u32 = 256;
 /// The number of stepper motors that the board is actually controlling, to avoid dealing with
 /// motors that don't exist.
 pub const NUM_STEPPERS: usize = 4;
@@ -306,10 +306,10 @@ impl STM32G4xxStepperDriver {
             // self.write_reg(channel, StepperRegister::GLOBALSCALER, 0x00000020).unwrap();
             let gs = 128u32; // 32 to 255
             self.write_reg(channel, StepperRegister::GLOBALSCALER, gs).unwrap();
-            // SHORT_CONF: FET short detection lowest sensitivity, SHORTFILTER 3 us, normal shortdelay
-            self.write_reg(channel, StepperRegister::SHORT_CONF, 0x00030F0F).unwrap();
+            // SHORT_CONF: FET short detection moderate sensitivity, SHORTFILTER 1 us, normal shortdelay
+            self.write_reg(channel, StepperRegister::SHORT_CONF, 0x00010606).unwrap();
             // CHOPCONF: TOFF=3, HSTRT=4, HEND=1, TBL=2, CHM=0 (SpreadCycle)
-            // also disable short protection -- it seems to be very sensitive
+            // ensure that short protection is enabled to prevent damage ー breaks with the bench PSU
             let microsteps_pattern = match MICROSTEPS_PER_STEP {
                 1 => 0x08000000,
                 2 => 0x07000000,
@@ -322,7 +322,7 @@ impl STM32G4xxStepperDriver {
                 256 => 0x00000000,
                 _ => unreachable!("MICROSTEPS_PER_STEP is a power of two not greater than 256")
             };
-            self.write_reg(channel, StepperRegister::CHOPCONF, 0xC00100C3 | microsteps_pattern).unwrap();
+            self.write_reg(channel, StepperRegister::CHOPCONF, 0x000100C3 | microsteps_pattern).unwrap();
             // COOLCONF: StallGuard minimum sensitivity
             // self.write_reg(channel, StepperRegister::COOLCONF, 0x003F0000).unwrap();
             // IHOLD_IRUN: IHOLD=10, IRUN=31 (max. current), IHOLDDELAY=6

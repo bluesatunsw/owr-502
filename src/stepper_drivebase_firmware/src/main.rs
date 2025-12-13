@@ -134,7 +134,10 @@ fn main() -> ! {
     hprintln!("Enabled steppers");
 
     //hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
-    hstepper.set_position(StepperChannel::Channel1, Radians(3.14159 / 60.0)).unwrap();
+    hstepper.set_position(StepperChannel::Channel1, Radians(3.14159 * 0.5)).unwrap();
+    hstepper.set_position(StepperChannel::Channel2, Radians(3.14159 * 1.0)).unwrap();
+    hstepper.set_position(StepperChannel::Channel3, Radians(3.14159 * 1.5)).unwrap();
+    hstepper.set_position(StepperChannel::Channel4, Radians(3.14159 * 2.0)).unwrap();
 
     let mut cycles = 0;
     loop {
