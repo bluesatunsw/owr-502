@@ -4,15 +4,9 @@
 // If anything it will be the we-act using the board but that probably won't happen
 // either
 
+use cortex_m::delay;
 use stm32g4xx_hal::{
-    prelude::*,
-    serial,
-    pwr::PwrExt,  
-    pac, 
-    time::{self, RateExtU32},
-    rcc::*,
-    gpio,
-    pwm::PwmExt
+    adc::{self, AdcClaim, AdcCommonExt, config}, gpio::{self, PB14}, pac, prelude::*, pwm::PwmExt, pwr::PwrExt, rcc::*, serial, time::{self, RateExtU32}
 };
 
 
@@ -158,11 +152,9 @@ const NUM_CHANNELS: u32 = 4;
 // Implement a struct which handles the power channels
 
 // These channels should be marked physically so that we know which is which
-pub enum PowerChannels {
-    Channel0,
-    Channel1,
-    Channel2,
-    Channel3,
+pub struct PowerChannel {
+    enable: gpio::AnyPin<gpio::Output>,
+    sense: gpio::AnyPin<gpio::Input>
 }
 
 
@@ -172,10 +164,21 @@ pub struct PowerController {
 
 impl PowerController {
 
-    pub fn new() -> Self {
+    pub fn new(
+        pin0: gpio::AnyPin<gpio::Output>,
+        pin1: gpio::AnyPin<gpio::Output>,
+        pin2: gpio::AnyPin<gpio::Output>,
+        pin3: gpio::AnyPin<gpio::Output>
+
+    ) -> Self {
 
         PowerController {
-            
+            pwr_channel: [
+                pin0,
+                pin1,
+                pin2,
+                pin3
+            ]
         }
 
 
@@ -183,6 +186,8 @@ impl PowerController {
 
     pub fn enable_all(&mut self) {
         
+        // This enables all the output channels by letting going low
+        // and letting the gate open on the NPN
         self.pwr_channel[0].set_low();
         self.pwr_channel[1].set_low();
         self.pwr_channel[2].set_low();
@@ -192,6 +197,7 @@ impl PowerController {
 
     pub fn disable_all(&mut self) {
         
+        // Similar but disabling instead via inverse
         self.pwr_channel[0].set_high();
         self.pwr_channel[1].set_high();
         self.pwr_channel[2].set_high();
@@ -206,10 +212,13 @@ impl PowerController {
 // This will return all of the abstracted drivers to use in main
 pub fn init() -> (
     STM32G4xxLEDDriver,
-    (gpio::Pin<'C', 9, gpio::Output>, gpio::Pin<'C', 8, gpio::Output>, gpio::Pin<'C', 7, gpio::Output>, gpio::Pin<'C', 6, gpio::Output>)
+    PowerController,
+    adc::Adc<stm32g4::Periph<pac::adc1::RegisterBlock, 1342178560>, adc::Configured>,
+    gpio::Pin<'B', 14>
 ) {
 
     let dp = stm32g4xx_hal::stm32::Peripherals::take().unwrap();
+    let cp = cortex_m::Peripherals::take().unwrap();
     let pwr = dp.PWR.constrain().freeze();
 
     let mut rcc = dp.RCC.freeze(
@@ -221,7 +230,7 @@ pub fn init() -> (
                 n: PllNMul::MUL_32,
                 r: Some(PllRDiv::DIV_2), // Why limit ourselves @Jonah? :p
                 q: Some(PllQDiv::DIV_2),
-                p: None,
+                p: Some(PllPDiv::DIV_8), // Has to be under 60MHz for it to work
             })
             .fdcan_src(FdCanClockSource::PLLQ),
         pwr
@@ -245,26 +254,34 @@ pub fn init() -> (
     let _ = pwm.set_duty_cycle_percent(5);
     pwm.enable();
 
+    // Vsense Setup
+    let vsense_pin = gpiob.pb14.into_analog();
 
-    
-
-    // The power channel GPIO enables are initialised as a tuple
-    // This means they can be directly called by eg:
-    //          pwr_channel_enable.0.set_low();
-    // let mut pwr_channel_enable  = (
-    //     // J8 CH0
-    //     gpioc.pc9.into_push_pull_output(),
-    //     // J9 CH1
-    //     gpioc.pc8.into_push_pull_output(),
-    //     // J2 CH2
-    //     gpioc.pc7.into_push_pull_output(),
-    //     // J4 CH3
-    //     gpioc.pc6.into_push_pull_output()
-    // ); 
+    let mut delay = cp.SYST.delay(&rcc.clocks);
+    let mut adc345_common = dp.ADC345_COMMON.claim(Default::default(), &mut rcc);
+    let mut adc4: adc::Adc<stm32g4::Periph<pac::adc1::RegisterBlock, 1342178560>, adc::Configured> = adc345_common
+    .claim_and_configure(
+        dp.ADC4, 
+        adc::config::AdcConfig::default(), 
+        &mut delay
+    );
 
 
+    let power_controller = PowerController::new(
+        // ENABLE PINS
+            // J8 CH0
+            gpioc.pc9.into_push_pull_output().into(),
+            // J9 CH1
+            gpioc.pc8.into_push_pull_output().into(),
+            // J2 CH2
+            gpioc.pc7.into_push_pull_output().into(),
+            // J4 CH3
+            gpioc.pc6.into_push_pull_output().into()
+        // SENSE PINS
+    );
 
 
-    (hled, pwr_channel_enable)
+
+    (hled, power_controller, adc4, vsense_pin)
 
 }

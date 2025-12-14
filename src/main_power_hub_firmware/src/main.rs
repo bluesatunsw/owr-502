@@ -16,7 +16,8 @@ use stm32g4xx_hal::{
     pwr::PwrExt, 
     rcc::*, 
     time::RateExtU32,
-    pwm::PwmExt
+    pwm::PwmExt,
+    adc::config::SampleTime
 };
 
 use crate::boards::*;
@@ -50,17 +51,16 @@ mod boards;
 fn main() -> ! {
     // Embedded boilerplate...
 
-    let (mut hled, mut pwr_channel_enable) = boards::init();
+    let (mut hled, mut power_controller, mut adc4, vsense_pin) = boards::init();
+
+    
     
 
     hprintln!("Tesitng semihosting!");
 
-    pwr_channel_enable.0.set_low();
-    pwr_channel_enable.1.set_low();
-    pwr_channel_enable.2.set_low();
-    pwr_channel_enable.3.set_low();
+    power_controller.enable_all();
 
-    let led_colour_white = RGBLEDColor {
+    let led_colour_magenta = RGBLEDColor {
         red: 0x0F,
         green: 0x00,
         blue: 0x0F,
@@ -76,12 +76,17 @@ fn main() -> ! {
     // let mut cycles = 0;
     loop {
 
-        hled.set_nth_led(0, led_colour_white);
-        hled.set_nth_led(1, led_colour_white);
-        hled.set_nth_led(2, led_colour_white);
-        hled.set_nth_led(3, led_colour_white);
-        hled.set_nth_led(4, led_colour_white);
-        hled.set_nth_led(5, led_colour_white);
+        let sample = adc4.convert(&vsense_pin, SampleTime::Cycles_640_5);
+        let millivolts = adc4.sample_to_millivolts(sample);
+
+        hprintln!("Sample: {}Somethings or {}mV", sample, millivolts);
+
+        hled.set_nth_led(0, led_colour_magenta);
+        hled.set_nth_led(1, led_colour_magenta);
+        hled.set_nth_led(2, led_colour_magenta);
+        hled.set_nth_led(3, led_colour_magenta);
+        hled.set_nth_led(4, led_colour_magenta);
+        hled.set_nth_led(5, led_colour_magenta);
         hled.render();
 
         hprintln!("W");
