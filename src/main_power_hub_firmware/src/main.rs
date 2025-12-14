@@ -51,7 +51,12 @@ mod boards;
 fn main() -> ! {
     // Embedded boilerplate...
 
-    let (mut hled, mut power_controller, mut adc4, vsense_pin) = boards::init();
+    let (
+        mut hled, 
+        mut power_controller, 
+        mut adc_controller,
+        mut vsense_pin
+    ) = boards::init();
 
     
     
@@ -71,15 +76,14 @@ fn main() -> ! {
         green: 0x00,
         blue: 0x00,
     };
-    
 
     // let mut cycles = 0;
     loop {
+        
+        let sample = adc_controller.adc4.convert(&vsense_pin, SampleTime::Cycles_640_5);
+        let millivolts = adc_controller.adc4.sample_to_millivolts(sample);
 
-        let sample = adc4.convert(&vsense_pin, SampleTime::Cycles_640_5);
-        let millivolts = adc4.sample_to_millivolts(sample);
-
-        hprintln!("Sample: {}Somethings or {}mV", sample, millivolts);
+        hprintln!("Raeading {}", sample);
 
         hled.set_nth_led(0, led_colour_magenta);
         hled.set_nth_led(1, led_colour_magenta);

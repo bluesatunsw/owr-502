@@ -5,8 +5,10 @@
 // either
 
 use cortex_m::delay;
+use cortex_m_semihosting::{hprint, hprintln};
+use stm32g4::stm32g474::{ADC1, ADC2, ADC3, ADC4, adc12_common};
 use stm32g4xx_hal::{
-    adc::{self, AdcClaim, AdcCommonExt, config}, gpio::{self, PB14}, pac, prelude::*, pwm::PwmExt, pwr::PwrExt, rcc::*, serial, time::{self, RateExtU32}
+    adc::{self, Adc, AdcClaim, AdcCommonExt, config::{self, AdcConfig}}, gpio::{self, PB14}, pac, prelude::*, pwm::PwmExt, pwr::PwrExt, rcc::*, serial, time::{self, RateExtU32}
 };
 
 
@@ -157,6 +159,15 @@ pub struct PowerChannel {
     sense: gpio::AnyPin<gpio::Input>
 }
 
+impl PowerChannel {
+    fn new(
+        en_pin: gpio::AnyPin<gpio::Output>, 
+        sense_pin: gpio::AnyPin<gpio::Input>
+    ) -> Self {
+        PowerChannel { enable: en_pin, sense: sense_pin }
+    }
+}
+
 
 pub struct PowerController {
     pwr_channel: [gpio::AnyPin<gpio::Output>; 4],
@@ -165,19 +176,26 @@ pub struct PowerController {
 impl PowerController {
 
     pub fn new(
-        pin0: gpio::AnyPin<gpio::Output>,
-        pin1: gpio::AnyPin<gpio::Output>,
-        pin2: gpio::AnyPin<gpio::Output>,
-        pin3: gpio::AnyPin<gpio::Output>
-
+        en_pin0: gpio::AnyPin<gpio::Output>,
+        en_pin1: gpio::AnyPin<gpio::Output>,
+        en_pin2: gpio::AnyPin<gpio::Output>,
+        en_pin3: gpio::AnyPin<gpio::Output>,
+        // sense_pin0: gpio::AnyPin<gpio::Input>,
+        // sense_pin1: gpio::AnyPin<gpio::Input>,
+        // sense_pin2: gpio::AnyPin<gpio::Input>,
+        // sense_pin3: gpio::AnyPin<gpio::Input>
     ) -> Self {
 
         PowerController {
             pwr_channel: [
-                pin0,
-                pin1,
-                pin2,
-                pin3
+                // PowerChannel::new(en_pin0, sense_pin0),
+                // PowerChannel::new(en_pin1, sense_pin1),
+                // PowerChannel::new(en_pin2, sense_pin2),
+                // PowerChannel::new(en_pin3, sense_pin3),
+                en_pin0,
+                en_pin1,
+                en_pin2,
+                en_pin3
             ]
         }
 
@@ -188,6 +206,13 @@ impl PowerController {
         
         // This enables all the output channels by letting going low
         // and letting the gate open on the NPN
+
+        // Code for struct array
+        // self.pwr_channel[0].enable.set_low();
+        // self.pwr_channel[1].enable.set_low();
+        // self.pwr_channel[2].enable.set_low();
+        // self.pwr_channel[3].enable.set_low();
+        
         self.pwr_channel[0].set_low();
         self.pwr_channel[1].set_low();
         self.pwr_channel[2].set_low();
@@ -198,22 +223,36 @@ impl PowerController {
     pub fn disable_all(&mut self) {
         
         // Similar but disabling instead via inverse
+
+        // Code for struct array
+        // self.pwr_channel[0].enable.set_high();
+        // self.pwr_channel[1].enable.set_high();
+        // self.pwr_channel[2].enable.set_high();
+        // self.pwr_channel[3].enable.set_high();
+
         self.pwr_channel[0].set_high();
         self.pwr_channel[1].set_high();
         self.pwr_channel[2].set_high();
         self.pwr_channel[3].set_high();
-
     }
 
 
 }
+
+pub struct AdcController {
+    pub adc1: Adc<ADC1, adc::Configured>,
+    pub adc2: Adc<ADC2, adc::Configured>,
+    pub adc3: Adc<ADC3, adc::Configured>,
+    pub adc4: Adc<ADC4, adc::Configured>
+}
+
 
 // This function does all of the initialization for the board
 // This will return all of the abstracted drivers to use in main
 pub fn init() -> (
     STM32G4xxLEDDriver,
     PowerController,
-    adc::Adc<stm32g4::Periph<pac::adc1::RegisterBlock, 1342178560>, adc::Configured>,
+    AdcController,
     gpio::Pin<'B', 14>
 ) {
 
@@ -230,7 +269,7 @@ pub fn init() -> (
                 n: PllNMul::MUL_32,
                 r: Some(PllRDiv::DIV_2), // Why limit ourselves @Jonah? :p
                 q: Some(PllQDiv::DIV_2),
-                p: Some(PllPDiv::DIV_8), // Has to be under 60MHz for it to work
+                p: Some(PllPDiv::DIV_8), // Has to be under 60MHz for it to work i think
             })
             .fdcan_src(FdCanClockSource::PLLQ),
         pwr
@@ -254,18 +293,59 @@ pub fn init() -> (
     let _ = pwm.set_duty_cycle_percent(5);
     pwm.enable();
 
-    // Vsense Setup
-    let vsense_pin = gpiob.pb14.into_analog();
-
+    // Sense setup
+    // This initialises all of the ADCs and then sets all the pins to: into_analog()
+    // This lets you poll it directly from the pins so no need to mess around with ADC in main
     let mut delay = cp.SYST.delay(&rcc.clocks);
-    let mut adc345_common = dp.ADC345_COMMON.claim(Default::default(), &mut rcc);
-    let mut adc4: adc::Adc<stm32g4::Periph<pac::adc1::RegisterBlock, 1342178560>, adc::Configured> = adc345_common
-    .claim_and_configure(
-        dp.ADC4, 
-        adc::config::AdcConfig::default(), 
-        &mut delay
+
+
+    hprintln!("Configuring adc12!");
+    let mut adc12_common = dp.ADC12_COMMON
+    .claim(config::ClockMode::AdcKerCk { // Here instead of using the default use the enum
+            prescaler: (config::Prescaler::Div_4), // Set the prescaler to /4
+            src: (config::ClockSource::PllP) // set the clock to PLLP
+        }, 
+        &mut rcc
     );
 
+    hprintln!("Configuring adc1");
+    let mut adc1 = adc12_common
+    .claim_and_configure(dp.ADC1, AdcConfig::default(), &mut delay);
+
+    hprintln!("Configuring adc2");
+    let mut adc2 = adc12_common
+    .claim_and_configure(dp.ADC2, AdcConfig::default(), &mut delay);
+
+    hprintln!("Configuring adc345!");
+    let mut adc345_common = dp.ADC345_COMMON
+    .claim(config::ClockMode::AdcKerCk {    // Same here
+            prescaler: (config::Prescaler::Div_4),
+            src: (config::ClockSource::PllP)
+        }, 
+        &mut rcc
+    );
+
+    hprintln!("Configuring adc3!");
+    let mut adc3 = adc345_common
+    .claim_and_configure(dp.ADC3, AdcConfig::default(), &mut delay);
+
+    hprintln!("Configuring adc4!");
+    let mut adc4 = adc345_common
+    .claim_and_configure(dp.ADC4, AdcConfig::default(), &mut delay);
+
+    // Pin configuration, not needed for now i think after they've been set
+    let vsense_pin: gpio::Pin<'B', 14> = gpiob.pb14.into_analog();
+    let ch0_sense_pin = gpioa.pa2.into_analog();
+    let ch1_sense_pin = gpioa.pa6.into_analog();
+    let ch2_sense_pin = gpiob.pb12.into_analog();
+    let ch3_sense_pin = gpiob.pb1.into_analog();
+
+    let adc_controller = AdcController { 
+        adc1,
+        adc2,
+        adc3,
+        adc4 
+    };
 
     let power_controller = PowerController::new(
         // ENABLE PINS
@@ -276,12 +356,16 @@ pub fn init() -> (
             // J2 CH2
             gpioc.pc7.into_push_pull_output().into(),
             // J4 CH3
-            gpioc.pc6.into_push_pull_output().into()
+            gpioc.pc6.into_push_pull_output().into(),
         // SENSE PINS
+        // ch0_sense_pin,
+        // ch1_sense_pin.into(),
+        // ch2_sense_pin.into(),
+        // ch3_sense_pin.into()
     );
 
 
 
-    (hled, power_controller, adc4, vsense_pin)
+    (hled, power_controller, adc_controller, vsense_pin)
 
 }
