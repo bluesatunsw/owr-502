@@ -1,3 +1,6 @@
+use core::convert::TryInto;
+
+use cortex_m::asm::delay;
 use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal::{gpio::{self, AF10}, quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
 use stm32g4xx_hal::pac;
@@ -68,6 +71,14 @@ impl STM32G4xxQspiDriver {
             .with_instruction(LineMode::Single, 0x38)
         );
 
+        // Set Read Parameters (Dummy Cycles=10, Wrap Length=8)
+        // Since we are running slightly faster than the recommended
+        // max speed add additional dummy cycles
+        res.qspi_bus.command(Command::new(DdrMode::Disabled)
+            .with_instruction(LineMode::Quad, 0xC0)
+            .with_alternate_bytes(LineMode::Quad, [0x00])
+        );
+
         // Read Identification Sequence
         let mut id_seq: [u8; 6] = [0,0,0,0,0,0];
         res.qspi_bus.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
@@ -81,15 +92,63 @@ impl STM32G4xxQspiDriver {
         res
     }
 
+    fn wait_wip(&mut self) {
+        loop {
+            let mut status: [u8; 2] = [0,0];
+            self.qspi_bus.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
+                .with_instruction(LineMode::Quad, 0x05),
+                &mut status
+            );
+
+            // Check WIP bit for both chips
+            if (status[0] & 0x01) == 0x00 && (status[1] & 0x01) == 0x00 {
+                break;
+            }
+
+            // Wait around 100us
+            delay(0x1000);
+        }
+    }
+
     pub fn chip_erase(&mut self) {
-        todo!()
+        // Write Enable
+        self.qspi_bus.command(Command::new(DdrMode::Disabled)
+            .with_instruction(LineMode::Quad, 0x06)
+        );
+
+        // Chip Erase
+        self.qspi_bus.command(Command::new(DdrMode::Disabled)
+            .with_instruction(LineMode::Quad, 0x60)
+        );
+
+        self.wait_wip();
     }
 
-    pub fn page_write(&mut self, page_index: u32, data: &[u8; 512]) {
-        todo!()
+    pub fn page_program(&mut self, page_index: u16, data: &[u8; 512]) {
+        // Write Enable
+        self.qspi_bus.command(Command::new(DdrMode::Disabled)
+            .with_instruction(LineMode::Quad, 0x06)
+        );
+
+        // Page Program
+        self.qspi_bus.write(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
+            .with_instruction(LineMode::Quad, 0x02)
+            .with_address(LineMode::Quad, [
+                (page_index/256).try_into().unwrap(),
+                (page_index%256).try_into().unwrap(),
+                0
+            ]),
+            data
+        );
+
+        self.wait_wip();
     }
 
-    pub fn enabled_mapping(self) {
-        todo!()
+    pub fn enabled_mapping(mut self) {
+        self.qspi_bus.memory_mapped(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
+            .with_instruction(LineMode::Quad, 0x0B)
+            .with_address(LineMode::Quad, [0,0,0])
+            .with_dummy_cycles(10)
+        );
     }
 }

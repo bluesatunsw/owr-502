@@ -2,6 +2,8 @@
 //! the WeAct dev board (STM32G431). The 32-bit microsecond clock, FDCAN driver, TMC5160/encoder
 //! driver and I2C driver have whole modules to themselves.
 
+use core::{array::from_fn, convert::TryInto};
+
 use cfg_if::cfg_if;
 use cortex_m_semihosting::hprintln;
 
@@ -187,6 +189,8 @@ pub fn init() -> (
     let qspi_io2_bank2_pin = gpioc.pc3.into_alternate().speed(Speed::VeryHigh);
     let qspi_io3_bank2_pin = gpioc.pc4.into_alternate().speed(Speed::VeryHigh);
 
+    let qspi_data: [u8; 512] = from_fn(|i| (i%256).try_into().unwrap());
+    
     let mut qspi_driver = STM32G4xxQspiDriver::new(
         dp.QUADSPI,
         &mut rcc,
@@ -201,6 +205,13 @@ pub fn init() -> (
         qspi_io2_bank2_pin,
         qspi_io3_bank2_pin
     );
+
+    qspi_driver.chip_erase();
+    qspi_driver.page_program(0, &qspi_data);
+    qspi_driver.enabled_mapping();
+
+    let flash_data  = unsafe { &*(0x9000_0000 as *const [u8; 512]) };
+    hprintln!("Flash data: {:x?}", flash_data);
 
     loop {}
 
