@@ -23,7 +23,7 @@ impl STM32G4xxI2CDriver {
         // try using fast mode unless it doesn't work for whatever reason
         // NOTE: may need to do custom timing config to make sure 1.3 us L / 0.6 ns H min times met?
         // will probably still work with pure square wave (1.25 us L)
-        let i2c_bus = i2c1.i2c(sda, scl, 400.kHz(), rcc);
+        let i2c_bus = i2c1.i2c((sda, scl), 400.kHz(), rcc);
 
         Self {
             i2c_bus,

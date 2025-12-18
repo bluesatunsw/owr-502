@@ -31,7 +31,7 @@ use canadensis_data_types::uavcan::si::unit::angular_acceleration::scalar_1_0::S
 extern crate alloc;
 
 mod boards;
-use crate::boards::{GeneralClock, RGBLEDDriver, RGBLEDColor, StepperDriver, StepperChannel, Radians};
+use crate::boards::{GeneralClock, QSPIDriver, RGBLEDColor, RGBLEDDriver, Radians, StepperChannel, StepperDriver};
 
 // NOTE: make sure these are configured to be the right values
 const NODE_ID: u8 = 6;

@@ -16,6 +16,8 @@ pub mod stepper;
 pub use stepper::{STM32G4xxStepperDriver, StepperTempPins, StepperCSPins, EncoderCSPins};
 pub mod i2c;
 pub use i2c::STM32G4xxI2CDriver;
+pub mod qspi;
+pub use qspi::STM32G4xxQspiDriver;
 
 use hal::{
     prelude::*,
@@ -26,7 +28,7 @@ use hal::{
     serial,
     pac,
 };
-use stm32g4xx_hal as hal;   // don't need to put this in a cfg_if because which board it targets is
+use stm32g4xx_hal::{self as hal, gpio::Speed};   // don't need to put this in a cfg_if because which board it targets is
                             // specified as a feature in Cargo.toml
 use embedded_io::Write;
 
@@ -170,6 +172,37 @@ pub fn init() -> (
     gpiob.pb8.into_push_pull_output();
 
     let mut cyphal_clock = STM32G4xxCyphalClock::new_singleton(dp.TIM2, &mut rcc);
+
+    // QSPI
+    let qspi_ncs_pin = gpioa.pa2.into_alternate().speed(Speed::VeryHigh);
+    let qspi_clk_pin = gpioa.pa3.into_alternate().speed(Speed::VeryHigh);
+
+    let qspi_io0_bank1_pin = gpiob.pb1.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io1_bank1_pin = gpiob.pb0.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io2_bank1_pin = gpioa.pa7.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io3_bank1_pin = gpioa.pa6.into_alternate().speed(Speed::VeryHigh);
+
+    let qspi_io0_bank2_pin = gpioc.pc1.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io1_bank2_pin = gpioc.pc2.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io2_bank2_pin = gpioc.pc3.into_alternate().speed(Speed::VeryHigh);
+    let qspi_io3_bank2_pin = gpioc.pc4.into_alternate().speed(Speed::VeryHigh);
+
+    let mut qspi_driver = STM32G4xxQspiDriver::new(
+        dp.QUADSPI,
+        &mut rcc,
+        qspi_ncs_pin,
+        qspi_clk_pin,
+        qspi_io0_bank1_pin,
+        qspi_io1_bank1_pin,
+        qspi_io2_bank1_pin,
+        qspi_io3_bank1_pin,
+        qspi_io0_bank2_pin,
+        qspi_io1_bank2_pin,
+        qspi_io2_bank2_pin,
+        qspi_io3_bank2_pin
+    );
+
+    loop {}
 
     // FDCAN
     let can_rx_pin = gpioa.pa11.into_alternate();

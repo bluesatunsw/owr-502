@@ -43,7 +43,7 @@ libm = "0.2.15"
 stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
 # patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
-stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"], optional = true }
+stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch = "qspi", version = "0.0.2", features = ["rt"], optional = true }
 stm32g0xx-hal = { git = "https://github.com/stm32-rs/stm32g0xx-hal", version = "0.2.0", features = ["rt"], optional = true }
 
 [dependencies.canadensis_can]
