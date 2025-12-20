@@ -3464,137 +3464,18 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:VDD"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "VDD"
-				(at 0 3.556 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"VDD\""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "VDD_0_1"
-				(polyline
-					(pts
-						(xy -0.762 1.27) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "VDD_1_1"
-				(pin power_in line
-					(at 0 0 90)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 	)
-	(junction
-		(at 92.71 63.5)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "31c4f986-7382-4b2a-baab-b7d863cfa2c9")
+	(text "-Figure out how to do this split up big IC thing the original does.\n-Make schematic for new Etherney PHY Chip\n-Figure out hierarchical pins "
+		(exclude_from_sim no)
+		(at 151.13 79.248 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "fc43ac07-af6d-49c0-843a-7688457a0c66")
 	)
 	(junction
 		(at 74.93 63.5)
@@ -3613,6 +3494,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b1916af2-e1e2-46fb-89b8-9c463116b31d")
+	)
+	(junction
+		(at 92.71 63.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "de12733e-86bb-4734-a0b9-c74d34b54cae")
 	)
 	(wire
 		(pts
@@ -3666,16 +3553,6 @@
 	)
 	(wire
 		(pts
-			(xy 92.71 63.5) (xy 93.98 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0eb26442-b525-45db-8619-24084822afbd")
-	)
-	(wire
-		(pts
 			(xy 30.48 66.04) (xy 49.53 66.04)
 		)
 		(stroke
@@ -3686,7 +3563,7 @@
 	)
 	(wire
 		(pts
-			(xy 92.71 55.88) (xy 92.71 57.15)
+			(xy 92.71 71.12) (xy 92.71 69.85)
 		)
 		(stroke
 			(width 0)
@@ -4026,7 +3903,7 @@
 	)
 	(wire
 		(pts
-			(xy 92.71 62.23) (xy 92.71 63.5)
+			(xy 92.71 64.77) (xy 92.71 63.5)
 		)
 		(stroke
 			(width 0)
@@ -4073,6 +3950,16 @@
 			(type default)
 		)
 		(uuid "9ca7d292-b27a-4014-bacb-e6a4f263aace")
+	)
+	(wire
+		(pts
+			(xy 92.71 63.5) (xy 93.98 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d66ea17-0475-4c8a-b8a9-93830c5797d8")
 	)
 	(wire
 		(pts
@@ -5196,139 +5083,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VDD")
-		(at 72.39 21.59 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "612973ea-b03b-4221-bd83-50e138831c01")
-		(property "Reference" "#PWR01"
-			(at 72.39 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD-POE"
-			(at 72.39 16.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 72.39 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 72.39 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 72.39 21.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "904e9d3e-08e3-4b4e-bd1c-4021578e8556")
-		)
-		(instances
-			(project ""
-				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
-					(reference "#PWR01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VDD")
-		(at 25.4 87.63 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "62a31d53-5ec1-490d-9fd7-af4ea5b37812")
-		(property "Reference" "#PWR02"
-			(at 29.21 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD-POE"
-			(at 21.59 87.6299 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 25.4 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 25.4 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 25.4 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "514c2a7f-21a4-4c8b-ae18-295375312ec5")
-		)
-		(instances
-			(project "owr_wifi_router"
-				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
-					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 43.18 71.12 0)
 		(unit 1)
@@ -5617,92 +5371,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x08_Pin")
-		(at 87.63 46.99 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "71e6b290-3328-451f-882d-c5a073e99d32")
-		(property "Reference" "J?"
-			(at 86.995 34.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BM08B-PASS"
-			(at 86.995 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Bluesat:BM08B-PASS"
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x08, script generated"
-			(at 87.63 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "6"
-			(uuid "38ff60b6-ba66-4eeb-9207-1d4b34ddc975")
-		)
-		(pin "2"
-			(uuid "cbe86cd3-d412-4f64-9dc1-99ae4d71c3ee")
-		)
-		(pin "5"
-			(uuid "d7464b52-eee6-47c1-bffe-3040b8144f1f")
-		)
-		(pin "4"
-			(uuid "7dc88e12-1531-43ca-b5f8-13983fd3da6f")
-		)
-		(pin "1"
-			(uuid "df87da6e-0d40-4e5f-923c-e64420895fb8")
-		)
-		(pin "3"
-			(uuid "dca30bcc-7205-4cda-90ef-361c330c3865")
-		)
-		(pin "8"
-			(uuid "106513e2-0453-4688-94f8-69c5eb7d2e04")
-		)
-		(pin "7"
-			(uuid "b70f738b-658c-4bcb-b34c-4e4fb2d00aff")
-		)
-		(instances
-			(project "owr_wifi_router"
-				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
-					(reference "J?")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 39.37 71.12 0)
 		(unit 1)
@@ -5776,16 +5444,15 @@
 	)
 	(symbol
 		(lib_id "Bluesat:C_CompactV")
-		(at 92.71 59.69 0)
+		(at 92.71 67.31 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "84c1caac-f229-4187-9da5-3703169ab563")
 		(property "Reference" "C?"
-			(at 91.821 58.928 90)
+			(at 93.599 68.072 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -5795,7 +5462,7 @@
 			)
 		)
 		(property "Value" "2u2"
-			(at 93.599 58.928 90)
+			(at 91.821 68.072 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -5805,7 +5472,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_1206_3216Metric"
-			(at 92.71 59.69 90)
+			(at 92.71 67.31 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5814,7 +5481,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 92.71 59.69 90)
+			(at 92.71 67.31 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5823,7 +5490,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 92.71 59.69 0)
+			(at 92.71 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6049,71 +5716,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+24V")
-		(at 92.71 55.88 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a993c725-56b7-434c-bd9a-eff57f46fbfa")
-		(property "Reference" "#PWR031"
-			(at 92.71 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD-POE"
-			(at 92.71 52.07 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 92.71 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 92.71 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+24V\""
-			(at 92.71 55.88 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "269de43b-a1e8-459b-9214-e3854f8e1b2d")
-		)
-		(instances
-			(project "owr_wifi_router"
-				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
-					(reference "#PWR031")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 35.56 71.12 0)
 		(unit 1)
@@ -6186,6 +5788,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+24V")
+		(at 72.39 21.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e3c4597a-e4aa-4201-ab8b-f880df74533d")
+		(property "Reference" "#PWR01"
+			(at 72.39 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+24V"
+			(at 72.39 16.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 72.39 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 72.39 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+24V\""
+			(at 72.39 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "abc13c2b-d525-46dd-83bf-db09d6f9e530")
+		)
+		(instances
+			(project ""
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 74.93 73.66 0)
 		(unit 1)
@@ -6250,6 +5918,114 @@
 			)
 		)
 	)
+	(symbol
+		(lib_id "power:+24V")
+		(at 92.71 71.12 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f235f549-1a2e-44b4-8f24-04cf0f13ddcc")
+		(property "Reference" "#PWR02"
+			(at 92.71 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+24V"
+			(at 92.71 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 92.71 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 92.71 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+24V\""
+			(at 92.71 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c0a7181b-e0de-4b3a-bdbc-6871c54bcc49")
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 72.39 85.09)
+		(size 34.29 44.45)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "232f4d8f-1ec3-46d8-9e1d-68e724e6b529")
+		(property "Sheetname" "Memory"
+			(at 72.39 84.3784 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "memory.kicad_sch"
+			(at 72.39 130.1246 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(page "3")
+				)
+			)
+		)
+	)
 	(sheet
 		(at 25.4 81.28)
 		(size 30.48 39.37)
@@ -6288,6 +6064,48 @@
 			(project "owr_wifi_router"
 				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
 					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 106.68 24.13)
+		(size 25.4 35.56)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "a4db3929-a7e6-47d5-836f-632ae16fa9cf")
+		(property "Sheetname" "Ethernet PHY"
+			(at 106.68 23.4184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "ethernet_phy.kicad_sch"
+			(at 106.68 60.2746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "owr_wifi_router"
+				(path "/61fde5ba-3326-42bd-a4dd-8dab8d594031"
+					(page "4")
 				)
 			)
 		)

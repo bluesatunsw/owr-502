@@ -272,6 +272,15 @@
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
+      },
+      {
+        "bus_width": 12,
+        "line_style": 0,
+        "name": "Power",
+        "pcb_color": "rgba(0, 0, 0, 0.000)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "wire_width": 6
       }
     ],
     "meta": {
@@ -279,7 +288,16 @@
     },
     "net_colors": null,
     "netclass_assignments": null,
-    "netclass_patterns": []
+    "netclass_patterns": [
+      {
+        "netclass": "Power",
+        "pattern": "GND"
+      },
+      {
+        "netclass": "Power",
+        "pattern": "VDD*"
+      }
+    ]
   },
   "pcbnew": {
     "last_paths": {
@@ -416,6 +434,14 @@
     [
       "66faad57-348c-46ca-b4cd-7bbed04f6f9f",
       "Power"
+    ],
+    [
+      "232f4d8f-1ec3-46d8-9e1d-68e724e6b529",
+      "Memory"
+    ],
+    [
+      "a4db3929-a7e6-47d5-836f-632ae16fa9cf",
+      "Ethernet PHY"
     ]
   ],
   "text_variables": {}
