@@ -2,29 +2,35 @@
 #![no_main]
 
 use core::{panic::PanicInfo, ptr::copy_nonoverlapping};
+use stm32g4xx_hal::stm32::CorePeripherals;
 
 use canadensis::{
-    Node, ResponseToken, ServiceToken, TransferHandler, core::{Priority, ServiceId, transfer::{MessageTransfer, ServiceTransfer}, transport::{TransferId, Transport}}, encoding::{DataType, Deserialize}, node::{BasicNode, CoreNode, data_types::{GetInfoResponse, Version}}, requester::TransferIdFixedMap
+    Node,
+    encoding::DataType,
+    node::{BasicNode, CoreNode, data_types::{GetInfoResponse, Version}},
+    requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use heapless::Vec;
 // use panic_semihosting as _;
-
-use canadensis_data_types::uavcan::{file::path_2_0::Path, node::execute_command_1_3 as ec};
-use canadensis_data_types::uavcan::file::read_1_1 as read;
 
 use cortex_m_rt::entry;
 use embedded_alloc::LlffHeap as Heap;
 
 use fugit::ExtU32;
 
-use crate::{aux::AuxData, can::CanSystem, clock::ClockSystem, peripherals::Peripherals, qspi::QspiSys};
+use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
+
+use crate::{aux::AuxData, can::CanSystem, chunk::Chunk, clock::ClockSystem, comms_handler::CommsHandler, flash_handler::FlashHandler, peripherals::Peripherals, qspi::QspiSys};
 
 mod peripherals;
 mod clock;
 mod can;
 mod qspi;
 mod aux;
+mod chunk;
+mod comms_handler;
+mod flash_handler;
 
 extern crate alloc;
 
@@ -32,6 +38,9 @@ const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
 const TID_TIMEOUT_US: u32 = 1_000_000;
+const VECTOR_TABLE_ADDRESS: u32 = 0x9000_0000;
+
+const UPDATE_TIMEOUT_US: u32 = 5_000_000;
 
 #[panic_handler]
 fn panic(_: &PanicInfo) -> ! {
@@ -102,153 +111,41 @@ fn main() -> ! {
     }).unwrap();
 
     node.subscribe_request(
-        ec::SERVICE,
-        ec::ExecuteCommandRequest::EXTENT_BYTES.unwrap() as usize,
+        EXECUTE_COMMAND_SERVICE,
+        ExecuteCommandRequest::EXTENT_BYTES.unwrap() as usize,
         10.millis()
     ).unwrap();
 
-    let mut comms_handler = CommsHandler::new();
-    let read_tok = node.start_sending_requests(
-        read::SERVICE,
-        10.millis(),
-        read::ReadResponse::EXTENT_BYTES.unwrap() as usize,
-        Priority::Low
-    ).unwrap();
+    let mut comms_handler = CommsHandler::new(&mut node);
+    let mut flash_handler = FlashHandler::new();
+
+    let mut current_chunk: Option<(Chunk, usize)> = None;
+
+    qspi_sys.chip_erase();
 
     loop {
         node.receive(&mut comms_handler).unwrap();
+        comms_handler.tick(&mut node);
+        flash_handler.tick();
 
-        if comms_handler.current_index != 0 && comms_handler.current_index % 2 == 0 {
-            qspi_sys.page_program(comms_handler.current_index / 2, &comms_handler.flash_page);
-        }
-        if let Some(us) = comms_handler.update_server {
-            comms_handler.transfer = FileTransferId::Valid(node.send_request(&read_tok, &read::ReadRequest {
-                offset: (comms_handler.current_index as u64) * 256,
-                path: Path::deserialize_from_bytes(&comms_handler.image_path).unwrap()
-            }, us).unwrap());
-        }
-    }
-
-    // 😊
-    unsafe { AuxData::set(AuxData { rcc: ps.rcc }); }
-    unsafe { cortex_m::asm::bootload(0x90000000 as *const u32) };
-}
-
-#[derive(Clone)]
-enum FileTransferId<T: TransferId + PartialEq> {
-    None,
-    Invalid(T),
-    Valid(T),
-}
-
-struct CommsHandler<T: Transport> where T::TransferId: PartialEq {
-    pub image_path: Vec<u8, 255>,
-    pub update_server: Option<T::NodeId>,
-    pub current_index: u16,
-    pub transfer: FileTransferId<T::TransferId>,
-    pub flash_page: [u8; 512],
-}
-
-impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
-    pub fn new() -> Self {
-        Self {
-            image_path: Vec::new(),
-            update_server: None,
-            current_index: 0,
-            transfer: FileTransferId::None,
-            flash_page: [0; 512],
-        }
-    }
-}
-
-impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: PartialEq {
-    fn handle_message<N>(
-        &mut self,
-        node: &mut N,
-        transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
-    ) -> bool
-    where
-        N: Node<Transport = T>,
-    {
-        false
-    }
-
-    fn handle_request<N>(
-        &mut self,
-        node: &mut N,
-        token: ResponseToken<T>,
-        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
-    ) -> bool
-    where
-        N: Node<Transport = T>,
-    {
-        use ec::ExecuteCommandRequest as Req;
-        use ec::ExecuteCommandResponse as Res;
-
-        if transfer.header.service != ec::SERVICE {
-            return false
-        }
-
-        let req = Req::deserialize_from_bytes(transfer.payload.as_slice()).unwrap();
-        match req.command {
-            Req::COMMAND_BEGIN_SOFTWARE_UPDATE => {
-                if let FileTransferId::Valid(x) = self.transfer.clone() {
-                    self.transfer = FileTransferId::Invalid(x);
-                }
-
-                self.image_path = req.parameter;
-                self.current_index = 0;
-
-                node.send_response(
-                    token, 10.millis(),
-                    &Res { status: Res::STATUS_SUCCESS, output: Vec::new() }
-                ).unwrap()
-            },
-            Req::COMMAND_IDENTIFY => {
-                node.send_response(
-                    token, 10.millis(),
-                    &Res { status: Res::STATUS_SUCCESS, output: Vec::new() }
-                ).unwrap()
-            },
-            _ => {
-                node.send_response(
-                    token, 10.millis(),
-                    &Res { status: Res::STATUS_BAD_COMMAND, output: Vec::new() }
-                ).unwrap()
-            },
-        };
-
-        true
-    }
-
-    fn handle_response<N>(
-        &mut self,
-        node: &mut N,
-        transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
-    ) -> bool
-    where
-        N: Node<Transport = T>,
-    {
-        match &self.transfer {
-            FileTransferId::None => return false,
-            FileTransferId::Invalid(x) => {
-                if transfer.header.transfer_id != *x {
-                    return false;
-                }
+        if let Some((chunk, offset)) = current_chunk {
+            qspi_sys.page_program(offset.try_into().unwrap(), &chunk[0..512].as_array().unwrap());
+            current_chunk = None;
+        } else {
+            match comms_handler.extract() {
+                comms_handler::ExtractResult::Some(chunk) => {
+                    current_chunk = Some((chunk, 0));
+                },
+                comms_handler::ExtractResult::Wait => {},
+                comms_handler::ExtractResult::Done => break,
             }
-            FileTransferId::Valid(x) => {
-                if transfer.header.transfer_id != *x {
-                    return false;
-                }
-                if self.current_index % 2 == 0 {
-                    self.flash_page[..256].copy_from_slice(&transfer.payload);
-                } else {
-                    self.flash_page[256..].copy_from_slice(&transfer.payload);
-                }
-            },
         }
+    }
 
-        self.transfer = FileTransferId::None;
-        true
+    // SAFETY: 😊
+    unsafe {
+        AuxData::set(AuxData { rcc: ps.rcc });
+        CorePeripherals::take().unwrap_unchecked().SCB.vtor.write(VECTOR_TABLE_ADDRESS);
+        cortex_m::asm::bootload(VECTOR_TABLE_ADDRESS as *const u32);
     }
 }

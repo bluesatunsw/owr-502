@@ -5,6 +5,7 @@ use canadensis_can::{CanId, driver::{self, ReceiveDriver, TransmitDriver}};
 use fdcan::{NormalOperationMode, config::*, filter::{Action, ExtendedFilter, FilterType}, frame::{FrameFormat, TxFrameHeader}, id::{ExtendedId, Id}};
 
 use stm32g4xx_hal::{can::{Can, CanExt}, rcc::Rcc};
+use fugit::ExtU32;
 
 use crate::{clock::ClockSystem, peripherals::{CanInstance, CanRxPin, CanTxPin}};
 
@@ -52,7 +53,7 @@ fn translate_id(id: Id) -> CanId {
     unsafe { match id {
         fdcan::id::Id::Standard(standard_id) => standard_id.as_raw() as u32,
         fdcan::id::Id::Extended(extended_id) => extended_id.as_raw(),
-    }.try_into().unwrap_unchecked()}
+    }.try_into().unwrap_unchecked() }
 }
 
 impl ReceiveDriver<ClockSystem> for CanSystem {
@@ -117,7 +118,7 @@ impl TransmitDriver<ClockSystem> for CanSystem {
             canadensis_can::Frame::new(
                 // TODO: need to modify the API of the CAN HAL to return the mailbox
                 // during normal transmission
-                clock.now(),
+                clock.now() + 10.millis(),
                 translate_id(fh.id),
                 unsafe {from_raw_parts(bf.as_ptr() as *const u8, bf.len() * 4)}
             )

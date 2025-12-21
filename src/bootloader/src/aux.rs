@@ -4,7 +4,7 @@ use cortex_m::interrupt::Mutex;
 use stm32g4xx_hal::rcc::Rcc;
 
 
-#[link_section = "AUX"]
+#[unsafe(link_section = "AUX")]
 pub static AUX_DATA: Mutex<UnsafeCell<MaybeUninit<AuxData>>> = Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
 
 pub struct AuxData {
