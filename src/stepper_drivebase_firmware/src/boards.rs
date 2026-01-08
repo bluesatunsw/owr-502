@@ -1,59 +1,9 @@
 //! Wraps implementations of board-specific low-level drivers for various interfaces into common
 //! abstract drivers for main.rs.
 
-use canadensis::core::time as time;
-use core::convert::From;
-use cfg_if::cfg_if;
 use core::ops::Sub;
 
-pub trait CyphalClock: time::Clock {
-    fn start(&mut self);
-}
-
-pub trait GeneralClock {
-    fn now(&self) -> time::Microseconds32;
-}
-
-#[derive(Copy, Clone)]
-pub struct RGBLEDColor {
-    pub red: u8,
-    pub green: u8,
-    pub blue: u8,
-}
-
-#[derive(Copy, Clone)]
-pub struct I2CAxis {
-    pub x: f32,
-    pub y: f32,
-    pub z: f32
-}
-
-#[derive(Debug)]
-pub enum I2CError {
-    BusError,
-    Timeout,
-    InvalidAddress,
-    WriteError,
-    ReadError,
-    ImuNotReady,
-    InvalidRegister,
-}
-
-#[derive(Debug)]
-pub enum SPIError {
-    Overrun,
-    Other,
-}
-
-impl RGBLEDColor {
-    pub fn default() -> Self {
-        RGBLEDColor {
-            red: 255,
-            green: 255,
-            blue: 255
-        }
-    }
-}
+use crate::stm32g4xx;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Celsius(pub f32);
@@ -69,173 +19,19 @@ impl Sub for Radians {
     }
 }
 
-impl From<u32> for RGBLEDColor {
-    /// Given a classic RGB hex code
-    fn from(value: u32) -> Self {
-        RGBLEDColor {
-            red: ((value & 0xFF0000) >> 16) as u8,
-            green: ((value & 0xFF00) >> 8) as u8,
-            blue: (value & 0xFF) as u8,
-        }
-    }
-}
 
-pub trait RGBLEDDriver {
-    /// n is zero-indexed. Panics if n is greater than the number of LEDs on the board.
-    /// This function does NOT change the display state. Call render() to actually send
-    /// the new color signals to the LEDs.
-    fn set_nth_led(&mut self, n: usize, color: RGBLEDColor);
+// these types need to be exposed to the layer that creates the canadensis/Cyphal node
+pub type CClock = stm32g4xx::STM32G4xxCyphalClock;
+pub type CanDriver = stm32g4xx::STM32G4xxCanDriver;
 
-    /// Syncs the LED display state with the internal color state.
-    /// There isn't any meaningful way we can tell if this fails.
-    fn render(&mut self);
-
-    /// For convenience.
-    fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor);
-}
-
-#[allow(non_camel_case_types)]
-pub enum ISM330Register {
-    // temperature
-    OUT_TEMP_L = 0x20,
-    OUT_TEMP_H = 0x21,
-    // Angular rate sensor pitch axis (X) angular rate output register
-    OUTX_L_G = 0x22,
-    OUTX_H_G = 0x23,
-    // Angular rate sensor roll axis (Y) angular rate output register
-    OUTY_L_G = 0x24,
-    OUTY_H_G = 0x25,
-    // Angular rate sensor pitch yaw (Z) angular rate output register
-    OUTZ_L_G = 0x26,
-    OUTZ_H_G = 0x27,
-    // Linear acceleration sensor X-axis output register
-    OUTX_L_A = 0x28,
-    OUTX_H_A = 0x29,
-    // Linear acceleration sensor Y-axis output register
-    OUTY_L_A = 0x2A,
-    OUTY_H_A = 0x2B,
-    // Linear acceleration sensor Z-axis output register
-    OUTZ_L_A = 0x2C,
-    OUTZ_H_A = 0x2D,
-
-    // this list is non-exhaustive, add extra registers if you need
-    WHO_AM_I = 0x0F,
-}
-
-pub trait I2CDriver {
-    fn eeprom_read(&mut self, address: u16, data: &mut [u8]) -> Result<(), I2CError>;
-    /// Note that this will be most efficient if the address is 64-byte aligned.
-    fn eeprom_write(&mut self, address: u16, data: &[u8]) -> Result<(), I2CError>;
-
-    // these are deprecated as soon as the read_temperature, _gyro, _accel functions work
-    fn imu_read_reg(&mut self, reg: ISM330Register) -> Result<u8, I2CError>;
-    fn imu_write_reg(&mut self, reg: ISM330Register, data: u8) -> Result<(), I2CError>;
-
-    fn imu_read_16bitreg(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<u16, I2CError>;
-
-    fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
-        let raw = self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
-        Ok(Celsius(25.0 + (raw as f32) / 256.0))
-    }
-
-    fn imu_read_gyro(&mut self) -> Result<I2CAxis, I2CError> {
-        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)? as i16;
-        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)? as i16;
-        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)? as i16;
-        Ok(I2CAxis {
-            x: x as f32,
-            y: y as f32,
-            z: z as f32
-        })
-    }
-
-    fn imu_read_accel(&mut self) -> Result<I2CAxis, I2CError> {
-        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)? as i16;
-        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)? as i16;
-        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)? as i16;
-        Ok(I2CAxis {
-            x: x as f32,
-            y: y as f32,
-            z: z as f32
-        })
-    }
-}
-
-pub trait QSPIDriver {
-    // TODO
-}
-
-// you can rename these to more helpfully refer to the physical function/location of each motor
-#[derive(Copy, Clone)]
-pub enum StepperChannel {
-    Channel1,
-    Channel2,
-    Channel3,
-    Channel4
-}
-
-pub struct TMCFlags(u8);
-
-pub trait StepperDriver {
-    // fn stepper_cfg(channel: u8, config: StepperConfig);
-
-    fn enable_all(&mut self);
-    fn disable_all(&mut self);
-
-    // could add a config function for the TMC's motion profiling?
-
-    fn set_position(&mut self, channel: StepperChannel, target: Radians) -> Result<(), SPIError>;
-    // could set a callback on position reached??? we don't really have an execution model that
-    // could take advantage of this, though
-
-    fn get_temperature(&mut self, channel: StepperChannel) -> Celsius;
-
-    /// Sets the internal representation of the absolute stepper position from the absolute ("true")
-    /// position as determined from the encoder, which may result in the stepper turning slightly if
-    /// a misalignment has occurred for whatever reason. To be safe, call this often, although it
-    /// might not do anything if the stepper is still rotating to carry out a command.
-    fn adjust(&mut self, channel: StepperChannel) -> Result<(), SPIError>;
-
-    /// Returns true if the motor is currently engaged in movement.
-    fn is_busy(&mut self, channel: StepperChannel) -> Result<bool, SPIError>;
-}
-
-cfg_if! {
-    if #[cfg(any(feature = "rev_a2", feature = "rev_b2", feature = "we_act_dev"))] {
-        mod stm32g4xx;
-
-        // these types need to be exposed to the layer that creates the canadensis/Cyphal node
-        pub type CClock = stm32g4xx::STM32G4xxCyphalClock;
-        pub type CanDriver = stm32g4xx::STM32G4xxCanDriver;
-
-        pub fn init() -> (
+pub fn init() -> (
             CClock,
             stm32g4xx::STM32G4xxGeneralClock,
             CanDriver,
             stm32g4xx::STM32G4xxLEDDriver,
             stm32g4xx::STM32G4xxI2CDriver,
             stm32g4xx::STM32G4xxStepperDriver
-        ) {
-            stm32g4xx::init()
-        }
-    } else if #[cfg(feature = "bigtree")] {
-        mod stm32g0xx;
-
-        pub type CClock = stm32g0xx::STM32G0xxCyphalClock;
-        pub type CanDriver = stm32g0xx::STM32G0xxCanDriver;
-
-        pub fn init() -> (
-            CClock,
-            stm32g0xx::STM32G0xxGeneralClock,
-            CanDriver,
-            stm32g0xx::STM32G0xxLEDDriver,
-            stm32g0xx::I2CDriver,
-            stm32g0xx::STM32G0xxStepperDriver)
-        {
-            stm32g0xx::init()
-        }
-
-    } else {
-        compile_error!("The board that the firmware is being compiled for must be specified as a feature");
-    }
+) {
+    stm32g4xx::init()
 }
+

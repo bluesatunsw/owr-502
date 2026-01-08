@@ -1,15 +1,8 @@
 //! Implementations of some specific low-level drivers for stepper boards Rev. A2, B2 (STM32G474) and
 //! the WeAct dev board (STM32G431). The 32-bit microsecond clock, FDCAN driver, TMC5160/encoder
 //! driver and I2C driver have whole modules to themselves.
+use stm32g4xx_hal::{self as hal, serial::TxExt};
 
-use core::{array::from_fn, convert::TryInto};
-
-use cfg_if::cfg_if;
-use cortex_m_semihosting::hprintln;
-
-use crate::boards::{
-    CyphalClock, I2CDriver, ISM330Register, RGBLEDColor, RGBLEDDriver
-};
 pub mod clock;
 pub use clock::{STM32G4xxCyphalClock, STM32G4xxGeneralClock};
 pub mod fdcan;
@@ -18,26 +11,51 @@ pub mod stepper;
 pub use stepper::{STM32G4xxStepperDriver, StepperTempPins, StepperCSPins, EncoderCSPins};
 pub mod i2c;
 pub use i2c::STM32G4xxI2CDriver;
-pub mod qspi;
-pub use qspi::STM32G4xxQspiDriver;
 
 use hal::{
-    prelude::*,
     time::{self, RateExtU32},
     pwr::PwrExt,
-    rcc::{self, MCOExt, Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc},
-    gpio,
+    rcc::{Config, PllConfig, PllSrc, PllMDiv, PllNMul, PllQDiv, PllRDiv, FdCanClockSource, Rcc, RccExt},
+    gpio::{self, GpioExt},
     serial,
-    pac,
+    pac
 };
-use stm32g4xx_hal::{self as hal, gpio::Speed};   // don't need to put this in a cfg_if because which board it targets is
-                            // specified as a feature in Cargo.toml
+
+
 use embedded_io::Write;
 
 // TODO: set up TRACESWO or UART for faster debug logging
 
 /// The number of RGB LEDs (WS2812s) on the board.
 pub const NUM_LEDS: usize = 6;
+
+#[derive(Copy, Clone)]
+pub struct RGBLEDColor {
+    pub red: u8,
+    pub green: u8,
+    pub blue: u8,
+}
+
+impl RGBLEDColor {
+    pub fn default() -> Self {
+        RGBLEDColor {
+            red: 255,
+            green: 255,
+            blue: 255
+        }
+    }
+}
+
+impl From<u32> for RGBLEDColor {
+    /// Given a classic RGB hex code
+    fn from(value: u32) -> Self {
+        RGBLEDColor {
+            red: ((value & 0xFF0000) >> 16) as u8,
+            green: ((value & 0xFF00) >> 8) as u8,
+            blue: (value & 0xFF) as u8,
+        }
+    }
+}
 
 type LedTxPin = gpio::PB6<gpio::AF7>;
 
@@ -48,7 +66,6 @@ type LedTxPin = gpio::PB6<gpio::AF7>;
 /// to send these pulses over USART, using the Tx pin in inverted polarity mode and taking the
 /// start and stop bits as free high and low bit periods respectively.
 /// The resulting timings are solidly within the WS2812 spec.
-
 pub struct STM32G4xxLEDDriver {
     usart: hal::serial::Tx<pac::USART1, LedTxPin, serial::NoDMA>,
     colors: [RGBLEDColor; NUM_LEDS],
@@ -71,10 +88,8 @@ impl STM32G4xxLEDDriver {
             colors: [RGBLEDColor::default(); NUM_LEDS]
         }
     }
-}
-
-impl RGBLEDDriver for STM32G4xxLEDDriver {
-    fn set_nth_led(&mut self, n: usize, color: RGBLEDColor) {
+    
+    pub fn set_nth_led(&mut self, n: usize, color: RGBLEDColor) {
         self.colors[n] = color;
     }
 
@@ -110,7 +125,7 @@ impl RGBLEDDriver for STM32G4xxLEDDriver {
         }
     }
 
-    fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor) {
+    pub fn set_nth_led_and_render(&mut self, n: usize, color: RGBLEDColor) {
         self.set_nth_led(n, color);
         self.render();
     }
@@ -128,42 +143,23 @@ pub fn init() -> (
     let dp = hal::stm32::Peripherals::take().unwrap();
     let pwr = dp.PWR.constrain().freeze();
 
-    cfg_if! {
         // We just want to use the external (8 MHz || 24 MHz) HSE crystal, route this into the PLL,
         // get 64 MHz out for SYSCLK via PLLR and route 128 MHz to FDCAN via PLLQ.
-        if #[cfg(any(feature = "rev_a2", feature = "rev_b2"))] {
-            let mut rcc = dp.RCC.freeze(
-                // enable HSE @ 24 MHz (stepper board)
-                Config::pll()
-                    .pll_cfg(PllConfig {
-                        mux: PllSrc::HSE(24.MHz()),
-                        m: PllMDiv::DIV_3,
-                        n: PllNMul::MUL_32,
-                        r: Some(PllRDiv::DIV_4),
-                        q: Some(PllQDiv::DIV_2),
-                        p: None,
-                    })
-                    .fdcan_src(FdCanClockSource::PLLQ),
-                pwr
-            );
-        } else if #[cfg(feature = "we_act_dev")] {
-            let mut rcc = dp.RCC.freeze(
-                // enable HSE @ 8 MHz (WeAct)
-                Config::pll()
-                    .pll_cfg(PllConfig {
-                        mux: PllSrc::HSE(8.MHz()),
-                        m: PllMDiv::DIV_1,
-                        n: PllNMul::MUL_32,
-                        r: Some(PllRDiv::DIV_4),
-                        q: Some(PllQDiv::DIV_2),
-                        p: None,
-                    })
-                    .fdcan_src(FdCanClockSource::PLLQ),
-                pwr
-            );
-        }
-    }
-
+        let mut rcc = dp.RCC.freeze(
+        // enable HSE @ 24 MHz (stepper board)
+        Config::pll()
+            .pll_cfg(PllConfig {
+                mux: PllSrc::HSE(24.MHz()),
+                m: PllMDiv::DIV_3,
+                n: PllNMul::MUL_32,
+                r: Some(PllRDiv::DIV_4),
+                q: Some(PllQDiv::DIV_2),
+                p: None,
+            })
+            .fdcan_src(FdCanClockSource::PLLQ),
+        pwr
+    );
+    
     // Set up pins.
     let gpioa = dp.GPIOA.split(&mut rcc);
     let gpiob = dp.GPIOB.split(&mut rcc);
@@ -174,46 +170,6 @@ pub fn init() -> (
     gpiob.pb8.into_push_pull_output();
 
     let mut cyphal_clock = STM32G4xxCyphalClock::new_singleton(dp.TIM2, &mut rcc);
-
-    // QSPI
-    let qspi_ncs_pin = gpioa.pa2.into_alternate().speed(Speed::VeryHigh);
-    let qspi_clk_pin = gpioa.pa3.into_alternate().speed(Speed::VeryHigh);
-
-    let qspi_io0_bank1_pin = gpiob.pb1.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io1_bank1_pin = gpiob.pb0.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io2_bank1_pin = gpioa.pa7.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io3_bank1_pin = gpioa.pa6.into_alternate().speed(Speed::VeryHigh);
-
-    let qspi_io0_bank2_pin = gpioc.pc1.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io1_bank2_pin = gpioc.pc2.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io2_bank2_pin = gpioc.pc3.into_alternate().speed(Speed::VeryHigh);
-    let qspi_io3_bank2_pin = gpioc.pc4.into_alternate().speed(Speed::VeryHigh);
-
-    let qspi_data: [u8; 512] = from_fn(|i| (i%256).try_into().unwrap());
-    
-    let mut qspi_driver = STM32G4xxQspiDriver::new(
-        dp.QUADSPI,
-        &mut rcc,
-        qspi_ncs_pin,
-        qspi_clk_pin,
-        qspi_io0_bank1_pin,
-        qspi_io1_bank1_pin,
-        qspi_io2_bank1_pin,
-        qspi_io3_bank1_pin,
-        qspi_io0_bank2_pin,
-        qspi_io1_bank2_pin,
-        qspi_io2_bank2_pin,
-        qspi_io3_bank2_pin
-    );
-
-    qspi_driver.chip_erase();
-    qspi_driver.page_program(0, &qspi_data);
-    qspi_driver.enabled_mapping();
-
-    let flash_data  = unsafe { &*(0x9000_0000 as *const [u8; 512]) };
-    hprintln!("Flash data: {:x?}", flash_data);
-
-    loop {}
 
     // FDCAN
     let can_rx_pin = gpioa.pa11.into_alternate();
@@ -228,7 +184,7 @@ pub fn init() -> (
     // I2C
     let sda = gpiob.pb7.into_alternate_open_drain();
     let scl = gpioa.pa15.into_alternate_open_drain();
-    let mut i2c_driver = STM32G4xxI2CDriver::new(dp.I2C1, sda, scl, &mut rcc);
+    let i2c_driver = STM32G4xxI2CDriver::new(dp.I2C1, sda, scl, &mut rcc);
 
     // Steppers/SPI
     let temp0 = gpioa.pa0.into_analog();
@@ -239,9 +195,7 @@ pub fn init() -> (
 
     let enn_pin = gpiod.pd2.into_push_pull_output_in_state(gpio::PinState::High);
     let clk_pin = gpioa.pa8.into_analog();
-    #[cfg(feature = "rev_a2")]
-    let diag_pin = gpioa.pa10.into_push_pull_output();
-    #[cfg(not(feature = "rev_a2"))]
+
     let diag_pin = gpioa.pa10.into_input();
 
     let sck = gpioc.pc10.into_alternate();

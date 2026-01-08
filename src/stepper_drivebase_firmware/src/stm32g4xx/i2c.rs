@@ -1,17 +1,62 @@
 //! I2C driver, used to talk to the EEPROM (ZD24C128A) and IMU (ISM330).
 
-use crate::boards::{
-    I2CDriver, I2CError, ISM330Register
-};
+use stm32g4xx_hal::{self as hal, i2c::I2cExt, prelude::I2c};
 
 use hal::{pac, gpio, rcc::Rcc, time::RateExtU32, i2c};
-use stm32g4xx_hal::{self as hal, i2c::I2cExt, prelude::I2c};
+
+use crate::boards::Celsius;
 
 type SdaPin = gpio::PB7<gpio::AF4<gpio::OpenDrain>>;
 type SclPin = gpio::PA15<gpio::AF4<gpio::OpenDrain>>;
 
 const EEPROM_ADDR: u8 = 0b1010_000;
 const IMU_ADDR: u8 = 0b1101_010;
+
+#[derive(Debug)]
+pub enum I2CError {
+    BusError,
+    Timeout,
+    InvalidAddress,
+    WriteError,
+    ReadError,
+    ImuNotReady,
+    InvalidRegister,
+}
+
+#[derive(Copy, Clone)]
+pub struct I2CAxis {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32
+}
+
+#[allow(non_camel_case_types)]
+pub enum ISM330Register {
+    // temperature
+    OUT_TEMP_L = 0x20,
+    OUT_TEMP_H = 0x21,
+    // Angular rate sensor pitch axis (X) angular rate output register
+    OUTX_L_G = 0x22,
+    OUTX_H_G = 0x23,
+    // Angular rate sensor roll axis (Y) angular rate output register
+    OUTY_L_G = 0x24,
+    OUTY_H_G = 0x25,
+    // Angular rate sensor pitch yaw (Z) angular rate output register
+    OUTZ_L_G = 0x26,
+    OUTZ_H_G = 0x27,
+    // Linear acceleration sensor X-axis output register
+    OUTX_L_A = 0x28,
+    OUTX_H_A = 0x29,
+    // Linear acceleration sensor Y-axis output register
+    OUTY_L_A = 0x2A,
+    OUTY_H_A = 0x2B,
+    // Linear acceleration sensor Z-axis output register
+    OUTZ_L_A = 0x2C,
+    OUTZ_H_A = 0x2D,
+
+    // this list is non-exhaustive, add extra registers if you need
+    WHO_AM_I = 0x0F,
+}
 
 pub struct STM32G4xxI2CDriver {
     i2c_bus: i2c::I2c<pac::I2C1, SdaPin, SclPin>,
@@ -34,9 +79,7 @@ impl STM32G4xxI2CDriver {
         // i mean they're all technically bus errors, no?
         I2CError::BusError
     }
-}
-
-impl I2CDriver for STM32G4xxI2CDriver {
+    
     fn eeprom_read(&mut self, address: u16, data: &mut [u8]) -> Result<(), I2CError> {
         // sequential read starting with random address read
         self.i2c_bus.write_read(EEPROM_ADDR, &[((address & 0x3F00) >> 8) as u8, (address & 0xFF) as u8], data)
@@ -102,6 +145,34 @@ impl I2CDriver for STM32G4xxI2CDriver {
         let mut data = [0u8, 0u8];
         self.i2c_bus.write_read(IMU_ADDR, &[low_reg], &mut data)
             .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
-        Ok((data[1] as u16) << 8 + data[0])
+        Ok((data[1] as u16) << (8 + data[0]))
     }
+
+        fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
+        let raw = self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
+        Ok(Celsius(25.0 + (raw as f32) / 256.0))
+    }
+
+    fn imu_read_gyro(&mut self) -> Result<I2CAxis, I2CError> {
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_G, ISM330Register::OUTX_H_G)? as i16;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_G, ISM330Register::OUTY_H_G)? as i16;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_G, ISM330Register::OUTZ_H_G)? as i16;
+        Ok(I2CAxis {
+            x: x as f32,
+            y: y as f32,
+            z: z as f32
+        })
+    }
+
+    fn imu_read_accel(&mut self) -> Result<I2CAxis, I2CError> {
+        let x = self.imu_read_16bitreg(ISM330Register::OUTX_L_A, ISM330Register::OUTX_H_A)? as i16;
+        let y = self.imu_read_16bitreg(ISM330Register::OUTY_L_A, ISM330Register::OUTY_H_A)? as i16;
+        let z = self.imu_read_16bitreg(ISM330Register::OUTZ_L_A, ISM330Register::OUTZ_H_A)? as i16;
+        Ok(I2CAxis {
+            x: x as f32,
+            y: y as f32,
+            z: z as f32
+        })
+    }
+
 }

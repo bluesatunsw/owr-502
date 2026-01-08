@@ -6,28 +6,24 @@
 //! make the public interface perfectly safe. Also, reading the clock from multiple threads
 //! concurrently is conceptually safe and we shouldn't *need* a Mutex... idk.
 
+use stm32g4xx_hal as hal;
+
 use hal::pac;
 use hal::prelude::*;
-use stm32g4xx_hal as hal;
 
 use core::cell::RefCell;
 use cortex_m::interrupt::Mutex;
 
 use canadensis::core::time;
 
-use crate::boards::{CyphalClock, GeneralClock};
-
 // make clock globally available, so both the GeneralClock and CyphalClock can read it
-static G_CYPHAL_CLOCK: Mutex<RefCell<Option<STM32G4xxMicroClock>>> =
-    Mutex::new(RefCell::new(None));
+static G_CYPHAL_CLOCK: Mutex<RefCell<Option<STM32G4xxMicroClock>>> = Mutex::new(RefCell::new(None));
 
 // panics if the clock not initialised and started as in STM32G4xxCyphalClock
 fn get_instant() -> time::Microseconds32 {
     cortex_m::interrupt::free(|cs| {
         if let Some(cyphal_clock) = G_CYPHAL_CLOCK.borrow(cs).borrow_mut().as_mut() {
-            time::Microseconds32::from_ticks(
-                cyphal_clock.hw_timer.cnt().read().bits()
-            )
+            time::Microseconds32::from_ticks(cyphal_clock.hw_timer.cnt().read().bits())
         } else {
             panic!("Could not borrow global cyphal clock")
         }
@@ -49,14 +45,12 @@ impl STM32G4xxMicroClock {
         rcc.apb1rstr1().modify(|_, w| w.tim2rst().bit(true));
         rcc.apb1rstr1().modify(|_, w| w.tim2rst().bit(false));
         rcc.apb1enr1().modify(|_, w| w.tim2en().bit(true));
-        Self {
-            hw_timer: tim2,
-        }
+        Self { hw_timer: tim2 }
     }
 
     // Configure timers: count up at 1 MHz, overflow automatically and silently.
     // this architecture just gives us a 32-bit timer so we don't need to do silly clock chaining yay
-    fn start(&mut self) {
+    pub fn start(&mut self) {
         // updates on overflow happen automatically
         // PCLK1 is 64MHz, so prescale by /64
         unsafe {
@@ -82,10 +76,8 @@ impl STM32G4xxCyphalClock {
         });
         Self {}
     }
-}
 
-impl CyphalClock for STM32G4xxCyphalClock {
-    fn start(&mut self) {
+    pub fn start(&mut self) {
         cortex_m::interrupt::free(|cs| {
             G_CYPHAL_CLOCK
                 .borrow(cs)
@@ -106,18 +98,12 @@ impl time::Clock for STM32G4xxCyphalClock {
 pub struct STM32G4xxGeneralClock {}
 
 impl STM32G4xxGeneralClock {
-    pub fn new() -> Self { Self {} }
-}
-
-impl GeneralClock for STM32G4xxGeneralClock {
-    fn now(&self) -> time::Microseconds32 {
-        get_instant()
+    pub fn new() -> Self {
+        Self {}
     }
-}
 
-impl DelayNs for STM32G4xxGeneralClock {
-    fn delay_ns(&mut self, ns: u32) {
-        self.delay_us(ns.div_ceil(1000));
+    pub fn now(&self) -> time::Microseconds32 {
+        get_instant()
     }
 
     fn delay_us(&mut self, mut us: u32) {
@@ -133,12 +119,18 @@ impl DelayNs for STM32G4xxGeneralClock {
         }
         while self.now().ticks().wrapping_sub(start_time) < us {
             // busy-wait
-        };
+        }
         if extra_wait {
             let extra_time = self.now().ticks();
             while self.now().ticks().wrapping_sub(extra_time) < u32::MAX / 2 {
                 // busy-wait
-            };
+            }
         }
+    }
+}
+
+impl DelayNs for STM32G4xxGeneralClock {
+    fn delay_ns(&mut self, ns: u32) {
+        self.delay_us(ns.div_ceil(1000));
     }
 }

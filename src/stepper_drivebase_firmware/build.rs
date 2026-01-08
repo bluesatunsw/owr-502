@@ -14,22 +14,10 @@ fn main() {
     let out = &PathBuf::from(env::var_os("OUT_DIR").unwrap());
     let mut f = File::create(out.join("memory.x")).unwrap();
 
-    #[cfg(any(feature = "rev_a2", feature = "rev_b2"))]
-    {
-        f.write_all(include_bytes!("linker/memory_stm32g474.x")).unwrap();
-        println!("cargo:rerun-if-changed=linker/memory_stm32g474.x");
-    }
-    #[cfg(feature = "we_act_dev")]
-    {
-        f.write_all(include_bytes!("linker/memory_stm32g431cbu6.x")).unwrap();
-        println!("cargo:rerun-if-changed=linker/memory_stm32g431cbu6.x");
-    }
-    #[cfg(feature = "bigtree")]
-    {
-        f.write_all(include_bytes!("linker/memory_bigtree.x")).unwrap();
-        println!("cargo:rerun-if-changed=linker/memory_bigtree.x");
-    }
-
+    f.write_all(include_bytes!("linker/memory_stm32g474.x"))
+        .unwrap();
+    println!("cargo:rerun-if-changed=linker/memory_stm32g474.x");
+    
     println!("cargo:rustc-link-search={}", out.display());
 
     // Specify linker arguments.
