@@ -1,5 +1,3 @@
-use core::mem;
-
 use canadensis::{Node, ResponseToken, ServiceToken, TransferHandler, core::{Priority, transfer::{MessageTransfer, ServiceTransfer}, transport::Transport}, encoding::{DataType, Deserialize}};
 use canadensis_data_types::uavcan::{file::{path_2_0::Path, read_1_1::{ReadRequest, ReadResponse}}, node::execute_command_1_3::{ExecuteCommandRequest, ExecuteCommandResponse}};
 use heapless::Vec;
@@ -7,31 +5,11 @@ use fugit::ExtU32;
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::SERVICE as EXECUTE_COMMAND_SERVICE;
 use canadensis_data_types::uavcan::file::read_1_1::SERVICE as READ_SERVICE;
+use wzrd_core::{CHUNK_SIZE, Header};
 
-use crate::chunk::{Chunk, ChunkManager, DoubleBuffer, FLASH_CHUNK_SIZE, TRANSFER_SIZE};
+use crate::{chunk::{ChunkManager, DoubleBuffer, TRANSFER_SIZE}, common::LocatedChunk};
 
 const MAX_TRANSFERS: usize = 4;
-const HEADER_SIZE: usize = 256;
-
-#[repr(C)]
-struct Header {
-    pub version: u64,
-    pub qspi_length: usize,
-
-    _pad: [u8; 244],
-}
-
-impl Header {
-    pub fn file_offset(&self, offset: usize) -> Option<usize> {
-        if offset < self.qspi_length {
-            Some(HEADER_SIZE + offset)
-        } else {
-            None
-        }
-    }
-}
-
-// assert_eq!(mem::sizeof::<Header>(), HEADER_SIZE);
 
 #[derive(PartialEq)]
 enum UpdateSourceState {
@@ -39,25 +17,31 @@ enum UpdateSourceState {
     Flushing,
 }
 
-struct UpdateSource<T: Transport> {
+enum AsyncHeader<I: PartialEq> {
+    Future(I),
+    Some(Header),
+}
+
+struct UpdateSource<T: Transport> where T::TransferId: PartialEq {
     pub state: UpdateSourceState,
     pub path: Vec<u8, 255>,
     pub server: T::NodeId,
 
-    pub header: Option<Header>,
-    pub section_offset: usize,
-}
-
-pub enum ExtractResult {
-    Some(Chunk),
-    Wait,
-    Done,
+    pub header: AsyncHeader<T::TransferId>,
+    pub file_offset: usize,
 }
 
 pub struct CommsHandler<T: Transport> where T::TransferId: PartialEq {
     update_source: Option<UpdateSource<T>>,
     buffers: DoubleBuffer<ChunkManager<T::TransferId>>,
     read_token: ServiceToken<ReadRequest>,
+    identify: bool,
+}
+
+pub enum CommsHandlerState {
+    Idle,
+    BeginFlash,
+    Loading,
 }
 
 impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
@@ -70,7 +54,8 @@ impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
                 10.millis(),
                 ReadResponse::EXTENT_BYTES.unwrap() as usize,
                 Priority::Low.into()
-            ).unwrap()
+            ).unwrap(),
+            identify: false,
         }
     }
 
@@ -78,15 +63,15 @@ impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
         if let Some(src) = &mut self.update_source
         && src.state == UpdateSourceState::Valid
         && self.buffers.front().active_transfers() + self.buffers.back().active_transfers() < MAX_TRANSFERS
-        && let Some(header) = &src.header {
+        && let AsyncHeader::Some(header) = &src.header {
             let tok = &self.read_token;
-            let (buf, maybe_off) = if self.buffers.front().complete() {
-                (self.buffers.back_mut(), header.file_offset(src.section_offset + FLASH_CHUNK_SIZE))
+            let (buf, off) = if self.buffers.front().complete() {
+                (self.buffers.back_mut(), src.file_offset + CHUNK_SIZE)
             } else {
-                (self.buffers.front_mut(), header.file_offset(src.section_offset))
+                (self.buffers.front_mut(), src.file_offset)
             };
 
-            if let Some(off) = maybe_off {
+            if header.file_length() < off {
                 buf.start_transfer(|x|
                     node.send_request(&tok, &ReadRequest {
                         offset: (off + x*TRANSFER_SIZE) as u64,
@@ -97,20 +82,32 @@ impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
         }
     }
 
-    pub fn extract(&mut self) -> ExtractResult {
+    pub fn extract(&mut self) -> Option<LocatedChunk> {
         if let Some(src) = &mut self.update_source
-        && let Some(header) = &src.header
-        {
-            if let Some(chunk) = self.buffers.front_mut().extract_data() {
-                src.section_offset += FLASH_CHUNK_SIZE;
-                ExtractResult::Some(chunk)
-            } else if header.file_offset(src.section_offset).is_none() {
-                ExtractResult::Done
-            } else {
-                ExtractResult::Wait
+        && let AsyncHeader::Some(header) = &src.header
+        && let Some(chunk) = self.buffers.front_mut().extract_data() {
+            let (location, offset) = header.to_flash_location(src.file_offset).unwrap();
+            src.file_offset += CHUNK_SIZE;
+            self.buffers.switch();
+            
+            if header.file_length() < src.file_offset {
+                // Everything possible has been extracted, mark the update as complete
+                self.update_source = None;
             }
+
+            Some(LocatedChunk { data: chunk, location, offset })
         } else {
-            ExtractResult::Wait
+            None
+        }
+    }
+
+    pub fn state(&self) -> CommsHandlerState {
+        match &self.update_source {
+            Some(s) => match s.header {
+                AsyncHeader::Future(_) => CommsHandlerState::BeginFlash,
+                AsyncHeader::Some(_) => CommsHandlerState::Loading,
+            },
+            None => CommsHandlerState::Idle,
         }
     }
 }
@@ -118,8 +115,8 @@ impl<T: Transport> CommsHandler<T> where T::TransferId: PartialEq {
 impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: PartialEq {
     fn handle_message<N>(
         &mut self,
-        node: &mut N,
-        transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
+        _node: &mut N,
+        _transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool
     where
         N: Node<Transport = T>,
@@ -149,10 +146,15 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
                     } else {
                         UpdateSourceState::Flushing 
                     },
-                    path: req.parameter,
+                    path: req.parameter.clone(),
                     server: transfer.header.source.clone(),
-                    header: None,
-                    section_offset: 0,
+                    header: AsyncHeader::Future(
+                        node.send_request(&self.read_token, &ReadRequest {
+                            offset: 0,
+                            path: Path::deserialize_from_bytes(req.parameter.as_slice()).unwrap() 
+                        }, transfer.header.source.clone()).unwrap()
+                    ),
+                    file_offset: Header::SIZE,
                 };
 
                 node.send_response(
@@ -163,15 +165,11 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
                     }
                 ).unwrap();
 
-                let tok = &self.read_token;
-                node.send_request(&tok, &ReadRequest {
-                    offset: 0,
-                    path: Path::deserialize_from_bytes(src.path.as_slice()).unwrap() 
-                }, src.server.clone()).unwrap();
-
                 self.update_source = Some(src);
             },
             ExecuteCommandRequest::COMMAND_IDENTIFY => {
+                self.identify = true;
+
                 node.send_response(
                     token, 10.millis(),
                     &ExecuteCommandResponse {
@@ -196,20 +194,17 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
 
     fn handle_response<N>(
         &mut self,
-        node: &mut N,
+        _node: &mut N,
         transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool
     where
         N: Node<Transport = T>,
     {
         if let Some(x) = &mut self.update_source {
-            if x.header.is_none() {
-                // SAFETY: the header only contains ints (no invariants)
-                x.header = unsafe { Some(mem::transmute_copy::<[u8; HEADER_SIZE], Header>(
-                    transfer.payload.as_slice()[0..HEADER_SIZE].as_array().unwrap()
-                )) };
-
-                return true;
+            if let AsyncHeader::Future(tid) = &x.header
+                && transfer.header.transfer_id == *tid {
+                    x.header = AsyncHeader::Some(Header::deserialize(&transfer.payload.as_array().unwrap()));
+                    return true;
             }
 
             // Flushing is complete when there are no more active transfers

@@ -1,6 +1,8 @@
 use canadensis::core::transport::TransferId;
+use wzrd_core::CHUNK_SIZE;
 
-pub const FLASH_CHUNK_SIZE: usize = 4096;
+use crate::common::Chunk;
+
 pub const TRANSFER_SIZE: usize = 256;
 
 #[derive(Default)]
@@ -11,17 +13,15 @@ enum ChunkletState<T: TransferId + PartialEq>  {
     Filled,
 }
 
-pub type Chunk = [u8; FLASH_CHUNK_SIZE];
-
 pub struct ChunkManager<T: TransferId + PartialEq> {
     data: Chunk,
-    chunklets: [ChunkletState<T>; FLASH_CHUNK_SIZE/TRANSFER_SIZE],
+    chunklets: [ChunkletState<T>; CHUNK_SIZE/TRANSFER_SIZE],
 }
 
 impl<T: TransferId + PartialEq> ChunkManager<T> {
     pub fn new() -> Self {
         Self {
-            data: [0; FLASH_CHUNK_SIZE],
+            data: [0; CHUNK_SIZE],
             chunklets: Default::default(),
         }
     }

@@ -1,8 +1,10 @@
 #![no_std]
 #![no_main]
+#![feature(ptr_as_ref_unchecked)]
+#![feature(unsafe_cell_access)]
+#![feature(naked_functions_rustic_abi)]
 
-use core::{panic::PanicInfo, ptr::copy_nonoverlapping};
-use stm32g4xx_hal::stm32::CorePeripherals;
+use core::{arch::naked_asm, hint::black_box, panic::PanicInfo, ptr::copy_nonoverlapping};
 
 use canadensis::{
     Node,
@@ -11,26 +13,30 @@ use canadensis::{
     requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
+use cortex_m::asm::bkpt;
+use cortex_m_semihosting::hprintln;
 use heapless::Vec;
 // use panic_semihosting as _;
 
-use cortex_m_rt::entry;
+use cortex_m_rt::{ExceptionFrame, entry, exception};
 use embedded_alloc::LlffHeap as Heap;
 
 use fugit::ExtU32;
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
 
-use crate::{aux::AuxData, can::CanSystem, chunk::Chunk, clock::ClockSystem, comms_handler::CommsHandler, flash_handler::FlashHandler, peripherals::Peripherals, qspi::QspiSys};
+use crate::{argb::{ArgbSys, State}, can::CanSystem, clock::ClockSystem, comms_handler::{CommsHandler, CommsHandlerState}, crc_handler::{CrcHandler, CrcHandlerState}, flash_handler::{FlashHandler, FlashHandlerState}, peripherals::Peripherals, qspi::QspiSys};
 
 mod peripherals;
 mod clock;
 mod can;
 mod qspi;
-mod aux;
 mod chunk;
+mod common;
+mod argb;
 mod comms_handler;
 mod flash_handler;
+mod crc_handler;
 
 extern crate alloc;
 
@@ -38,12 +44,30 @@ const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
 const TID_TIMEOUT_US: u32 = 1_000_000;
-const VECTOR_TABLE_ADDRESS: u32 = 0x9000_0000;
 
 const UPDATE_TIMEOUT_US: u32 = 5_000_000;
 
+const UID_ADDRESS: u32 = 0x1FFF_7590;
+
+const RAM_START: *mut u32 = 0x2000_0000 as *mut u32;
+const FLASH_START: *const u32 = 0x0800_0000 as *const u32;
+
 #[panic_handler]
-fn panic(_: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
+    hprintln!("{}", info.message().as_str().unwrap_or_default());
+    bkpt();
+    loop {}
+}
+
+#[exception]
+unsafe fn HardFault(_ef: &ExceptionFrame) -> ! {
+    bkpt();
+    loop {}
+}
+
+#[exception]
+unsafe fn DefaultHandler(_x: i16) -> ! {
+    bkpt();
     loop {}
 }
 
@@ -65,14 +89,22 @@ fn initialise_allocator() {
 #[entry]
 fn main() -> ! {
     initialise_allocator();
-
     let mut ps = Peripherals::take();
 
+    // SAFETY: 😊
+    unsafe {
+        copy_nonoverlapping(FLASH_START, RAM_START, 0x2000);
+        ps.sys.memrmp().write(|w| w.mem_mode().bits(0b011));
+    }
+
     let mut uuid: [u8; 16] = [0; 16];
-    unsafe { copy_nonoverlapping(0x1FFF7590 as *const u8, uuid.as_mut_ptr(), 12); }
+    // SAFETY: 😊
+    unsafe { copy_nonoverlapping(UID_ADDRESS as *const u8, uuid.as_mut_ptr(), 12); }
+    black_box(uuid);
 
     let clock_sys = ClockSystem::new(ps.clock_tim, &mut ps.rcc);
     let can_sys = CanSystem::new(ps.can_instance, ps.can_rx_pin, ps.can_tx_pin, &mut ps.rcc);
+    let mut argb_sys = ArgbSys::new(ps.argb_instance, ps.argb_pin, &mut ps.rcc);
     let mut qspi_sys = QspiSys::new(
         ps.qspi_instance,
         &mut ps.rcc,
@@ -90,6 +122,7 @@ fn main() -> ! {
         ps.qspi_io2_bank2_pin,
         ps.qspi_io3_bank2_pin
     );
+    bkpt();
 
     let id = CanNodeId::from_truncating(0);
     let transmitter = CanTransmitter::new(Mtu::CanFd64);
@@ -117,35 +150,139 @@ fn main() -> ! {
     ).unwrap();
 
     let mut comms_handler = CommsHandler::new(&mut node);
-    let mut flash_handler = FlashHandler::new();
-
-    let mut current_chunk: Option<(Chunk, usize)> = None;
-
-    qspi_sys.chip_erase();
+    let mut flash_handler = FlashHandler::new(&mut qspi_sys);
+    let mut crc_handler = CrcHandler::new(0);
 
     loop {
         node.receive(&mut comms_handler).unwrap();
         comms_handler.tick(&mut node);
         flash_handler.tick();
+        argb_sys.tick();
 
-        if let Some((chunk, offset)) = current_chunk {
-            qspi_sys.page_program(offset.try_into().unwrap(), &chunk[0..512].as_array().unwrap());
-            current_chunk = None;
-        } else {
-            match comms_handler.extract() {
-                comms_handler::ExtractResult::Some(chunk) => {
-                    current_chunk = Some((chunk, 0));
-                },
-                comms_handler::ExtractResult::Wait => {},
-                comms_handler::ExtractResult::Done => break,
+        let timer_expired: bool = true;
+        match (comms_handler.state(), flash_handler.state(), crc_handler.state(), timer_expired) {
+            (CommsHandlerState::Idle, FlashHandlerState::Disabled, _, false) => {
+                // Wait for something to happen
+                argb_sys.set_state(State::Idle);
             }
+
+            (CommsHandlerState::BeginFlash, _, _, _) => {
+                // Transition to flashing mode
+                argb_sys.set_state(State::Flashing);
+                crc_handler.stop();
+                flash_handler.reset();
+            }
+            (CommsHandlerState::Loading, FlashHandlerState::Idle, CrcHandlerState::Unverified, _) => {
+                // Try to feed flash handler
+                if let Some(chunk) = comms_handler.extract() {
+                    flash_handler.feed(chunk);
+                }
+            }
+            (CommsHandlerState::Loading, FlashHandlerState::Busy, CrcHandlerState::Unverified, _) => {
+                // Wait for flash handler to be free
+            }
+
+            (CommsHandlerState::Idle, FlashHandlerState::Idle, CrcHandlerState::Unverified, _) => {
+                // Begin verifying
+                argb_sys.set_state(State::Verifying);
+                flash_handler.disable();
+                crc_handler.start();
+            }
+            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Verifying, _) => {
+                // Continue verifying
+            }
+            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Failed, true) => {
+                // Verification failed
+                argb_sys.set_state(State::Error);
+                // The normal opertunity to tick is missed
+                argb_sys.tick();
+                panic!()
+            }
+            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Verifed, true) => {
+                // Boot
+                argb_sys.set_state(State::Booting);
+                // The normal opertunity to tick is missed
+                argb_sys.tick();
+                break;
+            }
+            _ => panic!()
         }
     }
 
     // SAFETY: 😊
     unsafe {
-        AuxData::set(AuxData { rcc: ps.rcc });
-        CorePeripherals::take().unwrap_unchecked().SCB.vtor.write(VECTOR_TABLE_ADDRESS);
-        cortex_m::asm::bootload(VECTOR_TABLE_ADDRESS as *const u32);
+        reset();
     }
+}
+
+#[unsafe(link_section = ".reset")]
+#[unsafe(naked)]
+unsafe extern "C" fn reset() -> ! {
+    naked_asm!(
+        // Map QUADSPI to 0x0000_0000 by
+        // setting SYSCFG_MEMRMP = 0x0000_0040
+        "mov    r0,    #0x0000",
+        "movt   r0,    #0x4001",
+        "mov    r1,    #0x04",
+        "str    r1,    [r0]",
+
+        // Use r0 as the zero register,
+        // this can be used to access the info block
+        "mov    r0,    #0x00",
+
+        // Zero all of RAM except for the AUX data
+        // from 0x2000_0000 to 0x2002_0000
+        //
+        // For all of the init loops
+        // r1=dst, r2=end, r3=src
+        "add    r1,     r0,    #0x20000000",
+        "add    r2,     r1,    #0x00020000",
+
+        "zero_loop:",
+        "str    r0,    [r1],   #4",
+        "cmp    r1,     r2",
+        "blt    zero_loop",
+
+        // Initialise CCM_SRAM
+        "add    r1,     r0,    #0x10000000",
+        // Stop after ccm_len bytes
+        "ldr    r2,    [r0,#0x18]",
+        "add    r2,     r2,     r1",
+        // Start reading after the data block
+        "mov    r3,    #0x40",
+
+        "ccmr_loop:",
+        "ldr    r4,    [r3],   #4",
+        "str    r4,    [r1],   #4",
+        "cmp    r1,     r2",
+        "blt    ccmr_loop",
+
+        // Initialise SRAM1 and set SP to the top of SRAM2
+        "add    r1,     r0,    #0x20000000",
+        // Set SP
+        "add    r2,     r1,    #0x00018000",
+        "mov    sp,     r2",
+        // Stop after ram_len bytes
+        "ldr    r2,    [r0,#0x1A]",
+        "add    r2,     r2,     r1",
+
+        "sram_loop:",
+        "ldr    r4,    [r3],   #4",
+        "str    r4,    [r1],   #4",
+        "cmp    r1,     r2",
+        "blt    sram_loop",
+
+        // Update SCB_VTOR
+        "mov    r1,    #0xED08",
+        "movt   r1,    #0xE000",
+        // Load vt_addr
+        "ldr    r2,    [r0,#0x10]",
+        "str    r2,    [r1]",
+
+        // Set LR to the reset vector
+        "add    lr,     r2,    #4",
+
+        // Jump to entry point (ep_addr)
+        "ldr    pc,    [r0,#0x14]",
+    );
 }

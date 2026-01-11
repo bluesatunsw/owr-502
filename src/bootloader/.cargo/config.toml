@@ -14,8 +14,7 @@ rustflags = [
   # If you need to link to pre-compiled C libraries provided by a C toolchain
   # use GCC as the linker by uncommenting the three lines below:
   # "-C", "linker=arm-none-eabi-gcc",
-  # "-C", "link-arg=-Wl,-Tlink.x",
-  # "-C", "link-arg=-nostartfiles",
+  "-C", "link-arg=-Tlink.x",
 ]
 
 [build]

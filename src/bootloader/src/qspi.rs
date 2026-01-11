@@ -1,8 +1,6 @@
 use core::convert::TryInto;
 
-use cortex_m::asm::delay;
-use cortex_m_semihosting::hprintln;
-use stm32g4xx_hal::{gpio::AF10, quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
+use stm32g4xx_hal::{quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
 use stm32g4xx_hal::pac;
 
 use crate::peripherals::*;
@@ -88,22 +86,15 @@ impl QspiSys {
         res
     }
 
-    fn wait_wip(&mut self) {
-        loop {
-            let mut status: [u8; 2] = [0,0];
-            self.hw_swpi.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
-                .with_instruction(LineMode::Quad, 0x05),
-                &mut status
-            );
+    pub fn write_in_progress(&mut self) -> bool{
+        let mut status: [u8; 2] = [0,0];
+        self.hw_swpi.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
+            .with_instruction(LineMode::Quad, 0x05),
+            &mut status
+        );
 
-            // Check WIP bit for both chips
-            if (status[0] & 0x01) == 0x00 && (status[1] & 0x01) == 0x00 {
-                break;
-            }
-
-            // Wait around 100us
-            delay(0x1000);
-        }
+        // Check WIP bit for both chips
+        (status[0] & 0x01) == 0x01 || (status[1] & 0x01) == 0x01
     }
 
     pub fn chip_erase(&mut self) {
@@ -116,8 +107,6 @@ impl QspiSys {
         self.hw_swpi.command(Command::new(DdrMode::Disabled)
             .with_instruction(LineMode::Quad, 0x60)
         );
-
-        self.wait_wip();
     }
 
     pub fn page_program(&mut self, page_index: u16, data: &[u8; 512]) {
@@ -136,11 +125,9 @@ impl QspiSys {
             ]),
             data
         );
-
-        self.wait_wip();
     }
 
-    pub fn enabled_mapping(mut self) {
+    pub fn enabled_mapping(&mut self) {
         self.hw_swpi.memory_mapped(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
             .with_instruction(LineMode::Quad, 0x0B)
             .with_address(LineMode::Quad, [0,0,0])

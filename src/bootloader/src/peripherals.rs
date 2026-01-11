@@ -3,8 +3,6 @@ use stm32g4xx_hal::{
     gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
 };
 
-const NODE_ID: u8 = 6;
-
 pub type CanInstance = FDCAN1;
 pub type CanRxPin = PA11;
 pub type CanTxPin = PA12;
@@ -22,7 +20,11 @@ pub type QspiIo1Bank2Pin = PC2;
 pub type QspiIo2Bank2Pin = PC3;
 pub type QspiIo3Bank2Pin = PC4;
 
+pub type ArgbInstance = USART1;
+pub type ArgbPin = PB6<AF7>;
+
 pub struct Peripherals {
+    pub sys: SYSCFG,
     pub rcc: Rcc,
 
     pub clock_tim: TIM2,
@@ -30,6 +32,9 @@ pub struct Peripherals {
     pub can_instance: CanInstance,
     pub can_rx_pin: CanRxPin,
     pub can_tx_pin: CanTxPin,    
+
+    pub argb_instance: ArgbInstance,
+    pub argb_pin: ArgbPin,
 
     pub qspi_instance: QUADSPI,
     pub qspi_clk_pin: QspiClkPin,
@@ -70,9 +75,9 @@ impl Peripherals {
         let gpioa = dp.GPIOA.split(&mut rcc);
         let gpiob = dp.GPIOB.split(&mut rcc);
         let gpioc = dp.GPIOC.split(&mut rcc);
-        let gpiod = dp.GPIOD.split(&mut rcc);
 
         Self {
+            sys: dp.SYSCFG,
             rcc: rcc,
 
             clock_tim: dp.TIM2,
@@ -80,6 +85,9 @@ impl Peripherals {
             can_instance: dp.FDCAN1,
             can_rx_pin: gpioa.pa11,
             can_tx_pin: gpioa.pa12,
+
+            argb_instance: dp.USART1,
+            argb_pin: gpiob.pb6.into_alternate(),
 
             qspi_instance: dp.QUADSPI,
             qspi_clk_pin: gpioa.pa3,

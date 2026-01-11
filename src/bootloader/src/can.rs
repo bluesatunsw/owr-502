@@ -125,7 +125,7 @@ impl TransmitDriver<ClockSystem> for CanSystem {
         })
     }
 
-    fn flush(&mut self, clock: &mut ClockSystem) -> nb::Result<(), Self::Error> {
+    fn flush(&mut self, _clock: &mut ClockSystem) -> nb::Result<(), Self::Error> {
         if self.hw_can.is_transmitter_idle() {
             Ok(())
         } else {

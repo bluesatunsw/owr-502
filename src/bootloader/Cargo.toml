@@ -20,13 +20,13 @@ canadensis_filter_config = "0.5.0"
 nb = "1.1.0"
 heapless = "0.9.1"
 embedded-alloc = "0.6.0"
-cfg-if = "1.0.4"
 embedded-io = "0.6.1"
 libm = "0.2.15"
 # Which dependencies and which features below are enabled depends on the target.
 stm32g4 = { version = "0.16.0", features = ["rt"] }
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
 stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch = "qspi", version = "0.0.2", features = ["rt", "can"] }
+wzrd_core ={ path = "../wzrd_core"}
 fdcan = "0.2.1"
 fugit = "0.3.9"
 

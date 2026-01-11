@@ -1,0 +1,18 @@
+[package]
+authors = ["Evan La Fontaine <navelafontaine@gmail.com>"]
+edition = "2024"
+readme = "README.md"
+name = "wzrd_pack"
+version = "0.0.1"
+
+[dependencies]
+clap = { version = "4.5.54", features = ["derive"] }
+crc = "3.4.0"
+elf = { version = "0.8.0", features = ["std"] }
+wzrd_core = { path = "../wzrd_core"}
+
+# allows use of `cargo fix`
+[[bin]]
+name = "wzrd_pack"
+test = false
+bench = false
