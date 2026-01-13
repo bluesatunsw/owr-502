@@ -1,24 +1,26 @@
 use stm32g4::stm32g474::{self, *};
 use stm32g4xx_hal::{
-    gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
+    dma::channel::{self, DMAExt}, gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
 };
+
+pub type DmaChannel = channel::C<DMA1, 0>;
 
 pub type CanInstance = FDCAN1;
 pub type CanRxPin = PA11;
 pub type CanTxPin = PA12;
 
-pub type QspiNcsPin = PA2;
-pub type QspiClkPin = PA3;
+pub type QspiNcsPin = PA2<AF10>;
+pub type QspiClkPin = PA3<AF10>;
 
-pub type QspiIo0Bank1Pin = PB1;
-pub type QspiIo1Bank1Pin = PB0;
-pub type QspiIo2Bank1Pin = PA7;
-pub type QspiIo3Bank1Pin = PA6;
+pub type QspiIo0Bank1Pin = PB1<AF10>;
+pub type QspiIo1Bank1Pin = PB0<AF10>;
+pub type QspiIo2Bank1Pin = PA7<AF10>;
+pub type QspiIo3Bank1Pin = PA6<AF10>;
 
-pub type QspiIo0Bank2Pin = PC1;
-pub type QspiIo1Bank2Pin = PC2;
-pub type QspiIo2Bank2Pin = PC3;
-pub type QspiIo3Bank2Pin = PC4;
+pub type QspiIo0Bank2Pin = PC1<AF10>;
+pub type QspiIo1Bank2Pin = PC2<AF10>;
+pub type QspiIo2Bank2Pin = PC3<AF10>;
+pub type QspiIo3Bank2Pin = PC4<AF10>;
 
 pub type ArgbInstance = USART1;
 pub type ArgbPin = PB6<AF7>;
@@ -28,6 +30,9 @@ pub struct Peripherals {
     pub rcc: Rcc,
 
     pub clock_tim: TIM2,
+
+    pub crc_instance: CRC,
+    pub dma_chan: DmaChannel,
 
     pub can_instance: CanInstance,
     pub can_rx_pin: CanRxPin,
@@ -76,11 +81,16 @@ impl Peripherals {
         let gpiob = dp.GPIOB.split(&mut rcc);
         let gpioc = dp.GPIOC.split(&mut rcc);
 
+        let dma1 = dp.DMA1.split(&rcc);
+
         Self {
             sys: dp.SYSCFG,
             rcc: rcc,
 
             clock_tim: dp.TIM2,
+
+            crc_instance: dp.CRC,
+            dma_chan: dma1.ch1,
 
             can_instance: dp.FDCAN1,
             can_rx_pin: gpioa.pa11,
@@ -90,18 +100,18 @@ impl Peripherals {
             argb_pin: gpiob.pb6.into_alternate(),
 
             qspi_instance: dp.QUADSPI,
-            qspi_clk_pin: gpioa.pa3,
-            qspi_ncs_pin: gpioa.pa2,
+            qspi_clk_pin: gpioa.pa3.into_alternate().speed(Speed::VeryHigh),
+            qspi_ncs_pin: gpioa.pa2.into_alternate().speed(Speed::VeryHigh),
 
-            qspi_io0_bank1_pin: gpiob.pb1,
-            qspi_io1_bank1_pin: gpiob.pb0,
-            qspi_io2_bank1_pin: gpioa.pa7,
-            qspi_io3_bank1_pin: gpioa.pa6,
+            qspi_io0_bank1_pin: gpiob.pb1.into_alternate().speed(Speed::VeryHigh),
+            qspi_io1_bank1_pin: gpiob.pb0.into_alternate().speed(Speed::VeryHigh),
+            qspi_io2_bank1_pin: gpioa.pa7.into_alternate().speed(Speed::VeryHigh),
+            qspi_io3_bank1_pin: gpioa.pa6.into_alternate().speed(Speed::VeryHigh),
 
-            qspi_io0_bank2_pin: gpioc.pc1,
-            qspi_io1_bank2_pin: gpioc.pc2,
-            qspi_io2_bank2_pin: gpioc.pc3,
-            qspi_io3_bank2_pin: gpioc.pc4,
+            qspi_io0_bank2_pin: gpioc.pc1.into_alternate().speed(Speed::VeryHigh),
+            qspi_io1_bank2_pin: gpioc.pc2.into_alternate().speed(Speed::VeryHigh),
+            qspi_io2_bank2_pin: gpioc.pc3.into_alternate().speed(Speed::VeryHigh),
+            qspi_io3_bank2_pin: gpioc.pc4.into_alternate().speed(Speed::VeryHigh),
         }
     }
 }

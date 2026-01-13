@@ -61,7 +61,14 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[exception]
 unsafe fn HardFault(_ef: &ExceptionFrame) -> ! {
-    bkpt();
+    static mut DOUBLE_FAULT: bool = false;
+    unsafe {
+        if DOUBLE_FAULT {
+            DOUBLE_FAULT = true;
+            bkpt();
+            DOUBLE_FAULT = false;
+        }
+    }
     loop {}
 }
 
@@ -88,6 +95,7 @@ fn initialise_allocator() {
 
 #[entry]
 fn main() -> ! {
+    bkpt();
     initialise_allocator();
     let mut ps = Peripherals::take();
 
@@ -122,7 +130,6 @@ fn main() -> ! {
         ps.qspi_io2_bank2_pin,
         ps.qspi_io3_bank2_pin
     );
-    bkpt();
 
     let id = CanNodeId::from_truncating(0);
     let transmitter = CanTransmitter::new(Mtu::CanFd64);
@@ -151,7 +158,7 @@ fn main() -> ! {
 
     let mut comms_handler = CommsHandler::new(&mut node);
     let mut flash_handler = FlashHandler::new(&mut qspi_sys);
-    let mut crc_handler = CrcHandler::new(0);
+    let mut crc_handler = CrcHandler::new(ps.crc_instance, ps.dma_chan);
 
     loop {
         node.receive(&mut comms_handler).unwrap();
@@ -191,27 +198,26 @@ fn main() -> ! {
             (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Verifying, _) => {
                 // Continue verifying
             }
-            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Failed, true) => {
-                // Verification failed
-                argb_sys.set_state(State::Error);
-                // The normal opertunity to tick is missed
-                argb_sys.tick();
-                panic!()
-            }
-            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Verifed, true) => {
-                // Boot
-                argb_sys.set_state(State::Booting);
-                // The normal opertunity to tick is missed
-                argb_sys.tick();
-                break;
+            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Done, true) => {
+                if crc_handler.result().unwrap() == 0 {
+                    // Verification failed
+                    argb_sys.set_state(State::Error);
+                    // The normal opertunity to tick is missed
+                    argb_sys.tick();
+                    panic!()
+                } else {
+                    // Boot
+                    argb_sys.set_state(State::Booting);
+                    // The normal opertunity to tick is missed
+                    argb_sys.tick();
+                    // SAFETY: 😊
+                    unsafe {
+                        reset();
+                    }
+                }
             }
             _ => panic!()
         }
-    }
-
-    // SAFETY: 😊
-    unsafe {
-        reset();
     }
 }
 

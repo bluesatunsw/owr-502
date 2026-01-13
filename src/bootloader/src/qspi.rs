@@ -1,6 +1,7 @@
 use core::convert::TryInto;
 
-use stm32g4xx_hal::{quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
+use cortex_m::asm::bkpt;
+use stm32g4xx_hal::{gpio::Speed, quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
 use stm32g4xx_hal::pac;
 
 use crate::peripherals::*;
@@ -27,16 +28,9 @@ impl QspiSys {
         let mut res = Self {
             hw_swpi: qspi.qspi(
                 (
-                    clk_pin.into_alternate::<10>(),
-                    io0_bank1_pin.into_alternate::<10>(),
-                    io1_bank1_pin.into_alternate::<10>(),
-                    io2_bank1_pin.into_alternate::<10>(),
-                    io3_bank1_pin.into_alternate::<10>(),
-                    ncs_pin.into_alternate::<10>(),
-                    io0_bank2_pin.into_alternate::<10>(),
-                    io1_bank2_pin.into_alternate::<10>(),
-                    io2_bank2_pin.into_alternate::<10>(),
-                    io3_bank2_pin.into_alternate::<10>()
+                    clk_pin,
+                    io0_bank1_pin, io1_bank1_pin, io2_bank1_pin, io3_bank1_pin, ncs_pin,
+                    io0_bank2_pin, io1_bank2_pin, io2_bank2_pin, io3_bank2_pin,
                 ), 
                 rcc,
                 0, 8, false,

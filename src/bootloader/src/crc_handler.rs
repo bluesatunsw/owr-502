@@ -3,13 +3,13 @@ use core::cell::UnsafeCell;
 use cortex_m::interrupt::Mutex;
 use cortex_m_rt;
 use stm32g4::stm32g474::{CRC, DMA1, interrupt};
-use stm32g4xx_hal::dma::{channel::C, traits::Channel};
+use stm32g4xx_hal::dma::{channel, traits::Channel};
 
 use cortex_m::interrupt::free as interrupt_free;
 
-pub struct CrcHandler {
-    target: u32,
-}
+use crate::peripherals::DmaChannel;
+
+pub struct CrcHandler { }
 
 #[derive(PartialEq)]
 enum CrcResult {
@@ -20,13 +20,13 @@ enum CrcResult {
 
 struct CrcState {
     hw_crc: CRC,
-    dma_ちゃん: C<DMA1, 0>,
+    dma_ちゃん: DmaChannel,
     address: usize,
     result: CrcResult,
 }
 
 const BLOCK_SIZE: usize = 32*1024;
-// const INTERNAL_START: usize = 0;
+const INTERNAL_START: usize = 0;
 const INTERNAL_END: usize = 0;
 const EXTERNAL_START: usize = 0;
 const EXTERNAL_END: usize = 0;
@@ -61,13 +61,20 @@ fn DMA1_CH1() {
 pub enum CrcHandlerState {
     Unverified,
     Verifying,
-    Verifed,
-    Failed,
+    Done,
 }
 
 impl CrcHandler {
-    pub fn new(target: u32) -> Self {
-        Self { target }
+    pub fn new(inst: CRC, ちゃん: DmaChannel) -> Self {
+        interrupt_free(|cs| unsafe {
+            *STATE.borrow(cs).as_mut_unchecked() = Some(CrcState {
+                hw_crc: inst,
+                dma_ちゃん: ちゃん,
+                address: INTERNAL_START,
+                result: CrcResult::None,
+            })
+        });
+        Self { }
     }
 
     pub fn start(&mut self) {
@@ -86,7 +93,6 @@ impl CrcHandler {
         })
     }
 
-    /*
     pub fn result(&self) -> Option<u32> {
         interrupt_free(|cs| unsafe {
             match STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap().result {
@@ -94,18 +100,14 @@ impl CrcHandler {
                 _ => None,
             }
         })
-    } */
+    }
 
     pub fn state(&mut self) -> CrcHandlerState {
         interrupt_free(|cs| unsafe {
             match STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap().result {
                 CrcResult::None => CrcHandlerState::Unverified,
                 CrcResult::NotReady => CrcHandlerState::Verifying,
-                CrcResult::Some(x) => if x == self.target {
-                    CrcHandlerState::Verifed
-                } else {
-                    CrcHandlerState::Failed
-                },
+                CrcResult::Some(_) => CrcHandlerState::Done,
             }
         })
     }

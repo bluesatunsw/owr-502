@@ -1,9 +1,15 @@
 target extended-remote :3333
 
+source PyCortexMDebug/scripts/gdb.py
+svd_load STM32G474.svd
+
 # print demangled symbols
 set print asm-demangle on
 set disassemble-next-line on
 show disassemble-next-line
+
+# Force GDB to use HW breakpoints for next
+mem 0x00000000 0x00004000 ro
 
 # set backtrace limit to not have infinite backtrace loops
 set backtrace limit 32
