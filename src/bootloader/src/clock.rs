@@ -1,5 +1,5 @@
 use stm32g4xx_hal::pac;
-use canadensis::core::time::{self, Clock};
+use canadensis::core::time::{Clock, Microseconds32};
 
 pub struct ClockSystem {
     hw_timer: pac::TIM2,
@@ -32,7 +32,7 @@ impl ClockSystem {
 }
 
 impl Clock for ClockSystem {
-    fn now(&mut self) -> time::Microseconds32 {
-        time::Microseconds32::from_ticks(self.hw_timer.cnt().read().bits())
+    fn now(&mut self) -> Microseconds32 {
+        Microseconds32::from_ticks(self.hw_timer.cnt().read().bits())
     }
 }

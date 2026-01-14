@@ -3,14 +3,13 @@
 #![feature(ptr_as_ref_unchecked)]
 #![feature(unsafe_cell_access)]
 #![feature(naked_functions_rustic_abi)]
+#![feature(never_type)]
+#![feature(generic_const_exprs)]
 
 use core::{arch::naked_asm, hint::black_box, panic::PanicInfo, ptr::copy_nonoverlapping};
 
 use canadensis::{
-    Node,
-    encoding::DataType,
-    node::{BasicNode, CoreNode, data_types::{GetInfoResponse, Version}},
-    requester::TransferIdFixedMap
+    Node, core::time::{Clock, Microseconds32}, encoding::DataType, node::{BasicNode, CoreNode, data_types::{GetInfoResponse, Version}}, requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use cortex_m::asm::bkpt;
@@ -24,8 +23,9 @@ use embedded_alloc::LlffHeap as Heap;
 use fugit::ExtU32;
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
+use wzrd_core::FlashLocation;
 
-use crate::{argb::{ArgbSys, State}, can::CanSystem, clock::ClockSystem, comms_handler::{CommsHandler, CommsHandlerState}, crc_handler::{CrcHandler, CrcHandlerState}, flash_handler::{FlashHandler, FlashHandlerState}, peripherals::Peripherals, qspi::QspiSys};
+use crate::{argb::{ArgbSys, State}, can::CanSystem, clock::ClockSystem, common::{FlashCommand, get_header}, comms_handler::CommsHandler, crc_handler::CrcHandler, flash_handler::{ChunkFlasher, Flash}, iflash::IflashSys, peripherals::Peripherals, qspi::QspiSys};
 
 mod peripherals;
 mod clock;
@@ -37,13 +37,14 @@ mod argb;
 mod comms_handler;
 mod flash_handler;
 mod crc_handler;
+mod interfaces;
+mod iflash;
 
 extern crate alloc;
 
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
-const TID_TIMEOUT_US: u32 = 1_000_000;
 
 const UPDATE_TIMEOUT_US: u32 = 5_000_000;
 
@@ -108,7 +109,6 @@ fn main() -> ! {
     let mut uuid: [u8; 16] = [0; 16];
     // SAFETY: 😊
     unsafe { copy_nonoverlapping(UID_ADDRESS as *const u8, uuid.as_mut_ptr(), 12); }
-    black_box(uuid);
 
     let clock_sys = ClockSystem::new(ps.clock_tim, &mut ps.rcc);
     let can_sys = CanSystem::new(ps.can_instance, ps.can_rx_pin, ps.can_tx_pin, &mut ps.rcc);
@@ -139,14 +139,19 @@ fn main() -> ! {
         TransferIdFixedMap<CanTransport, CYPHAL_CONCURRENT_TRANSFERS>,
         _, CYPHAL_NUM_TOPICS, CYPHAL_NUM_SERVICES
     > = CoreNode::new(clock_sys, id, transmitter, receiver, can_sys);
+
+    qspi_sys.disable_write();
+    // SAFETY: at this point external flash is enabled
+    let current_header = unsafe { get_header() };
+
     let mut node = BasicNode::new(core_node, GetInfoResponse {
         protocol_version: Version { major: 1, minor: 0 },
-        hardware_version: Version { major: 0, minor: 0 },
-        software_version: Version { major: 0, minor: 0 },
+        hardware_version: Version { major: current_header.hw_ver, minor: current_header.hw_rev },
+        software_version: Version { major: current_header.sw_maj, minor: current_header.sw_min },
         software_vcs_revision_id: 0,
         unique_id: uuid,
         name: Vec::from_slice(b"org.bluesat.owr.bootloader").unwrap(),
-        software_image_crc: Vec::new(),
+        software_image_crc: Vec::from_array([current_header.crc as u64]),
         certificate_of_authenticity: Vec::new()
     }).unwrap();
 
@@ -157,66 +162,50 @@ fn main() -> ! {
     ).unwrap();
 
     let mut comms_handler = CommsHandler::new(&mut node);
-    let mut flash_handler = FlashHandler::new(&mut qspi_sys);
     let mut crc_handler = CrcHandler::new(ps.crc_instance, ps.dma_chan);
+
+    let mut qspi_flasher = ChunkFlasher::new(qspi_sys);
+    let mut iflash_flasher = ChunkFlasher::new(IflashSys {});
 
     loop {
         node.receive(&mut comms_handler).unwrap();
         comms_handler.tick(&mut node);
-        flash_handler.tick();
-        argb_sys.tick();
+        argb_sys.tick(comms_handler.identifying());
 
-        let timer_expired: bool = true;
-        match (comms_handler.state(), flash_handler.state(), crc_handler.state(), timer_expired) {
-            (CommsHandlerState::Idle, FlashHandlerState::Disabled, _, false) => {
-                // Wait for something to happen
-                argb_sys.set_state(State::Idle);
-            }
+        //  Do nothing if handlers are still busy
+        if !qspi_flasher.tick() || !iflash_flasher.tick() {
+            continue;
+        }
 
-            (CommsHandlerState::BeginFlash, _, _, _) => {
-                // Transition to flashing mode
-                argb_sys.set_state(State::Flashing);
-                crc_handler.stop();
-                flash_handler.reset();
-            }
-            (CommsHandlerState::Loading, FlashHandlerState::Idle, CrcHandlerState::Unverified, _) => {
-                // Try to feed flash handler
-                if let Some(chunk) = comms_handler.extract() {
-                    flash_handler.feed(chunk);
+        match comms_handler.poll() {
+            FlashCommand::None => {
+                if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
+                    continue;
                 }
-            }
-            (CommsHandlerState::Loading, FlashHandlerState::Busy, CrcHandlerState::Unverified, _) => {
-                // Wait for flash handler to be free
-            }
-
-            (CommsHandlerState::Idle, FlashHandlerState::Idle, CrcHandlerState::Unverified, _) => {
-                // Begin verifying
-                argb_sys.set_state(State::Verifying);
-                flash_handler.disable();
-                crc_handler.start();
-            }
-            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Verifying, _) => {
-                // Continue verifying
-            }
-            (CommsHandlerState::Idle, FlashHandlerState::Disabled, CrcHandlerState::Done, true) => {
-                if crc_handler.result().unwrap() == 0 {
-                    // Verification failed
-                    argb_sys.set_state(State::Error);
-                    // The normal opertunity to tick is missed
-                    argb_sys.tick();
-                    panic!()
-                } else {
-                    // Boot
-                    argb_sys.set_state(State::Booting);
-                    // The normal opertunity to tick is missed
-                    argb_sys.tick();
-                    // SAFETY: 😊
-                    unsafe {
-                        reset();
+                if let Some(valid) = crc_handler.valid() {
+                    if valid {
+                        unsafe { reset() };
+                    } else {
+                        panic!("Invalid CRC");
                     }
                 }
-            }
-            _ => panic!()
+            },
+            FlashCommand::Start => {
+                crc_handler.stop();
+                qspi_flasher.enable_write();
+                iflash_flasher.enable_write();
+            },
+            FlashCommand::Write(chunk) => {
+                match chunk.location {
+                    FlashLocation::Internal => iflash_flasher.write(chunk.data, chunk.offset),
+                    FlashLocation::External => qspi_flasher.write(chunk.data, chunk.offset),
+                }
+            },
+            FlashCommand::Finish => {
+                qspi_flasher.disable_write();
+                iflash_flasher.disable_write();
+                crc_handler.start();
+            },
         }
     }
 }

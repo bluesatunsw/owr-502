@@ -1,10 +1,9 @@
 use core::convert::TryInto;
 
-use cortex_m::asm::bkpt;
-use stm32g4xx_hal::{gpio::Speed, quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
+use stm32g4xx_hal::{quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
 use stm32g4xx_hal::pac;
 
-use crate::peripherals::*;
+use crate::{flash_handler::Flash, peripherals::*};
 
 pub struct QspiSys {
     hw_swpi: Qspi,
@@ -79,8 +78,31 @@ impl QspiSys {
 
         res
     }
+}
 
-    pub fn write_in_progress(&mut self) -> bool{
+impl Flash for QspiSys {
+    const BLOCK_SIZE: usize = 512;
+
+    fn write(&mut self, block: &[u8; Self::BLOCK_SIZE], mut addr: usize) {
+        // Write Enable
+        self.hw_swpi.command(Command::new(DdrMode::Disabled)
+            .with_instruction(LineMode::Quad, 0x06)
+        );
+
+        addr /= Self::BLOCK_SIZE;
+        // Page Program
+        self.hw_swpi.write(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
+            .with_instruction(LineMode::Quad, 0x02)
+            .with_address(LineMode::Quad, [
+                (addr/256).try_into().unwrap(),
+                (addr%256).try_into().unwrap(),
+                0
+            ]),
+            block
+        );
+    }
+
+    fn busy(&mut self) -> bool {
         let mut status: [u8; 2] = [0,0];
         self.hw_swpi.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
             .with_instruction(LineMode::Quad, 0x05),
@@ -91,7 +113,7 @@ impl QspiSys {
         (status[0] & 0x01) == 0x01 || (status[1] & 0x01) == 0x01
     }
 
-    pub fn chip_erase(&mut self) {
+    fn enable_write(&mut self) {
         // Write Enable
         self.hw_swpi.command(Command::new(DdrMode::Disabled)
             .with_instruction(LineMode::Quad, 0x06)
@@ -103,25 +125,7 @@ impl QspiSys {
         );
     }
 
-    pub fn page_program(&mut self, page_index: u16, data: &[u8; 512]) {
-        // Write Enable
-        self.hw_swpi.command(Command::new(DdrMode::Disabled)
-            .with_instruction(LineMode::Quad, 0x06)
-        );
-
-        // Page Program
-        self.hw_swpi.write(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
-            .with_instruction(LineMode::Quad, 0x02)
-            .with_address(LineMode::Quad, [
-                (page_index/256).try_into().unwrap(),
-                (page_index%256).try_into().unwrap(),
-                0
-            ]),
-            data
-        );
-    }
-
-    pub fn enabled_mapping(&mut self) {
+    fn disable_write(&mut self) {
         self.hw_swpi.memory_mapped(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
             .with_instruction(LineMode::Quad, 0x0B)
             .with_address(LineMode::Quad, [0,0,0])

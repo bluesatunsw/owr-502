@@ -1,133 +1,67 @@
-use core::usize;
+use wzrd_core::CHUNK_SIZE;
 
-use wzrd_core::{CHUNK_SIZE, FlashLocation};
+use crate::common::Chunk;
 
-use crate::{common::{Chunk, LocatedChunk}, qspi::QspiSys};
+pub trait Flash {
+    const BLOCK_SIZE: usize;
 
-struct WorkingChunk {
+    fn write(&mut self, block: &[u8; Self::BLOCK_SIZE], addr: usize);
+    fn busy(&mut self) -> bool;
+    fn enable_write(&mut self);
+    fn disable_write(&mut self);
+}
+
+pub struct ChunkFlasher<F: Flash> where [(); F::BLOCK_SIZE]: Sized {
+    flash: F,
     data: Chunk,
     base: usize,
-    offset: usize,
+    offs: usize,
 }
 
-impl WorkingChunk {
-    pub fn null() -> Self {
+impl<F: Flash> ChunkFlasher<F> where [(); F::BLOCK_SIZE]: Sized {
+    pub fn new(flash: F) -> Self {
         Self {
+            flash,
             data: [0; CHUNK_SIZE],
             base: 0,
-            offset: usize::MAX,
+            offs: usize::MAX,
         }
     }
 
-    pub fn from_chunk(chunk: Chunk, address: usize) -> Self {
-        Self {
-            data: chunk,
-            base: address,
-            offset: 0,
+    pub fn write(&mut self, chunk: Chunk, addr: usize) {
+        assert!(self.done());
+
+        self.data = chunk;
+        self.base = addr;
+        self.offs = 0;
+    }
+
+    pub fn tick(&mut self) -> bool {
+        if self.flash.busy() {
+            return false;
         }
-    }
-
-    pub fn next<const N: usize>(&mut self) -> Option<([u8; N], usize)> {
-        if self.done() {
-            return None;
-        }
-
-        let res = Some((
-            self.data[self.offset..self.offset+N].try_into().unwrap(),
-            (self.base + self.offset) / N,
-        ));
-
-        self.offset += N;
-
-        res
-    }
-
-    pub fn done(&self) -> bool {
-        self.offset >= CHUNK_SIZE 
-    }
-}
-
-pub struct FlashHandler<'a> {
-    current_location: FlashLocation,
-    current_chunk: WorkingChunk,
-    qspi_sys: &'a mut QspiSys,
-    disabled: bool,
-    dirty: bool,
-}
-
-pub enum FlashHandlerState {
-    Disabled,
-    Idle,
-    Busy,
-}
-
-impl<'a> FlashHandler<'a> {
-    pub fn new(qspi_sys: &'a mut QspiSys) -> Self {
-        let mut sys = Self {
-            current_location: FlashLocation::Internal,
-            current_chunk: WorkingChunk::null(),
-            qspi_sys: qspi_sys,
-            disabled: true,
-            dirty: true,
-        };
-        sys.disable();
-        sys
-    }
-
-    pub fn reset(&mut self) {
-        if !self.dirty {
-            return;
+        if self.offs >= CHUNK_SIZE {
+            return false;
         }
 
-        self.dirty = false;
-        self.disabled = false;
-        self.current_chunk = WorkingChunk::null();
-        while self.write_in_progress() {}
-        self.qspi_sys.chip_erase();
+        self.flash.write(
+            self.data[self.offs..self.offs+F::BLOCK_SIZE].try_into().unwrap(),
+            self.base + self.offs
+        );
+
+        true
     }
 
-    pub fn tick(&mut self) {
-        if self.write_in_progress() {
-            return;
-        }
-
-        match self.current_location {
-            FlashLocation::Internal => { },
-            FlashLocation::External => match self.current_chunk.next() {
-                Some((data, index)) => {
-                    self.qspi_sys.page_program(index.try_into().unwrap(), &data);
-                },
-                None => {}
-            },
-        }
+    pub fn done(&mut self) -> bool {
+        self.offs >= CHUNK_SIZE && !self.flash.busy()
     }
 
-    pub fn feed(&mut self, chunk: LocatedChunk) {
-        assert!(self.current_chunk.done());
-        self.dirty = true;
-
-        self.current_location = chunk.location;
-        self.current_chunk = WorkingChunk::from_chunk(chunk.data, chunk.offset);
+    pub fn enable_write(&mut self) {
+        self.flash.enable_write();
     }
 
-    fn write_in_progress(&mut self) -> bool {
-        self.qspi_sys.write_in_progress()
-    }
-
-    pub fn state(&mut self) -> FlashHandlerState {
-        if self.disabled {
-            FlashHandlerState::Disabled
-        } else if self.current_chunk.done() && !self.write_in_progress() {
-            FlashHandlerState::Idle
-        } else {
-            FlashHandlerState::Busy
-        }
-    }
-
-    pub fn disable(&mut self) {
-        self.disabled = true;
-        // Wait for outstanding writes
-        while self.write_in_progress() {}
-        self.qspi_sys.enabled_mapping();
+    pub fn disable_write(&mut self) {
+        assert!(self.done());
+        self.flash.disable_write();
     }
 }

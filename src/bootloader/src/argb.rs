@@ -66,7 +66,6 @@ pub enum State {
 pub struct ArgbSys {
     hw_uart: serial::Tx<ArgbInstance, ArgbPin, serial::NoDMA>,
     state: State,
-    identifying: bool,
 }
 
 impl ArgbSys {
@@ -82,11 +81,10 @@ impl ArgbSys {
                 rcc
             ).unwrap(),
             state: State::Idle,
-            identifying: false,
         }
     }
 
-    pub fn tick(&mut self) {
+    pub fn tick(&mut self, identifying: bool) {
         let phase = true;
 
         let mut colour_sequence = [None; LED_COUNT];
@@ -101,7 +99,7 @@ impl ArgbSys {
         self.hw_uart.write_all(
             colour_sequence
                 .map(|x| 
-                    if self.identifying {
+                    if identifying {
                         x.unwrap_or(Colour { r: 0, g: 0, b: 0 })
                     } else {
                         x.unwrap_or(Colour { r: 0, g: 0, b: 0 }).dim()
@@ -113,8 +111,4 @@ impl ArgbSys {
     pub fn set_state(&mut self, state: State) {
         self.state = state;
     }
-
-    /*pub fn identify(&mut self) {
-        self.identifying = true;
-    }*/
 }

@@ -3,7 +3,7 @@ use std::{fmt::Debug, fs, path::PathBuf};
 use clap::Parser;
 use crc::{CRC_32_ISO_HDLC, Crc};
 use elf::{ElfBytes, endian::AnyEndian};
-use wzrd_core::Header;
+use wzrd_core::{CHUNK_SIZE, Header};
 
 const CRC: Crc<u32> = Crc::<u32>::new(&CRC_32_ISO_HDLC);
 
@@ -61,10 +61,13 @@ pub fn main() {
 
     let mut res = vec![];
 
-    let int = get_section(&elf, ".int");
     let ccm = get_section(&elf, ".ccm");
     let ram = get_section(&elf, ".ram");
     let ext = get_section(&elf, ".ext");
+    let int = get_section(&elf, ".int");
+
+    let ext_pad = (ccm.len() + ram.len() + ext.len() + Header::SIZE) % CHUNK_SIZE;
+    let int_pad = (int.len()) % CHUNK_SIZE;
 
     res.extend_from_slice(&Header {
         crc: 0,
@@ -77,19 +80,21 @@ pub fn main() {
         sw_min: get_symbol(&elf, "hw_min"),
         sw_bld: get_symbol(&elf, "hw_bld"),
 
-        ln_int: int.len().try_into().unwrap(),
-        ln_ccm: ccm.len().try_into().unwrap(),
-        ln_ram: ram.len().try_into().unwrap(),
-        ln_ext: ext.len().try_into().unwrap(),
+        ln_ccm: ccm.len() as u32,
+        ln_ram: ram.len() as u32,
+        ln_ext: (ext.len() + ext_pad) as u32,
+        ln_int: (int.len() + int_pad) as u32,
 
         vt_adr: get_symbol(&elf, "__vector_table"),
         ep_adr: get_symbol(&elf, "main"),
     }.serialize());
 
-    res.extend(int);
     res.extend(ccm);
     res.extend(ram);
     res.extend(ext);
+    res.extend([0].repeat(ext_pad));
+    res.extend(int);
+    res.extend([0].repeat(int_pad));
 
     let checksum = CRC.checksum(&res).to_le_bytes();
     res[0..4].copy_from_slice(&checksum);

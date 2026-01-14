@@ -32,12 +32,6 @@ impl<T: TransferId + PartialEq> ChunkManager<T> {
         )
     }
 
-    pub fn active_transfers(&self) -> usize {
-        self.chunklets.iter().filter(|x|
-            if let ChunkletState::Transferring(_) = x { true } else { false }
-        ).count()
-    }
-
     pub fn start_transfer<F>(&mut self, cb: F) -> bool where F: FnOnce(usize) -> T {
         for i in 0..self.chunklets.len() {
             if let ChunkletState::Empty = self.chunklets[i] {
