@@ -22,7 +22,7 @@ use hal::{
 };
 
 use crate::boards::{Celsius, Radians};
-use crate::stm32g4xx::{STM32G4xxGeneralClock};
+use crate::stm32g4xx::STM32G4xxGeneralClock;
 
 // Types
 
@@ -597,7 +597,11 @@ impl STM32G4xxStepperDriver {
         self.enn.set_high();
     }
 
-    pub fn set_position(&mut self, channel: StepperChannel, target: Radians) -> Result<(), SPIError> {
+    pub fn set_position(
+        &mut self,
+        channel: StepperChannel,
+        target: Radians,
+    ) -> Result<(), SPIError> {
         if !self.position_mode {
             self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000)
                 .unwrap();
@@ -606,6 +610,12 @@ impl STM32G4xxStepperDriver {
         let target_usteps: i32 = Libm::<f32>::round(
             (target.0) * ((GEAR_RATIO * MICROSTEPS_PER_REV) as f32) / (PI * 2.0),
         ) as i32;
+        hprintln!(
+            "Moving to position {}, targeet: {}",
+            target.0,
+            target_usteps
+        );
+
         self.write_reg(channel, StepperRegister::XTARGET, target_usteps as u32)
             .unwrap();
         Ok(())

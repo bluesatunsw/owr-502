@@ -4,7 +4,6 @@
 //! and drives the stepper motors as instructed by Cyphal/CAN messages from the OBC.
 #![allow(internal_features)]
 #![feature(core_intrinsics)]
-
 #![no_std]
 #![no_main]
 
@@ -13,21 +12,23 @@ fn panic(_info: &PanicInfo) -> ! {
     abort()
 }
 
-
+use core::f32::consts::PI;
 use core::intrinsics::abort;
 use core::panic::PanicInfo;
 
-use crate::stm32g4xx::RGBLEDColor;
 use crate::boards::Radians;
 use crate::stm32g4xx::stepper::StepperChannel;
+use crate::stm32g4xx::RGBLEDColor;
 
 use canadensis::core::time as cyphal_time;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
 use canadensis::core::transport::Transport;
 use canadensis::core::SubjectId;
+use canadensis::encoding::{DataType, Deserialize, Serialize};
 use canadensis::node::{self, data_types::Version};
 use canadensis::{Node, ResponseToken, TransferHandler};
 use canadensis_can::{CanReceiver, CanTransmitter};
+use canadensis_data_types::uavcan::si::sample::angle::scalar_1_0::Scalar;
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
@@ -40,6 +41,7 @@ use canadensis_data_types::uavcan::si::unit::angle::scalar_1_0::Scalar as AngleP
 use canadensis_data_types::uavcan::si::unit::angular_acceleration::scalar_1_0::Scalar as AngleAccelScalar;
 use canadensis_data_types::uavcan::si::unit::angular_velocity::scalar_1_0::Scalar as AngleVelScalar;
 use canadensis_data_types::uavcan::si::unit::torque::scalar_1_0::Scalar as TorqueScalar;
+use stm32g4xx::STM32G4xxStepperDriver;
 
 extern crate alloc;
 
@@ -52,6 +54,9 @@ const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 8;
 const CYPHAL_NUM_SERVICES: usize = 8;
 const TID_TIMEOUT_US: u32 = 1_000_000;
+
+// Message IDs
+const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
 
 // Global allocator -- required by canadensis.
 #[global_allocator]
@@ -132,8 +137,8 @@ fn main() -> ! {
     // Hit that subscribe button to the relevant subjects.
     node.subscribe_message(
         // TODO: THIS IS PLACEHOLDER SUBJECT/PORT
-        canadensis::core::SubjectId::from_truncating(49),
-        8, // max payload size. shouldn't this be a value we can pull from the type?
+        SETPOINT_MESSAGE_CHAN_0_ID,
+        size_of::<Planar>(),
         cyphal_time::MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
     )
     .unwrap();
@@ -144,21 +149,22 @@ fn main() -> ! {
 
     //hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
     hstepper
-        .set_position(StepperChannel::Channel1, Radians(3.14159 * 0.5))
+        .set_position(StepperChannel::Channel1, Radians(PI * 0.5))
         .unwrap();
     hstepper
-        .set_position(StepperChannel::Channel2, Radians(3.14159 * 1.0))
+        .set_position(StepperChannel::Channel2, Radians(PI * 1.0))
         .unwrap();
     hstepper
-        .set_position(StepperChannel::Channel3, Radians(3.14159 * 1.5))
+        .set_position(StepperChannel::Channel3, Radians(PI * 1.5))
         .unwrap();
     hstepper
-        .set_position(StepperChannel::Channel4, Radians(3.14159 * 2.0))
+        .set_position(StepperChannel::Channel4, Radians(PI * 2.0))
         .unwrap();
 
     let mut cycles = 0;
+    let mut handler = RecvHandler{ driver: hstepper };
     loop {
-        match node.receive(&mut RecvHandler) {
+        match node.receive(&mut handler) {
             Ok(_) => {}
             // TODO: handle overruns more robustly. Can currently get flooded by too many messages
             // if handling a message or message overrun itself takes too long, meaning we stop making any progress.
@@ -202,10 +208,10 @@ fn main() -> ! {
             hled.set_nth_led_and_render(1, led_color_2.into());
 
             // Stepper Driver test routine!
-            let _chan1temp = hstepper.get_temperature(StepperChannel::Channel1);
-            let _chan2temp = hstepper.get_temperature(StepperChannel::Channel2);
-            let _chan3temp = hstepper.get_temperature(StepperChannel::Channel3);
-            let _chan4temp = hstepper.get_temperature(StepperChannel::Channel4);
+            // let _chan1temp = hstepper.get_temperature(StepperChannel::Channel1);
+            // let _chan2temp = hstepper.get_temperature(StepperChannel::Channel2);
+            // let _chan3temp = hstepper.get_temperature(StepperChannel::Channel3);
+            // let _chan4temp = hstepper.get_temperature(StepperChannel::Channel4);
 
             //node.flush().unwrap();
             if missed_heartbeats > 0 {
@@ -243,7 +249,9 @@ fn main() -> ! {
     }
 }
 
-struct RecvHandler;
+struct RecvHandler {
+    driver: STM32G4xxStepperDriver
+}
 
 impl<T: Transport> TransferHandler<T> for RecvHandler {
     fn handle_message<N>(
@@ -254,6 +262,16 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
     where
         N: Node<Transport = T>,
     {
+
+        hprintln!("received");
+
+        match transfer.header.subject {
+            SETPOINT_MESSAGE_CHAN_0_ID => {
+                let msg = Planar::deserialize_from_bytes(&transfer.payload);
+                self.driver.set_position(StepperChannel::Channel1, Radians(msg.unwrap().angular_position.radian)).unwrap();
+            }
+            _ => hprintln!("Fucking nothing lmao: {:?}", transfer)
+        }
         // Cast MessageTransfer to the appropriate type and get the value.
         // If using this one handler for multiple message subjects, match against transfer.header.subject.
         hprintln!("Got message {:?}", transfer);
