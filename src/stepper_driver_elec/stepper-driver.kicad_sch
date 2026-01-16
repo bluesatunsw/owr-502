@@ -10393,6 +10393,16 @@
 	)
 	(wire
 		(pts
+			(xy 59.69 57.15) (xy 59.69 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ea23a54-4cc0-4e88-8a89-19a1261e8443")
+	)
+	(wire
+		(pts
 			(xy 238.76 149.86) (xy 238.76 147.32)
 		)
 		(stroke
@@ -10590,16 +10600,6 @@
 			(type default)
 		)
 		(uuid "9aa36162-aec0-4027-81b6-917ffcd6cced")
-	)
-	(wire
-		(pts
-			(xy 59.69 57.15) (xy 59.69 46.99)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9bbad2cd-fcdf-4737-a87f-30fd3543f5e3")
 	)
 	(wire
 		(pts
@@ -15118,71 +15118,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VDD")
-		(at 59.69 46.99 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1ea56b24-2b2d-4ada-a9ca-2c415c6dc2ea")
-		(property "Reference" "#PWR0122"
-			(at 59.69 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 59.69 43.815 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 59.69 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 59.69 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 59.69 46.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "00b6c17d-eb2b-4272-8c29-9719f79004f8")
-		)
-		(instances
-			(project "stepper-driver"
-				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
-					(reference "#PWR0122")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 50.8 113.03 0)
 		(unit 1)
@@ -16505,6 +16440,71 @@
 			(project "stepper-driver"
 				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
 					(reference "#PWR0109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 59.69 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3add7517-ea41-4d04-a0fe-0ce3e1334fdc")
+		(property "Reference" "#PWR0122"
+			(at 59.69 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 59.69 64.135 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 59.69 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 59.69 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 59.69 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d1898e7c-5dc1-4847-951a-74ed764ebb2e")
+		)
+		(instances
+			(project "stepper-driver"
+				(path "/22ad96d7-4eff-4ee6-90ff-f4a9952d1282"
+					(reference "#PWR0122")
 					(unit 1)
 				)
 			)
