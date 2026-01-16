@@ -50,7 +50,7 @@ fn DMA1_CH1() {
     });
 }
 
-impl CrcHandler {
+impl<'a> CrcHandler {
     pub fn new(inst: CRC, mut ちゃん: DmaChannel) -> Self {
         interrupt_free(|cs| unsafe {
             // Peripheral is destination in mem-to-mem mode

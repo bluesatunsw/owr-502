@@ -120,6 +120,9 @@ impl Flash for QspiSys {
     }
 
     fn enable_write(&mut self) {
+        // Abort memory mapped command
+        self.hw_swpi.abort();
+
         // Write Enable
         self.hw_swpi.command(Command::new(DdrMode::Disabled)
             .with_instruction(LineMode::Quad, 0x06)

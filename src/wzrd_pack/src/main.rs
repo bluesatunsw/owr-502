@@ -27,6 +27,12 @@ struct Args {
     /// Path to the resulting WIZ image
     #[arg(short, long)]
     out_file: PathBuf,
+
+    #[arg(long)]
+    sw_ver: String,
+
+    #[arg(long)]
+    hw_ver: String,
 }
 
 fn get_section(elf: &ElfBytes<AnyEndian>, name: &str) -> Vec<u8> {
@@ -54,6 +60,12 @@ fn get_symbol<T: TryFrom<u64>>(elf: &ElfBytes<AnyEndian>, name: &str) -> T where
 pub fn main() {
     let args = Args::parse();
 
+    let hw_tvr: Vec<u16> = args.hw_ver.split_terminator('.').map(|x| u16::from_str_radix(x, 10).unwrap()).collect();
+    let [hw_typ, hw_ver, hw_rev] = hw_tvr.as_slice().as_array().unwrap();
+
+    let sw_ver: Vec<u16> = args.sw_ver.split_terminator('.').map(|x| u16::from_str_radix(x, 10).unwrap()).collect();
+    let [sw_maj, sw_min, sw_bld] = sw_ver.as_slice().as_array().unwrap();
+
     let file_data = fs::read(args.in_file).expect("Could not read ELF file");
     let elf = ElfBytes::<AnyEndian>::minimal_parse(file_data.as_slice()).expect("Failed to parse ELF file");
 
@@ -67,13 +79,13 @@ pub fn main() {
     res.extend_from_slice(&Header {
         crc: 0,
 
-        hw_typ: 0,
-        hw_ver: 0,
-        hw_rev: 0,
+        hw_typ: *hw_typ,
+        hw_ver: *hw_ver as u8,
+        hw_rev: *hw_rev as u8,
 
-        sw_maj: 0,
-        sw_min: 0,
-        sw_bld: 0,
+        sw_maj: *sw_maj as u8,
+        sw_min: *sw_min as u8,
+        sw_bld: *sw_bld,
 
         ln_ccm: ccm.len() as u32,
         ln_ram: ram.len() as u32,

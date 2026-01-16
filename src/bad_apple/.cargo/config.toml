@@ -10,6 +10,7 @@ pack = """\
   run --manifest-path ../wzrd_pack/Cargo.toml --target host-tuple -- \
   -i target/thumbv7em-none-eabihf/release/bad_apple \
   -o target/thumbv7em-none-eabihf/release/bad_apple.wzrd \
+  --hw-ver 192.168.1 --sw-ver 89.6.4 \
 """ 
 
 deploy = """\

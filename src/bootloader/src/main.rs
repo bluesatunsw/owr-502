@@ -17,7 +17,6 @@ use canadensis::{
     requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use cortex_m::asm::bkpt;
 use cortex_m_semihosting::hprintln;
 use heapless::Vec;
 // use panic_semihosting as _;
@@ -62,8 +61,8 @@ const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
 
-const HEARTBEAT_PERIOD_US: u32 = 500_000;
-const UPDATE_TIMEOUT_US: u32 = 15_000_000;
+const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
+const UPDATE_TIMEOUT_US: u32 = 4_000_000_000;
 
 const UID_ADDRESS: u32 = 0x1FFF_7590;
 
@@ -125,7 +124,7 @@ fn main() -> ! {
         ps.sys.memrmp().write(|w| w.mem_mode().bits(0b011));
     }
 
-    let mut uuid: [u8; 16] = [0; 16];
+    let mut uuid: [u8; 16] = [0x4C; 16];
     // SAFETY: 😊
     unsafe { copy_nonoverlapping(UID_ADDRESS as *const u8, uuid.as_mut_ptr(), 12); }
 
@@ -208,13 +207,16 @@ fn main() -> ! {
 
         match comms_handler.poll() {
             FlashCommand::None => {
-                if true || node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
+                if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {
                     if valid {
                         argb_sys.set_state(State::Booting);
-                        unsafe { reset() };
+                        unsafe {
+                            Peripherals::reset();
+                            reset()
+                        };
                     } else {
                         argb_sys.set_state(State::BadCrc);
                         panic!("Invalid CRC");
@@ -320,6 +322,7 @@ unsafe extern "C" fn reset() -> ! {
         "add    lr,     r2,    #4",
 
         // Jump to entry point (ep_addr)
+        "bkpt",
         "ldr    pc,    [r0,#0x24]",
     );
 }

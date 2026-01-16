@@ -147,12 +147,12 @@ impl Default for Header {
             crc: 0x4C4C,
 
             hw_typ: 0xFFFF,
-            hw_ver: 0x4C,
-            hw_rev: 0x4C,
+            hw_ver: 0x00,
+            hw_rev: 0x00,
 
-            sw_maj: 0xFF,
-            sw_min: 0x4C,
-            sw_bld: 0x4C,
+            sw_maj: 0x00,
+            sw_min: 0x00,
+            sw_bld: 0x00,
 
             ln_ccm: 0x0000_0000,
             ln_ram: 0x0000_0000,

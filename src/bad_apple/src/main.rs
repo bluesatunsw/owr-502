@@ -12,7 +12,6 @@ fn foo() {
     hprintln!("Hello, world!");
 }
 
-// cargo run --manifest-path ../wzrd_pack/Cargo.toml --target host-tuple -- -i target/thumbv7em-none-eabihf/release/bad_apple -o bin.wzrd
 #[entry]
 fn main() -> ! {
     hprintln!("Nihao!");

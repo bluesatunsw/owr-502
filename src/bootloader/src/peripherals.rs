@@ -1,7 +1,9 @@
 use stm32g4::stm32g474::{self, *};
 use stm32g4xx_hal::{
-    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
+    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::PwrExt, rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset}, time::RateExtU32
 };
+
+pub type ClockTim = TIM2;
 
 pub type DmaChannel = channel::C<DMA1, 0>;
 
@@ -29,7 +31,7 @@ pub struct Peripherals {
     pub sys: SYSCFG,
     pub rcc: Rcc,
 
-    pub clock_tim: TIM2,
+    pub clock_tim: ClockTim,
 
     pub crc_instance: CRC,
     pub dma_chan: DmaChannel,
@@ -116,6 +118,48 @@ impl Peripherals {
             qspi_io3_bank2_pin: gpioc.pc4.into_alternate().speed(Speed::VeryHigh),
 
             internal_flash: dp.FLASH.constrain(),
+        }
+    }
+
+    pub unsafe fn reset() {
+        unsafe {
+            ClockTim::reset_unchecked();
+            ClockTim::disable_unchecked();
+
+            CRC::reset_unchecked();
+            CRC::disable_unchecked();
+
+            DMA1::reset_unchecked();
+            DMA1::disable_unchecked();
+
+            CanInstance::reset_unchecked();
+            CanInstance::disable_unchecked();
+
+            ArgbInstance::reset_unchecked();
+            ArgbInstance::disable_unchecked();
+
+            // Steal and poke the GPIO registers since the systems have taken ownership
+            // of them (and there is nothing which can be done about that)
+
+            GPIOA::steal().afrh().modify(
+                |_, w| w
+                    .afrh11().set(0)
+                    .afrh12().set(0)
+            );
+            GPIOA::steal().moder().modify(
+                |_, w| w
+                    .moder11().analog()
+                    .moder12().analog()
+            );
+
+            GPIOB::steal().afrl().modify(
+                |_, w| w
+                    .afrl6().set(0)
+            );
+            GPIOB::steal().moder().modify(
+                |_, w| w
+                    .moder6().analog()
+            );
         }
     }
 }

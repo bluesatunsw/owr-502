@@ -4,3 +4,9 @@ edition = "2024"
 readme = "README.md"
 name = "embedded_common"
 version = "0.0.1"
+
+[dependencies]
+# Which dependencies and which features below are enabled depends on the target.
+stm32g4 = { version = "0.16.0", features = ["rt", "stm32g474"] }
+# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
+stm32g4xx-hal = { path = "/home/evan/bluesat/stm32g4xx-hal", features = ["rt", "can", "stm32g474"] }
