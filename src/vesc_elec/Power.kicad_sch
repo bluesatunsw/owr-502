@@ -148,36 +148,38 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
-				(at 0 46.99 0)
+			(property "Reference" "U2"
+				(at 0 48.26 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
 				)
 			)
-			(property "Value" "BLDC_4-rescue_DRV8301"
-				(at 6.35 -29.21 0)
+			(property "Value" "DRV8301"
+				(at 7.62 -29.21 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
 				)
 			)
-			(property "Footprint" ""
-				(at 20.32 27.94 0)
+			(property "Footprint" "Bluesat:HTSSOP-56_6.1x14-0.5-EP"
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
+					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
-				(at 20.32 27.94 0)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/drv8353r.pdf"
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
+					(hide yes)
 				)
 			)
 			(property "Description" ""
@@ -186,7 +188,6 @@
 					(font
 						(size 1.27 1.27)
 					)
-					(hide yes)
 				)
 			)
 			(symbol "DRV8301_0_0"
