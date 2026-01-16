@@ -5463,6 +5463,16 @@
 		)
 		(uuid "31dc6b49-f3aa-4c3f-a58b-47e77a03f843")
 	)
+	(wire
+		(pts
+			(xy 101.6 55.88) (xy 101.6 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "330b259d-d58c-4b68-8640-03571af6ae21")
+	)
 	(bus
 		(pts
 			(xy 76.2 106.68) (xy 76.2 107.95)
@@ -6405,16 +6415,6 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 55.88) (xy 102.87 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ba66a3a8-e914-497b-963c-45b4d01347cf")
-	)
-	(wire
-		(pts
 			(xy 90.17 110.49) (xy 90.17 115.57)
 		)
 		(stroke
@@ -6442,16 +6442,6 @@
 			(type default)
 		)
 		(uuid "bc7e4406-1f02-40c6-9d1c-aba703bdacf6")
-	)
-	(wire
-		(pts
-			(xy 102.87 45.72) (xy 102.87 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bd6ed299-ee73-42e8-bb79-3aa362e68c1c")
 	)
 	(wire
 		(pts
@@ -10879,6 +10869,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 101.6 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60fb7c37-b453-401c-8025-e92c205ec0aa")
+		(property "Reference" "#PWR0105"
+			(at 101.6 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 101.6 64.135 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 101.6 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "657d7e7e-6d93-4a19-8cdb-754fc4f60845")
+		)
+		(instances
+			(project "computing-power-hub"
+				(path "/294cc751-7444-4d80-b629-85aa96521600"
+					(reference "#PWR0105")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 223.52 152.4 0)
 		(unit 1)
@@ -11212,71 +11267,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "#PWR0191")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VDD")
-		(at 102.87 45.72 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "6877a945-0f22-4fa8-ae20-8379079b37ac")
-		(property "Reference" "#PWR0181"
-			(at 102.87 49.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 102.87 42.545 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 102.87 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 102.87 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 102.87 45.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "aebfc961-59d3-470c-86ee-c89a24dd74ba")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "#PWR0181")
 					(unit 1)
 				)
 			)
