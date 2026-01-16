@@ -20,9 +20,7 @@ struct CrcState {
 }
 
 const EXTERNAL_START: usize = 0x9000_0000;
-const EXTERNAL_END: usize = 0x9040_0000;
 const INTERNAL_START: usize = 0x0800_8000;
-const INTERNAL_END: usize = 0x0802_0000;
 
 static STATE: Mutex<UnsafeCell<Option<CrcState>>> = Mutex::new(UnsafeCell::new(None));
 
@@ -35,10 +33,11 @@ fn DMA1_CH1() {
         state.dma_ちゃん.disable();
         state.dma_ちゃん.clear_transfer_complete_interrupt();
 
-        if state.address >= EXTERNAL_END {
+        let header = get_header().unwrap();
+        if state.address >= EXTERNAL_START + header.total_ext_length() {
             state.address = INTERNAL_START;
         }
-        if state.address >= INTERNAL_END {
+        if state.address >= INTERNAL_START + header.ln_int as usize {
             state.result = Some(state.hw_crc.dr().read().bits());
             return;
         }
@@ -76,6 +75,11 @@ impl CrcHandler {
     pub fn start(&mut self) {
         interrupt_free(|cs| unsafe {
             let state = STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap();
+            if get_header().is_none() {
+                state.result = Some(0x0000_0000);
+                return;
+            }
+
             state.hw_crc.cr().write(|w| w.reset().reset());
             // Skip over target CRC
             state.dma_ちゃん.set_memory_address((EXTERNAL_START + 4) as u32);
@@ -95,8 +99,12 @@ impl CrcHandler {
 
     pub fn valid(&mut self) -> Option<bool> {
         interrupt_free(|cs| unsafe {
-            STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap()
-                .result.and_then(|x| Some(x == get_header().crc))
+            if let Some(header) = get_header() {
+                STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap()
+                    .result.and_then(|x| Some(x == header.crc))
+            } else {
+                Some(false)
+            }
         })
     }
 }

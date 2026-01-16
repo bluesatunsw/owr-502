@@ -1,13 +1,13 @@
 use stm32g4::stm32g474::{self, *};
 use stm32g4xx_hal::{
-    dma::channel::{self, DMAExt}, gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
+    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::PwrExt, rcc::{Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt}, time::RateExtU32
 };
 
 pub type DmaChannel = channel::C<DMA1, 0>;
 
 pub type CanInstance = FDCAN1;
-pub type CanRxPin = PA11;
-pub type CanTxPin = PA12;
+pub type CanRxPin = PA11<AF9>;
+pub type CanTxPin = PA12<AF9>;
 
 pub type QspiNcsPin = PA2<AF10>;
 pub type QspiClkPin = PA3<AF10>;
@@ -54,6 +54,8 @@ pub struct Peripherals {
     pub qspi_io1_bank2_pin: QspiIo1Bank2Pin,
     pub qspi_io2_bank2_pin: QspiIo2Bank2Pin,
     pub qspi_io3_bank2_pin: QspiIo3Bank2Pin,
+
+    pub internal_flash: Parts,
 }
 
 impl Peripherals {
@@ -93,8 +95,8 @@ impl Peripherals {
             dma_chan: dma1.ch1,
 
             can_instance: dp.FDCAN1,
-            can_rx_pin: gpioa.pa11,
-            can_tx_pin: gpioa.pa12,
+            can_rx_pin: gpioa.pa11.into_alternate(),
+            can_tx_pin: gpioa.pa12.into_alternate(),
 
             argb_instance: dp.USART1,
             argb_pin: gpiob.pb6.into_alternate(),
@@ -112,6 +114,8 @@ impl Peripherals {
             qspi_io1_bank2_pin: gpioc.pc2.into_alternate().speed(Speed::VeryHigh),
             qspi_io2_bank2_pin: gpioc.pc3.into_alternate().speed(Speed::VeryHigh),
             qspi_io3_bank2_pin: gpioc.pc4.into_alternate().speed(Speed::VeryHigh),
+
+            internal_flash: dp.FLASH.constrain(),
         }
     }
 }

@@ -1,0 +1,22 @@
+[package]
+name = "bad_apple"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["stm32g4/stm32g474", "stm32g4xx-hal/stm32g474"]
+
+[dependencies]
+cortex-m-rt = "0.7.5"
+panic-semihosting = "0.6.0" # NOTE: change to different panic once not in development environment
+cortex-m-semihosting = "0.5.0"
+# Which dependencies and which features below are enabled depends on the target.
+stm32g4 = { version = "0.16.0", features = ["rt"] }
+# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
+stm32g4xx-hal = { path = "/home/evan/bluesat/stm32g4xx-hal", features = ["rt", "can"] }
+embedded_common ={ path = "../embedded_common"}
+
+[[bin]]
+name = "bad_apple"
+test = false
+bench = false

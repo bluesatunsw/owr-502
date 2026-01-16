@@ -36,12 +36,13 @@ impl<F: Flash> ChunkFlasher<F> where [(); F::BLOCK_SIZE]: Sized {
         self.offs = 0;
     }
 
+    /// Returns true if ready
     pub fn tick(&mut self) -> bool {
         if self.flash.busy() {
             return false;
         }
         if self.offs >= CHUNK_SIZE {
-            return false;
+            return true;
         }
 
         self.flash.write(

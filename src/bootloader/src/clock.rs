@@ -1,3 +1,4 @@
+use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal::pac;
 use canadensis::core::time::{Clock, Microseconds32};
 

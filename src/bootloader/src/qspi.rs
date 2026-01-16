@@ -3,10 +3,11 @@ use core::convert::TryInto;
 use stm32g4xx_hal::{quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt}, rcc::Rcc};
 use stm32g4xx_hal::pac;
 
-use crate::{flash_handler::Flash, peripherals::*};
+use crate::{chunk_flasher::Flash, peripherals::*};
 
 pub struct QspiSys {
     hw_swpi: Qspi,
+    write_enabled: bool,
 }
 
 impl QspiSys {
@@ -34,7 +35,8 @@ impl QspiSys {
                 rcc,
                 0, 8, false,
                 21, 2, ClockMode::Mode0, FlashMode::Dual
-            )
+            ),
+            write_enabled: false,
         };
 
         // Continuous Read Mode Reset
@@ -103,6 +105,10 @@ impl Flash for QspiSys {
     }
 
     fn busy(&mut self) -> bool {
+        if !self.write_enabled {
+            return false;
+        }
+
         let mut status: [u8; 2] = [0,0];
         self.hw_swpi.read(IoCommand::new(DdrMode::Disabled, LineMode::Quad)
             .with_instruction(LineMode::Quad, 0x05),
@@ -123,6 +129,7 @@ impl Flash for QspiSys {
         self.hw_swpi.command(Command::new(DdrMode::Disabled)
             .with_instruction(LineMode::Quad, 0x60)
         );
+        self.write_enabled = true;
     }
 
     fn disable_write(&mut self) {
@@ -131,5 +138,6 @@ impl Flash for QspiSys {
             .with_address(LineMode::Quad, [0,0,0])
             .with_dummy_cycles(10)
         );
+        self.write_enabled = false;
     }
 }

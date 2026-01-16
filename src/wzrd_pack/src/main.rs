@@ -3,7 +3,7 @@ use std::{fmt::Debug, fs, path::PathBuf};
 use clap::Parser;
 use crc::{CRC_32_ISO_HDLC, Crc};
 use elf::{ElfBytes, endian::AnyEndian};
-use wzrd_core::{CHUNK_SIZE, Header};
+use wzrd_core::Header;
 
 const CRC: Crc<u32> = Crc::<u32>::new(&CRC_32_ISO_HDLC);
 
@@ -43,13 +43,11 @@ fn get_section(elf: &ElfBytes<AnyEndian>, name: &str) -> Vec<u8> {
 fn get_symbol<T: TryFrom<u64>>(elf: &ElfBytes<AnyEndian>, name: &str) -> T where <T as TryFrom<u64>>::Error: Debug {
     // Reparsing every time, but I am too lazy to fix this
 
-    let common = elf.find_common_data().expect("Failed to parse shdrs");
-    let (dynsyms, strtab) = (common.dynsyms.unwrap(), common.dynsyms_strs.unwrap());
-
-    common.sysv_hash.unwrap()
-        .find(name.as_bytes(), &dynsyms, &strtab)
-        .expect(format!("Failed to find symbol {}", name).as_str()).unwrap()
-        .1.st_value
+    let (sym_tab, str_tab) = elf.symbol_table().unwrap().unwrap();
+    sym_tab.into_iter()
+        .find(|sym| str_tab.get(sym.st_name as usize).unwrap() == name)
+        .expect(format!("Failed to find symbol {}", name).as_str())
+        .st_value
         .try_into().unwrap()
 }
 
@@ -66,24 +64,21 @@ pub fn main() {
     let ext = get_section(&elf, ".ext");
     let int = get_section(&elf, ".int");
 
-    let ext_pad = (ccm.len() + ram.len() + ext.len() + Header::SIZE) % CHUNK_SIZE;
-    let int_pad = (int.len()) % CHUNK_SIZE;
-
     res.extend_from_slice(&Header {
         crc: 0,
 
-        hw_typ: get_symbol(&elf, "hw_typ"),
-        hw_ver: get_symbol(&elf, "hw_ver"),
-        hw_rev: get_symbol(&elf, "hw_rev"),
+        hw_typ: 0,
+        hw_ver: 0,
+        hw_rev: 0,
 
-        sw_maj: get_symbol(&elf, "hw_maj"),
-        sw_min: get_symbol(&elf, "hw_min"),
-        sw_bld: get_symbol(&elf, "hw_bld"),
+        sw_maj: 0,
+        sw_min: 0,
+        sw_bld: 0,
 
         ln_ccm: ccm.len() as u32,
         ln_ram: ram.len() as u32,
-        ln_ext: (ext.len() + ext_pad) as u32,
-        ln_int: (int.len() + int_pad) as u32,
+        ln_ext: ext.len() as u32,
+        ln_int:int.len() as u32,
 
         vt_adr: get_symbol(&elf, "__vector_table"),
         ep_adr: get_symbol(&elf, "main"),
@@ -92,11 +87,9 @@ pub fn main() {
     res.extend(ccm);
     res.extend(ram);
     res.extend(ext);
-    res.extend([0].repeat(ext_pad));
     res.extend(int);
-    res.extend([0].repeat(int_pad));
 
-    let checksum = CRC.checksum(&res).to_le_bytes();
+    let checksum = CRC.checksum(&res[4..]).to_le_bytes();
     res[0..4].copy_from_slice(&checksum);
 
     fs::write(args.out_file, res).expect("Failed to write to output file");

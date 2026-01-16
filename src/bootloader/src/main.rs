@@ -5,11 +5,16 @@
 #![feature(naked_functions_rustic_abi)]
 #![feature(never_type)]
 #![feature(generic_const_exprs)]
+#![feature(breakpoint)]
 
-use core::{arch::naked_asm, hint::black_box, panic::PanicInfo, ptr::copy_nonoverlapping};
+use core::{arch::{breakpoint, naked_asm}, panic::PanicInfo, ptr::copy_nonoverlapping};
 
 use canadensis::{
-    Node, core::time::{Clock, Microseconds32}, encoding::DataType, node::{BasicNode, CoreNode, data_types::{GetInfoResponse, Version}}, requester::TransferIdFixedMap
+    Node, 
+    core::time::{Clock, Microseconds32},
+    encoding::DataType,
+    node::{BasicNode,CoreNode, data_types::{GetInfoResponse, Version}},
+    requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use cortex_m::asm::bkpt;
@@ -20,12 +25,23 @@ use heapless::Vec;
 use cortex_m_rt::{ExceptionFrame, entry, exception};
 use embedded_alloc::LlffHeap as Heap;
 
-use fugit::ExtU32;
+use fugit::{ExtU32, MicrosDurationU32};
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
 use wzrd_core::FlashLocation;
 
-use crate::{argb::{ArgbSys, State}, can::CanSystem, clock::ClockSystem, common::{FlashCommand, get_header}, comms_handler::CommsHandler, crc_handler::CrcHandler, flash_handler::{ChunkFlasher, Flash}, iflash::IflashSys, peripherals::Peripherals, qspi::QspiSys};
+use crate::{
+    argb::{ArgbSys, State},
+    can::CanSystem,
+    clock::ClockSystem,
+    common::{FlashCommand, get_header},
+    comms_handler::CommsHandler,
+    crc_handler::CrcHandler,
+    chunk_flasher::{ChunkFlasher, Flash},
+    iflash::IflashSys,
+    peripherals::Peripherals,
+    qspi::QspiSys
+};
 
 mod peripherals;
 mod clock;
@@ -35,7 +51,7 @@ mod chunk;
 mod common;
 mod argb;
 mod comms_handler;
-mod flash_handler;
+mod chunk_flasher;
 mod crc_handler;
 mod interfaces;
 mod iflash;
@@ -46,7 +62,8 @@ const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
 
-const UPDATE_TIMEOUT_US: u32 = 5_000_000;
+const HEARTBEAT_PERIOD_US: u32 = 500_000;
+const UPDATE_TIMEOUT_US: u32 = 15_000_000;
 
 const UID_ADDRESS: u32 = 0x1FFF_7590;
 
@@ -56,7 +73,7 @@ const FLASH_START: *const u32 = 0x0800_0000 as *const u32;
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     hprintln!("{}", info.message().as_str().unwrap_or_default());
-    bkpt();
+    breakpoint();
     loop {}
 }
 
@@ -66,7 +83,7 @@ unsafe fn HardFault(_ef: &ExceptionFrame) -> ! {
     unsafe {
         if DOUBLE_FAULT {
             DOUBLE_FAULT = true;
-            bkpt();
+            breakpoint();
             DOUBLE_FAULT = false;
         }
     }
@@ -75,11 +92,11 @@ unsafe fn HardFault(_ef: &ExceptionFrame) -> ! {
 
 #[exception]
 unsafe fn DefaultHandler(_x: i16) -> ! {
-    bkpt();
+    breakpoint();
     loop {}
 }
 
-// Global allocator -- required by canadensis.
+// Global allocator ー required by canadensis.
 #[global_allocator]
 static HEAP: Heap = Heap::empty();
 
@@ -96,13 +113,15 @@ fn initialise_allocator() {
 
 #[entry]
 fn main() -> ! {
-    bkpt();
+    breakpoint();
     initialise_allocator();
     let mut ps = Peripherals::take();
 
     // SAFETY: 😊
     unsafe {
+        // Copy bootloader code into RAM to allow us to write to internal flash
         copy_nonoverlapping(FLASH_START, RAM_START, 0x2000);
+        // Remap RAM to begin executing from RAM
         ps.sys.memrmp().write(|w| w.mem_mode().bits(0b011));
     }
 
@@ -131,7 +150,7 @@ fn main() -> ! {
         ps.qspi_io3_bank2_pin
     );
 
-    let id = CanNodeId::from_truncating(0);
+    let id = CanNodeId::from_truncating(21);
     let transmitter = CanTransmitter::new(Mtu::CanFd64);
     let receiver = CanReceiver::new(id);
     let core_node: CoreNode<
@@ -142,7 +161,7 @@ fn main() -> ! {
 
     qspi_sys.disable_write();
     // SAFETY: at this point external flash is enabled
-    let current_header = unsafe { get_header() };
+    let current_header = unsafe { get_header().unwrap_or_default() };
 
     let mut node = BasicNode::new(core_node, GetInfoResponse {
         protocol_version: Version { major: 1, minor: 0 },
@@ -165,12 +184,22 @@ fn main() -> ! {
     let mut crc_handler = CrcHandler::new(ps.crc_instance, ps.dma_chan);
 
     let mut qspi_flasher = ChunkFlasher::new(qspi_sys);
-    let mut iflash_flasher = ChunkFlasher::new(IflashSys {});
+    let mut iflash_flasher = ChunkFlasher::new(IflashSys::new(&mut ps.internal_flash));
+
+    argb_sys.set_state(State::Idle);
+    crc_handler.start();
+
+    let mut next_hb = node.clock_mut().now();
 
     loop {
+        if next_hb <= node.clock_mut().now() {
+            node.run_per_second_tasks().unwrap();
+            next_hb += MicrosDurationU32::from_ticks(HEARTBEAT_PERIOD_US);
+        }
+
         node.receive(&mut comms_handler).unwrap();
         comms_handler.tick(&mut node);
-        argb_sys.tick(comms_handler.identifying());
+        argb_sys.tick(comms_handler.identifying(), node.clock_mut().now());
 
         //  Do nothing if handlers are still busy
         if !qspi_flasher.tick() || !iflash_flasher.tick() {
@@ -179,18 +208,21 @@ fn main() -> ! {
 
         match comms_handler.poll() {
             FlashCommand::None => {
-                if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
+                if true || node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {
                     if valid {
+                        argb_sys.set_state(State::Booting);
                         unsafe { reset() };
                     } else {
+                        argb_sys.set_state(State::BadCrc);
                         panic!("Invalid CRC");
                     }
                 }
             },
             FlashCommand::Start => {
+                argb_sys.set_state(State::Flashing);
                 crc_handler.stop();
                 qspi_flasher.enable_write();
                 iflash_flasher.enable_write();
@@ -202,6 +234,7 @@ fn main() -> ! {
                 }
             },
             FlashCommand::Finish => {
+                argb_sys.set_state(State::Idle);
                 qspi_flasher.disable_write();
                 iflash_flasher.disable_write();
                 crc_handler.start();
@@ -210,6 +243,16 @@ fn main() -> ! {
     }
 }
 
+/// Initialise RAM and the memory layout for the Rust user program
+/// 
+/// This must be implemented in assembly since we are invalidating
+/// the memory of the bootloader (by changing the memory remap to be
+/// external QSPI and zeroing all of SRAM). Rust *really* doesn't
+/// like this.
+/// 
+/// We place this function in a specific link section to force it
+/// to have a stable address, which is necessary as the reset
+/// vector of the user program should also point to this function.
 #[unsafe(link_section = ".reset")]
 #[unsafe(naked)]
 unsafe extern "C" fn reset() -> ! {
@@ -225,8 +268,7 @@ unsafe extern "C" fn reset() -> ! {
         // this can be used to access the info block
         "mov    r0,    #0x00",
 
-        // Zero all of RAM except for the AUX data
-        // from 0x2000_0000 to 0x2002_0000
+        // Zero all of RAM from 0x2000_0000 to 0x2002_0000
         //
         // For all of the init loops
         // r1=dst, r2=end, r3=src
@@ -241,7 +283,7 @@ unsafe extern "C" fn reset() -> ! {
         // Initialise CCM_SRAM
         "add    r1,     r0,    #0x10000000",
         // Stop after ccm_len bytes
-        "ldr    r2,    [r0,#0x18]",
+        "ldr    r2,    [r0,#0x10]",
         "add    r2,     r2,     r1",
         // Start reading after the data block
         "mov    r3,    #0x40",
@@ -258,7 +300,7 @@ unsafe extern "C" fn reset() -> ! {
         "add    r2,     r1,    #0x00018000",
         "mov    sp,     r2",
         // Stop after ram_len bytes
-        "ldr    r2,    [r0,#0x1A]",
+        "ldr    r2,    [r0,#0x14]",
         "add    r2,     r2,     r1",
 
         "sram_loop:",
@@ -271,13 +313,13 @@ unsafe extern "C" fn reset() -> ! {
         "mov    r1,    #0xED08",
         "movt   r1,    #0xE000",
         // Load vt_addr
-        "ldr    r2,    [r0,#0x10]",
+        "ldr    r2,    [r0,#0x20]",
         "str    r2,    [r1]",
 
         // Set LR to the reset vector
         "add    lr,     r2,    #4",
 
         // Jump to entry point (ep_addr)
-        "ldr    pc,    [r0,#0x14]",
+        "ldr    pc,    [r0,#0x24]",
     );
 }

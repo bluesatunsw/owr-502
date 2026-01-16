@@ -1,11 +1,16 @@
+use canadensis::core::time::Microseconds32;
+use cortex_m::asm::delay;
 use stm32g4xx_hal::{rcc::Rcc, serial::{self, FullConfig, StopBits, TxExt}, time};
 use embedded_io::Write;
 
 use crate::peripherals::{ArgbInstance, ArgbPin};
 
 const LED_COUNT: usize = 6;
-const SYS_LED_POS_A: usize = 1;
-const SYS_LED_POS_B: usize = 4;
+const SYS_LED_POS_A: usize = 0;
+const SYS_LED_POS_B: usize = 5;
+
+const BLINK_PERIOD_US: u32 = 500_000;
+const IDENTIFYING_BLINK_PERIOD_US: u32 = 200_000;
 
 #[derive(Copy, Clone)]
 struct Colour {
@@ -13,6 +18,14 @@ struct Colour {
     pub g: u8,
     pub b: u8,
 }
+
+const BLACK: Colour = Colour { r: 0, g: 0, b: 0 };
+const PURPLE: Colour = Colour { r: 255, g: 0, b: 255 };
+
+const CYAN: Colour = Colour { r: 0, g: 255, b: 255 };
+const ORANGE: Colour = Colour { r: 255, g: 63, b: 0 };
+const GREEN: Colour = Colour { r: 0, g: 255, b: 0 };
+const RED: Colour = Colour { r: 255, g: 0, b: 0 };
 
 impl Colour {
     pub fn as_uart_bytes(&self) -> [u8; 8] {
@@ -58,14 +71,16 @@ impl Colour {
 pub enum State {
     Idle,
     Flashing,
-    Verifying,
     Booting,
+    BadCrc,
     Error,
 }
 
 pub struct ArgbSys {
     hw_uart: serial::Tx<ArgbInstance, ArgbPin, serial::NoDMA>,
-    state: State,
+    state_colour: Colour,
+    identifying: bool,
+    phase: bool,
 }
 
 impl ArgbSys {
@@ -80,35 +95,60 @@ impl ArgbSys {
                     .stopbits(StopBits::STOP1),
                 rcc
             ).unwrap(),
-            state: State::Idle,
+            state_colour: BLACK,
+            identifying: false,
+            phase: false,
         }
     }
 
-    pub fn tick(&mut self, identifying: bool) {
-        let phase = true;
-
-        let mut colour_sequence = [None; LED_COUNT];
-        if phase {
-            colour_sequence[SYS_LED_POS_A] = Some(Colour {r: 0, g: 0, b: 0});
-            colour_sequence[SYS_LED_POS_B] = Some(Colour {r: 0, g: 0, b: 0});
+    pub fn tick(&mut self, identifying: bool, time: Microseconds32) {
+        self.identifying = identifying;
+        if identifying {
+            self.phase = (time.ticks() % IDENTIFYING_BLINK_PERIOD_US) > (IDENTIFYING_BLINK_PERIOD_US / 2);
         } else {
-            colour_sequence[SYS_LED_POS_A] = Some(Colour {r: 0, g: 0, b: 0});
-            colour_sequence[SYS_LED_POS_B] = Some(Colour {r: 0, g: 0, b: 0});
-        };
+            self.phase = (time.ticks() % BLINK_PERIOD_US) > (BLINK_PERIOD_US / 2);
+        }
 
-        self.hw_uart.write_all(
-            colour_sequence
-                .map(|x| 
-                    if identifying {
-                        x.unwrap_or(Colour { r: 0, g: 0, b: 0 })
-                    } else {
-                        x.unwrap_or(Colour { r: 0, g: 0, b: 0 }).dim()
-                    }
-                ).map(|x| x.as_uart_bytes()).as_flattened()
-        ).unwrap();
+        self.update();
     }
 
     pub fn set_state(&mut self, state: State) {
-        self.state = state;
+        self.state_colour = match state {
+            State::Idle => BLACK,
+            State::Flashing => CYAN,
+            State::Booting => GREEN,
+            State::BadCrc => ORANGE,
+            State::Error => RED,
+        };
+
+        self.update();
+    }
+
+    fn update(&mut self) {
+        let mut colour_sequence = [BLACK; LED_COUNT];
+        if self.identifying {
+            if self.phase {
+                colour_sequence[SYS_LED_POS_A] = BLACK;
+                colour_sequence[SYS_LED_POS_B] = ORANGE;
+            } else {
+                colour_sequence[SYS_LED_POS_A] = ORANGE;
+                colour_sequence[SYS_LED_POS_B] = BLACK;
+            }
+        } else {
+            if self.phase {
+                colour_sequence[SYS_LED_POS_A] = PURPLE.dim();
+                colour_sequence[SYS_LED_POS_B] = self.state_colour.dim();
+            } else {
+                colour_sequence[SYS_LED_POS_A] = self.state_colour.dim();
+                colour_sequence[SYS_LED_POS_B] = PURPLE.dim();
+            }
+        }
+
+        self.hw_uart.write_all(
+            colour_sequence
+                .map(|x| x.as_uart_bytes())
+                .as_flattened()
+        ).unwrap();
+        delay(4096);
     }
 }

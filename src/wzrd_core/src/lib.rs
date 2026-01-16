@@ -1,11 +1,11 @@
 #![no_std]
 
-pub const MAGIC_: u32 = 0x575A_5244;
+pub const MAGICW: u32 = 0x4452_5A57;
 
 /// The physical layout of fields in memory are as
 /// follows, all multibyte fields are LE:
 /// 00-03: FL_CRC
-/// 04-07: MAGIC_
+/// 04-07: MAGICW
 /// 
 /// 08-09: HW_TYP
 /// 0A-0A: HW_VER
@@ -59,7 +59,7 @@ impl Header {
         let mut res = [0; Self::SIZE];
 
         res[0x00..0x04].copy_from_slice(&self.crc.to_le_bytes());
-        res[0x04..0x08].copy_from_slice(&MAGIC_.to_le_bytes());
+        res[0x04..0x08].copy_from_slice(&MAGICW.to_le_bytes());
 
         res[0x08..0x0A].copy_from_slice(&self.hw_typ.to_le_bytes());
         res[0x0A..0x0B].copy_from_slice(&self.hw_ver.to_le_bytes());
@@ -80,11 +80,15 @@ impl Header {
         res
     }
 
-    pub fn deserialize(raw: &[u8; Self::SIZE]) -> Self {
-        assert_eq!(u32::from_le_bytes(*raw[0x04..0x08].as_array().unwrap()), MAGIC_);
-        assert_eq!(*raw[0x28..0x40].as_array().unwrap(), [0; 24]);
+    pub fn deserialize(raw: &[u8; Self::SIZE]) -> Option<Self> {
+        if u32::from_le_bytes(*raw[0x04..0x08].as_array()?) != MAGICW {
+            return None;
+        }
+        if *raw[0x28..0x40].as_array()? !=  [0; 24] {
+            return None
+        }
 
-        Self {
+        Some(Self {
             crc: u32::from_le_bytes(*raw[0x00..0x04].as_array().unwrap()),
 
             hw_typ: u16::from_le_bytes(*raw[0x08..0x0A].as_array().unwrap()),
@@ -102,15 +106,18 @@ impl Header {
 
             vt_adr: u32::from_le_bytes(*raw[0x20..0x24].as_array().unwrap()),
             ep_adr: u32::from_le_bytes(*raw[0x24..0x28].as_array().unwrap()),
-        }
+        })
     }
 
-    pub fn image_length(&self) -> usize {
+    pub fn total_ext_length(&self) -> usize {
         Self::SIZE
             + self.ln_ccm as usize
             + self.ln_ram as usize
             + self.ln_ext as usize
-            + self.ln_int as usize
+    }
+
+    pub fn image_length(&self) -> usize {
+        self.total_ext_length() + self.ln_int as usize
     }
 
     pub fn to_flash_location(&self, mut offset: usize) -> Option<(FlashLocation, usize)> {
@@ -121,16 +128,39 @@ impl Header {
         }
         offset -= Self::SIZE;
 
-        let ext_total = self.ln_ccm + self.ln_ram + self.ln_ext;
-        if offset < ext_total as usize {
+        if offset < self.total_ext_length() {
             return Some((External, offset));
         }
-        offset -= ext_total as usize;
+        offset -= self.total_ext_length();
 
         if offset < self.ln_int as usize {
             Some((External, offset))
         } else {
             None
+        }
+    }
+}
+
+impl Default for Header {
+    fn default() -> Self {
+        Self {
+            crc: 0x4C4C,
+
+            hw_typ: 0xFFFF,
+            hw_ver: 0x4C,
+            hw_rev: 0x4C,
+
+            sw_maj: 0xFF,
+            sw_min: 0x4C,
+            sw_bld: 0x4C,
+
+            ln_ccm: 0x0000_0000,
+            ln_ram: 0x0000_0000,
+            ln_ext: 0x0000_0000,
+            ln_int: 0x0000_0000,
+
+            vt_adr: 0x4C4C_4C4C,
+            ep_adr: 0x4C4C_4C4C,
         }
     }
 }

@@ -1,5 +1,17 @@
-use canadensis::{Node, ResponseToken, ServiceToken, TransferHandler, core::{Priority, time::{Clock, Microseconds32}, transfer::ServiceTransfer, transport::Transport}, encoding::{DataType, Deserialize}};
-use canadensis_data_types::uavcan::{file::{path_2_0::Path, read_1_1::{ReadRequest, ReadResponse}}, node::execute_command_1_3::{ExecuteCommandRequest, ExecuteCommandResponse}};
+use core::arch::breakpoint;
+
+use canadensis::{
+    Node,
+    ResponseToken,
+    ServiceToken,
+    TransferHandler,
+    core::{Priority, time::{Clock, Microseconds32}, transfer::ServiceTransfer, transport::Transport},
+    encoding::{DataType, Deserialize}
+};
+use canadensis_data_types::uavcan::{
+    file::{path_2_0::Path, read_1_1::{ReadRequest, ReadResponse}},
+    node::execute_command_1_3::{ExecuteCommandRequest, ExecuteCommandResponse}
+};
 use heapless::Vec;
 use fugit::ExtU32;
 
@@ -112,6 +124,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
             token: ResponseToken<T>,
             transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
         ) -> bool {
+        breakpoint();
         if transfer.header.service != EXECUTE_COMMAND_SERVICE {
             return false
         }
@@ -182,7 +195,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
 
             if let AsyncHeader::Future(req_tid) = &update.header
                 && *tid == *req_tid {
-                    update.header = AsyncHeader::Some(Header::deserialize(&payload.as_array().unwrap()));
+                    update.header = AsyncHeader::Some(Header::deserialize(&payload.as_array().unwrap()).unwrap());
                     return true;
             }
 

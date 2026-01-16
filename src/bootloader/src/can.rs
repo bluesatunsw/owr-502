@@ -1,4 +1,4 @@
-use core::{convert::{Infallible, TryInto}, hint::assert_unchecked, num::NonZero, slice::from_raw_parts};
+use core::{arch::breakpoint, convert::{Infallible, TryInto}, hint::assert_unchecked, num::NonZero, slice::from_raw_parts};
 
 use canadensis::core::{OutOfMemoryError, time::Clock};
 use canadensis_can::{CanId, driver::{self, ReceiveDriver, TransmitDriver}};
@@ -15,7 +15,7 @@ pub struct CanSystem {
 
 impl CanSystem {
     pub fn new(instance: CanInstance, rx_pin: CanRxPin, tx_pin: CanTxPin, rcc: &mut Rcc) -> Self {
-        let mut hw_can = instance.fdcan(tx_pin.into_alternate(), rx_pin.into_alternate(), rcc);
+        let mut hw_can = instance.fdcan(tx_pin, rx_pin, rcc);
         hw_can.apply_config(FdCanConfig {
             nbtr: NominalBitTiming {
                 prescaler: NonZero::new(1).unwrap(),
@@ -62,16 +62,23 @@ impl ReceiveDriver<ClockSystem> for CanSystem {
     fn receive(&mut self, clock: &mut ClockSystem) -> nb::Result<canadensis_can::Frame, Self::Error> {
         let mut buf: [u8; 64] = [0; 64];
 
-        Ok(canadensis_can::Frame::new(
+        let res = Ok(canadensis_can::Frame::new(
             clock.now(),
             translate_id(self.hw_can.receive0(&mut buf)?.unwrap().id),
             &buf
-        ))
+        ));
+
+        if res.is_ok() {
+            breakpoint();
+        }
+
+        res
     }
 
     fn apply_filters<S>(&mut self, local_node: Option<canadensis_can::CanNodeId>, subscriptions: S)
     where
         S: IntoIterator<Item = canadensis::core::subscription::Subscription> {
+
         driver::optimize_filters(local_node, subscriptions, 8, |filters| {
             let mut res = [ExtendedFilter::disable(); 8];
             // SAFETY: optimize filters obeys the max filters
@@ -113,7 +120,7 @@ impl TransmitDriver<ClockSystem> for CanSystem {
             // SAFETY: Equivlent invarients
             id: unsafe { ExtendedId::new(u32::from(frame.id())).unwrap_unchecked().into() },
             bit_rate_switching: true,
-            marker: None 
+            marker: None
         }, frame.data(), &mut |_, fh, bf| {
             canadensis_can::Frame::new(
                 // TODO: need to modify the API of the CAN HAL to return the mailbox
