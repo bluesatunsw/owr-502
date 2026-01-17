@@ -5,4 +5,7 @@
 
 ## TODO
 - Replace VESC volder with this one
-- Make project specific library for the STM32G474 to take it out of the main library
+- Add the GPIO pins in
+    - DRV_nFAULT
+    - DRV_GATE_EN
+    - SPI_DRV_CS
