@@ -17,6 +17,7 @@ use canadensis::{
     requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
+use cortex_m::iprintln;
 use cortex_m_semihosting::hprintln;
 use heapless::Vec;
 // use panic_semihosting as _;
@@ -27,6 +28,7 @@ use embedded_alloc::LlffHeap as Heap;
 use fugit::{ExtU32, MicrosDurationU32};
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
+use stm32g4::stm32g474;
 use wzrd_core::FlashLocation;
 
 use crate::{
@@ -62,7 +64,7 @@ const CYPHAL_NUM_TOPICS: usize = 4;
 const CYPHAL_NUM_SERVICES: usize = 4;
 
 const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
-const UPDATE_TIMEOUT_US: u32 = 4_000_000_000;
+const UPDATE_TIMEOUT_US: u32 = 15_000_000;
 
 const UID_ADDRESS: u32 = 0x1FFF_7590;
 
@@ -176,7 +178,7 @@ fn main() -> ! {
     node.subscribe_request(
         EXECUTE_COMMAND_SERVICE,
         ExecuteCommandRequest::EXTENT_BYTES.unwrap() as usize,
-        10.millis()
+        1000.millis()
     ).unwrap();
 
     let mut comms_handler = CommsHandler::new(&mut node);
@@ -207,7 +209,7 @@ fn main() -> ! {
 
         match comms_handler.poll() {
             FlashCommand::None => {
-                if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
+                if true || node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {

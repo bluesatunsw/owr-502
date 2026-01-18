@@ -149,6 +149,6 @@ impl ArgbSys {
                 .map(|x| x.as_uart_bytes())
                 .as_flattened()
         ).unwrap();
-        delay(4096);
+        delay(12288);
     }
 }

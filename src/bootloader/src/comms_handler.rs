@@ -124,7 +124,6 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
             token: ResponseToken<T>,
             transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
         ) -> bool {
-        breakpoint();
         if transfer.header.service != EXECUTE_COMMAND_SERVICE {
             return false
         }
@@ -152,7 +151,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
                 });
 
                 node.send_response(
-                    token, 10.millis(),
+                    token, 1000.millis(),
                     &ExecuteCommandResponse {
                         status: ExecuteCommandResponse::STATUS_SUCCESS,
                         output: Vec::new(),
@@ -163,7 +162,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
                 self.identify = Some(node.clock_mut().now());
 
                 node.send_response(
-                    token, 10.millis(),
+                    token, 1000.millis(),
                     &ExecuteCommandResponse {
                         status: ExecuteCommandResponse::STATUS_SUCCESS,
                         output: Vec::new(),
@@ -172,7 +171,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
             },
             _ => {
                 node.send_response(
-                    token, 10.millis(),
+                    token, 1000.millis(),
                     &ExecuteCommandResponse {
                         status: ExecuteCommandResponse::STATUS_BAD_COMMAND,
                         output: Vec::new(),
@@ -189,6 +188,7 @@ impl<T: Transport> TransferHandler<T> for CommsHandler<T> where T::TransferId: P
             _node: &mut N,
             transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
         ) -> bool {
+        breakpoint();
         if let Some(update) = &mut self.update {
             let tid = &transfer.header.transfer_id;
             let payload = &transfer.payload;

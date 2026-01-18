@@ -1,6 +1,6 @@
 use stm32g4::stm32g474::{self, *};
 use stm32g4xx_hal::{
-    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::PwrExt, rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset}, time::RateExtU32
+    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::{PwrExt, VoltageScale}, rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset}, time::RateExtU32
 };
 
 pub type ClockTim = TIM2;
@@ -65,21 +65,36 @@ impl Peripherals {
         // SAFETY: This can/should only be called right at the start of main
         let dp = unsafe { stm32g474::Peripherals::take().unwrap_unchecked() };
 
-        let pwr = dp.PWR.constrain().freeze();
+        let pwr = dp.PWR.constrain().vos(
+            VoltageScale::Range1 { enable_boost: true }
+        ).freeze();
 
         let mut rcc = dp.RCC.freeze(
             Config::pll()
                 .pll_cfg(PllConfig {
                     mux: PllSrc::HSE(24.MHz()),
-                    m: PllMDiv::DIV_3,
-                    n: PllNMul::MUL_32,
-                    r: Some(PllRDiv::DIV_4),
+                    m: PllMDiv::DIV_2,
+                    n: PllNMul::MUL_28,
+                    r: Some(PllRDiv::DIV_2),
                     q: Some(PllQDiv::DIV_2),
                     p: None,
                 })
                 .fdcan_src(FdCanClockSource::PLLQ),
             pwr
         );
+
+        let mut cp = unsafe { stm32g474::CorePeripherals::take().unwrap_unchecked() };
+        cp.DCB.enable_trace();
+        cp.DWT.enable_cycle_counter();
+        unsafe {
+            dp.DBGMCU
+                .cr()
+                .modify(|_, w| w.trace_ioen().set_bit().trace_mode().bits(0b00));
+            cp.ITM.lar.write(0xC5ACCE55);
+            cp.ITM.tcr.write(0x00010005);
+            cp.ITM.ter[0].write(0b1);
+            cp.ITM.tpr.write(0b1);
+        }
 
         let gpioa = dp.GPIOA.split(&mut rcc);
         let gpiob = dp.GPIOB.split(&mut rcc);

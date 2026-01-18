@@ -1,4 +1,3 @@
-use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal::pac;
 use canadensis::core::time::{Clock, Microseconds32};
 
@@ -14,10 +13,9 @@ impl ClockSystem {
         rcc.apb1enr1().modify(|_, w| w.tim2en().bit(true));
 
         // updates on overflow happen automatically
-        // PCLK1 is 64MHz, so prescale by /64
         unsafe {
-            // scale 64MHz to 1MHz
-            tim2.psc().write(|w| w.psc().bits(64 - 1));
+            // scale 168MHz to 1MHz
+            tim2.psc().write(|w| w.psc().bits(168 - 1));
             // NOTE: do not disable updates, as the prescaler is loaded ON AN UPDATE EVENT
             // so the prescaler won't actually apply until e.g. counter overflows
             // (which we effectively set to happen immediately below)

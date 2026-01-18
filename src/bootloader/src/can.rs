@@ -2,8 +2,10 @@ use core::{arch::breakpoint, convert::{Infallible, TryInto}, hint::assert_unchec
 
 use canadensis::core::{OutOfMemoryError, time::Clock};
 use canadensis_can::{CanId, driver::{self, ReceiveDriver, TransmitDriver}};
+use cortex_m::{Peripherals, iprint, iprintln, peripheral::itm::Stim};
 use fdcan::{NormalOperationMode, config::*, filter::{Action, ExtendedFilter, FilterType}, frame::{FrameFormat, TxFrameHeader}, id::{ExtendedId, Id}};
 
+use stm32g4::stm32g474::FDCAN1;
 use stm32g4xx_hal::{can::{Can, CanExt}, rcc::Rcc};
 use fugit::ExtU32;
 
@@ -19,16 +21,18 @@ impl CanSystem {
         hw_can.apply_config(FdCanConfig {
             nbtr: NominalBitTiming {
                 prescaler: NonZero::new(1).unwrap(),
-                seg1: NonZero::new(96).unwrap(),
-                seg2: NonZero::new(32).unwrap(),
-                sync_jump_width: NonZero::new(16).unwrap(),
+                // SP: 70%
+                seg1: NonZero::new(128).unwrap(),
+                seg2: NonZero::new(39).unwrap(),
+                sync_jump_width: NonZero::new(8).unwrap(),
             },
             dbtr: DataBitTiming {
                 transceiver_delay_compensation: true,
                 prescaler: NonZero::new(1).unwrap(),
-                seg1: NonZero::new(11).unwrap(),
-                seg2: NonZero::new(4).unwrap(),
-                sync_jump_width: NonZero::new(2).unwrap(),
+                // SP: 83%
+                seg1: NonZero::new(17).unwrap(),
+                seg2: NonZero::new(3).unwrap(),
+                sync_jump_width: NonZero::new(1).unwrap(),
             },
             automatic_retransmit: false,
             transmit_pause: false,
@@ -68,8 +72,17 @@ impl ReceiveDriver<ClockSystem> for CanSystem {
             &buf
         ));
 
-        if res.is_ok() {
-            breakpoint();
+        if let Ok(r) = &res {
+            if r.id() == CanId::try_from(0x107d5521).unwrap() {
+                return res;
+            }
+            
+            let stim = unsafe { &mut Peripherals::steal().ITM.stim[0] };
+            iprintln!(stim, "RX: {:?}", r.id());
+            for i in r.data() {
+                iprint!(stim, "{:x}", i);
+            }
+            iprintln!(stim, "");
         }
 
         res
@@ -112,6 +125,15 @@ impl TransmitDriver<ClockSystem> for CanSystem {
     }
 
     fn transmit(&mut self, frame: canadensis_can::Frame, clock: &mut ClockSystem) -> nb::Result<Option<canadensis_can::Frame>, Self::Error> {
+        if frame.id() != CanId::try_from(0x1c7d5621).unwrap() {
+            let stim = unsafe { &mut Peripherals::steal().ITM.stim[0] };
+            iprintln!(stim, "TX: {:?}", frame.id());
+            for i in frame.data() {
+                iprint!(stim, "{:x}", i);
+            }
+            iprintln!(stim, "");
+        }
+
         // Should always work since we just checked for room
         self.hw_can.transmit_preserve(TxFrameHeader {
             // SAFETY: Equivlent invarients
