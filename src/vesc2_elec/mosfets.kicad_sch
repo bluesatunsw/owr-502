@@ -147,297 +147,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Bluesat:NMOS_Heatsink"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "Q"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "NMOS_Heatsink_0_1"
-				(polyline
-					(pts
-						(xy 2.794 10.795) (xy 2.794 6.985)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.794 8.89) (xy 0 8.89)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 11.176) (xy 3.302 10.16)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 9.398) (xy 3.302 8.382)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 7.62) (xy 3.302 6.604)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.302 7.112) (xy 5.842 7.112) (xy 5.842 10.668) (xy 3.302 10.668)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 3.556 8.89) (xy 4.572 9.271) (xy 4.572 8.509) (xy 3.556 8.89)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 4.191 8.89)
-					(radius 2.794)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 11.43) (xy 5.08 10.668)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 5.08 10.668)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 5.08 7.112)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 6.35) (xy 5.08 8.89) (xy 3.302 8.89)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.461 9.271) (xy 6.223 9.271)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.842 9.271) (xy 5.461 8.636) (xy 6.223 8.636) (xy 5.842 9.271)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "NMOS_Heatsink_1_1"
-				(pin input line
-					(at -2.54 8.89 0)
-					(length 2.54)
-					(name "G"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 13.97 270)
-					(length 2.54)
-					(name "D"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 13.97 270)
-					(length 2.54)
-					(hide yes)
-					(name "Heatsink"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 3.81 90)
-					(length 2.54)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Bluesat:R_CompactH"
 			(pin_numbers
 				(hide yes)
@@ -694,6 +403,293 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Transistor_FET:Q_NMOS_DGS"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Q_NMOS_DGS"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "transistor NMOS N-MOS N-MOSFET"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Q_NMOS_DGS_0_1"
+				(polyline
+					(pts
+						(xy 0.254 1.905) (xy 0.254 -1.905)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.508) (xy 0.762 -0.508)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.921 0.381) (xy 3.683 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Q_NMOS_DGS_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "D"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:GND"
 			(power)
 			(pin_numbers
@@ -797,7 +793,7 @@
 		)
 	)
 	(junction
-		(at 152.4 111.76)
+		(at 167.64 111.76)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0c08e383-434e-4eaf-993c-46cd5090a725")
@@ -821,7 +817,7 @@
 		(uuid "375cdb9e-6354-421e-9f67-8cc68e118d34")
 	)
 	(junction
-		(at 152.4 124.46)
+		(at 167.64 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5b463b55-9cf0-4e59-96f4-ad89ec76bd35")
@@ -946,7 +942,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 111.76) (xy 152.4 107.95)
+			(xy 167.64 111.76) (xy 167.64 107.95)
 		)
 		(stroke
 			(width 0)
@@ -986,7 +982,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 111.76) (xy 149.86 111.76)
+			(xy 167.64 111.76) (xy 165.1 111.76)
 		)
 		(stroke
 			(width 0)
@@ -1036,7 +1032,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 111.76) (xy 154.94 111.76)
+			(xy 167.64 111.76) (xy 170.18 111.76)
 		)
 		(stroke
 			(width 0)
@@ -1066,7 +1062,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 124.46) (xy 152.4 124.46)
+			(xy 165.1 124.46) (xy 167.64 124.46)
 		)
 		(stroke
 			(width 0)
@@ -1086,7 +1082,7 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 124.46) (xy 154.94 120.65)
+			(xy 170.18 124.46) (xy 170.18 120.65)
 		)
 		(stroke
 			(width 0)
@@ -1096,7 +1092,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 111.76) (xy 149.86 115.57)
+			(xy 165.1 111.76) (xy 165.1 115.57)
 		)
 		(stroke
 			(width 0)
@@ -1146,7 +1142,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 99.06) (xy 152.4 102.87)
+			(xy 167.64 99.06) (xy 167.64 102.87)
 		)
 		(stroke
 			(width 0)
@@ -1196,7 +1192,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 99.06) (xy 152.4 99.06)
+			(xy 138.43 99.06) (xy 167.64 99.06)
 		)
 		(stroke
 			(width 0)
@@ -1256,7 +1252,7 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 111.76) (xy 154.94 115.57)
+			(xy 170.18 111.76) (xy 170.18 115.57)
 		)
 		(stroke
 			(width 0)
@@ -1266,7 +1262,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 124.46) (xy 154.94 124.46)
+			(xy 167.64 124.46) (xy 170.18 124.46)
 		)
 		(stroke
 			(width 0)
@@ -1296,7 +1292,7 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 120.65) (xy 149.86 124.46)
+			(xy 165.1 120.65) (xy 165.1 124.46)
 		)
 		(stroke
 			(width 0)
@@ -1306,7 +1302,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 124.46) (xy 152.4 128.27)
+			(xy 167.64 124.46) (xy 167.64 128.27)
 		)
 		(stroke
 			(width 0)
@@ -1566,6 +1562,87 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 135.89 87.63 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "252981a4-f34c-4c05-8677-de9745672a56")
+		(property "Reference" "Q301"
+			(at 142.24 86.3599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 142.24 88.8999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
+			(at 140.97 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 135.89 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 135.89 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1206369c-70fa-48e4-a225-e2ea6c52bc7c")
+		)
+		(pin "3"
+			(uuid "2b58a7f9-76ba-4a84-a4d9-4982a5ba0cef")
+		)
+		(pin "2"
+			(uuid "6e7cc15b-1cf8-4c6b-ac12-5f0b3520a4d5")
+		)
+		(instances
+			(project "vesc2"
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
+					(reference "Q301")
+					(unit 1)
+				)
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
+					(reference "Q401")
+					(unit 1)
+				)
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
+					(reference "Q501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:R_CompactH")
 		(at 132.08 99.06 0)
 		(unit 1)
@@ -1574,7 +1651,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2684acee-86f7-467f-b87d-b9e825bff82a")
-		(property "Reference" "R301"
+		(property "Reference" "R303"
 			(at 130.048 98.044 0)
 			(do_not_autoplace yes)
 			(effects
@@ -1629,7 +1706,7 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R301")
+					(reference "R303")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
@@ -1652,7 +1729,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "29175ff1-a6f4-49ea-9653-ddce8740fb6b")
-		(property "Reference" "R302"
+		(property "Reference" "R301"
 			(at 118.618 86.614 0)
 			(do_not_autoplace yes)
 			(effects
@@ -1707,7 +1784,7 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R302")
+					(reference "R301")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
@@ -1730,7 +1807,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2b07e5ba-c6d9-4b67-989f-1af8fbd1a43d")
-		(property "Reference" "R303"
+		(property "Reference" "R304"
 			(at 130.048 122.174 0)
 			(do_not_autoplace yes)
 			(effects
@@ -1785,7 +1862,7 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R303")
+					(reference "R304")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
@@ -1800,90 +1877,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Bluesat:NMOS_Heatsink")
-		(at 133.35 120.65 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "5b62c624-dee7-49df-b9e4-44265cdfe492")
-		(property "Reference" "Q302"
-			(at 142.24 110.4899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "~"
-			(at 142.24 113.0299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 133.35 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 133.35 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 133.35 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "92e521a2-315e-45b5-a588-1d15caf1509f")
-		)
-		(pin "4"
-			(uuid "a35ed509-0198-4907-99c2-c3b420048f33")
-		)
-		(pin "1"
-			(uuid "738ffd86-0d18-4507-8536-02243611ac64")
-		)
-		(pin "3"
-			(uuid "c42b9561-f5b8-4042-9c4b-f4a65dfad0b1")
-		)
-		(instances
-			(project "vesc2"
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "Q302")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
-					(reference "Q402")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
-					(reference "Q502")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:R_CompactH")
 		(at 120.65 111.76 0)
 		(unit 1)
@@ -1892,7 +1885,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "6cee99f7-3e8f-4bc9-801c-ee191c05bb86")
-		(property "Reference" "R304"
+		(property "Reference" "R302"
 			(at 118.618 110.744 0)
 			(do_not_autoplace yes)
 			(effects
@@ -1947,7 +1940,7 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R304")
+					(reference "R302")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
@@ -2042,8 +2035,89 @@
 		)
 	)
 	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 135.89 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7983c46f-3065-4aad-8aee-97892f395609")
+		(property "Reference" "Q302"
+			(at 142.24 110.4899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 142.24 113.0299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
+			(at 140.97 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 135.89 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 135.89 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6aa932ab-7e75-4a88-b8d3-509ee81d3791")
+		)
+		(pin "3"
+			(uuid "e6f970fe-4e9e-4a4c-87d5-8e3ca1add5e5")
+		)
+		(pin "2"
+			(uuid "099c84d8-b3b0-4db6-8909-cd0479847f35")
+		)
+		(instances
+			(project "vesc2"
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
+					(reference "Q302")
+					(unit 1)
+				)
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
+					(reference "Q402")
+					(unit 1)
+				)
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
+					(reference "Q502")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
-		(at 152.4 128.27 0)
+		(at 167.64 128.27 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2051,7 +2125,7 @@
 		(dnp no)
 		(uuid "a483ae9a-d31e-424b-a016-7dd7ebc90599")
 		(property "Reference" "#PWR0302"
-			(at 152.4 134.62 0)
+			(at 167.64 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2060,7 +2134,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 148.336 130.302 0)
+			(at 163.576 130.302 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2068,7 +2142,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 152.4 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2077,7 +2151,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 152.4 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2086,7 +2160,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 152.4 128.27 0)
+			(at 167.64 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2116,7 +2190,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:C_CompactV")
-		(at 152.4 105.41 0)
+		(at 167.64 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2125,7 +2199,7 @@
 		(fields_autoplaced yes)
 		(uuid "a8a00a87-2793-4a68-a2e0-58b5fe9bd85e")
 		(property "Reference" "C303"
-			(at 151.511 104.648 90)
+			(at 166.751 104.648 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2135,7 +2209,7 @@
 			)
 		)
 		(property "Value" "3n3"
-			(at 153.289 104.648 90)
+			(at 168.529 104.648 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2145,7 +2219,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 152.4 105.41 90)
+			(at 167.64 105.41 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2154,7 +2228,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 152.4 105.41 90)
+			(at 167.64 105.41 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2163,7 +2237,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 152.4 105.41 0)
+			(at 167.64 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2196,7 +2270,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:R_CompactV")
-		(at 149.86 118.11 0)
+		(at 165.1 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2204,8 +2278,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "baf817f9-f181-4782-8c6b-6fc63f28bff1")
-		(property "Reference" "R307"
-			(at 148.971 118.11 90)
+		(property "Reference" "R306"
+			(at 164.211 118.11 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2215,7 +2289,7 @@
 			)
 		)
 		(property "Value" "10R"
-			(at 149.86 118.11 90)
+			(at 165.1 118.11 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2224,7 +2298,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 149.86 118.11 0)
+			(at 165.1 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2233,7 +2307,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 149.86 118.11 0)
+			(at 165.1 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2242,7 +2316,7 @@
 			)
 		)
 		(property "Description" "Resistor, compact symbol"
-			(at 149.86 118.11 0)
+			(at 165.1 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2259,99 +2333,15 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R307")
+					(reference "R306")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
-					(reference "R407")
+					(reference "R406")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
-					(reference "R507")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:NMOS_Heatsink")
-		(at 133.35 96.52 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "bc7c784d-2238-4f76-baf8-fb5cbaba4d83")
-		(property "Reference" "Q?"
-			(at 142.24 86.3599 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "~"
-			(at 142.24 88.8999 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 133.35 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 133.35 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 133.35 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "fc20c9ad-f599-49d0-9911-10ed0eb148b6")
-		)
-		(pin "4"
-			(uuid "f66bc557-9072-4f1a-b4f3-c075492e0575")
-		)
-		(pin "1"
-			(uuid "8e50bfe0-9632-4613-a4f7-57901cddccf2")
-		)
-		(pin "3"
-			(uuid "a5a0b2c6-6ae2-4847-9318-d5100ff3ecb1")
-		)
-		(instances
-			(project "vesc2"
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "Q?")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
-					(reference "Q401")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
-					(reference "Q501")
+					(reference "R506")
 					(unit 1)
 				)
 			)
@@ -2359,7 +2349,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:R_CompactV")
-		(at 154.94 118.11 0)
+		(at 170.18 118.11 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2367,8 +2357,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e67697a5-df05-4577-8127-6333cdf74c45")
-		(property "Reference" "R308"
-			(at 154.051 118.11 90)
+		(property "Reference" "R307"
+			(at 169.291 118.11 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2378,7 +2368,7 @@
 			)
 		)
 		(property "Value" "10R"
-			(at 154.94 118.11 90)
+			(at 170.18 118.11 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2387,7 +2377,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 154.94 118.11 0)
+			(at 170.18 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2396,7 +2386,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 154.94 118.11 0)
+			(at 170.18 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2405,7 +2395,7 @@
 			)
 		)
 		(property "Description" "Resistor, compact symbol"
-			(at 154.94 118.11 0)
+			(at 170.18 118.11 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2422,15 +2412,15 @@
 		(instances
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R308")
+					(reference "R307")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
-					(reference "R408")
+					(reference "R407")
 					(unit 1)
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
-					(reference "R508")
+					(reference "R507")
 					(unit 1)
 				)
 			)
