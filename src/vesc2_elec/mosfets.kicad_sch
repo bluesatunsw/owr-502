@@ -863,12 +863,6 @@
 		(uuid "d34980a4-ae3f-4856-a771-ac8da2bd6ecd")
 	)
 	(junction
-		(at 138.43 142.24)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d4b20f33-a01e-4e4d-b48b-99ad0c46c3c0")
-	)
-	(junction
 		(at 138.43 119.38)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -889,16 +883,6 @@
 			(type default)
 		)
 		(uuid "0f81db4c-7068-4500-b79f-5683b25cfd8b")
-	)
-	(wire
-		(pts
-			(xy 142.24 142.24) (xy 142.24 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "117fd319-7e12-4008-a5a5-9249404fdd65")
 	)
 	(wire
 		(pts
@@ -1022,7 +1006,7 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 139.7) (xy 138.43 142.24)
+			(xy 138.43 139.7) (xy 138.43 144.78)
 		)
 		(stroke
 			(width 0)
@@ -1139,16 +1123,6 @@
 			(type default)
 		)
 		(uuid "7639f54c-131e-45f0-afd4-ca210c4e66de")
-	)
-	(wire
-		(pts
-			(xy 138.43 142.24) (xy 138.43 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "79199c6a-4afb-48e6-b1fe-55a1f012b2ed")
 	)
 	(wire
 		(pts
@@ -1282,16 +1256,6 @@
 	)
 	(wire
 		(pts
-			(xy 138.43 142.24) (xy 142.24 142.24)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bb28055a-15d6-4165-843b-fb7079dfb984")
-	)
-	(wire
-		(pts
 			(xy 154.94 111.76) (xy 154.94 115.57)
 		)
 		(stroke
@@ -1319,26 +1283,6 @@
 			(type default)
 		)
 		(uuid "e396e8e0-1b66-4c6b-941e-ed788603ca19")
-	)
-	(wire
-		(pts
-			(xy 142.24 132.08) (xy 142.24 134.62)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f0d80fa1-4dd5-411d-ba96-3cd889fec3f9")
-	)
-	(wire
-		(pts
-			(xy 138.43 132.08) (xy 142.24 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f172acd4-af79-4ba7-9663-54b41e5055cc")
 	)
 	(wire
 		(pts
@@ -2339,7 +2283,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bc7c784d-2238-4f76-baf8-fb5cbaba4d83")
-		(property "Reference" "Q"
+		(property "Reference" "Q?"
 			(at 142.24 86.3599 0)
 			(effects
 				(font
@@ -2398,6 +2342,10 @@
 		)
 		(instances
 			(project "vesc2"
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
+					(reference "Q?")
+					(unit 1)
+				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
 					(reference "Q401")
 					(unit 1)
@@ -2562,85 +2510,6 @@
 				)
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
 					(reference "R505")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:R_CompactV")
-		(at 142.24 137.16 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ee3d3962-0e4c-4a71-affe-d60b0987b01d")
-		(property "Reference" "R306"
-			(at 141.351 137.16 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "1m"
-			(at 142.24 137.16 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 142.24 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 142.24 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, compact symbol"
-			(at 142.24 137.16 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "6fbf72bb-01c0-46d2-a955-b2aaa2966533")
-		)
-		(pin "1"
-			(uuid "859ffed7-616b-4633-879b-10ae5c4ca953")
-		)
-		(instances
-			(project "vesc2"
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/1b823304-293f-4595-a426-e06902eaf0d9"
-					(reference "R306")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/395e1093-67ec-4614-b25c-b37e14ae8318"
-					(reference "R406")
-					(unit 1)
-				)
-				(path "/2059a583-03d9-42e7-b042-844898d8f177/43e157cb-6b50-47c8-9e44-0b1971389d5f"
-					(reference "R506")
 					(unit 1)
 				)
 			)
