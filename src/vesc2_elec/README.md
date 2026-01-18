@@ -5,7 +5,4 @@
 
 ## TODO
 - Replace VESC volder with this one
-- Add the GPIO pins in
-    - DRV_nFAULT
-    - DRV_GATE_EN
-    - SPI_DRV_CS
+- Add board temp sens to it (PA3 rn)
