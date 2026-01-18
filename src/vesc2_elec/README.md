@@ -5,4 +5,4 @@
 
 ## TODO
 - Replace VESC volder with this one
-- Add board temp sens to it (PA3 rn)
+- Footprints for the mosfets
