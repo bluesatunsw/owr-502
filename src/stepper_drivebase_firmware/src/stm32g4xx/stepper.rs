@@ -47,9 +47,9 @@ pub struct TMCFlags(u8);
 const PI: f32 = 3.14159;
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
-const GEAR_RATIO: u32 = 60;
+const GEAR_RATIO: u32 = 2;
 /// Number of microsteps used. Must be a power of two no greater than 256.
-const MICROSTEPS_PER_STEP: u32 = 256;
+const MICROSTEPS_PER_STEP: u32 = 1;
 /// Number of microsteps per motor revolution.
 const MICROSTEPS_PER_REV: u32 = 200 * MICROSTEPS_PER_STEP;
 /// The number of stepper motors that the board is actually controlling, to avoid dealing with
@@ -341,7 +341,7 @@ impl STM32G4xxStepperDriver {
             // reduce current to 0x20/0x100 = 1/8th of maximum current (which is 15 A peak) = ~2A
             // this is the minimum we can reduce it to... still draws peaks above this!!!
             // self.write_reg(channel, StepperRegister::GLOBALSCALER, 0x00000020).unwrap();
-            let gs = 128u32; // 32 to 255
+            let gs = 64u32; // 32 to 255
             self.write_reg(channel, StepperRegister::GLOBALSCALER, gs)
                 .unwrap();
             // SHORT_CONF: FET short detection moderate sensitivity, SHORTFILTER 1 us, normal shortdelay
@@ -513,7 +513,8 @@ impl STM32G4xxStepperDriver {
         let cof = diaagc & (1 << 9) > 0;
         let lf = diaagc & (1 << 8) > 0;
         let agc = diaagc & 0xFF;
-        hprintln!(
+        hprintln
+!(
             "MAGL {} MAGH {} COF {} LF {} AGC {}",
             magl,
             magh,

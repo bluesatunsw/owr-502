@@ -15,6 +15,7 @@ use core::convert::TryFrom;
 
 use crate::stm32g4xx::clock;
 
+
 // Helper function that converts an FDCAN DLC (data length code) to the size in bytes.
 fn fddlc_to_bytes(dlc: u8) -> usize {
     match dlc {

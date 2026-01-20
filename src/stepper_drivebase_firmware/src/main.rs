@@ -151,15 +151,15 @@ fn main() -> ! {
     hstepper
         .set_position(StepperChannel::Channel1, Radians(PI * 0.5))
         .unwrap();
-    hstepper
-        .set_position(StepperChannel::Channel2, Radians(PI * 1.0))
-        .unwrap();
-    hstepper
-        .set_position(StepperChannel::Channel3, Radians(PI * 1.5))
-        .unwrap();
-    hstepper
-        .set_position(StepperChannel::Channel4, Radians(PI * 2.0))
-        .unwrap();
+    // hstepper
+    //     .set_position(StepperChannel::Channel2, Radians(PI * 1.0))
+    //     .unwrap();
+    // hstepper
+    //     .set_position(StepperChannel::Channel3, Radians(PI * 1.5))
+    //     .unwrap();
+    // hstepper
+    //     .set_position(StepperChannel::Channel4, Radians(PI * 2.0))
+    //     .unwrap();
 
     let mut cycles = 0;
     let mut handler = RecvHandler{ driver: hstepper };
