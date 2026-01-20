@@ -48,16 +48,10 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.1
+          "min_clearance": 0.5
         }
       },
-      "diff_pair_dimensions": [
-        {
-          "gap": 0.0,
-          "via_gap": 0.0,
-          "width": 0.0
-        }
-      ],
+      "diff_pair_dimensions": [],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -186,12 +180,7 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [
-        0.0,
-        0.095,
-        0.2,
-        0.4
-      ],
+      "track_widths": [],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -218,16 +207,7 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [
-        {
-          "diameter": 0.0,
-          "drill": 0.0
-        },
-        {
-          "diameter": 0.4,
-          "drill": 0.3
-        }
-      ],
+      "via_dimensions": [],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -450,7 +430,7 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "error",
+      "pin_to_pin": "warning",
       "power_pin_not_driven": "error",
       "same_local_global_label": "warning",
       "similar_label_and_power": "warning",
@@ -467,18 +447,23 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [],
-    "pinned_symbol_libs": []
+    "pinned_footprint_libs": [
+      "Bluesat"
+    ],
+    "pinned_symbol_libs": [
+      "Bluesat",
+      "Vesc"
+    ]
   },
   "meta": {
-    "filename": "wark_min.kicad_pro",
+    "filename": "vesc2.kicad_pro",
     "version": 3
   },
   "net_settings": {
     "classes": [
       {
         "bus_width": 12,
-        "clearance": 0.095,
+        "clearance": 0.2,
         "diff_pair_gap": 0.25,
         "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
@@ -489,7 +474,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.095,
+        "track_width": 0.2,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
@@ -506,7 +491,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "./",
+      "netlist": "",
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
@@ -580,12 +565,24 @@
           "label": "Datasheet",
           "name": "Datasheet",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Description",
+          "name": "Description",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "#",
+          "name": "${ITEM_NUMBER}",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
-      "name": "Default Editing",
+      "name": "",
       "sort_asc": true,
       "sort_field": "Reference"
     },
@@ -631,24 +628,24 @@
   },
   "sheets": [
     [
-      "4290b658-b789-4580-aa76-416e95a5eb26",
+      "2059a583-03d9-42e7-b042-844898d8f177",
       "Root"
     ],
     [
-      "c85e6759-2183-408e-99e0-555f35c8d05f",
-      "Power"
+      "338ab53d-4fa6-4b23-a24e-1380829c260b",
+      "Gate Driver"
     ],
     [
-      "e924291c-21ef-4bdc-a76d-e21a3df7fbbf",
-      "Phase A"
+      "1b823304-293f-4595-a426-e06902eaf0d9",
+      "MOSFETS A"
     ],
     [
-      "d7a83051-7e7a-45e8-8e3c-51f79b7ce82e",
-      "Phase B"
+      "395e1093-67ec-4614-b25c-b37e14ae8318",
+      "MOSFETS B"
     ],
     [
-      "a791d41f-81a7-4c47-8995-3f68bf33f3bb",
-      "Phase C"
+      "43e157cb-6b50-47c8-9e44-0b1971389d5f",
+      "MOSFETS C"
     ]
   ],
   "text_variables": {}

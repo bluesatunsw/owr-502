@@ -4133,6 +4133,12 @@
 		(uuid "7c4da518-ed1d-496a-b24e-35205f9ceabf")
 	)
 	(junction
+		(at 63.5 109.22)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8cc1a8c1-cfab-4b67-8613-c012feda63e7")
+	)
+	(junction
 		(at 31.75 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4503,6 +4509,16 @@
 			(type default)
 		)
 		(uuid "2e4d1ad3-83c3-470f-863f-09b8cff8ed15")
+	)
+	(wire
+		(pts
+			(xy 63.5 109.22) (xy 63.5 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "326726bb-5ff9-49f4-819d-8399cd1d518c")
 	)
 	(wire
 		(pts
@@ -4966,6 +4982,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 111.76) (xy 69.85 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9f8a5a66-0df8-4b44-817c-dfac177045e5")
+	)
+	(wire
+		(pts
 			(xy 189.23 67.31) (xy 189.23 68.58)
 		)
 		(stroke
@@ -5166,6 +5192,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 109.22) (xy 63.5 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c7b9c773-8f8c-4b8c-9c63-af2a67562479")
+	)
+	(wire
+		(pts
 			(xy 77.47 69.85) (xy 77.47 68.58)
 		)
 		(stroke
@@ -5333,6 +5369,16 @@
 			(type default)
 		)
 		(uuid "ecb773fc-7f33-4a67-b5a5-1b82234ca10f")
+	)
+	(wire
+		(pts
+			(xy 63.5 107.95) (xy 63.5 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f0945445-a59b-4f20-84a6-e3b14d69bc1e")
 	)
 	(wire
 		(pts
@@ -5634,6 +5680,71 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 69.85 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "073e16e8-ed42-457b-9a55-8f5a24a48d9d")
+		(property "Reference" "#PWR0238"
+			(at 69.85 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 69.85 120.142 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 69.85 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 69.85 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 69.85 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d77abe0d-64a6-4bb9-8f09-674b91286596")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
+					(reference "#PWR0238")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 143.51 49.53 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5914,6 +6025,75 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Polarized_Small_US")
+		(at 63.5 114.3 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "1efc7e02-cbed-4f7a-ad18-26a70decd795")
+		(property "Reference" "C360"
+			(at 63.754 111.252 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "270u"
+			(at 63.754 112.776 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10"
+			(at 63.5 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 63.5 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor, small US symbol"
+			(at 63.5 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0d41bb78-e025-46a1-9eb0-9a0d9070d43f")
+		)
+		(pin "1"
+			(uuid "7bfc048c-6080-4b3a-a31a-697617008ad8")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
+					(reference "C360")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 96.52 38.1 0)
 		(unit 1)
@@ -6045,6 +6225,71 @@
 			(project "wark_min"
 				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
 					(reference "C208")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 63.5 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "24ef829d-c781-4142-a113-39f37866f242")
+		(property "Reference" "#PWR0315"
+			(at 63.5 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 63.5 120.142 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 63.5 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 63.5 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "066220a5-58f7-457d-b5d9-dce91917ddfc")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
+					(reference "#PWR0315")
 					(unit 1)
 				)
 			)
@@ -9122,6 +9367,71 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VBUS")
+		(at 63.5 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "98a5fc4b-947d-406c-83f7-9950cd7cc7b1")
+		(property "Reference" "#PWR0239"
+			(at 63.5 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 63.5 104.775 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 63.5 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 63.5 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 63.5 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "36adddc6-616b-4f2d-9eec-b30f3ee200a2")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
+					(reference "#PWR0239")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:PWR_FLAG")
 		(at 72.39 67.31 0)
 		(unit 1)
@@ -9905,7 +10215,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Connector_AMASS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_AMASS:AMASS_XT30U-M_1x02_P5.0mm_Vertical"
 			(at 33.02 36.83 0)
 			(effects
 				(font
@@ -10629,6 +10939,75 @@
 			(project "wark_min"
 				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
 					(reference "#PWR0214")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized_Small_US")
+		(at 69.85 114.3 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dcafd2a7-668f-4420-bdaa-23a099194c06")
+		(property "Reference" "C361"
+			(at 70.104 111.252 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "270u"
+			(at 70.104 112.776 0)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10"
+			(at 69.85 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 69.85 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor, small US symbol"
+			(at 69.85 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "0912c0bc-67c6-45b1-9828-315548a5bc66")
+		)
+		(pin "1"
+			(uuid "1a12faf5-719e-4eb5-98c7-f7f42e5b0be8")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/c85e6759-2183-408e-99e0-555f35c8d05f"
+					(reference "C361")
 					(unit 1)
 				)
 			)
