@@ -3188,16 +3188,6 @@
 	)
 	(wire
 		(pts
-			(xy 170.18 120.65) (xy 170.18 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "780b7a56-fd18-491f-b69d-07ffb193a29d")
-	)
-	(wire
-		(pts
 			(xy 182.88 72.39) (xy 182.88 77.47)
 		)
 		(stroke
@@ -3508,7 +3498,7 @@
 	)
 	(wire
 		(pts
-			(xy 166.37 120.65) (xy 170.18 120.65)
+			(xy 166.37 120.65) (xy 168.91 120.65)
 		)
 		(stroke
 			(width 0)
@@ -3785,28 +3775,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
-				(hide yes)
-			)
-		)
-	)
-	(global_label "V_SUPPLY"
-		(shape input)
-		(at 170.18 121.92 270)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 0.762 0.762)
-			)
-			(justify right)
-		)
-		(uuid "e71b856d-f432-4954-aa8d-66a5c5d1e43e")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 170.18 129.2631 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
 				(hide yes)
 			)
 		)
@@ -6640,6 +6608,71 @@
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177/338ab53d-4fa6-4b23-a24e-1380829c260b"
 					(reference "C210")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VBUS")
+		(at 168.91 120.65 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "93cd38b7-d704-4b41-bd24-0dd7f04f10de")
+		(property "Reference" "#PWR01"
+			(at 165.1 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 167.386 119.38 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 168.91 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 168.91 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 168.91 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e545e24e-198d-455f-805b-1c98f5f56cd1")
+		)
+		(instances
+			(project "vesc2"
+				(path "/2059a583-03d9-42e7-b042-844898d8f177/338ab53d-4fa6-4b23-a24e-1380829c260b"
+					(reference "#PWR01")
 					(unit 1)
 				)
 			)
