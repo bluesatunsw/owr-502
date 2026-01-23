@@ -39,9 +39,9 @@ pub struct RGBLEDColor {
 impl RGBLEDColor {
     pub fn default() -> Self {
         RGBLEDColor {
-            red: 255,
-            green: 255,
-            blue: 255
+            red: 5,
+            green: 5,
+            blue: 5
         }
     }
 }

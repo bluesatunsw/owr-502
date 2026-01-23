@@ -57,6 +57,9 @@ const TID_TIMEOUT_US: u32 = 1_000_000;
 
 // Message IDs
 const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
+const SETPOINT_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3010);
+const SETPOINT_MESSAGE_CHAN_2_ID: SubjectId = SubjectId::from_truncating(3020);
+const SETPOINT_MESSAGE_CHAN_3_ID: SubjectId = SubjectId::from_truncating(3030);
 
 // Global allocator -- required by canadensis.
 #[global_allocator]
@@ -64,7 +67,7 @@ static HEAP: Heap = Heap::empty();
 
 fn initialise_allocator() {
     use core::mem::MaybeUninit;
-    const HEAP_SIZE: usize = 16000;
+    const HEAP_SIZE: usize = 23000;
     static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
     unsafe { HEAP.init(&raw mut HEAP_MEM as usize, HEAP_SIZE) }
 }
@@ -136,33 +139,41 @@ fn main() -> ! {
 
     // Hit that subscribe button to the relevant subjects.
     node.subscribe_message(
-        // TODO: THIS IS PLACEHOLDER SUBJECT/PORT
         SETPOINT_MESSAGE_CHAN_0_ID,
         size_of::<Planar>(),
         cyphal_time::MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
     )
     .unwrap();
+    node.subscribe_message(
+        // TODO: THIS IS PLACEHOLDER SUBJECT/PORT
+        SETPOINT_MESSAGE_CHAN_1_ID,
+        size_of::<Planar>(),
+        cyphal_time::MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
+    )
+    .unwrap();
+    node.subscribe_message(
+        // TODO: THIS IS PLACEHOLDER SUBJECT/PORT
+        SETPOINT_MESSAGE_CHAN_2_ID,
+        size_of::<Planar>(),
+        cyphal_time::MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
+    )
+    .unwrap();
+
+    node.subscribe_message(
+        // TODO: THIS IS PLACEHOLDER SUBJECT/PORT
+        SETPOINT_MESSAGE_CHAN_3_ID,
+        size_of::<Planar>(),
+        cyphal_time::MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
+    )
+    .unwrap();
+
     // NOTE: If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
     hstepper.enable_all();
     hprintln!("Enabled steppers");
 
-    //hstepper.write_reg(StepperChannel::Channel1, StepperRegister::GSTAT, 0x00000007).unwrap();
-    hstepper
-        .set_position(StepperChannel::Channel1, Radians(PI * 0.5))
-        .unwrap();
-    // hstepper
-    //     .set_position(StepperChannel::Channel2, Radians(PI * 1.0))
-    //     .unwrap();
-    // hstepper
-    //     .set_position(StepperChannel::Channel3, Radians(PI * 1.5))
-    //     .unwrap();
-    // hstepper
-    //     .set_position(StepperChannel::Channel4, Radians(PI * 2.0))
-    //     .unwrap();
-
     let mut cycles = 0;
-    let mut handler = RecvHandler{ driver: hstepper };
+    let mut handler = RecvHandler { driver: hstepper };
     loop {
         match node.receive(&mut handler) {
             Ok(_) => {}
@@ -198,11 +209,11 @@ fn main() -> ! {
 
             // RGB LED test routine!
             let led_color = RGBLEDColor {
-                red: if cycles % 3 == 0 { 0xFF } else { 0x00 },
-                blue: if cycles % 3 == 1 { 0xFF } else { 0x00 },
-                green: if cycles % 3 == 1 { 0xFF } else { 0x00 },
+                red: if cycles % 3 == 0 { 0x1 } else { 0x00 },
+                blue: if cycles % 3 == 1 { 0x1 } else { 0x00 },
+                green: if cycles % 3 == 1 { 0x1 } else { 0x00 },
             };
-            let led_color_2: u32 = 0xF0F000 >> (8 * ((cycles + 1) % 3));
+            let led_color_2: u32 = 0x010100 >> (8 * ((cycles + 1) % 3));
             cycles += 1;
             hled.set_nth_led(0, led_color);
             hled.set_nth_led_and_render(1, led_color_2.into());
@@ -250,7 +261,7 @@ fn main() -> ! {
 }
 
 struct RecvHandler {
-    driver: STM32G4xxStepperDriver
+    driver: STM32G4xxStepperDriver,
 }
 
 impl<T: Transport> TransferHandler<T> for RecvHandler {
@@ -262,15 +273,46 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
     where
         N: Node<Transport = T>,
     {
-
         hprintln!("received");
 
         match transfer.header.subject {
             SETPOINT_MESSAGE_CHAN_0_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
-                self.driver.set_position(StepperChannel::Channel1, Radians(msg.unwrap().angular_position.radian)).unwrap();
+                self.driver
+                    .set_position(
+                        StepperChannel::Channel1,
+                        Radians(msg.unwrap().angular_position.radian),
+                    )
+                    .unwrap();
             }
-            _ => hprintln!("Fucking nothing lmao: {:?}", transfer)
+            SETPOINT_MESSAGE_CHAN_1_ID => {
+                let msg = Planar::deserialize_from_bytes(&transfer.payload);
+                self.driver
+                    .set_position(
+                        StepperChannel::Channel2,
+                        Radians(msg.unwrap().angular_position.radian),
+                    )
+                    .unwrap();
+            }
+            SETPOINT_MESSAGE_CHAN_2_ID => {
+                let msg = Planar::deserialize_from_bytes(&transfer.payload);
+                self.driver
+                    .set_position(
+                        StepperChannel::Channel3,
+                        Radians(msg.unwrap().angular_position.radian),
+                    )
+                    .unwrap();
+            }
+            SETPOINT_MESSAGE_CHAN_3_ID => {
+                let msg = Planar::deserialize_from_bytes(&transfer.payload);
+                self.driver
+                    .set_position(
+                        StepperChannel::Channel4,
+                        Radians(msg.unwrap().angular_position.radian),
+                    )
+                    .unwrap();
+            }
+            _ => (),
         }
         // Cast MessageTransfer to the appropriate type and get the value.
         // If using this one handler for multiple message subjects, match against transfer.header.subject.
