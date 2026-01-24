@@ -6,8 +6,14 @@ name = "embedded_common"
 version = "0.0.1"
 
 [dependencies]
+canadensis = "0.5.0"
+embedded-io = "0.6.1"
 fugit = "0.3.9"
 # Which dependencies and which features below are enabled depends on the target.
 stm32g4 = { version = "0.16.0", features = ["rt", "stm32g474"] }
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
 stm32g4xx-hal = { path = "/home/evan/bluesat/stm32g4xx-hal", features = ["rt", "can", "stm32g474"] }
+fdcan = { git = "https://github.com/umi-eng/fdcan.git", branch = "transceiver-delay-compensation" }
+nb = "1.1.0"
+cortex-m = {version = "0.7.7", features = ["critical-section-single-core"]}
+canadensis_can = {version = "0.5.1", features = ["can-fd"]}

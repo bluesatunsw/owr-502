@@ -17,8 +17,8 @@ use canadensis::{
     requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use cortex_m::iprintln;
 use cortex_m_semihosting::hprintln;
+use embedded_common::{can::Can, clock};
 use heapless::Vec;
 // use panic_semihosting as _;
 
@@ -28,13 +28,10 @@ use embedded_alloc::LlffHeap as Heap;
 use fugit::{ExtU32, MicrosDurationU32};
 
 use canadensis_data_types::uavcan::node::execute_command_1_3::{ExecuteCommandRequest, SERVICE as EXECUTE_COMMAND_SERVICE};
-use stm32g4::stm32g474;
 use wzrd_core::FlashLocation;
 
 use crate::{
     argb::{ArgbSys, State},
-    can::CanSystem,
-    clock::ClockSystem,
     common::{FlashCommand, get_header},
     comms_handler::CommsHandler,
     crc_handler::CrcHandler,
@@ -45,8 +42,6 @@ use crate::{
 };
 
 mod peripherals;
-mod clock;
-mod can;
 mod qspi;
 mod chunk;
 mod common;
@@ -130,8 +125,8 @@ fn main() -> ! {
     // SAFETY: 😊
     unsafe { copy_nonoverlapping(UID_ADDRESS as *const u8, uuid.as_mut_ptr(), 12); }
 
-    let clock_sys = ClockSystem::new(ps.clock_tim, &mut ps.rcc);
-    let can_sys = CanSystem::new(ps.can_instance, ps.can_rx_pin, ps.can_tx_pin, &mut ps.rcc);
+    let clock_sys = clock::Canadensis::new(ps.clock_tim, &mut ps.rcc);
+    let can_sys = Can::new(ps.can_instance, ps.can_rx_pin, ps.can_tx_pin, &mut ps.rcc);
     let mut argb_sys = ArgbSys::new(ps.argb_instance, ps.argb_pin, &mut ps.rcc);
     let mut qspi_sys = QspiSys::new(
         ps.qspi_instance,

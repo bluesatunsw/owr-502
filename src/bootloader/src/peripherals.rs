@@ -1,6 +1,12 @@
+use embedded_common::debug::setup_itm;
 use stm32g4::stm32g474::{self, *};
 use stm32g4xx_hal::{
-    dma::channel::{self, DMAExt}, flash::{FlashExt, Parts}, gpio::*, pwr::{PwrExt, VoltageScale}, rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset}, time::RateExtU32
+    dma::channel::{self, DMAExt},
+    flash::{FlashExt, Parts},
+    gpio::*,
+    pwr::{PwrExt, VoltageScale},
+    rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset},
+    time::RateExtU32
 };
 
 pub type ClockTim = TIM2;
@@ -63,7 +69,7 @@ pub struct Peripherals {
 impl Peripherals {
     pub fn take() -> Self {
         // SAFETY: This can/should only be called right at the start of main
-        let dp = unsafe { stm32g474::Peripherals::take().unwrap_unchecked() };
+        let mut dp = unsafe { stm32g474::Peripherals::take().unwrap_unchecked() };
 
         let pwr = dp.PWR.constrain().vos(
             VoltageScale::Range1 { enable_boost: true }
@@ -84,17 +90,7 @@ impl Peripherals {
         );
 
         let mut cp = unsafe { stm32g474::CorePeripherals::take().unwrap_unchecked() };
-        cp.DCB.enable_trace();
-        cp.DWT.enable_cycle_counter();
-        unsafe {
-            dp.DBGMCU
-                .cr()
-                .modify(|_, w| w.trace_ioen().set_bit().trace_mode().bits(0b00));
-            cp.ITM.lar.write(0xC5ACCE55);
-            cp.ITM.tcr.write(0x00010005);
-            cp.ITM.ter[0].write(0b1);
-            cp.ITM.tpr.write(0b1);
-        }
+        unsafe { setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM); }
 
         let gpioa = dp.GPIOA.split(&mut rcc);
         let gpiob = dp.GPIOB.split(&mut rcc);

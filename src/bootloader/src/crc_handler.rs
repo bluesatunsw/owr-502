@@ -27,7 +27,7 @@ static STATE: Mutex<UnsafeCell<Option<CrcState>>> = Mutex::new(UnsafeCell::new(N
 #[cortex_m_rt::interrupt]
 fn DMA1_CH1() {
     interrupt_free(|cs| unsafe {
-        let state = &mut STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap();
+        let state = STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap();
         assert!(state.result.is_none());
 
         state.dma_ちゃん.disable();
