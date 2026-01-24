@@ -21,8 +21,7 @@ libm = "0.2.15"
 # Which dependencies and which features below are enabled depends on the target.
 stm32g4 = { version = "0.16.0", features = ["rt", "stm32g474"] }
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
-stm32g4xx-hal = { path = "/home/evan/bluesat/stm32g4xx-hal", features = ["rt", "can", "stm32g474"] }
-# stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch =ca"qspi", version = "0.0.2", features = ["rt", "can"] }
+stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch = "qspi", version = "0.0.2", features = ["stm32g474", "rt", "can"] }
 wzrd_core ={ path = "../wzrd_core"}
 fdcan = { git = "https://github.com/umi-eng/fdcan.git", branch = "transceiver-delay-compensation" }
 fugit = "0.3.9"
