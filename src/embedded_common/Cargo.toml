@@ -1,0 +1,20 @@
+[package]
+authors = ["Evan La Fontaine <navelafontaine@gmail.com>"]
+edition = "2024"
+readme = "README.md"
+name = "embedded_common"
+version = "0.0.1"
+
+[dependencies]
+canadensis = "0.5.0"
+embedded-io = "0.6.1"
+fugit = "0.3.9"
+# Which dependencies and which features below are enabled depends on the target.
+stm32g4 = { version = "0.16.0", features = ["rt", "stm32g474"] }
+# stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
+stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch = "qspi", version = "0.0.2", features = ["stm32g474", "rt", "can"] }
+# Need delay compensation, see: github.com/stm32-rs/fdcan/pull/57
+fdcan = { git = "https://github.com/umi-eng/fdcan.git", branch = "transceiver-delay-compensation" }
+nb = "1.1.0"
+cortex-m = {version = "0.7.7", features = ["critical-section-single-core"]}
+canadensis_can = {version = "0.5.1", features = ["can-fd"]}
