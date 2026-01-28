@@ -7,6 +7,7 @@
 		(at 0 -0.5 0)
 		(unlocked yes)
 		(layer "F.SilkS")
+		(hide yes)
 		(uuid "23a53af5-fcc6-4533-8aa7-49758b5f6a2c")
 		(effects
 			(font
@@ -54,6 +55,17 @@
 		)
 	)
 	(attr smd)
+	(fp_circle
+		(center 0 0)
+		(end 3.75 0)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "76acb0f8-df81-4734-b645-d09e7b4522fc")
+	)
 	(fp_text user "${REFERENCE}"
 		(at 0 2.5 0)
 		(unlocked yes)
@@ -70,7 +82,7 @@
 		(at 0 0)
 		(size 2.7 2.7)
 		(drill 2.7)
-		(layers "F&B.Cu" "*.Mask")
+		(layers "*.Cu" "*.Mask")
 		(uuid "85227d57-2f00-4498-8adb-43760fde8934")
 	)
 	(embedded_fonts no)
