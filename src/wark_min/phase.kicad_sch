@@ -275,6 +275,132 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:NetTie_2"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(property "Reference" "NT"
+				(at 0 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "NetTie_2"
+				(at 0 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Net tie, 2 pins"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "net tie short"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Net*Tie*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "NetTie_2_0_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NetTie_2_1_1"
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
@@ -796,22 +922,16 @@
 		(uuid "4a1de495-5e41-454d-a7b0-2224b2dd31eb")
 	)
 	(junction
+		(at 49.53 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4be25b61-5b28-499a-91ab-7ab8dcc87c9a")
+	)
+	(junction
 		(at 57.15 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "54b788ce-46a7-4a8d-ae69-de9f9bb7128c")
-	)
-	(junction
-		(at 54.61 82.55)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5df93820-0ca4-4dc0-94f1-3c2159d9c789")
-	)
-	(junction
-		(at 54.61 92.71)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "644d0f32-363e-4b0e-ba59-69543272ea6b")
 	)
 	(junction
 		(at 85.09 78.74)
@@ -838,6 +958,12 @@
 		(uuid "acccdedb-02db-4fc1-b8b7-20957645bae0")
 	)
 	(junction
+		(at 49.53 92.71)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "be89fab0-9484-4ba1-b09d-4ce0e1f7a870")
+	)
+	(junction
 		(at 81.28 69.85)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -845,17 +971,7 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 92.71) (xy 57.15 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0a385608-f225-42d7-9840-a8b77ffee3af")
-	)
-	(wire
-		(pts
-			(xy 53.34 82.55) (xy 54.61 82.55)
+			(xy 48.26 82.55) (xy 49.53 82.55)
 		)
 		(stroke
 			(width 0)
@@ -875,7 +991,17 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 82.55) (xy 54.61 85.09)
+			(xy 49.53 92.71) (xy 50.8 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3383a763-62bd-4fa6-a7df-145c986c8e5f")
+	)
+	(wire
+		(pts
+			(xy 57.15 82.55) (xy 57.15 85.09)
 		)
 		(stroke
 			(width 0)
@@ -892,16 +1018,6 @@
 			(type default)
 		)
 		(uuid "38a3d158-8baf-4fba-bc50-96e6ab3c123d")
-	)
-	(wire
-		(pts
-			(xy 59.69 82.55) (xy 59.69 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41f81c3c-e864-40f0-94fc-94b2790129d2")
 	)
 	(wire
 		(pts
@@ -935,16 +1051,6 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 82.55) (xy 57.15 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5e86c3f6-b638-4393-836e-599eb8f9386d")
-	)
-	(wire
-		(pts
 			(xy 55.88 69.85) (xy 57.15 69.85)
 		)
 		(stroke
@@ -955,6 +1061,26 @@
 	)
 	(wire
 		(pts
+			(xy 49.53 90.17) (xy 49.53 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "68f3417d-e152-4a0a-8cba-c222275b3537")
+	)
+	(wire
+		(pts
+			(xy 55.88 92.71) (xy 57.15 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6d50d37c-a2b1-4348-adc4-97961620df78")
+	)
+	(wire
+		(pts
 			(xy 81.28 77.47) (xy 81.28 78.74)
 		)
 		(stroke
@@ -962,6 +1088,16 @@
 			(type default)
 		)
 		(uuid "729d239b-1089-4767-b12d-3e94916c4b38")
+	)
+	(wire
+		(pts
+			(xy 48.26 92.71) (xy 49.53 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7a7b75bd-d65d-4bfd-9af0-bc3d05fe80fa")
 	)
 	(wire
 		(pts
@@ -985,13 +1121,23 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 92.71) (xy 54.61 92.71)
+			(xy 49.53 82.55) (xy 57.15 82.55)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9f4791a9-184d-4354-9608-16e43b9a451e")
+		(uuid "92eaf943-e9dd-497e-8b79-b171dfa564cd")
+	)
+	(wire
+		(pts
+			(xy 49.53 82.55) (xy 49.53 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4e274cf-7918-4398-ad29-49a393b8b746")
 	)
 	(wire
 		(pts
@@ -1012,16 +1158,6 @@
 			(type default)
 		)
 		(uuid "b9f99483-0a1f-484b-a839-479adc787e43")
-	)
-	(wire
-		(pts
-			(xy 57.15 82.55) (xy 59.69 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bb83dc49-1e74-4f10-b5c0-c437e4507adc")
 	)
 	(wire
 		(pts
@@ -1055,16 +1191,6 @@
 	)
 	(wire
 		(pts
-			(xy 57.15 92.71) (xy 59.69 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d161c22b-3ee5-44eb-8984-ab539c76b175")
-	)
-	(wire
-		(pts
 			(xy 74.93 69.85) (xy 81.28 69.85)
 		)
 		(stroke
@@ -1075,23 +1201,13 @@
 	)
 	(wire
 		(pts
-			(xy 54.61 92.71) (xy 54.61 90.17)
+			(xy 57.15 92.71) (xy 57.15 90.17)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "d49b62bc-7c85-4618-9d37-689a0bdd7264")
-	)
-	(wire
-		(pts
-			(xy 59.69 90.17) (xy 59.69 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f64125c2-4dd7-4001-87c7-ee8b8df955b9")
 	)
 	(wire
 		(pts
@@ -1115,7 +1231,7 @@
 	)
 	(hierarchical_label "SP"
 		(shape output)
-		(at 53.34 82.55 180)
+		(at 48.26 82.55 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1181,7 +1297,7 @@
 	)
 	(hierarchical_label "SN"
 		(shape output)
-		(at 53.34 92.71 180)
+		(at 48.26 92.71 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1411,7 +1527,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:R_CompactV")
-		(at 54.61 87.63 0)
+		(at 57.15 87.63 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1420,7 +1536,7 @@
 		(fields_autoplaced yes)
 		(uuid "4cb00db9-ec9f-4c93-94a1-2241bf2274b2")
 		(property "Reference" "R204"
-			(at 53.721 87.63 90)
+			(at 56.261 87.63 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -1430,7 +1546,7 @@
 			)
 		)
 		(property "Value" "1m"
-			(at 54.61 87.63 90)
+			(at 57.15 87.63 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -1439,7 +1555,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_2512_6332Metric"
-			(at 54.61 87.63 0)
+			(at 57.15 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1448,7 +1564,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 54.61 87.63 0)
+			(at 57.15 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1457,7 +1573,7 @@
 			)
 		)
 		(property "Description" "Resistor, compact symbol"
-			(at 54.61 87.63 0)
+			(at 57.15 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1949,6 +2065,84 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:NetTie_2")
+		(at 53.34 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d3bde7b1-b094-4517-9938-99830f6edc01")
+		(property "Reference" "NT201"
+			(at 53.34 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "NetTie_2"
+			(at 53.34 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 53.34 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 53.34 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Net tie, 2 pins"
+			(at 53.34 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2a4f052d-f592-4c68-9387-0d88898a8e12")
+		)
+		(pin "1"
+			(uuid "8fd599ff-3c68-4cd9-a985-8959586340f6")
+		)
+		(instances
+			(project ""
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/35de4d11-d03f-4cc6-98bc-b8c2435f85ba"
+					(reference "NT301")
+					(unit 1)
+				)
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/4d34d922-b5cf-40a9-9b41-7d150c3000ed"
+					(reference "NT401")
+					(unit 1)
+				)
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26/e924291c-21ef-4bdc-a76d-e21a3df7fbbf"
+					(reference "NT201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 74.93 82.55 0)
 		(unit 1)
@@ -2030,7 +2224,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:C_CompactV")
-		(at 59.69 87.63 0)
+		(at 49.53 87.63 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2039,7 +2233,7 @@
 		(fields_autoplaced yes)
 		(uuid "f099d26f-c13c-4269-95a4-ce9523d53359")
 		(property "Reference" "C203"
-			(at 58.801 86.868 90)
+			(at 48.641 86.868 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2049,7 +2243,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 60.579 86.868 90)
+			(at 50.419 86.868 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -2059,7 +2253,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 59.69 87.63 90)
+			(at 49.53 87.63 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2068,7 +2262,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 59.69 87.63 90)
+			(at 49.53 87.63 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2077,7 +2271,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 59.69 87.63 0)
+			(at 49.53 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
