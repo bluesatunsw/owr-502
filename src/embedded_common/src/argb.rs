@@ -17,13 +17,12 @@ impl Colour {
         // we squeeze three WS2812 bits per USART byte
         const LUT: [u8; 8] = [
             // 000 -> H_START L L H L L H L L_STOP
-            // TX pin polarity inverted, so data actually 1101101
-            // ...and then bits are sent in reverse, so 1011011.
-            0b1011011, // 001 -> [H]LLHLLHH[L] -> 1101100 -> 0011011
-            0b0011011, // 010 -> [H]LLHHLHL[L] -> 1100101 -> 1010011
-            0b1010011, // 011 -> [H]LLHHLHH[L] -> 1100100 -> 0010011
-            0b0010011, // etc.
-            0b1011010, 0b0011010, 0b1010010, 0b0010010,
+            // TX pin polarity inverted, so data actually 0b1101101
+            // ...and then bits are sent in reverse, so 0b1011011.
+            // 001 -> [H]LLHLLHH[L] -> 0b1101100 -> 0b0011011,
+            // 010 -> [H]LLHHLHL[L] -> 0b1100101 -> 0b1010011,
+            // 011 -> [H]LLHHLHH[L] -> 0b1100100 -> 0b0010011, etc.
+            0b1011011, 0b0011011, 0b1010011, 0b0010011, 0b1011010, 0b0011010, 0b1010010, 0b0010010,
         ];
 
         // required order for WS2812: G R B
