@@ -49,9 +49,9 @@ impl Colour {
 
     pub const BLACK: Self = Self { r: 0, g: 0, b: 0 };
     pub const AMBER: Self = Self {
-        r: 239,
-        g: 112,
-        b: 14,
+        r: 255,
+        g: 50,
+        b: 0,
     };
 }
 
