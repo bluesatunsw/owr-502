@@ -1,7 +1,7 @@
+use canadensis::core::time::{Clock, Microseconds32};
 use fugit::{MicrosDurationU32, RateExtU32};
 use stm32g4::stm32g474::{RCC, TIM2};
-use stm32g4xx_hal::{rcc::{Clocks, PLLClocks, Rcc, RccExt}};
-use canadensis::core::time::{Clock, Microseconds32};
+use stm32g4xx_hal::rcc::{Clocks, PLLClocks, Rcc, RccExt};
 
 pub unsafe fn conjure_rcc() -> Rcc {
     // SAFETY: this is the reason why this function is unsafe
@@ -47,18 +47,20 @@ impl MicrosecondClock {
             tim2.cr1().write(|w| w.cen().bit(true));
         }
 
-        Self {
-            hw_timer: tim2,
-        }
+        Self { hw_timer: tim2 }
     }
 }
 
 impl MicrosecondClock {
-    pub(super) fn now_const(&self) -> Microseconds32 {
+    pub fn now_const(&self) -> Microseconds32 {
         Microseconds32::from_ticks(self.hw_timer.cnt().read().bits())
     }
 
-    pub fn advance_if_elapsed(&self, start: &mut Microseconds32, period: MicrosDurationU32) -> bool {
+    pub fn advance_if_elapsed(
+        &self,
+        start: &mut Microseconds32,
+        period: MicrosDurationU32,
+    ) -> bool {
         let end = *start + period;
         let now = self.now_const();
 
