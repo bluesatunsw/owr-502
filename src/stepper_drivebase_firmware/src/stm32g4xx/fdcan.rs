@@ -118,6 +118,8 @@ impl STM32G4xxCanDriver {
 
             // Exit configuration mode and start.
             fdcan.cccr().modify(|_, w| w.init().bit(false));
+            // block on INIT bit being reset
+            while fdcan.cccr().read().init().bit() == true {}
         }
 
         STM32G4xxCanDriver {
@@ -132,9 +134,11 @@ impl STM32G4xxCanDriver {
     fn reset_filters(&mut self) {
         unsafe {
             // put FDCAN back in configuration mode
-            self.fdcan.cccr().modify(|_, w| w.cce().bit(true).init().bit(true));
+            self.fdcan.cccr().modify(|_, w| w.init().bit(true));
             // block on INIT bit being set
             while self.fdcan.cccr().read().init().bit() == false {}
+            // CCE can only be set once INIT is set
+            self.fdcan.cccr().modify(|_, w| w.cce().bit(true));
 
             // global filter configuration
             self.fdcan.rxgfc().modify(|_, w|
@@ -152,6 +156,8 @@ impl STM32G4xxCanDriver {
 
             // and back to normal mode
             self.fdcan.cccr().modify(|_, w| w.init().bit(false));
+            // block on INIT bit being reset
+            while self.fdcan.cccr().read().init().bit() == true {}
         }
     }
 
@@ -177,9 +183,11 @@ impl STM32G4xxCanDriver {
         // do filter configuration again
         unsafe {
             // put FDCAN back in configuration mode
-            self.fdcan.cccr().modify(|_, w| w.cce().bit(true).init().bit(true));
+            self.fdcan.cccr().modify(|_, w| w.init().bit(true));
             // block on INIT bit being set
             while self.fdcan.cccr().read().init().bit() == false {}
+            // CCE can only be set once INIT is set
+            self.fdcan.cccr().modify(|_, w| w.cce().bit(true));
 
             // global filter configuration
             self.fdcan.rxgfc().modify(|_, w|
@@ -196,6 +204,8 @@ impl STM32G4xxCanDriver {
 
             // and back to normal mode
             self.fdcan.cccr().modify(|_, w| w.init().bit(false));
+            // block on INIT bit being reset
+            while self.fdcan.cccr().read().init().bit() == true {}
         }
     }
 }
