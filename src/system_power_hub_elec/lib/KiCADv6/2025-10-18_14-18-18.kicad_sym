@@ -10,7 +10,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 19.812 7.874 0)
+			(at 23.622 12.446 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -18,7 +18,7 @@
 			)
 		)
 		(property "Value" "STM32G474RBT6"
-			(at 19.812 5.334 0)
+			(at 23.622 9.906 0)
 			(effects
 				(font
 					(size 1.524 1.524)
@@ -26,7 +26,7 @@
 			)
 		)
 		(property "Footprint" "LQFP64-10x10mm"
-			(at 19.812 16.764 0)
+			(at 21.336 -93.726 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -36,7 +36,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.st.com/resource/en/datasheet/stm32g474cb.pdf"
-			(at 20.828 13.716 0)
+			(at 22.352 -96.774 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -82,8 +82,8 @@
 		)
 		(symbol "STM32G474RBT6_1_1"
 			(rectangle
-				(start 0 0)
-				(end 45.72 -81.28)
+				(start 0 7.62)
+				(end 45.72 -87.63)
 				(stroke
 					(width 0)
 					(type default)
@@ -93,11 +93,21 @@
 					(color 255 255 194 1)
 				)
 			)
-			(text "NOTE: WIP, channel enable pins not added/chosen yet\nVBUS sensing pin not assigned yet"
-				(at 22.098 10.16 0)
-				(effects
-					(font
-						(size 1.27 1.27)
+			(pin bidirectional line
+				(at -2.54 3.81 0)
+				(length 2.54)
+				(name "PA9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "43"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
 					)
 				)
 			)
@@ -299,17 +309,71 @@
 					)
 				)
 			)
-			(pin unspecified line
-				(at 48.26 -8.89 180)
+			(pin bidirectional line
+				(at 48.26 2.54 180)
 				(length 2.54)
-				(name "PA1-opamp_vinp_0"
+				(name "PA15"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "13"
+				(number "51"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -3.81 180)
+				(length 2.54)
+				(name "PC6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "38"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -6.35 180)
+				(length 2.54)
+				(name "PC7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "39"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 48.26 -8.89 180)
+				(length 2.54)
+				(name "PB12-opamp_vinp_3"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "34"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -320,14 +384,14 @@
 			(pin unspecified line
 				(at 48.26 -11.43 180)
 				(length 2.54)
-				(name "PA3-opamp_vinp_sec_0"
+				(name "PB13-opamp_vinp_sec_3"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "17"
+				(number "35"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -338,14 +402,14 @@
 			(pin unspecified line
 				(at 48.26 -13.97 180)
 				(length 2.54)
-				(name "PC5-opamp_vinm_0"
+				(name "PB1-opamp_vinm_3"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "23"
+				(number "25"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -356,14 +420,50 @@
 			(pin unspecified line
 				(at 48.26 -16.51 180)
 				(length 2.54)
-				(name "PA2-opamp_vout_0"
+				(name "PB11-opamp_vout_3"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "14"
+				(number "33"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -21.59 180)
+				(length 2.54)
+				(name "PA10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "44"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -24.13 180)
+				(length 2.54)
+				(name "PC1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "9"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -443,6 +543,42 @@
 					)
 				)
 			)
+			(pin bidirectional line
+				(at 48.26 -39.37 180)
+				(length 2.54)
+				(name "PC4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "22"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -41.91 180)
+				(length 2.54)
+				(name "PB2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "26"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin unspecified line
 				(at 48.26 -44.45 180)
 				(length 2.54)
@@ -515,17 +651,53 @@
 					)
 				)
 			)
-			(pin unspecified line
-				(at 48.26 -62.23 180)
+			(pin bidirectional line
+				(at 48.26 -57.15 180)
 				(length 2.54)
-				(name "PB12-opamp_vinp_3"
+				(name "PA0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "34"
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin bidirectional line
+				(at 48.26 -59.69 180)
+				(length 2.54)
+				(name "PA4"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "18"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin unspecified line
+				(at 48.26 -62.23 180)
+				(length 2.54)
+				(name "PA1-opamp_vinp_0"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -536,14 +708,14 @@
 			(pin unspecified line
 				(at 48.26 -64.77 180)
 				(length 2.54)
-				(name "PB13-opamp_vinp_sec_3"
+				(name "PA3-opamp_vinp_sec_0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "35"
+				(number "17"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -554,14 +726,14 @@
 			(pin unspecified line
 				(at 48.26 -67.31 180)
 				(length 2.54)
-				(name "PB1-opamp_vinm_3"
+				(name "PC5-opamp_vinm_0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "25"
+				(number "23"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -572,14 +744,14 @@
 			(pin unspecified line
 				(at 48.26 -69.85 180)
 				(length 2.54)
-				(name "PB11-opamp_vout_3"
+				(name "PA2-opamp_vout_0"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "33"
+				(number "14"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -588,7 +760,7 @@
 				)
 			)
 			(pin unspecified line
-				(at 48.26 -77.47 180)
+				(at 48.26 -83.82 180)
 				(length 2.54)
 				(name "PC10-usart_led"
 					(effects
@@ -682,25 +854,6 @@
 				)
 			)
 			(pin bidirectional line
-				(at 82.55 -19.05 180)
-				(length 2.54)
-				(hide yes)
-				(name "PC1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "9"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
 				(at 82.55 -21.59 180)
 				(length 2.54)
 				(hide yes)
@@ -720,82 +873,6 @@
 				)
 			)
 			(pin bidirectional line
-				(at 82.55 -24.13 180)
-				(length 2.54)
-				(hide yes)
-				(name "PA0"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "12"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -26.67 180)
-				(length 2.54)
-				(hide yes)
-				(name "PA4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "18"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -29.21 180)
-				(length 2.54)
-				(hide yes)
-				(name "PC4"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "22"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -31.75 180)
-				(length 2.54)
-				(hide yes)
-				(name "PB2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "26"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
 				(at 82.55 -34.29 180)
 				(length 2.54)
 				(hide yes)
@@ -807,101 +884,6 @@
 					)
 				)
 				(number "30"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -36.83 180)
-				(length 2.54)
-				(hide yes)
-				(name "PC6"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "38"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -39.37 180)
-				(length 2.54)
-				(hide yes)
-				(name "PC7"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "39"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -41.91 180)
-				(length 2.54)
-				(hide yes)
-				(name "PA9"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "43"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -44.45 180)
-				(length 2.54)
-				(hide yes)
-				(name "PA10"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "44"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin bidirectional line
-				(at 82.55 -46.99 180)
-				(length 2.54)
-				(hide yes)
-				(name "PA15"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "51"
 					(effects
 						(font
 							(size 1.27 1.27)
