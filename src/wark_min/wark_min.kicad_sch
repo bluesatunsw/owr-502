@@ -8713,6 +8713,12 @@
 		(uuid "66480a4c-b6ca-4733-8209-80a671fc35dc")
 	)
 	(junction
+		(at 246.38 87.63)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6badb598-8b54-4821-b12c-b6f6252f4226")
+	)
+	(junction
 		(at 241.3 109.22)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -9526,6 +9532,16 @@
 	)
 	(wire
 		(pts
+			(xy 246.38 87.63) (xy 250.19 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "010199b7-20d9-4fc4-9468-b5f5894fadfe")
+	)
+	(wire
+		(pts
 			(xy 240.03 147.32) (xy 240.03 149.86)
 		)
 		(stroke
@@ -10033,6 +10049,16 @@
 			(type default)
 		)
 		(uuid "23c86635-64d1-461e-ab72-5c274205a9c2")
+	)
+	(wire
+		(pts
+			(xy 250.19 92.71) (xy 250.19 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23dd23ce-f2a4-458f-b1f8-473e615e3c4e")
 	)
 	(bus
 		(pts
@@ -29000,6 +29026,79 @@
 	(symbol
 		(lib_name "C_CompactV_2")
 		(lib_id "Bluesat:C_CompactV")
+		(at 250.19 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "95cf93fe-6e2a-49bc-8bd3-8c168cba3efd")
+		(property "Reference" "C112"
+			(at 249.301 94.488 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n-H"
+			(at 251.079 94.488 90)
+			(do_not_autoplace yes)
+			(effects
+				(font
+					(size 1.016 1.016)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 250.19 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 250.19 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, compact symbol"
+			(at 250.19 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5d1aca05-0741-45db-9e9f-5ac1e23e3b17")
+		)
+		(pin "2"
+			(uuid "45c5b6af-32bf-447b-86a8-94a22e4caa25")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26"
+					(reference "C112")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "C_CompactV_2")
+		(lib_id "Bluesat:C_CompactV")
 		(at 237.49 152.4 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -31296,6 +31395,71 @@
 				(path "/4290b658-b789-4580-aa76-416e95a5eb26"
 					(reference "U101")
 					(unit 2)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 250.19 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b8dc5b13-1b85-4958-8840-c3d5c9b71d2d")
+		(property "Reference" "#PWR0138"
+			(at 250.19 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 250.19 101.092 0)
+			(effects
+				(font
+					(size 0.762 0.762)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 250.19 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 250.19 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 250.19 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4c8ec914-0865-4ad4-adf8-d1c3af7db043")
+		)
+		(instances
+			(project "wark_min"
+				(path "/4290b658-b789-4580-aa76-416e95a5eb26"
+					(reference "#PWR0138")
+					(unit 1)
 				)
 			)
 		)
