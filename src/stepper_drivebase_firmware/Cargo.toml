@@ -20,6 +20,7 @@ embedded-io = "0.6.1"
 libm = "0.2.15"
 # Which dependencies and which features below are enabled depends on the target.
 stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
+bitfield-struct = "0.12.1"
 
 [dependencies.stm32g4xx-hal]
 git = "https://github.com/bluesatunsw/stm32g4xx-hal"

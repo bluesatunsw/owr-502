@@ -3,6 +3,7 @@
 //! - ADC2 (for reading the voltages off the thermistors for temperature estimation),
 //! - SPI3 (for communicating with the TMC5160/A stepper drivers), and
 //! - SPI1 (for communicating with the off-board AS5047P encoders).
+use bitfield_struct::bitfield;
 use stm32g4xx_hal as hal;
 
 use cortex_m_semihosting::hprintln;
@@ -34,11 +35,19 @@ pub enum SPIError {
 
 #[derive(Copy, Clone)]
 pub enum StepperChannel {
+    Channel0,
     Channel1,
     Channel2,
     Channel3,
-    Channel4,
 }
+
+// you can rename these to more helpfully refer to the physical function/location of each motor
+const CHANNELS: [StepperChannel; 4] = [
+    StepperChannel::Channel0,
+    StepperChannel::Channel1,
+    StepperChannel::Channel2,
+    StepperChannel::Channel3,
+];
 
 pub struct TMCFlags(u8);
 
@@ -61,14 +70,6 @@ const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
 const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// What encoder reading we interpret as an angular position of 0 for ROS purposes.
 const ENCODER_ZERO: Radians = Radians(0.0);
-
-// you can rename these to more helpfully refer to the physical function/location of each motor
-const CHANNELS: [StepperChannel; 4] = [
-    StepperChannel::Channel1,
-    StepperChannel::Channel2,
-    StepperChannel::Channel3,
-    StepperChannel::Channel4,
-];
 
 /// Helper function to add some short delays around changes in CS pin state for SPI.
 fn set_cs(pin: &mut gpio::AnyPin<gpio::Output>, high: bool) {
@@ -168,6 +169,40 @@ enum StepperRegister {
     // non-exhaustive, add any more registers you need
 }
 
+#[bitfield(u32)]
+struct GConfRegster {
+    #[bits(2)]
+    __: u8,
+
+    #[bits(1)]
+    en_pwm_mode: u8,
+
+    #[bits(1)]
+    __: u8,
+
+    #[bits(1)]
+    shaft: u8,
+
+    #[bits(27)]
+    __: u32,
+}
+
+#[bitfield(u32)]
+struct ChopConfRegister {
+    #[bits(4)]
+    toff: u8,
+    #[bits(3)]
+    hstrt: u8,
+    #[bits(4)]
+    hend: u8,
+    #[bits(4)]
+    __: u8,
+    #[bits(2)]
+    tbl: u8,
+    #[bits(15)]
+    __: u32,
+}
+
 /// TMC5160 stepper driver (over SPI).
 pub struct STM32G4xxStepperDriver {
     adc: Adc<pac::ADC2, Configured>,
@@ -225,6 +260,8 @@ impl STM32G4xxStepperDriver {
         // initialise the AS5047P encoder SPI bus, SPI2
         let enc_spi = spi2.spi(encoder_spi_pins, spi::MODE_1, 2.MHz(), rcc);
 
+        // NOTE(jthro-temp): turn off stealthchop
+
         // Would like to do stepper and encoder configuration here but would have to rearrange the
         // code a fair bit to make this possible. Still, right now it's a bit too easy to pass
         // steppers to the main code unconfigured... TODO fix?
@@ -253,10 +290,10 @@ impl STM32G4xxStepperDriver {
         reg: StepperRegister,
     ) -> Result<(u32, TMCFlags), SPIError> {
         let cs = match channel {
+            StepperChannel::Channel0 => &mut self.step_spi_cs.3,
             StepperChannel::Channel1 => &mut self.step_spi_cs.0,
             StepperChannel::Channel2 => &mut self.step_spi_cs.1,
             StepperChannel::Channel3 => &mut self.step_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
         };
         set_cs(cs, false);
         // 40-bit (5 byte), first byte is address, MSB of first byte is 0 for read
@@ -294,10 +331,10 @@ impl STM32G4xxStepperDriver {
         data: u32,
     ) -> Result<TMCFlags, SPIError> {
         let cs = match channel {
+            StepperChannel::Channel0 => &mut self.step_spi_cs.3,
             StepperChannel::Channel1 => &mut self.step_spi_cs.0,
             StepperChannel::Channel2 => &mut self.step_spi_cs.1,
             StepperChannel::Channel3 => &mut self.step_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.step_spi_cs.3,
         };
         let address: u8 = (reg as u8) + 0x80;
         let send_data = [
@@ -332,12 +369,30 @@ impl STM32G4xxStepperDriver {
             // EN_PWM_MODE=1 enables StealthChop (with default PWMCONF)
             if do_invert {
                 // shaft = 1
-                self.write_reg(channel, StepperRegister::GCONF, 0x00000014)
-                    .unwrap();
+                self.write_reg(
+                    channel,
+                    StepperRegister::GCONF,
+                    GConfRegster::new()
+                        .with_en_pwm_mode(0)
+                        .with_shaft(1)
+                        .into_bits(),
+                )
+                .unwrap();
             } else {
-                self.write_reg(channel, StepperRegister::GCONF, 0x00000004)
-                    .unwrap();
+                self.write_reg(
+                    channel,
+                    StepperRegister::GCONF,
+                    GConfRegster::new().with_en_pwm_mode(0).into_bits(),
+                )
+                .unwrap();
             }
+
+            let _ = self.write_reg(
+                channel,
+                StepperRegister::CHOPCONF,
+                ChopConfRegister::new().with_toff(5).with_tbl(2).with_hstrt(0).with_hend(0).into_bits(),
+            );
+
             // reduce current to 0x20/0x100 = 1/8th of maximum current (which is 15 A peak) = ~2A
             // this is the minimum we can reduce it to... still draws peaks above this!!!
             // self.write_reg(channel, StepperRegister::GLOBALSCALER, 0x00000020).unwrap();
@@ -370,7 +425,7 @@ impl STM32G4xxStepperDriver {
             // COOLCONF: StallGuard minimum sensitivity
             // self.write_reg(channel, StepperRegister::COOLCONF, 0x003F0000).unwrap();
             // IHOLD_IRUN: IHOLD=10, IRUN=31 (max. current), IHOLDDELAY=6
-            let ihold = 0u32;
+            let ihold = 10u32;
             let irun = 31u32 << 8; // 0..=31
             let iholddelay = 6u32 << 16;
             self.write_reg(
@@ -415,7 +470,9 @@ impl STM32G4xxStepperDriver {
                 .unwrap();
             self.write_reg(channel, StepperRegister::D1, 50 * MICROSTEPS_PER_STEP)
                 .unwrap();
-            self.write_reg(channel, StepperRegister::VSTOP, 100)
+            self.write_reg(channel, StepperRegister::VSTART, 100 * MICROSTEPS_PER_STEP)
+                .unwrap();
+            self.write_reg(channel, StepperRegister::VSTOP, 100 * MICROSTEPS_PER_STEP)
                 .unwrap();
             self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000)
                 .unwrap();
@@ -439,10 +496,10 @@ impl STM32G4xxStepperDriver {
     ) -> Result<u16, SPIError> {
         // TODO: detect parity errors and treat as SPIError
         let cs = match channel {
+            StepperChannel::Channel0 => &mut self.enc_spi_cs.3,
             StepperChannel::Channel1 => &mut self.enc_spi_cs.0,
             StepperChannel::Channel2 => &mut self.enc_spi_cs.1,
             StepperChannel::Channel3 => &mut self.enc_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.enc_spi_cs.3,
         };
         // 16-bit: MSB is parity bit (even), bit 14 is 1 for read
         let addr = reg as u32;
@@ -474,10 +531,10 @@ impl STM32G4xxStepperDriver {
         data: u16,
     ) -> Result<u16, SPIError> {
         let cs = match channel {
+            StepperChannel::Channel0 => &mut self.enc_spi_cs.3,
             StepperChannel::Channel1 => &mut self.enc_spi_cs.0,
             StepperChannel::Channel2 => &mut self.enc_spi_cs.1,
             StepperChannel::Channel3 => &mut self.enc_spi_cs.2,
-            StepperChannel::Channel4 => &mut self.enc_spi_cs.3,
         };
         let addr = reg as u32;
         let addr_parity = (addr.count_ones() % 2) << 7;
@@ -513,8 +570,7 @@ impl STM32G4xxStepperDriver {
         let cof = diaagc & (1 << 9) > 0;
         let lf = diaagc & (1 << 8) > 0;
         let agc = diaagc & 0xFF;
-        hprintln
-!(
+        hprintln!(
             "MAGL {} MAGH {} COF {} LF {} AGC {}",
             magl,
             magh,
@@ -635,10 +691,10 @@ impl STM32G4xxStepperDriver {
         const R_T_0: f32 = 10_000.0;
         const R_FIXED: f32 = 2200.0;
         let adc_reading = match channel {
+            StepperChannel::Channel0 => self.adc.convert(&self.temp.3, SampleTime::Cycles_640_5),
             StepperChannel::Channel1 => self.adc.convert(&self.temp.0, SampleTime::Cycles_640_5),
             StepperChannel::Channel2 => self.adc.convert(&self.temp.1, SampleTime::Cycles_640_5),
             StepperChannel::Channel3 => self.adc.convert(&self.temp.2, SampleTime::Cycles_640_5),
-            StepperChannel::Channel4 => self.adc.convert(&self.temp.3, SampleTime::Cycles_640_5),
         };
         let reading_proportion_reciprocal: f32 = 65536.0 / (adc_reading as f32);
         let t_reciprocal = B_RECIPROCAL

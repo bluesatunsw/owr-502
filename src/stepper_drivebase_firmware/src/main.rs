@@ -280,7 +280,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
                     .set_position(
-                        StepperChannel::Channel1,
+                        StepperChannel::Channel0,
                         Radians(msg.unwrap().angular_position.radian),
                     )
                     .unwrap();
@@ -289,7 +289,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
                     .set_position(
-                        StepperChannel::Channel2,
+                        StepperChannel::Channel1,
                         Radians(msg.unwrap().angular_position.radian),
                     )
                     .unwrap();
@@ -298,7 +298,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
                     .set_position(
-                        StepperChannel::Channel3,
+                        StepperChannel::Channel2,
                         Radians(msg.unwrap().angular_position.radian),
                     )
                     .unwrap();
@@ -307,7 +307,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
                     .set_position(
-                        StepperChannel::Channel4,
+                        StepperChannel::Channel3,
                         Radians(msg.unwrap().angular_position.radian),
                     )
                     .unwrap();
