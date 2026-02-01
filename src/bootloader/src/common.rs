@@ -18,7 +18,5 @@ pub enum FlashCommand {
 const HEADER_ADDRESS: usize = 0x9000_0000;
 
 pub unsafe fn get_header() -> Option<Header> {
-    Header::deserialize(unsafe {
-        &*(HEADER_ADDRESS as *const [u8; Header::SIZE])
-    })
+    Header::deserialize(unsafe { &*(HEADER_ADDRESS as *const [u8; Header::SIZE]) })
 }

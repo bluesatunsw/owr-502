@@ -5,8 +5,11 @@ use stm32g4xx_hal::{
     flash::{FlashExt, Parts},
     gpio::*,
     pwr::{PwrExt, VoltageScale},
-    rcc::{Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, Rcc, RccExt, Reset},
-    time::RateExtU32
+    rcc::{
+        Config, Enable, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc,
+        Rcc, RccExt, Reset,
+    },
+    time::RateExtU32,
 };
 
 pub type ClockTim = TIM2;
@@ -44,7 +47,7 @@ pub struct Peripherals {
 
     pub can_instance: CanInstance,
     pub can_rx_pin: CanRxPin,
-    pub can_tx_pin: CanTxPin,    
+    pub can_tx_pin: CanTxPin,
 
     pub argb_instance: ArgbInstance,
     pub argb_pin: ArgbPin,
@@ -71,9 +74,11 @@ impl Peripherals {
         // SAFETY: This can/should only be called right at the start of main
         let mut dp = unsafe { stm32g474::Peripherals::take().unwrap_unchecked() };
 
-        let pwr = dp.PWR.constrain().vos(
-            VoltageScale::Range1 { enable_boost: true }
-        ).freeze();
+        let pwr = dp
+            .PWR
+            .constrain()
+            .vos(VoltageScale::Range1 { enable_boost: true })
+            .freeze();
 
         let mut rcc = dp.RCC.freeze(
             Config::pll()
@@ -86,11 +91,13 @@ impl Peripherals {
                     p: None,
                 })
                 .fdcan_src(FdCanClockSource::PLLQ),
-            pwr
+            pwr,
         );
 
         let mut cp = unsafe { stm32g474::CorePeripherals::take().unwrap_unchecked() };
-        unsafe { setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM); }
+        unsafe {
+            setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM);
+        }
 
         let gpioa = dp.GPIOA.split(&mut rcc);
         let gpiob = dp.GPIOB.split(&mut rcc);
@@ -152,25 +159,15 @@ impl Peripherals {
             // Steal and poke the GPIO registers since the systems have taken ownership
             // of them (and there is nothing which can be done about that)
 
-            GPIOA::steal().afrh().modify(
-                |_, w| w
-                    .afrh11().set(0)
-                    .afrh12().set(0)
-            );
-            GPIOA::steal().moder().modify(
-                |_, w| w
-                    .moder11().analog()
-                    .moder12().analog()
-            );
+            GPIOA::steal()
+                .afrh()
+                .modify(|_, w| w.afrh11().set(0).afrh12().set(0));
+            GPIOA::steal()
+                .moder()
+                .modify(|_, w| w.moder11().analog().moder12().analog());
 
-            GPIOB::steal().afrl().modify(
-                |_, w| w
-                    .afrl6().set(0)
-            );
-            GPIOB::steal().moder().modify(
-                |_, w| w
-                    .moder6().analog()
-            );
+            GPIOB::steal().afrl().modify(|_, w| w.afrl6().set(0));
+            GPIOB::steal().moder().modify(|_, w| w.moder6().analog());
         }
     }
 }

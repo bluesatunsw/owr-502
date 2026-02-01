@@ -3,14 +3,14 @@ use core::cell::UnsafeCell;
 use cortex_m::interrupt::Mutex;
 use cortex_m_rt;
 use stm32g4::stm32g474::{CRC, interrupt};
-use stm32g4xx_hal::dma::{traits::Channel};
+use stm32g4xx_hal::dma::traits::Channel;
 
 use cortex_m::interrupt::free as interrupt_free;
 use wzrd_core::CHUNK_SIZE;
 
 use crate::{common::get_header, peripherals::DmaChannel};
 
-pub struct CrcHandler { }
+pub struct CrcHandler {}
 
 struct CrcState {
     hw_crc: CRC,
@@ -43,7 +43,9 @@ fn DMA1_CH1() {
         }
 
         state.dma_ちゃん.set_memory_address(state.address as u32);
-        state.dma_ちゃん.set_number_of_transfers((CHUNK_SIZE/4) as u16);
+        state
+            .dma_ちゃん
+            .set_number_of_transfers((CHUNK_SIZE / 4) as u16);
         state.dma_ちゃん.enable();
 
         state.address += CHUNK_SIZE;
@@ -69,7 +71,7 @@ impl<'a> CrcHandler {
                 result: None,
             })
         });
-        Self { }
+        Self {}
     }
 
     pub fn start(&mut self) {
@@ -82,8 +84,12 @@ impl<'a> CrcHandler {
 
             state.hw_crc.cr().write(|w| w.reset().reset());
             // Skip over target CRC
-            state.dma_ちゃん.set_memory_address((EXTERNAL_START + 4) as u32);
-            state.dma_ちゃん.set_number_of_transfers((CHUNK_SIZE/4 - 4) as u16);
+            state
+                .dma_ちゃん
+                .set_memory_address((EXTERNAL_START + 4) as u32);
+            state
+                .dma_ちゃん
+                .set_number_of_transfers((CHUNK_SIZE / 4 - 4) as u16);
             state.address = EXTERNAL_START;
             state.dma_ちゃん.enable();
         })
@@ -100,8 +106,13 @@ impl<'a> CrcHandler {
     pub fn valid(&mut self) -> Option<bool> {
         interrupt_free(|cs| unsafe {
             if let Some(header) = get_header() {
-                STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap()
-                    .result.and_then(|x| Some(x == header.crc))
+                STATE
+                    .borrow(cs)
+                    .as_mut_unchecked()
+                    .as_mut()
+                    .unwrap()
+                    .result
+                    .and_then(|x| Some(x == header.crc))
             } else {
                 Some(false)
             }

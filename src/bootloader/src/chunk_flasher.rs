@@ -11,14 +11,20 @@ pub trait Flash {
     fn disable_write(&mut self);
 }
 
-pub struct ChunkFlasher<F: Flash> where [(); F::BLOCK_SIZE]: Sized {
+pub struct ChunkFlasher<F: Flash>
+where
+    [(); F::BLOCK_SIZE]: Sized,
+{
     flash: F,
     data: Chunk,
     base: usize,
     offs: usize,
 }
 
-impl<F: Flash> ChunkFlasher<F> where [(); F::BLOCK_SIZE]: Sized {
+impl<F: Flash> ChunkFlasher<F>
+where
+    [(); F::BLOCK_SIZE]: Sized,
+{
     pub fn new(flash: F) -> Self {
         Self {
             flash,
@@ -46,8 +52,10 @@ impl<F: Flash> ChunkFlasher<F> where [(); F::BLOCK_SIZE]: Sized {
         }
 
         self.flash.write(
-            self.data[self.offs..self.offs+F::BLOCK_SIZE].try_into().unwrap(),
-            self.base + self.offs
+            self.data[self.offs..self.offs + F::BLOCK_SIZE]
+                .try_into()
+                .unwrap(),
+            self.base + self.offs,
         );
 
         true
