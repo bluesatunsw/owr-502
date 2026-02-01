@@ -11,7 +11,7 @@ pub trait Register: From<u32> + Into<u32> + Debug {
     const ADDRESS: u8;
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, PartialOrd)]
 pub struct TmcPosition(f32);
 
 impl TmcPosition {
@@ -26,7 +26,7 @@ impl TmcPosition {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, PartialOrd)]
 pub struct TmcVelocity(f32);
 
 impl TmcVelocity {
@@ -42,7 +42,7 @@ impl TmcVelocity {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, PartialOrd)]
 pub struct TmcAcceleration(f32);
 
 impl TmcAcceleration {

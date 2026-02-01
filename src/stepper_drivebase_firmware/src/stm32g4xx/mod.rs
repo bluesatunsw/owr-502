@@ -12,6 +12,7 @@ pub mod stepper;
 pub use stepper::{EncoderCSPins, STM32G4xxStepperDriver, StepperTempPins};
 pub mod i2c;
 pub use i2c::STM32G4xxI2CDriver;
+pub mod as_registers;
 pub mod stepper_bus;
 pub mod tmc_registers;
 

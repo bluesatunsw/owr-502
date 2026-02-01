@@ -514,11 +514,7 @@ impl STM32G4xxStepperDriver {
     }
 
     fn is_busy(&mut self, channel: Channel) -> Result<bool, !> {
-        todo!()
-        /*
-        let xtarget = self.read_reg(channel, StepperRegister::XTARGET)?;
-        let xactual = self.read_reg(channel, StepperRegister::XACTUAL)?;
-        Ok(xtarget.0 != xactual.0)
-        */
+        Ok(self.steppers.read_reg::<XTarget>(channel).unwrap().1 .0
+            != self.steppers.read_reg::<XActual>(channel).unwrap().1 .0)
     }
 }
