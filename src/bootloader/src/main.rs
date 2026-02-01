@@ -45,6 +45,7 @@ use crate::{
     common::{FlashCommand, get_header},
     comms_handler::CommsHandler,
     crc_handler::CrcHandler,
+    gaslighting_handler::GaslightingHandler,
     iflash::IflashSys,
     peripherals::Peripherals,
     qspi::QspiSys,
@@ -56,6 +57,8 @@ mod chunk_flasher;
 mod common;
 mod comms_handler;
 mod crc_handler;
+mod flash_data;
+mod gaslighting_handler;
 mod iflash;
 mod interfaces;
 mod peripherals;
@@ -74,6 +77,9 @@ const UID_ADDRESS: u32 = 0x1FFF_7590;
 
 const RAM_START: *mut u32 = 0x2000_0000 as *mut u32;
 const FLASH_START: *const u32 = 0x0800_0000 as *const u32;
+
+const RAM_TEST_START: *mut u32 = 0x2001_0000 as *mut u32;
+const FLASH_TEST_START: *const u32 = 0x0801_0000 as *const u32;
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -126,6 +132,7 @@ fn main() -> ! {
     unsafe {
         // Copy bootloader code into RAM to allow us to write to internal flash
         copy_nonoverlapping(FLASH_START, RAM_START, 0x2000);
+        copy_nonoverlapping(FLASH_TEST_START, RAM_TEST_START, 0x4000);
         // Remap RAM to begin executing from RAM
         ps.sys.memrmp().write(|w| w.mem_mode().bits(0b011));
     }
@@ -201,6 +208,7 @@ fn main() -> ! {
 
     let mut comms_handler = CommsHandler::new(&mut node);
     let mut crc_handler = CrcHandler::new(ps.crc_instance, ps.dma_chan);
+    let mut gaslighting_handler = GaslightingHandler::new();
 
     let mut qspi_flasher = ChunkFlasher::new(qspi_sys);
     let mut iflash_flasher = ChunkFlasher::new(IflashSys::new(&mut ps.internal_flash));
@@ -225,9 +233,9 @@ fn main() -> ! {
             continue;
         }
 
-        match comms_handler.poll() {
+        match gaslighting_handler.poll() {
             FlashCommand::None => {
-                if true || node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
+                if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {

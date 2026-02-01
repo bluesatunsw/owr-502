@@ -27,7 +27,10 @@ MEMORY
   /* To allow for bank switching put everything here */
   CODE  : ORIGIN = 0x00000000, LENGTH = 32K-256
   /* Skip over first 32K of SRAM */
-  RAM : ORIGIN = 0x20008000, LENGTH = 96K
+  RAM : ORIGIN = 0x20008000, LENGTH = 32K
+
+  FLASH_TEST : ORIGIN = 0x08010000, LENGTH = 64K
+  CODE_TEST : ORIGIN = 0x00010000, LENGTH = 64K
 }
 
 /* # Entry point = reset vector */
@@ -220,6 +223,13 @@ SECTIONS
     *(.ARM.exidx.*);
     *(.ARM.extab.*);
   }
+
+  .test : ALIGN(4)
+  {
+    . = ALIGN(4);
+    *(.test);
+    . = ALIGN(4);
+  } > CODE_TEST AT>FLASH_TEST
 }
 
 /* Do not exceed this mark in the error messages below                                    | */

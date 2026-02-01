@@ -47,6 +47,7 @@ pub struct Header {
 
 pub const CHUNK_SIZE: usize = 4096;
 
+#[derive(Debug, Clone, Copy)]
 pub enum FlashLocation {
     External,
     Internal,
