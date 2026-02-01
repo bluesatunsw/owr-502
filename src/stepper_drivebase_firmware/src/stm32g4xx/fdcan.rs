@@ -3,18 +3,21 @@
 //! It has come to my attention that this was mostly wasted effort, as an FDCAN driver is in fact
 //! part of the STM32G4 Rust HAL; it's just hidden behind a feature flag. Oh well.
 
-use hal::{pac, gpio};
+use hal::{gpio, pac};
 use stm32g4xx_hal as hal;
 
-use canadensis::core::{time::{self, Clock}, OutOfMemoryError, subscription::Subscription};
-use canadensis_can::{driver, Frame, CanId, CanNodeId};
+use canadensis::core::{
+    subscription::Subscription,
+    time::{self, Clock},
+    OutOfMemoryError,
+};
+use canadensis_can::{driver, CanId, CanNodeId, Frame};
 use canadensis_filter_config;
 
-use core::slice;
 use core::convert::TryFrom;
+use core::slice;
 
 use crate::stm32g4xx::clock;
-
 
 // Helper function that converts an FDCAN DLC (data length code) to the size in bytes.
 fn fddlc_to_bytes(dlc: u8) -> usize {
@@ -38,7 +41,12 @@ pub struct STM32G4xxCanDriver {
 }
 
 impl STM32G4xxCanDriver {
-    pub fn new_singleton(fdcan: pac::FDCAN1, pa11: gpio::PA11<gpio::AF9>, pa12: gpio::PA12<gpio::AF9>, rcc: &mut pac::RCC) -> Self {
+    pub fn new_singleton(
+        fdcan: pac::FDCAN1,
+        pa11: gpio::PA11<gpio::AF9>,
+        pa12: gpio::PA12<gpio::AF9>,
+        rcc: &mut pac::RCC,
+    ) -> Self {
         // this constant is used in two different places so it's set here
         // see the DBTP section for context
         const DATA_SAMPLE_PERIOD: u8 = 11;
@@ -55,46 +63,67 @@ impl STM32G4xxCanDriver {
         // Configure FDCAN1.
         // Set CCE of CCCR (we just reset so INIT should be set)
         fdcan.cccr().modify(|_, w| w.cce().bit(true));
-        fdcan.cccr().modify(|_, w|
-            w.pxhd().bit(true)   // disable protocol handling exception
-            //.niso().bit(true)
-            .brse().bit(true)   // enable bit rate switching for transmissions
-            // keep EFBI (edge filtering) disabled, apparently there's errata
-            .fdoe().bit(true)   // enable FD operation
-            .dar().bit(true)    // disable automatic retransmission
+        fdcan.cccr().modify(
+            |_, w| {
+                w.pxhd()
+                    .bit(true) // disable protocol handling exception
+                    //.niso().bit(true)
+                    .brse()
+                    .bit(true) // enable bit rate switching for transmissions
+                    // keep EFBI (edge filtering) disabled, apparently there's errata
+                    .fdoe()
+                    .bit(true) // enable FD operation
+                    .dar()
+                    .bit(true)
+            }, // disable automatic retransmission
         );
         unsafe {
             // For data bit rate = 8 MHz, FDCAN_CLK = 128 MHz:
             // https://kvaser.com/support/calculators/can-fd-bit-timing-calculator/
             // (actually, these are copied directly from the CAN-to-USB converter autoconfig)
             // nominal bit sample point 75%
-            fdcan.dbtp().write(|w|
-                w.tdc().bit(true)       // enable transceiver delay compensation
-                .dbrp().bits(1 - 1)     // data bit rate prescaler
-                                        // t_q = (0b0000 + 1) clock period(s)
-                .dtseg1().bits(DATA_SAMPLE_PERIOD - 1)   // data time segment before sample point
-                                        // = PROP_SEG + PHASE_SEG1
-                .dtseg2().bits(4 - 1)   // data time segment after sample point
-                                        // = PHASE_SEG2 = 4 t_q
-                .dsjw().bits(2 - 1)     // synchronisation jump width
-                                        // = 2 t_q
+            fdcan.dbtp().write(
+                |w| {
+                    w.tdc()
+                        .bit(true) // enable transceiver delay compensation
+                        .dbrp()
+                        .bits(1 - 1) // data bit rate prescaler
+                        // t_q = (0b0000 + 1) clock period(s)
+                        .dtseg1()
+                        .bits(DATA_SAMPLE_PERIOD - 1) // data time segment before sample point
+                        // = PROP_SEG + PHASE_SEG1
+                        .dtseg2()
+                        .bits(4 - 1) // data time segment after sample point
+                        // = PHASE_SEG2 = 4 t_q
+                        .dsjw()
+                        .bits(2 - 1)
+                }, // synchronisation jump width
+                   // = 2 t_q
             );
             // For nominal bit rate = 1 MHz, FDCAN_CLK = 128 MHz:
             // sample point 75%
-            fdcan.nbtp().write(|w|
-                w.nbrp().bits(1 - 1)    // nominal bit rate prescaler
-                                        // = 1 (no scaling)
-                .ntseg1().bits(95 - 1)  // nominal time segment before sample point
-                                        // = PROP_SEG + PHASE_SEG1 = 95 t_q
-                .ntseg2().bits(32 - 1)   // nominal time segment after sample point
-                                        // = PHASE_SEG2 = 32 t_q
-                .nsjw().bits(16 - 1)     // nominal (re)synchronisation jump width
-                                        // = 16 t_q
+            fdcan.nbtp().write(
+                |w| {
+                    w.nbrp()
+                        .bits(1 - 1) // nominal bit rate prescaler
+                        // = 1 (no scaling)
+                        .ntseg1()
+                        .bits(95 - 1) // nominal time segment before sample point
+                        // = PROP_SEG + PHASE_SEG1 = 95 t_q
+                        .ntseg2()
+                        .bits(32 - 1) // nominal time segment after sample point
+                        // = PHASE_SEG2 = 32 t_q
+                        .nsjw()
+                        .bits(16 - 1)
+                }, // nominal (re)synchronisation jump width
+                   // = 16 t_q
             );
 
             // Transmitter delay compensation becomes necessary above a data rate of about 4.5 MHz
             // I don't actually know what a good value to put in the TDCF is...
-            fdcan.tdcr().write(|w| w.tdco().bits(DATA_SAMPLE_PERIOD - 1).tdcf().bits(3 - 1));
+            fdcan
+                .tdcr()
+                .write(|w| w.tdco().bits(DATA_SAMPLE_PERIOD - 1).tdcf().bits(3 - 1));
 
             // TXBC.TFQM is 0 (FIFO mode) on reset so don't change
 
@@ -126,7 +155,7 @@ impl STM32G4xxCanDriver {
             fdcan,
             // need to take ownership of pins
             _pa11: pa11,
-            _pa12: pa12
+            _pa12: pa12,
         }
     }
 
@@ -141,17 +170,24 @@ impl STM32G4xxCanDriver {
             self.fdcan.cccr().modify(|_, w| w.cce().bit(true));
 
             // global filter configuration
-            self.fdcan.rxgfc().modify(|_, w|
-                w.lse().bits(0b0000)    // do not filter ExtMsgs
-                .lss().bits(0b00000)    // do not filter StdMsgs
-                //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
-                //.f1om().bit(false)    // ditto for FIFO 1.
-                                        // not documented in reference manual, but
-                                        // from HAL, 0 = block, 1 = overwrite
-                .anfs().bits(0b10)      // reject non-matching StdMsgs
-                .anfe().bits(0b00)      // accept non-matching ExtMsgs to FIFO 0
-                                        // (redundant but what the heck)
-                .rrfs().bit(true)       // reject standard remote frames
+            self.fdcan.rxgfc().modify(
+                |_, w| {
+                    w.lse()
+                        .bits(0b0000) // do not filter ExtMsgs
+                        .lss()
+                        .bits(0b00000) // do not filter StdMsgs
+                        //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
+                        //.f1om().bit(false)    // ditto for FIFO 1.
+                        // not documented in reference manual, but
+                        // from HAL, 0 = block, 1 = overwrite
+                        .anfs()
+                        .bits(0b10) // reject non-matching StdMsgs
+                        .anfe()
+                        .bits(0b00) // accept non-matching ExtMsgs to FIFO 0
+                        // (redundant but what the heck)
+                        .rrfs()
+                        .bit(true)
+                }, // reject standard remote frames
             );
 
             // and back to normal mode
@@ -171,7 +207,8 @@ impl STM32G4xxCanDriver {
         }
 
         // fill message RAM with appropriate filter data
-        let ext_filter_bank: &mut [ExtMsgFilterElement] = unsafe{slice::from_raw_parts_mut(FDCAN1_FLESA, 8)};
+        let ext_filter_bank: &mut [ExtMsgFilterElement] =
+            unsafe { slice::from_raw_parts_mut(FDCAN1_FLESA, 8) };
         for i in 0..filters.len() {
             let f = &filters[i];
             // 0b001: store in RX FIFO 0 if filter matches
@@ -190,16 +227,23 @@ impl STM32G4xxCanDriver {
             self.fdcan.cccr().modify(|_, w| w.cce().bit(true));
 
             // global filter configuration
-            self.fdcan.rxgfc().modify(|_, w|
-                w.lse().bits(filters.len() as u8)    // apply ExtMsgs filters
-                .lss().bits(0b00000)    // do not filter StdMsgs
-                //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
-                //.f1om().bit(false)    // ditto for FIFO 1.
-                                        // not documented in reference manual, but
-                                        // from HAL, 0 = block, 1 = overwrite
-                .anfs().bits(0b10)      // reject non-matching StdMsgs
-                .anfe().bits(0b10)      // reject non-matching ExtMsgs
-                .rrfs().bit(true)       // reject standard remote frames
+            self.fdcan.rxgfc().modify(
+                |_, w| {
+                    w.lse()
+                        .bits(filters.len() as u8) // apply ExtMsgs filters
+                        .lss()
+                        .bits(0b00000) // do not filter StdMsgs
+                        //.f0om().bit(false)    // FIFO 0: set to block instead of overwrite
+                        //.f1om().bit(false)    // ditto for FIFO 1.
+                        // not documented in reference manual, but
+                        // from HAL, 0 = block, 1 = overwrite
+                        .anfs()
+                        .bits(0b10) // reject non-matching StdMsgs
+                        .anfe()
+                        .bits(0b10) // reject non-matching ExtMsgs
+                        .rrfs()
+                        .bit(true)
+                }, // reject standard remote frames
             );
 
             // and back to normal mode
@@ -235,7 +279,8 @@ struct ExtMsgFilterElement {
 
 const FDCAN1_FLESA: *mut ExtMsgFilterElement = (0x4000_A400 + 0x0070) as *mut ExtMsgFilterElement;
 const FDCAN1_TXFIFO: *mut FDCanTxFifoElement = (0x4000_A400 + 0x0278) as *mut FDCanTxFifoElement;
-const FDCAN1_RXFIFO0: *const FDCanRxFifoElement = (0x4000_A400 + 0x00B0) as *const FDCanRxFifoElement;
+const FDCAN1_RXFIFO0: *const FDCanRxFifoElement =
+    (0x4000_A400 + 0x00B0) as *const FDCanRxFifoElement;
 
 struct RxFifo0 {}
 
@@ -246,7 +291,7 @@ impl RxFifo0 {
         if idx >= 3 {
             panic!("Index {} out of bounds for the FDCAN1 Rx FIFO 0", idx);
         }
-        let fifo: &[FDCanRxFifoElement] = unsafe{slice::from_raw_parts(FDCAN1_RXFIFO0, 3)};
+        let fifo: &[FDCanRxFifoElement] = unsafe { slice::from_raw_parts(FDCAN1_RXFIFO0, 3) };
         let element = &fifo[idx];
         let dlc: u8 = ((element.r1 >> 16) & 0x0f) as u8;
         let ext_id: u32 = element.r0 & ((1 << 29) - 1);
@@ -259,7 +304,11 @@ impl RxFifo0 {
             }
             element_data_bytes[i] = ((word >> ((i % 4) * 8)) & 0xff) as u8;
         }
-        Frame::new(timestamp, CanId::try_from(ext_id).unwrap(), &element_data_bytes[0..fddlc_to_bytes(dlc)])
+        Frame::new(
+            timestamp,
+            CanId::try_from(ext_id).unwrap(),
+            &element_data_bytes[0..fddlc_to_bytes(dlc)],
+        )
     }
 }
 
@@ -268,7 +317,10 @@ impl driver::ReceiveDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver {
     type Error = OverrunError;
 
     // literally just returns a CAN frame if one is available
-    fn receive(&mut self, clock: &mut clock::STM32G4xxCyphalClock) -> Result<Frame, nb::Error<OverrunError>> {
+    fn receive(
+        &mut self,
+        clock: &mut clock::STM32G4xxCyphalClock,
+    ) -> Result<Frame, nb::Error<OverrunError>> {
         // read some kind of register to check if CAN frames received
         let rxf0s = self.fdcan.rxf0s().read();
         // TODO: check error status register? do more error checking, fault on the FIFO being full
@@ -285,13 +337,13 @@ impl driver::ReceiveDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver {
         }
     }
 
-    fn apply_filters<S>(
-        &mut self,
-        local_node: Option<CanNodeId>,
-        subscriptions: S,
-    )
-       where S: IntoIterator<Item = Subscription> {
-        if let Err(_) = driver::optimize_filters(local_node, subscriptions, 8, |filters| self.do_apply_filters(filters)) {
+    fn apply_filters<S>(&mut self, local_node: Option<CanNodeId>, subscriptions: S)
+    where
+        S: IntoIterator<Item = Subscription>,
+    {
+        if let Err(_) = driver::optimize_filters(local_node, subscriptions, 8, |filters| {
+            self.do_apply_filters(filters)
+        }) {
             // OutOfMemory
             self.reset_filters();
         };
@@ -338,7 +390,8 @@ impl driver::TransmitDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver 
         } else {
             // set data in TX buffer appropriately
             let put_index: usize = txfqs.read().tfqpi().bits().into();
-            let s: &mut [FDCanTxFifoElement] = unsafe{slice::from_raw_parts_mut(FDCAN1_TXFIFO, 3)};
+            let s: &mut [FDCanTxFifoElement] =
+                unsafe { slice::from_raw_parts_mut(FDCAN1_TXFIFO, 3) };
             //                ext. id
             s[put_index].t0 = (1 << 30) | u32::from(frame.id());
             //                CAN FD + BRS
@@ -357,7 +410,9 @@ impl driver::TransmitDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver 
             }
             // add TX request
             unsafe {
-                self.fdcan.txbar().modify(|r, w| w.ar().bits(r.bits() as u8 | ((1 << put_index) as u8)));
+                self.fdcan
+                    .txbar()
+                    .modify(|r, w| w.ar().bits(r.bits() as u8 | ((1 << put_index) as u8)));
             }
 
             Ok(None)
@@ -371,5 +426,3 @@ impl driver::TransmitDriver<clock::STM32G4xxCyphalClock> for STM32G4xxCanDriver 
         Ok(())
     }
 }
-
-

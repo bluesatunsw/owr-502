@@ -3,6 +3,7 @@
 //! This mainly publishes sensor data over Cyphal/CAN (on the FDCAN) on a variety of subjects
 //! and drives the stepper motors as instructed by Cyphal/CAN messages from the OBC.
 #![allow(internal_features)]
+#![feature(never_type)]
 #![feature(core_intrinsics)]
 #![no_std]
 #![no_main]
@@ -17,7 +18,7 @@ use core::intrinsics::abort;
 use core::panic::PanicInfo;
 
 use crate::boards::Radians;
-use crate::stm32g4xx::stepper::StepperChannel;
+use crate::stm32g4xx::stepper_bus::Channel;
 use crate::stm32g4xx::RGBLEDColor;
 
 use canadensis::core::time as cyphal_time;
@@ -29,6 +30,7 @@ use canadensis::node::{self, data_types::Version};
 use canadensis::{Node, ResponseToken, TransferHandler};
 use canadensis_can::{CanReceiver, CanTransmitter};
 use canadensis_data_types::uavcan::si::sample::angle::scalar_1_0::Scalar;
+use cortex_m::asm::delay;
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
@@ -171,6 +173,8 @@ fn main() -> ! {
 
     hstepper.enable_all();
     hprintln!("Enabled steppers");
+    delay(1024 * 1024 * 16);
+    hstepper.motion_test();
 
     let mut cycles = 0;
     let mut handler = RecvHandler { driver: hstepper };
@@ -279,37 +283,25 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
             SETPOINT_MESSAGE_CHAN_0_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(
-                        StepperChannel::Channel0,
-                        Radians(msg.unwrap().angular_position.radian),
-                    )
+                    .set_position(Channel::_0, Radians(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_1_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(
-                        StepperChannel::Channel1,
-                        Radians(msg.unwrap().angular_position.radian),
-                    )
+                    .set_position(Channel::_1, Radians(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_2_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(
-                        StepperChannel::Channel2,
-                        Radians(msg.unwrap().angular_position.radian),
-                    )
+                    .set_position(Channel::_2, Radians(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_3_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(
-                        StepperChannel::Channel3,
-                        Radians(msg.unwrap().angular_position.radian),
-                    )
+                    .set_position(Channel::_3, Radians(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             _ => (),

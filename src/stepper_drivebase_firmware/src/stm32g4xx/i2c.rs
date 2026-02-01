@@ -2,7 +2,7 @@
 
 use stm32g4xx_hal::{self as hal, i2c::I2cExt, prelude::I2c};
 
-use hal::{pac, gpio, rcc::Rcc, time::RateExtU32, i2c};
+use hal::{gpio, i2c, pac, rcc::Rcc, time::RateExtU32};
 
 use crate::boards::Celsius;
 
@@ -27,7 +27,7 @@ pub enum I2CError {
 pub struct I2CAxis {
     pub x: f32,
     pub y: f32,
-    pub z: f32
+    pub z: f32,
 }
 
 #[allow(non_camel_case_types)]
@@ -70,19 +70,22 @@ impl STM32G4xxI2CDriver {
         // will probably still work with pure square wave (1.25 us L)
         let i2c_bus = i2c1.i2c((sda, scl), 400.kHz(), rcc);
 
-        Self {
-            i2c_bus,
-        }
+        Self { i2c_bus }
     }
 
     fn map_i2c_err(_err: i2c::Error) -> I2CError {
         // i mean they're all technically bus errors, no?
         I2CError::BusError
     }
-    
+
     fn eeprom_read(&mut self, address: u16, data: &mut [u8]) -> Result<(), I2CError> {
         // sequential read starting with random address read
-        self.i2c_bus.write_read(EEPROM_ADDR, &[((address & 0x3F00) >> 8) as u8, (address & 0xFF) as u8], data)
+        self.i2c_bus
+            .write_read(
+                EEPROM_ADDR,
+                &[((address & 0x3F00) >> 8) as u8, (address & 0xFF) as u8],
+                data,
+            )
             .map_err(STM32G4xxI2CDriver::map_i2c_err)
     }
 
@@ -98,18 +101,29 @@ impl STM32G4xxI2CDriver {
         if bytes_left_in_page >= data.len() {
             // all done
             let send_bytes = [&address_words, data].concat();
-            return self.i2c_bus.write(EEPROM_ADDR, &send_bytes).map_err(STM32G4xxI2CDriver::map_i2c_err);
+            return self
+                .i2c_bus
+                .write(EEPROM_ADDR, &send_bytes)
+                .map_err(STM32G4xxI2CDriver::map_i2c_err);
         } else {
             let send_bytes = [&address_words, &data[0..bytes_left_in_page]].concat();
-            self.i2c_bus.write(EEPROM_ADDR, &send_bytes).map_err(STM32G4xxI2CDriver::map_i2c_err)?;
+            self.i2c_bus
+                .write(EEPROM_ADDR, &send_bytes)
+                .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
             bytes_written += bytes_left_in_page;
         }
         // write full pages
         let mut address_high: u8 = 1u8.wrapping_add(((address & 0x3F00) >> 8) as u8);
         while bytes_written + (PAGE_SIZE as usize) <= data.len() {
             let address_words = [address_high as u8, 0x00u8];
-            let send_bytes = [&address_words, &data[bytes_written..(bytes_written + PAGE_SIZE)]].concat();
-            self.i2c_bus.write(EEPROM_ADDR, &send_bytes).map_err(STM32G4xxI2CDriver::map_i2c_err)?;
+            let send_bytes = [
+                &address_words,
+                &data[bytes_written..(bytes_written + PAGE_SIZE)],
+            ]
+            .concat();
+            self.i2c_bus
+                .write(EEPROM_ADDR, &send_bytes)
+                .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
             address_high = address_high.wrapping_add(1);
             bytes_written += PAGE_SIZE;
         }
@@ -117,7 +131,9 @@ impl STM32G4xxI2CDriver {
         if bytes_written < data.len() {
             let address_words = [address_high as u8, 0x00u8];
             let send_bytes = [&address_words, &data[bytes_written..data.len()]].concat();
-            self.i2c_bus.write(EEPROM_ADDR, &send_bytes).map_err(STM32G4xxI2CDriver::map_i2c_err)?;
+            self.i2c_bus
+                .write(EEPROM_ADDR, &send_bytes)
+                .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
         }
         Ok(())
     }
@@ -125,31 +141,39 @@ impl STM32G4xxI2CDriver {
     // TODO: test these also
     fn imu_read_reg(&mut self, reg: ISM330Register) -> Result<u8, I2CError> {
         let mut data = [0u8];
-        self.i2c_bus.write_read(IMU_ADDR, &[reg as u8], &mut data)
+        self.i2c_bus
+            .write_read(IMU_ADDR, &[reg as u8], &mut data)
             .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
         Ok(data[0])
     }
 
     fn imu_write_reg(&mut self, reg: ISM330Register, data: u8) -> Result<(), I2CError> {
         let send_data = [reg as u8, data];
-        self.i2c_bus.write(IMU_ADDR, &send_data)
+        self.i2c_bus
+            .write(IMU_ADDR, &send_data)
             .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
         Ok(())
     }
 
-    fn imu_read_16bitreg(&mut self, low_reg: ISM330Register, high_reg: ISM330Register) -> Result<u16, I2CError> {
+    fn imu_read_16bitreg(
+        &mut self,
+        low_reg: ISM330Register,
+        high_reg: ISM330Register,
+    ) -> Result<u16, I2CError> {
         let low_reg = low_reg as u8;
         if low_reg + 1 != high_reg as u8 {
             panic!("Tried to read a pair of non-consecutive registers as a 16-bit register");
         }
         let mut data = [0u8, 0u8];
-        self.i2c_bus.write_read(IMU_ADDR, &[low_reg], &mut data)
+        self.i2c_bus
+            .write_read(IMU_ADDR, &[low_reg], &mut data)
             .map_err(STM32G4xxI2CDriver::map_i2c_err)?;
         Ok((data[1] as u16) << (8 + data[0]))
     }
 
-        fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
-        let raw = self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
+    fn imu_read_temperature(&mut self) -> Result<Celsius, I2CError> {
+        let raw =
+            self.imu_read_16bitreg(ISM330Register::OUT_TEMP_L, ISM330Register::OUT_TEMP_H)? as u16;
         Ok(Celsius(25.0 + (raw as f32) / 256.0))
     }
 
@@ -160,7 +184,7 @@ impl STM32G4xxI2CDriver {
         Ok(I2CAxis {
             x: x as f32,
             y: y as f32,
-            z: z as f32
+            z: z as f32,
         })
     }
 
@@ -171,8 +195,7 @@ impl STM32G4xxI2CDriver {
         Ok(I2CAxis {
             x: x as f32,
             y: y as f32,
-            z: z as f32
+            z: z as f32,
         })
     }
-
 }
