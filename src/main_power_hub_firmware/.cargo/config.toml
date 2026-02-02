@@ -5,7 +5,7 @@ rustflags = [
 ]
 
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
-runner = "gdb-multiarch -q -x openocd.gdb"
+runner = "arm-none-eabi-gdb -q -x openocd.gdb"
 
 rustflags = [
   # Previously, the linker arguments --nmagic and -Tlink.x were set here.

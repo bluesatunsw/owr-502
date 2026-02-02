@@ -1,45 +1,22 @@
-//! firmware for the power module on the rover
-//!
-//! TODO: Description of firmware 
-
 #![no_std]
 #![no_main]
 
-use cortex_m_semihosting::{hprintln};
+use core::iter::zip;
+
+use cortex_m::asm::delay;
+use embedded_common::argb::Colour;
 use panic_semihosting as _;
 
 use cortex_m_rt::entry;
 
-use stm32g4xx_hal::{
-    prelude::*,
-    gpio, 
-    pwr::PwrExt, 
-    rcc::*, 
-    time::RateExtU32,
-    pwm::PwmExt,
-    adc::config::SampleTime
-};
+use embedded_alloc::LlffHeap as Heap;
 
-use crate::boards::*;
-
-
-
-// This below is used for aavin's strange print function
-// use cortex_m_log::{destination::Itm, print, println};
-
-/* NOTE: This code does not currently work when uncommented
-// All for println omagawd
-dp.DBGMCU.cr().write(|w| unsafe {
-    w.trace_ioen().set_bit();   // Enable TPIU
-    w.trace_mode().bits(00)     // Async (SWO) Mode
-});
-
-let core_dp = cortex_m::Peripherals::take().unwrap();
-let mut log = Itm::new(core_dp.ITM);
-
-println!(log, "Amogus");
-*/
-
+use crate::boards::NUM_CHANNELS;
+extern crate alloc;
+// Global allocator -- required by canadensis.
+// -> transitively req'd by embedded_common
+#[global_allocator]
+static G_HEAP: Heap = Heap::empty();
 
 mod boards;
 
@@ -49,72 +26,20 @@ mod boards;
 
 #[entry]
 fn main() -> ! {
-    // Embedded boilerplate...
+    let (mut led_controller, pwr_chans) = boards::init();
+    let mut led_buf: [Colour; NUM_CHANNELS + 2] = [Colour::AMBER; 6];
+    led_controller.display(&led_buf);
 
-    let (
-        mut hled, 
-        mut power_controller, 
-        mut adc_controller,
-        mut vsense_pin
-    ) = boards::init();
+    delay(50_000_000);
 
-    
-    
+    for (mut chan, led_idx) in zip(pwr_chans, [2, 3, 4, 5]) {
+        chan.enable();
+        led_buf[led_idx] = Colour { r: 0, b: 0, g: 255 };
+    }
 
-    hprintln!("Tesitng semihosting!");
-
-    power_controller.enable_all();
-
-    let led_colour_magenta = RGBLEDColor {
-        red: 0x0F,
-        green: 0x00,
-        blue: 0x0F,
-    };
-
-    let led_colour_off = RGBLEDColor {
-        red: 0x00,
-        green: 0x00,
-        blue: 0x00,
-    };
-
-    // let mut cycles = 0;
+    led_controller.display(&led_buf);
     loop {
-        
-        let sample = adc_controller.adc4.convert(&vsense_pin, SampleTime::Cycles_640_5);
-        let millivolts = adc_controller.adc4.sample_to_millivolts(sample);
-
-        hprintln!("Raeading {}", sample);
-
-        hled.set_nth_led(0, led_colour_magenta);
-        hled.set_nth_led(1, led_colour_magenta);
-        hled.set_nth_led(2, led_colour_magenta);
-        hled.set_nth_led(3, led_colour_magenta);
-        hled.set_nth_led(4, led_colour_magenta);
-        hled.set_nth_led(5, led_colour_magenta);
-        hled.render();
-
-        hprintln!("W");
-        hprintln!("A");
-        hprintln!("I");
-        hprintln!("T");
-        hprintln!("\n");
-
-        hled.set_nth_led(0, led_colour_off);
-        hled.set_nth_led(1, led_colour_off);
-        hled.set_nth_led(2, led_colour_off);
-        hled.set_nth_led(3, led_colour_off);
-        hled.set_nth_led(4, led_colour_off);
-        hled.set_nth_led(5, led_colour_off);
-        hled.render();
-
-        hprintln!("W");
-        hprintln!("A");
-        hprintln!("I");
-        hprintln!("T");
-        hprintln!("\n");
-
-        // cortex_m::asm::nop();
-
+        //let sample = adc_controller.adc4.convert(&vsense_pin, SampleTime::Cycles_640_5);
+        //let millivolts = adc_controller.adc4.sample_to_millivolts(sample);
     }
 }
-

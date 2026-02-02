@@ -16,7 +16,7 @@ cortex-m-semihosting = "0.5.0"
 stm32g4 = { version = "0.16.0", features = ["rt"]}
 # stm32g4xx-hal patched in below; original is https://github.com/stm32-rs/stm32g4xx-hal
 # patch exposes some extra UART/USART functionality necessary for how we're using it for the WS2812 LEDs
-stm32g4xx-hal = { git = "https://github.com/Keybinder/stm32g4xx-hal", version = "0.0.2", features = ["rt"]}
+stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch = "qspi", version = "0.0.2", features = ["stm32g474", "rt", "can"] }
 nb = "1.1.0"
 heapless = "0.9.1"
 embedded-alloc = "0.6.0"
@@ -24,6 +24,7 @@ cfg-if = "1.0.4"
 embedded-io = "0.6.1"
 libm = "0.2.15"
 cortex-m-log = { version = "0.8.0", features = ["itm"]}
+embedded_common = { path="../embedded_common"}
 
 [dependencies.cortex-m]
 version = "0.7.7"
