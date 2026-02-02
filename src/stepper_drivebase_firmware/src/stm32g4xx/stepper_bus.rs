@@ -9,15 +9,7 @@ use stm32g4xx_hal::{
     time::RateExtU32,
 };
 
-use crate::stm32g4xx::tmc_registers::Register;
-
-#[derive(Debug, Clone, Copy)]
-pub enum Channel {
-    _0,
-    _1,
-    _2,
-    _3,
-}
+use crate::stm32g4xx::{tmc_registers::Register, Channel};
 
 #[bitfield(u8)]
 pub struct SpiFlags {
@@ -62,8 +54,6 @@ pub struct StepperBus {
 }
 
 impl StepperBus {
-    pub const ALL_CHANNELS: [Channel; 4] = [Channel::_0, Channel::_1, Channel::_2, Channel::_3];
-
     pub fn new(
         spi_bus: SPI3,
         spi_pins: StepperSpiPins,
@@ -96,14 +86,14 @@ impl StepperBus {
     fn pack_frame(addr: u8, value: u32) -> [u8; 5] {
         let mut frame = [0u8; 5];
         frame[0] = addr;
-        frame[1..4].copy_from_slice(&value.to_le_bytes());
+        frame[1..4].copy_from_slice(&value.to_be_bytes());
         frame
     }
 
     fn unpack_frame(frame: [u8; 5]) -> (u8, u32) {
         (
             frame[0],
-            u32::from_le_bytes(*frame[1..4].as_array().unwrap()),
+            u32::from_be_bytes(*frame[1..4].as_array().unwrap()),
         )
     }
 

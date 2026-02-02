@@ -26,16 +26,13 @@ use hal::{
 };
 
 use crate::stm32g4xx::{
-    tmc_registers::{
-        AMax, ChopConf, DMax, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, RampMode, TPowerDown,
-        TPwmThrs, TZeroWait, UnitlessExt, UnitsExt, VMax, VStart, VStop, XActual, XTarget, A1, D1,
-        V1,
-    },
-    STM32G4xxGeneralClock,
+    ALL_CHANNELS, Channel, STM32G4xxGeneralClock, as_registers::{Settings1, Settings2}, encoder_bus::{EncoderBus, EncoderNcsPins, EncoderSpiPins}, tmc_registers::{
+        A1, AMax, ChopConf, D1, DMax, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, RampMode, TPowerDown, TPwmThrs, TZeroWait, UnitlessExt, UnitsExt, V1, VMax, VStart, VStop, XActual, XTarget
+    }
 };
 use crate::{
     boards::{Celsius, Radians},
-    stm32g4xx::stepper_bus::{Channel, StepperBus, StepperNcsPins, StepperSpiPins},
+    stm32g4xx::stepper_bus::{StepperBus, StepperNcsPins, StepperSpiPins},
 };
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
@@ -56,19 +53,6 @@ type ClkPin = gpio::PA8<gpio::Analog>; // MCO
 type DiagPin = gpio::PA10<gpio::Input>;
 
 pub struct StepperTempPins(pub gpio::PA0, pub gpio::PA1, pub gpio::PB2, pub gpio::PC5);
-
-pub struct EncoderCSPins(
-    pub gpio::AnyPin<gpio::Output>,
-    pub gpio::AnyPin<gpio::Output>,
-    pub gpio::AnyPin<gpio::Output>,
-    pub gpio::AnyPin<gpio::Output>,
-);
-
-type EncoderSPIPins = (
-    gpio::PB13<gpio::AF5>,
-    gpio::PB14<gpio::AF5>,
-    gpio::PB15<gpio::AF5>,
-);
 
 // the below two enums are just useful to have during development for reference/debugging
 #[allow(non_camel_case_types, dead_code)]
@@ -93,10 +77,9 @@ pub struct STM32G4xxStepperDriver {
     #[allow(dead_code)]
     diag: DiagPin,
     temp: StepperTempPins,
-    enc_spi: spi::Spi<pac::SPI2, EncoderSPIPins>,
-    enc_spi_cs: EncoderCSPins,
     position_mode: bool,
     steppers: StepperBus,
+    encoders: EncoderBus,
 }
 
 impl STM32G4xxStepperDriver {
@@ -111,10 +94,10 @@ impl STM32G4xxStepperDriver {
         enn: EnnPin,
         clk_pin: ClkPin,
         diag: DiagPin, // can be made mut
-        stepper_spi_pins: StepperSpiPins,
+        step_spi_pins: StepperSpiPins,
         step_spi_ncs: StepperNcsPins,
-        encoder_spi_pins: EncoderSPIPins,
-        enc_spi_cs: EncoderCSPins,
+        enc_spi_pins: EncoderSpiPins,
+        enc_spi_ncs: EncoderNcsPins,
     ) -> Self {
         // initialise the ADCs for the temperature pins
         // we intend to use them in one-shot mode
@@ -135,9 +118,6 @@ impl STM32G4xxStepperDriver {
         // so just use the TMC5160's internal clock.
         clk.enable();
 
-        // initialise the AS5047P encoder SPI bus, SPI2
-        let enc_spi = spi2.spi(encoder_spi_pins, spi::MODE_1, 500.kHz(), rcc);
-
         // NOTE(jthro-temp): turn off stealthchop
 
         // Would like to do stepper and encoder configuration here but would have to rearrange the
@@ -150,15 +130,14 @@ impl STM32G4xxStepperDriver {
             _clk: clk,
             diag,
             temp,
-            enc_spi,
-            steppers: StepperBus::new(spi3, stepper_spi_pins, step_spi_ncs, rcc),
-            enc_spi_cs,
+            steppers: StepperBus::new(spi3, step_spi_pins, step_spi_ncs, rcc),
+            encoders: EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc),
             position_mode: true,
         }
     }
 
     pub fn init_steppers_config(&mut self) {
-        for (&chan, invert) in StepperBus::ALL_CHANNELS.iter().zip(INVERT_STEPPER_DIR) {
+        for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_STEPPER_DIR) {
             self.steppers
                 .write_reg(
                     chan,
@@ -242,181 +221,24 @@ impl STM32G4xxStepperDriver {
     }
 
     pub fn motion_test(&mut self) {
-        for chan in StepperBus::ALL_CHANNELS {
+        for chan in ALL_CHANNELS {
             self.steppers
                 .write_reg(chan, XTarget(100.0.rads()))
                 .unwrap();
         }
         delay(2 * 64 * 1024 * 1024);
-        for chan in StepperBus::ALL_CHANNELS {
+        for chan in ALL_CHANNELS {
             self.steppers
                 .write_reg(chan, XTarget((-100.0).rads()))
                 .unwrap();
         }
     }
 
-    // Much like the TMC5160, we could potentially set up a pipelined read API. However, I don't
-    // think we actually do chained reads in any significant quantity, so bah humbug.
-    #[allow(dead_code)]
-    fn read_enc_reg(&mut self, channel: Channel, reg: EncoderRegister) -> Result<u16, !> {
-        /*
-        // TODO: detect parity errors and treat as SPIError
-        let cs = match channel {
-            StepperChannel::Channel0 => &mut self.enc_spi_cs.3,
-            StepperChannel::Channel1 => &mut self.enc_spi_cs.0,
-            StepperChannel::Channel2 => &mut self.enc_spi_cs.1,
-            StepperChannel::Channel3 => &mut self.enc_spi_cs.2,
-        };
-        // 16-bit: MSB is parity bit (even), bit 14 is 1 for read
-        let addr = reg as u32;
-        let parity = ((addr.count_ones() + 1) % 2) << 7;
-        let top_byte: u8 = (((addr & 0x3F00) >> 8) | 0x40 | parity) as u8;
-        let send_data: [u8; 2] = [top_byte, (addr & 0xFF) as u8];
-        let mut read_data = [0u8; 2];
-        set_cs(cs, false);
-        self.enc_spi
-            .write(&send_data)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        <spi::Spi<pac::SPI2, EncoderSPIPins> as SpiBus<u8>>::flush(&mut self.enc_spi)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        set_cs(cs, false);
-        self.enc_spi
-            .read(&mut read_data)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        // reconstruct register
-        Ok((read_data[0] as u16) << 8 | (read_data[1] as u16))
-         */
-        todo!()
-    }
-
-    /// Returns the old data
-    fn write_enc_reg(
-        &mut self,
-        channel: Channel,
-        reg: EncoderRegister,
-        data: u16,
-    ) -> Result<u16, !> {
-        /*
-        let cs = match channel {
-            Channel::_0 => &mut self.enc_spi_cs.3,
-            Channel::_1 => &mut self.enc_spi_cs.0,
-            Channel::_2 => &mut self.enc_spi_cs.1,
-            Channel::_3 => &mut self.enc_spi_cs.2,
-        };
-        let addr = reg as u32;
-        let addr_parity = (addr.count_ones() % 2) << 7;
-        let addr_top_byte: u8 = (((addr & 0x3F00) >> 8) | addr_parity) as u8;
-        let addr_data: [u8; 2] = [addr_top_byte, (addr & 0xFF) as u8];
-        let data_parity: u16 = (((data & 0x3FFF).count_ones() % 2) << 7) as u16;
-        let send_data: [u8; 2] = [
-            ((data & 0x3F00) >> 8 | data_parity) as u8,
-            (data & 0xFF) as u8,
-        ];
-        let mut read_data = [0u8; 2];
-        set_cs(cs, false);
-        self.enc_spi
-            .write(&addr_data)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        <spi::Spi<pac::SPI2, EncoderSPIPins> as SpiBus<u8>>::flush(&mut self.enc_spi)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        set_cs(cs, false);
-        self.enc_spi
-            .transfer(&mut read_data, &send_data)
-            .map_err(STM32G4xxStepperDriver::map_spi_error)?;
-        set_cs(cs, true);
-        Ok((read_data[0] as u16) << 8 | (read_data[1] as u16))
-         */
-        todo!()
-    }
-
-    /// Debug function: prints contents of the encoder's DIAAGC register
-    #[allow(dead_code)]
-    pub fn dbg_pretty_diaagc(&mut self, channel: Channel) {
-        let diaagc = self.read_enc_reg(channel, EncoderRegister::DIAAGC).unwrap();
-        let magl = diaagc & (1 << 11) > 0;
-        let magh = diaagc & (1 << 10) > 0;
-        let cof = diaagc & (1 << 9) > 0;
-        let lf = diaagc & (1 << 8) > 0;
-        let agc = diaagc & 0xFF;
-        hprintln!(
-            "MAGL {} MAGH {} COF {} LF {} AGC {}",
-            magl,
-            magh,
-            cof,
-            lf,
-            agc
-        );
-    }
-
-    /// Debug function: prints contents of the encoder's SETTINGS1 and SETTINGS2 registers
-    #[allow(dead_code)]
-    pub fn dbg_pretty_settings(&mut self, channel: Channel) {
-        let settings1 = self
-            .read_enc_reg(channel, EncoderRegister::SETTINGS1)
-            .unwrap();
-        let dir = settings1 & 0x04 > 0;
-        let daecdis = settings1 & 0x10 > 0;
-        let datasel = settings1 & 0x40 > 0;
-        hprintln!(
-            "SETTINGS1 0x{:04x} = DIR {} DAECDIS {} DATASEL {}",
-            settings1,
-            dir,
-            daecdis,
-            datasel
-        );
-        let settings2 = self
-            .read_enc_reg(channel, EncoderRegister::SETTINGS2)
-            .unwrap();
-        let hys = (settings2 & 0x18) >> 3;
-        let abires = (settings2 & 0xE0) >> 5;
-        hprintln!(
-            "SETTINGS2 0x{:04x} = HYS {} ABIRES {}",
-            settings2,
-            hys,
-            abires
-        );
-    }
-
-    /// Debug function: prints contents of the encoder data registers (angle readings)
-    #[allow(dead_code)]
-    pub fn dbg_pretty_data(&mut self, channel: Channel) {
-        let mag = self.read_enc_reg(channel, EncoderRegister::MAG).unwrap();
-        let angleunc = self
-            .read_enc_reg(channel, EncoderRegister::ANGLEUNC)
-            .unwrap();
-        let anglecom = self
-            .read_enc_reg(channel, EncoderRegister::ANGLECOM)
-            .unwrap();
-        hprintln!(
-            "MAG 0x{:04x} ANGLEUNC 0x{:04x} ANGLECOM 0x{:04x}",
-            mag & 0x3FFF,
-            angleunc & 0x3FFF,
-            anglecom & 0x3FFF
-        );
-    }
-
     pub fn init_encoders_config(&mut self) {
-        /*
-        for i in 0..NUM_STEPPERS {
-            let channel = CHANNELS[i];
-            let do_invert = INVERT_ENCODER_DIR[i];
-
-            let mut settings1 = 0x01;
-            // normally CW from topside. if do_invert, CCW from topside (CW from underside)
-            if do_invert {
-                settings1 |= 0x04;
-            }
-            // set hysteresis to minimum
-            let settings2 = 0x18;
-            self.write_enc_reg(channel, EncoderRegister::SETTINGS1, settings1)
-                .unwrap();
-            self.write_enc_reg(channel, EncoderRegister::SETTINGS2, settings2)
-                .unwrap();
+        for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_ENCODER_DIR) {
+            self.encoders.write_reg(chan, Settings1::new().with_dir(invert)).unwrap();
+            self.encoders.write_reg(chan, Settings2::new().with_hys(0)).unwrap();
         }
-         */
     }
 
     pub fn enable_all(&mut self) {

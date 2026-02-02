@@ -18,8 +18,7 @@ use core::intrinsics::abort;
 use core::panic::PanicInfo;
 
 use crate::boards::Radians;
-use crate::stm32g4xx::stepper_bus::Channel;
-use crate::stm32g4xx::RGBLEDColor;
+use crate::stm32g4xx::{Channel, RGBLEDColor};
 
 use canadensis::core::time as cyphal_time;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};

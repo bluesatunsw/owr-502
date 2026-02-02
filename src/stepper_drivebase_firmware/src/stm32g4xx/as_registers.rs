@@ -13,22 +13,22 @@ pub struct Settings1 {
     __: u32,
 
     #[bits(1)]
-    dir: bool,
+    pub dir: bool,
 
     #[bits(1)]
-    uvw_abi: bool,
+    pub uvw_abi: bool,
 
     #[bits(1)]
-    daec_dis: bool,
+    pub daec_dis: bool,
 
     #[bits(1)]
-    abi_bin: bool,
+    pub abi_bin: bool,
 
     #[bits(1)]
-    data_select: bool,
+    pub data_select: bool,
 
     #[bits(1)]
-    pwm_on: bool,
+    pub pwm_on: bool,
 
     #[bits(8)]
     __: u32,
@@ -41,13 +41,13 @@ impl Register for Settings1 {
 #[bitfield(u16)]
 pub struct Settings2 {
     #[bits(3)]
-    uvw_pp: u8,
+    pub uvw_pp: u8,
 
     #[bits(2)]
-    hys: u8,
+    pub hys: u8,
 
     #[bits(3)]
-    abi_res: u8,
+    pub abi_res: u8,
 
     #[bits(8)]
     __: u32,
@@ -60,19 +60,19 @@ impl Register for Settings2 {
 #[bitfield(u16)]
 pub struct DiaAcg {
     #[bits(8)]
-    agc: u8,
+    pub agc: u8,
 
     #[bits(1)]
-    lf: bool,
+    pub lf: bool,
 
     #[bits(1)]
-    cof: bool,
+    pub cof: bool,
 
     #[bits(1)]
-    magh: bool,
+    pub magh: bool,
 
     #[bits(1)]
-    magl: bool,
+    pub magl: bool,
 
     #[bits(4)]
     __: u32,

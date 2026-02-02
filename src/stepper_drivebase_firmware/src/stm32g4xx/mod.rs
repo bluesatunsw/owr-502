@@ -9,10 +9,11 @@ pub use clock::{STM32G4xxCyphalClock, STM32G4xxGeneralClock};
 pub mod fdcan;
 pub use fdcan::STM32G4xxCanDriver;
 pub mod stepper;
-pub use stepper::{EncoderCSPins, STM32G4xxStepperDriver, StepperTempPins};
+pub use stepper::{STM32G4xxStepperDriver, StepperTempPins};
 pub mod i2c;
 pub use i2c::STM32G4xxI2CDriver;
 pub mod as_registers;
+pub mod encoder_bus;
 pub mod stepper_bus;
 pub mod tmc_registers;
 
@@ -30,12 +31,22 @@ use hal::{
 
 use embedded_io::Write;
 
-use crate::stm32g4xx::stepper_bus::StepperNcsPins;
+use crate::stm32g4xx::{encoder_bus::EncoderNcsPins, stepper_bus::StepperNcsPins};
 
 // TODO: set up TRACESWO or UART for faster debug logging
 
 /// The number of RGB LEDs (WS2812s) on the board.
 pub const NUM_LEDS: usize = 6;
+
+#[derive(Debug, Clone, Copy)]
+pub enum Channel {
+    _0,
+    _1,
+    _2,
+    _3,
+}
+
+pub const ALL_CHANNELS: [Channel; 4] = [Channel::_0, Channel::_1, Channel::_2, Channel::_3];
 
 #[derive(Copy, Clone)]
 pub struct RGBLEDColor {
@@ -234,7 +245,7 @@ pub fn init() -> (
     let cs3 = gpioc
         .pc9
         .into_push_pull_output_in_state(gpio::PinState::High);
-    let enc_cs_pins = EncoderCSPins(cs0.into(), cs1.into(), cs2.into(), cs3.into());
+    let enc_cs_pins = EncoderNcsPins(cs0.into(), cs1.into(), cs2.into(), cs3.into());
     let enc_spi_pins = (sck, miso, mosi);
 
     cyphal_clock.start();
