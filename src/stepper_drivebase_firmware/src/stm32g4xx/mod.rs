@@ -252,7 +252,7 @@ pub fn init() -> (
 
     let mut general_clock = STM32G4xxGeneralClock::new();
 
-    let mut stepper_driver = STM32G4xxStepperDriver::new(
+    let stepper_driver = STM32G4xxStepperDriver::new(
         dp.ADC12_COMMON,
         dp.ADC2,
         dp.SPI2,
@@ -268,11 +268,6 @@ pub fn init() -> (
         enc_spi_pins,
         enc_cs_pins,
     );
-
-    stepper_driver.init_steppers_config();
-    // 250ms of stand still
-    delay(1024 * 1024 * 16);
-    stepper_driver.init_encoders_config();
 
     // I2C testing -- remove once confirmed working on hardware
     // page-aligned

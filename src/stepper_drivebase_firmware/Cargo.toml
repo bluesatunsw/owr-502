@@ -23,8 +23,8 @@ stm32g4 = { version = "0.16.0", features = ["rt"], optional = true }
 bitfield-struct = "0.12.1"
 
 [dependencies.stm32g4xx-hal]
-git = "https://github.com/bluesatunsw/stm32g4xx-hal"
-branch = "main"
+path = "/home/evan/bluesat/stm32g4xx-hal"
+# branch = "main"
 version = "0.0.2"
 features = ["rt", "can", "stm32g474"]
 

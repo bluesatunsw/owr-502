@@ -17,7 +17,7 @@ use core::f32::consts::PI;
 use core::intrinsics::abort;
 use core::panic::PanicInfo;
 
-use crate::boards::Radians;
+use crate::stm32g4xx::tmc_registers::TmcPosition;
 use crate::stm32g4xx::{Channel, RGBLEDColor};
 
 use canadensis::core::time as cyphal_time;
@@ -124,7 +124,7 @@ fn main() -> ! {
     let start_time: u64 = general_clock.now().ticks().into();
     let mut heartbeat_target_time_us: u64 = start_time + 1_000_000u64;
     let mut speed_time_us: u64 = start_time;
-    hprintln!("start time is {}", start_time);
+    // hprintln!("start time is {}", start_time);
 
     // Publish on the drivebase subjects.
     let planar_torque_subject = SubjectId::from_truncating(1337);
@@ -171,9 +171,6 @@ fn main() -> ! {
     // NOTE: If subscriptions fail with OutOfMemoryError, try upping the HEAP_SIZE in the allocator.
 
     hstepper.enable_all();
-    hprintln!("Enabled steppers");
-    delay(1024 * 1024 * 16);
-    hstepper.motion_test();
 
     let mut cycles = 0;
     let mut handler = RecvHandler { driver: hstepper };
@@ -192,7 +189,7 @@ fn main() -> ! {
             // TODO (stretch): use multiple hardware queues/mailboxes to optimise recv throughput? May need
             // to modify canadensis and/or bxcan drivers to do this.
             Err(e) => {
-                hprintln!("recverr: {:?}", e);
+                // hprintln!("recverr: {:?}", e);
             }
         }
 
@@ -229,7 +226,7 @@ fn main() -> ! {
 
             //node.flush().unwrap();
             if missed_heartbeats > 0 {
-                hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
+                // hprintln!("WARNING: missed {} heartbeat(s)", missed_heartbeats);
             }
         }
 
@@ -257,7 +254,7 @@ fn main() -> ! {
                 Err(canadensis::core::nb::Error::WouldBlock) => {
                     // just skip publishing if blocking
                 }
-                Err(error) => hprintln!("Problem sending planar message: {:?}", error),
+                Err(error) => {} // hprintln!("Problem sending planar message: {:?}", error),
             };
         }
     }
@@ -276,38 +273,36 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
     where
         N: Node<Transport = T>,
     {
-        hprintln!("received");
-
         match transfer.header.subject {
             SETPOINT_MESSAGE_CHAN_0_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(Channel::_0, Radians(msg.unwrap().angular_position.radian))
+                    .set_position(Channel::_0, TmcPosition(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_1_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(Channel::_1, Radians(msg.unwrap().angular_position.radian))
+                    .set_position(Channel::_1, TmcPosition(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_2_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(Channel::_2, Radians(msg.unwrap().angular_position.radian))
+                    .set_position(Channel::_2, TmcPosition(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             SETPOINT_MESSAGE_CHAN_3_ID => {
                 let msg = Planar::deserialize_from_bytes(&transfer.payload);
                 self.driver
-                    .set_position(Channel::_3, Radians(msg.unwrap().angular_position.radian))
+                    .set_position(Channel::_3, TmcPosition(msg.unwrap().angular_position.radian))
                     .unwrap();
             }
             _ => (),
         }
         // Cast MessageTransfer to the appropriate type and get the value.
         // If using this one handler for multiple message subjects, match against transfer.header.subject.
-        hprintln!("Got message {:?}", transfer);
+        // hprintln!("Got message {:?}", transfer);
         false
     }
 
@@ -320,7 +315,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
     where
         N: Node<Transport = T>,
     {
-        hprintln!("Got request {:?}", transfer);
+        // hprintln!("Got request {:?}", transfer);
         false
     }
 
@@ -332,7 +327,7 @@ impl<T: Transport> TransferHandler<T> for RecvHandler {
     where
         N: Node<Transport = T>,
     {
-        hprintln!("Got response {:?}", transfer);
+        // hprintln!("Got response {:?}", transfer);
         false
     }
 }

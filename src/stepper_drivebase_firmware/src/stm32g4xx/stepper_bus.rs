@@ -1,11 +1,14 @@
+use core::intrinsics::breakpoint;
+
 use bitfield_struct::bitfield;
 use cortex_m::asm::delay;
+use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal::{
     gpio::{AnyPin, Output, AF6, PC10, PC11, PC12},
     pac::SPI3,
-    prelude::SpiBus,
+    prelude::*,
     rcc::Rcc,
-    spi::{self, Spi, SpiExt, MODE_3},
+    spi::{self, Spi, MODE_3},
     time::RateExtU32,
 };
 
@@ -85,15 +88,15 @@ impl StepperBus {
 
     fn pack_frame(addr: u8, value: u32) -> [u8; 5] {
         let mut frame = [0u8; 5];
-        frame[0] = addr;
-        frame[1..4].copy_from_slice(&value.to_be_bytes());
+        frame[0..1].copy_from_slice(&addr.to_be_bytes());
+        frame[1..5].copy_from_slice(&value.to_be_bytes());
         frame
     }
 
     fn unpack_frame(frame: [u8; 5]) -> (u8, u32) {
         (
             frame[0],
-            u32::from_be_bytes(*frame[1..4].as_array().unwrap()),
+            u32::from_be_bytes(*frame[1..5].as_array().unwrap()),
         )
     }
 
@@ -106,7 +109,7 @@ impl StepperBus {
         let mut res = [0u8; 5];
         // Set the MSB to indicate a write
         self.spi_bus
-            .transfer(&mut res, &Self::pack_frame(R::ADDRESS & 0x80, value.into()))?;
+            .transfer(&mut res, &Self::pack_frame(R::ADDRESS | 0x80, value.into()))?;
         self.set_ncs(channel, true);
 
         Ok(SpiFlags(res[0]))

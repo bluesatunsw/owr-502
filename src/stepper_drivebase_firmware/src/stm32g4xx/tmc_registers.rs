@@ -1,4 +1,4 @@
-use core::{f32, fmt::Debug};
+use core::{f32, fmt::Debug, ops::Mul};
 
 use bitfield_struct::bitfield;
 
@@ -12,7 +12,7 @@ pub trait Register: From<u32> + Into<u32> + Debug {
 }
 
 #[derive(Debug, PartialEq, PartialOrd)]
-pub struct TmcPosition(f32);
+pub struct TmcPosition(pub f32);
 
 impl TmcPosition {
     const CONVERSION_FACTOR: f32 = MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI);
@@ -23,6 +23,14 @@ impl TmcPosition {
 
     pub fn bits(&self) -> u32 {
         (self.0 * Self::CONVERSION_FACTOR) as i32 as u32
+    }
+}
+
+impl Mul<f32> for TmcPosition {
+    type Output = TmcPosition;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        TmcPosition(self.0 * rhs)
     }
 }
 

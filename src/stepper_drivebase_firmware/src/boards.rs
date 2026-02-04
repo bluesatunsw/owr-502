@@ -8,17 +8,6 @@ use crate::stm32g4xx;
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Celsius(pub f32);
 
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Radians(pub f32);
-
-impl Sub for Radians {
-    type Output = Self;
-
-    fn sub(self, other: Self) -> Self::Output {
-        Self(self.0 - other.0)
-    }
-}
-
 // these types need to be exposed to the layer that creates the canadensis/Cyphal node
 pub type CClock = stm32g4xx::STM32G4xxCyphalClock;
 pub type CanDriver = stm32g4xx::STM32G4xxCanDriver;

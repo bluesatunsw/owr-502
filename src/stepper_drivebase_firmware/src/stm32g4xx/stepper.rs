@@ -26,17 +26,22 @@ use hal::{
 };
 
 use crate::stm32g4xx::{
-    ALL_CHANNELS, Channel, STM32G4xxGeneralClock, as_registers::{Settings1, Settings2}, encoder_bus::{EncoderBus, EncoderNcsPins, EncoderSpiPins}, tmc_registers::{
-        A1, AMax, ChopConf, D1, DMax, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, RampMode, TPowerDown, TPwmThrs, TZeroWait, UnitlessExt, UnitsExt, V1, VMax, VStart, VStop, XActual, XTarget
-    }
+    as_registers::{Settings1, Settings2},
+    encoder_bus::{EncoderBus, EncoderNcsPins, EncoderSpiPins},
+    tmc_registers::{
+        AMax, ChopConf, DMax, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, RampMode, TPowerDown,
+        TPwmThrs, TZeroWait, TmcPosition, UnitlessExt, UnitsExt, VMax, VStart, VStop, XActual,
+        XTarget, A1, D1, V1,
+    },
+    Channel, STM32G4xxGeneralClock, ALL_CHANNELS,
 };
 use crate::{
-    boards::{Celsius, Radians},
+    boards::Celsius,
     stm32g4xx::stepper_bus::{StepperBus, StepperNcsPins, StepperSpiPins},
 };
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
-const GEAR_RATIO: u32 = 1;
+const GEAR_RATIO: f32 = 60.;
 /// The number of stepper motors that the board is actually controlling, to avoid dealing with
 /// motors that don't exist.
 pub const NUM_STEPPERS: usize = 4;
@@ -45,7 +50,7 @@ const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
 /// Inverts the position convention for the encoders.
 const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// What encoder reading we interpret as an angular position of 0 for ROS purposes.
-const ENCODER_ZERO: Radians = Radians(0.0);
+// const ENCODER_ZERO: Radians = Radians(0.0);
 
 type EnnPin = gpio::PD2<gpio::Output>;
 type ClkPin = gpio::PA8<gpio::Analog>; // MCO
@@ -77,7 +82,6 @@ pub struct STM32G4xxStepperDriver {
     #[allow(dead_code)]
     diag: DiagPin,
     temp: StepperTempPins,
-    position_mode: bool,
     steppers: StepperBus,
     encoders: EncoderBus,
 }
@@ -99,18 +103,6 @@ impl STM32G4xxStepperDriver {
         enc_spi_pins: EncoderSpiPins,
         enc_spi_ncs: EncoderNcsPins,
     ) -> Self {
-        // initialise the ADCs for the temperature pins
-        // we intend to use them in one-shot mode
-        let adc12 = adc_common.claim(
-            ClockMode::AdcKerCk {
-                // system clock is at 64 MHz, but abs max ADC clock frequency is 60 MHz, so /2
-                prescaler: Prescaler::Div_2,
-                src: ClockSource::SystemClock,
-            },
-            rcc,
-        );
-        let adc = adc12.claim_and_configure(adc2, AdcConfig::default(), uclock);
-
         // initialise the MCO (CLK pin)
         // at 12 MHz
         let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
@@ -118,27 +110,29 @@ impl STM32G4xxStepperDriver {
         // so just use the TMC5160's internal clock.
         clk.enable();
 
-        // NOTE(jthro-temp): turn off stealthchop
-
-        // Would like to do stepper and encoder configuration here but would have to rearrange the
-        // code a fair bit to make this possible. Still, right now it's a bit too easy to pass
-        // steppers to the main code unconfigured... TODO fix?
-
         STM32G4xxStepperDriver {
-            adc,
+            adc: adc_common
+                .claim(
+                    ClockMode::AdcKerCk {
+                        // system clock is at 64 MHz, but abs max ADC clock frequency is 60 MHz, so /2
+                        prescaler: Prescaler::Div_2,
+                        src: ClockSource::SystemClock,
+                    },
+                    rcc,
+                )
+                .claim_and_configure(adc2, AdcConfig::default(), uclock),
             enn,
             _clk: clk,
             diag,
             temp,
-            steppers: StepperBus::new(spi3, step_spi_pins, step_spi_ncs, rcc),
-            encoders: EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc),
-            position_mode: true,
+            steppers: Self::config_stepeprs(StepperBus::new(spi3, step_spi_pins, step_spi_ncs, rcc)),
+            encoders: Self::config_encoders(EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc)),
         }
     }
 
-    pub fn init_steppers_config(&mut self) {
+    pub fn config_stepeprs(mut steppers: StepperBus) -> StepperBus {
         for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_STEPPER_DIR) {
-            self.steppers
+            steppers
                 .write_reg(
                     chan,
                     GStat::new()
@@ -148,7 +142,7 @@ impl STM32G4xxStepperDriver {
                 )
                 .unwrap();
 
-            self.steppers
+            steppers
                 .write_reg(
                     chan,
                     GConf::new()
@@ -158,7 +152,7 @@ impl STM32G4xxStepperDriver {
                 )
                 .unwrap();
 
-            self.steppers
+            steppers
                 .write_reg(
                     chan,
                     ChopConf::new()
@@ -170,7 +164,7 @@ impl STM32G4xxStepperDriver {
                 )
                 .unwrap();
 
-            self.steppers
+            steppers
                 .write_reg(
                     chan,
                     PwmConf::new()
@@ -185,11 +179,9 @@ impl STM32G4xxStepperDriver {
                 )
                 .unwrap();
 
-            self.steppers
-                .write_reg(chan, GlobalScalar(64.ul()))
-                .unwrap();
+            steppers.write_reg(chan, GlobalScalar(64.ul())).unwrap();
 
-            self.steppers
+            steppers
                 .write_reg(
                     chan,
                     IHoldIRun::new()
@@ -199,46 +191,42 @@ impl STM32G4xxStepperDriver {
                 )
                 .unwrap();
 
-            self.steppers.write_reg(chan, TPowerDown(0.ul())).unwrap();
+            steppers.write_reg(chan, TPowerDown(0.ul())).unwrap();
             // 50ms
-            self.steppers.write_reg(chan, TZeroWait(1172.ul())).unwrap();
+            steppers.write_reg(chan, TZeroWait(1172.ul())).unwrap();
 
-            self.steppers.write_reg(chan, TPwmThrs(20.0.rps())).unwrap();
-            self.steppers.write_reg(chan, RampMode(3.ul())).unwrap();
-            self.steppers.write_reg(chan, XActual(0.0.rads())).unwrap();
-            self.steppers.write_reg(chan, XTarget(0.0.rads())).unwrap();
-            self.steppers.write_reg(chan, RampMode(0.ul())).unwrap();
+            steppers.write_reg(chan, TPwmThrs(20.0.rps())).unwrap();
+            steppers.write_reg(chan, RampMode(3.ul())).unwrap();
+            steppers.write_reg(chan, XActual(0.0.rads())).unwrap();
+            steppers.write_reg(chan, XTarget(0.0.rads())).unwrap();
+            steppers.write_reg(chan, RampMode(0.ul())).unwrap();
 
-            self.steppers.write_reg(chan, A1(50.0.rps2())).unwrap();
-            self.steppers.write_reg(chan, V1(50.0.rps())).unwrap();
-            self.steppers.write_reg(chan, AMax(30.0.rps2())).unwrap();
-            self.steppers.write_reg(chan, VMax(100.0.rps())).unwrap();
-            self.steppers.write_reg(chan, DMax(40.0.rps2())).unwrap();
-            self.steppers.write_reg(chan, D1(60.0.rps2())).unwrap();
-            self.steppers.write_reg(chan, VStart(3.0.rps())).unwrap();
-            self.steppers.write_reg(chan, VStop(5.0.rps())).unwrap();
+            steppers.write_reg(chan, A1(50.0.rps2())).unwrap();
+            steppers.write_reg(chan, V1(50.0.rps())).unwrap();
+            steppers.write_reg(chan, AMax(30.0.rps2())).unwrap();
+            steppers.write_reg(chan, VMax(100.0.rps())).unwrap();
+            steppers.write_reg(chan, DMax(40.0.rps2())).unwrap();
+            steppers.write_reg(chan, D1(60.0.rps2())).unwrap();
+            steppers.write_reg(chan, VStart(3.0.rps())).unwrap();
+            steppers.write_reg(chan, VStop(5.0.rps())).unwrap();
         }
+
+        steppers
     }
 
-    pub fn motion_test(&mut self) {
-        for chan in ALL_CHANNELS {
-            self.steppers
-                .write_reg(chan, XTarget(100.0.rads()))
-                .unwrap();
-        }
-        delay(2 * 64 * 1024 * 1024);
-        for chan in ALL_CHANNELS {
-            self.steppers
-                .write_reg(chan, XTarget((-100.0).rads()))
-                .unwrap();
-        }
-    }
+    pub fn config_encoders(mut encoders: EncoderBus) -> EncoderBus {
+        return encoders;
 
-    pub fn init_encoders_config(&mut self) {
         for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_ENCODER_DIR) {
-            self.encoders.write_reg(chan, Settings1::new().with_dir(invert)).unwrap();
-            self.encoders.write_reg(chan, Settings2::new().with_hys(0)).unwrap();
+            encoders
+                .write_reg(chan, Settings1::new().with_dir(invert))
+                .unwrap();
+            encoders
+                .write_reg(chan, Settings2::new().with_hys(0))
+                .unwrap();
         }
+
+        encoders
     }
 
     pub fn enable_all(&mut self) {
@@ -249,30 +237,13 @@ impl STM32G4xxStepperDriver {
         self.enn.set_high();
     }
 
-    pub fn set_position(&mut self, channel: Channel, target: Radians) -> Result<(), !> {
-        /*
-        if !self.position_mode {
-            self.write_reg(channel, StepperRegister::RAMPMODE, 0x00000000)
-                .unwrap();
-            self.position_mode = true;
-        }
-        let target_usteps: i32 = Libm::<f32>::round(
-            (target.0) * ((GEAR_RATIO * MICROSTEPS_PER_REV) as f32) / (PI * 2.0),
-        ) as i32;
-        hprintln!(
-            "Moving to position {}, targeet: {}",
-            target.0,
-            target_usteps
-        );
-
-        self.write_reg(channel, StepperRegister::XTARGET, target_usteps as u32)
-            .unwrap();
+    pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), !> {
+        // hprintln!("Setting {:?} to {:?}", channel, target);
+        self.steppers.write_reg(channel, XTarget(target * GEAR_RATIO)).unwrap();
         Ok(())
-        */
-        todo!()
     }
 
-    // TODO: this yields very incorrect values, debug
+    // TODO: this yields very incorrect values, debugg
     pub fn get_temperature(&mut self, channel: Channel) -> Celsius {
         /*
         // Voltage divider: 3.3V VDD (= VDDA), 10k thermistor (XH103) = R(T), 2.2k resistor
