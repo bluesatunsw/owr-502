@@ -1,8 +1,5 @@
-use core::intrinsics::breakpoint;
-
 use bitfield_struct::bitfield;
 use cortex_m::asm::delay;
-use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal::{
     gpio::{AnyPin, Output, AF6, PC10, PC11, PC12},
     pac::SPI3,
@@ -12,7 +9,7 @@ use stm32g4xx_hal::{
     time::RateExtU32,
 };
 
-use crate::stm32g4xx::{tmc_registers::Register, Channel};
+use crate::{common::Channel, tmc_registers::Register};
 
 #[bitfield(u8)]
 pub struct SpiFlags {

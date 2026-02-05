@@ -1,5 +1,8 @@
 target extended-remote :3333
 
+source PyCortexMDebug/scripts/gdb.py
+svd_load STM32G474.svd
+
 # print demangled symbols
 set print asm-demangle on
 

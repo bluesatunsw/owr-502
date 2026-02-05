@@ -8,7 +8,7 @@ use stm32g4xx_hal::{
     time::RateExtU32,
 };
 
-use crate::stm32g4xx::{as_registers::Register, Channel};
+use crate::{as_registers::Register, common::Channel};
 
 pub type EncoderSpiPins = (PB13<AF5>, PB14<AF5>, PB15<AF5>);
 
