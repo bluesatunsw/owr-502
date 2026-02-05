@@ -1,0 +1,102 @@
+use core::cell::UnsafeCell;
+
+use alloc::vec::Vec;
+use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
+use canadensis::core::transport::Transport;
+use canadensis::core::SubjectId;
+use canadensis::encoding::Deserialize;
+use canadensis::{ResponseToken, TransferHandler};
+use canadensis_data_types::reg::udral::service::actuator;
+use cortex_m::interrupt::Mutex;
+use fixed::types::I16F16;
+
+use crate::state::ControlMode;
+use crate::utils::{motor_disable, motor_enable};
+
+pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
+pub const CYPHAL_NUM_TOPICS: usize = 8;
+pub const CYPHAL_NUM_SERVICES: usize = 8;
+
+pub const NODE_ID: u8 = 12;
+pub const PORT_CTRL_DUTY: SubjectId = SubjectId::from_truncating(3070);
+
+pub struct CommSystem {
+    pub control_mode: &'static Mutex<UnsafeCell<ControlMode>>,
+}
+
+impl CommSystem {
+    // TODO implement sending for the periodic data we need to send to comply with UDRAL Servo
+    //pub fn tick(node: &mut Node) {}
+}
+
+impl<T: Transport> TransferHandler<T> for CommSystem {
+    fn handle_message<N>(&mut self, _node: &mut N, transfer: &MessageTransfer<Vec<u8>, T>) -> bool
+    where
+        N: canadensis::Node<Transport = T>,
+    {
+        match transfer.header.subject {
+            PORT_CTRL_DUTY => {
+                // TODO this deadband is stupid, should have Readiness heartbeat
+                let Ok(volts) =
+                    actuator::common::sp::scalar_0_1::Scalar::deserialize_from_bytes(&transfer.payload)
+                else {
+                    return false;
+                };
+
+                motor_disable();
+                cortex_m::interrupt::free(|cs| unsafe {
+                    if f32::from(volts.value).abs() < 0.02 {
+                        self.control_mode.borrow(cs).replace(ControlMode::Disabled);
+                    } else {
+                        self.control_mode.borrow(cs).replace(ControlMode::Voltage {
+                            voltage: I16F16::from_num(volts.value),
+                        });
+                        motor_enable();
+                    }
+                });
+
+                /*iprintln!(
+                    unsafe { &mut Peripherals::steal().ITM.stim[0] },
+                    "[INFO] DutyCycle setpoint received: {}",
+                    I16F16::from_num(volts.value)
+                );*/
+
+                true
+            }
+            _ => {
+                /*iprintln!(
+                    unsafe { &mut Peripherals::steal().ITM.stim[0] },
+                    "[WARN] Unknown message RECV'd"
+                );*/
+                false
+            }
+        }
+    }
+
+    fn handle_request<N>(
+        &mut self,
+        _node: &mut N,
+        _token: ResponseToken<T>,
+        _transfer: &ServiceTransfer<Vec<u8>, T>,
+    ) -> bool
+    where
+        N: canadensis::Node<Transport = T>,
+    {
+        /*iprintln!(
+            unsafe { &mut Peripherals::steal().ITM.stim[0] },
+            "[INFO] COMMS.REQ"
+        );*/
+        false
+    }
+
+    fn handle_response<N>(&mut self, _node: &mut N, _transfer: &ServiceTransfer<Vec<u8>, T>) -> bool
+    where
+        N: canadensis::Node<Transport = T>,
+    {
+        /*iprintln!(
+            unsafe { &mut Peripherals::steal().ITM.stim[0] },
+            "[INFO] COMMS.RESP"
+        );*/
+        false
+    }
+}
