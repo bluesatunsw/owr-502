@@ -94,10 +94,11 @@ where
     fn receive(&mut self, clock: &mut CL) -> nb::Result<Frame, Self::Error> {
         let mut buf: [u8; 64] = [0; 64];
 
+        let frame = self.hw_can.receive0(&mut buf)?.unwrap();
         Ok(Frame::new(
             clock.now(),
-            translate_id(self.hw_can.receive0(&mut buf)?.unwrap().id),
-            &buf,
+            translate_id(frame.id),
+            &buf[0..frame.len as usize],
         ))
     }
 
