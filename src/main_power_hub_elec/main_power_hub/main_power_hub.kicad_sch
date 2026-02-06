@@ -5089,12 +5089,6 @@
 		(uuid "4a158425-c7fb-4e88-9fd3-0d03ba339d99")
 	)
 	(junction
-		(at 105.41 123.19)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6f1615c3-bce5-4f5a-a8a0-66a8de2c5ee0")
-	)
-	(junction
 		(at 85.09 158.75)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5147,12 +5141,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9f214b0d-d91b-461c-8e0b-bc937539f570")
-	)
-	(junction
-		(at 109.22 120.65)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a0e49cc5-3c6e-473e-b8ee-46be0791fe81")
 	)
 	(junction
 		(at 255.27 128.27)
@@ -5687,16 +5675,6 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 120.65) (xy 111.76 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "269ae696-d247-4d45-99ca-32811149d452")
-	)
-	(wire
-		(pts
 			(xy 205.74 128.27) (xy 222.25 128.27)
 		)
 		(stroke
@@ -6037,16 +6015,6 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 123.19) (xy 105.41 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "636edcf8-2c66-44aa-8179-6ce03c5d4a3e")
-	)
-	(wire
-		(pts
 			(xy 81.28 120.65) (xy 81.28 123.19)
 		)
 		(stroke
@@ -6254,16 +6222,6 @@
 			(type default)
 		)
 		(uuid "8f5cb23c-c6af-48f8-8c72-0e1bd8283a67")
-	)
-	(wire
-		(pts
-			(xy 105.41 119.38) (xy 105.41 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "90008fe7-bb27-40a1-942c-7be9c52a1f24")
 	)
 	(bus
 		(pts
@@ -6547,7 +6505,7 @@
 	)
 	(wire
 		(pts
-			(xy 101.6 120.65) (xy 109.22 120.65)
+			(xy 101.6 120.65) (xy 111.76 120.65)
 		)
 		(stroke
 			(width 0)
@@ -6694,16 +6652,6 @@
 			(type default)
 		)
 		(uuid "d0e88708-ea3c-4e3c-aa74-b8e3d90e0c3d")
-	)
-	(wire
-		(pts
-			(xy 109.22 119.38) (xy 109.22 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d3674922-7ece-44bc-98b9-16c6bad1132a")
 	)
 	(wire
 		(pts
@@ -6997,7 +6945,7 @@
 	)
 	(wire
 		(pts
-			(xy 105.41 123.19) (xy 111.76 123.19)
+			(xy 101.6 123.19) (xy 111.76 123.19)
 		)
 		(stroke
 			(width 0)
@@ -8140,77 +8088,6 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "#PWR010")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:R_CompactV")
-		(at 109.22 116.84 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1b5e2ef6-44b2-4124-88d8-de07e1884cc1")
-		(property "Reference" "R1"
-			(at 108.331 116.84 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "10k"
-			(at 109.22 116.84 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 109.22 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 109.22 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, compact symbol"
-			(at 109.22 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "2af9caca-112e-4dca-ab6a-987c30d015c9")
-		)
-		(pin "1"
-			(uuid "a072be49-8a7b-4aa0-b0e6-17c4a9450e27")
-		)
-		(instances
-			(project ""
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -9724,72 +9601,6 @@
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "C13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:VDD")
-		(at 109.22 114.3 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4d8d5d0e-6898-4542-85c7-d91db1bd3921")
-		(property "Reference" "#PWR04"
-			(at 109.22 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 109.22 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 109.22 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 109.22 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 109.22 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "16e46c35-f947-4440-8a1b-b456d9785165")
-		)
-		(instances
-			(project ""
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -11324,72 +11135,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:VDD")
-		(at 105.41 114.3 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7ad3a805-59a2-4a32-84cb-de23b66c9e2d")
-		(property "Reference" "#PWR064"
-			(at 105.41 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "VDD"
-			(at 105.41 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 105.41 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 105.41 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 105.41 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1d1d469a-9fc4-43ba-bb3e-e08dde553edf")
-		)
-		(instances
-			(project "main_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "#PWR064")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:C_CompactV")
 		(at 81.28 163.83 0)
 		(unit 1)
@@ -11696,7 +11441,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN-10_1.0x2.5mm_P0.5mm"
+		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN-10_1x2.5mm_P0.5mm"
 			(at 44.45 87.63 0)
 			(effects
 				(font
@@ -11764,7 +11509,7 @@
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole")
-		(at 266.7 101.6 0)
+		(at 254 101.6 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
@@ -11773,7 +11518,7 @@
 		(fields_autoplaced yes)
 		(uuid "8c0216ea-a2d8-4e45-b9e1-2d142f392c86")
 		(property "Reference" "H2"
-			(at 269.24 100.3299 0)
+			(at 256.54 100.3299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11782,7 +11527,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 269.24 102.8699 0)
+			(at 256.54 102.8699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11791,7 +11536,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:M2.5_Internal"
-			(at 266.7 101.6 0)
+			(at 254 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11800,7 +11545,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 266.7 101.6 0)
+			(at 254 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11809,7 +11554,7 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
-			(at 266.7 101.6 0)
+			(at 254 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12189,77 +11934,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Bluesat:R_CompactV")
-		(at 105.41 116.84 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9b1ff9e9-a34c-4263-a3f0-72da83071432")
-		(property "Reference" "R12"
-			(at 104.521 116.84 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify bottom)
-			)
-		)
-		(property "Value" "10k"
-			(at 105.41 116.84 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-			(at 105.41 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 105.41 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, compact symbol"
-			(at 105.41 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "d26cbcbe-927b-4129-b517-20fc71aab547")
-		)
-		(pin "1"
-			(uuid "6f225a3a-d78e-4437-b4f5-9a5baf918bf5")
-		)
-		(instances
-			(project "main_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "R12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 54.61 86.36 0)
 		(unit 1)
@@ -12397,7 +12071,7 @@
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole")
-		(at 254 101.6 0)
+		(at 228.6 101.6 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom no)
@@ -12406,7 +12080,7 @@
 		(fields_autoplaced yes)
 		(uuid "a49194fc-9562-48e2-a73e-2787e2a33097")
 		(property "Reference" "H1"
-			(at 256.54 100.3299 0)
+			(at 231.14 100.3299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12415,7 +12089,7 @@
 			)
 		)
 		(property "Value" "MountingHole"
-			(at 256.54 102.8699 0)
+			(at 231.14 102.8699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12424,7 +12098,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:M2.5_Internal"
-			(at 254 101.6 0)
+			(at 228.6 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12433,7 +12107,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 254 101.6 0)
+			(at 228.6 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12442,7 +12116,7 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
-			(at 254 101.6 0)
+			(at 228.6 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13770,8 +13444,8 @@
 		)
 	)
 	(sheet
-		(at 68.58 38.1)
-		(size 12.7 5.08)
+		(at 57.15 31.75)
+		(size 24.13 11.43)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -13786,7 +13460,7 @@
 		)
 		(uuid "b845a4e5-1050-4def-86fb-070c31221b92")
 		(property "Sheetname" "Power"
-			(at 68.58 37.3884 0)
+			(at 57.15 31.0384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13795,7 +13469,7 @@
 			)
 		)
 		(property "Sheetfile" "power.kicad_sch"
-			(at 68.58 43.7646 0)
+			(at 57.15 43.7646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13816,7 +13490,7 @@
 		(instances
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(page "4")
+					(page "5")
 				)
 			)
 		)
@@ -13949,7 +13623,7 @@
 		(instances
 			(project "main_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(page "3")
+					(page "2")
 				)
 			)
 		)
