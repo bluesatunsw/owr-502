@@ -154,7 +154,7 @@ impl Drivebase {
             steppers.write_reg(chan, A1(50.0.rps2())).unwrap();
             steppers.write_reg(chan, V1(50.0.rps())).unwrap();
             steppers.write_reg(chan, AMax(30.0.rps2())).unwrap();
-            steppers.write_reg(chan, VMax(100.0.rps())).unwrap();
+            steppers.write_reg(chan, VMax(50.0.rps())).unwrap();
             steppers.write_reg(chan, DMax(40.0.rps2())).unwrap();
             steppers.write_reg(chan, D1(60.0.rps2())).unwrap();
             steppers.write_reg(chan, VStart(3.0.rps())).unwrap();
@@ -188,7 +188,7 @@ impl Drivebase {
     }
 
     pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), !> {
-        hprintln!("Setting {:?} to {:?}", channel, target);
+        //hprintln!("Setting {:?} to {:?}", channel, target);
         self.steppers
             .write_reg(channel, XTarget(target * GEAR_RATIO))
             .unwrap();

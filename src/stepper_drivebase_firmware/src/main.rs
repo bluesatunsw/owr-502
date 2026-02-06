@@ -208,7 +208,7 @@ fn main() -> ! {
                 0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
                 0x00, 0x00,
             ],
-            name: Vec::from_slice(b"org.bluesat.owr.demo").unwrap(),
+            name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
             software_image_crc: Vec::new(),
             certificate_of_authenticity: Vec::new(),
         },
