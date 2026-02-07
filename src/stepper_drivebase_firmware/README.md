@@ -14,10 +14,25 @@ Otherwise, we have a pretty normal-style flat module hierarchy.
 
 ## Running and debugging the firmware
 
-`openocd -f ../embedded_common/tools/stm32g4x.cfg` and `cargo run --release` if
-you have an ST-LINK connected. It's pretty much necessary to run in release
-mode due to space optimisations being necessary to fit onto the dozens of KB of
-device flash.
+To run the firmware in a debugging/development context with an ST-LINK connected:
+
+```
+openocd -f ../embedded_common/tools/stm32g4x.cfg
+cargo run --release
+```
+
+It's pretty much necessary to run in release mode due to space optimisations
+being necessary to fit onto the dozens of KB of device flash.
+
+To flash the firmware *and have it continue to run after you disconnect the
+debugger* (for integration testing, or the competition (!)), do *not* run
+OpenOCD. Instead, with the debugger connected, run:
+
+```
+cargo flash --release --chip stm32g474rbtx
+```
+
+(You may need to install `cargo flash`.)
 
 Ideally, we would add extra configuration to the different release profiles
 (i.e. `debug` and `release`) so that `debug` actually fits into the flash *and*
