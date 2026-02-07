@@ -1,3 +1,5 @@
+// FIXME!
+
 use cortex_m::asm::delay;
 use stm32g4xx_hal::{
     gpio::{AnyPin, Output, AF5, PB13, PB14, PB15},
@@ -40,10 +42,10 @@ impl EncoderBus {
     /// Helper to add some delay between CS transitions
     fn set_ncs(&mut self, channel: Channel, high: bool) {
         let pin = match channel {
-            Channel::_0 => &mut self.ncs_pins.0,
-            Channel::_1 => &mut self.ncs_pins.1,
-            Channel::_2 => &mut self.ncs_pins.2,
-            Channel::_3 => &mut self.ncs_pins.3,
+            Channel::CH0 => &mut self.ncs_pins.0,
+            Channel::CH1 => &mut self.ncs_pins.1,
+            Channel::CH2 => &mut self.ncs_pins.2,
+            Channel::CH3 => &mut self.ncs_pins.3,
         };
         delay(1024);
         if high {

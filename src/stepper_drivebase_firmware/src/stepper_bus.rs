@@ -69,10 +69,10 @@ impl StepperBus {
     /// Helper to add some delay between CS transitions
     fn set_ncs(&mut self, channel: Channel, high: bool) {
         let pin = match channel {
-            Channel::_0 => &mut self.ncs_pins.0,
-            Channel::_1 => &mut self.ncs_pins.1,
-            Channel::_2 => &mut self.ncs_pins.2,
-            Channel::_3 => &mut self.ncs_pins.3,
+            Channel::CH0 => &mut self.ncs_pins.0,
+            Channel::CH1 => &mut self.ncs_pins.1,
+            Channel::CH2 => &mut self.ncs_pins.2,
+            Channel::CH3 => &mut self.ncs_pins.3,
         };
         delay(1024);
         if high {
@@ -119,7 +119,6 @@ impl StepperBus {
         self.spi_bus.write(&Self::pack_frame(R::ADDRESS, 0))?;
         // embedded_hal gotcha: writes may return BEFORE they've actually written out all data,
         // so we need to flush before setting CS high again.
-        // It is annoying that this line is as verbose as it is...
         <spi::Spi<SPI3, StepperSpiPins> as SpiBus<u8>>::flush(&mut self.spi_bus)?;
         self.set_ncs(channel, true);
 

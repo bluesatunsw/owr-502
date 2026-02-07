@@ -55,18 +55,15 @@ impl Drivebase {
         spi3: pac::SPI3,
         rcc: &mut Rcc,
     ) -> Self {
-        // initialise the MCO (CLK pin)
-        // at 12 MHz
+        // initialise the MCO (CLK pin) at 12 MHz
         let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
-        // Pinout is wrong on Rev. A2 (DIAG and CLK swapped),
-        // so just use the TMC5160's internal clock.
         clk.enable();
 
         Drivebase {
             enn,
             _clk: clk,
             diag,
-            steppers: Self::config_stepeprs(StepperBus::new(
+            steppers: Self::config_steppers(StepperBus::new(
                 spi3,
                 step_spi_pins,
                 step_spi_ncs,
@@ -76,7 +73,9 @@ impl Drivebase {
         }
     }
 
-    pub fn config_stepeprs(mut steppers: StepperBus) -> StepperBus {
+    /// Initialises the TMC5160 steppers with a hard-coded but sensible configuration to run them
+    /// in ramp mode with their on-chip motion profiling.
+    fn config_steppers(mut steppers: StepperBus) -> StepperBus {
         for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_STEPPER_DIR) {
             steppers
                 .write_reg(
@@ -160,7 +159,7 @@ impl Drivebase {
         steppers
     }
 
-    /* TODO: Currently this hangs on write_reg
+    /* TODO: This currently hangs on write_reg().
     pub fn config_encoders(mut encoders: EncoderBus) -> EncoderBus {
         return encoders;
 
@@ -177,23 +176,30 @@ impl Drivebase {
     }
     */
 
+    /// Enables all drivebase channels. Must be called before any actuator commands (e.g.
+    /// `set_position()`) in order to actually cause the motors to move. See also `disable_all()`.
     pub fn enable_all(&mut self) {
         self.enn.set_low();
     }
 
-    fn disable_all(&mut self) {
+    /// Disables all drivebase channels. Actuator commands (e.g. `set_position()`) will have no
+    /// effect until a call to `enable_all()`.
+    #[allow(unused)]
+    pub fn disable_all(&mut self) {
         self.enn.set_high();
     }
 
     pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), !> {
-        //hprintln!("Setting {:?} to {:?}", channel, target);
         self.steppers
             .write_reg(channel, XTarget(target * GEAR_RATIO))
             .unwrap();
         Ok(())
     }
 
-    fn is_busy(&mut self, channel: Channel) -> Result<bool, !> {
+    /// Returns true if the motor is currently actuating, which is determined by comparing the
+    /// TMC5160's ramp profiler target position with its current position.
+    #[allow(unused)]
+    pub fn is_busy(&mut self, channel: Channel) -> Result<bool, !> {
         Ok(self.steppers.read_reg::<XTarget>(channel).unwrap().1 .0
             != self.steppers.read_reg::<XActual>(channel).unwrap().1 .0)
     }

@@ -52,7 +52,7 @@ mod encoder_bus;
 mod stepper_bus;
 mod tmc_registers;
 
-// NOTE: make sure these are configured to be the right values
+// Cyphal constants
 const NODE_ID: u8 = 6;
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 8;
@@ -61,14 +61,16 @@ const CYPHAL_NUM_SERVICES: usize = 8;
 const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
 const TID_TIMEOUT_US: u32 = 100_000;
 
-// Message IDs
+// Cyphal message-IDs -- as per README
 const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
 const SETPOINT_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3010);
 const SETPOINT_MESSAGE_CHAN_2_ID: SubjectId = SubjectId::from_truncating(3020);
 const SETPOINT_MESSAGE_CHAN_3_ID: SubjectId = SubjectId::from_truncating(3030);
 
+// ARGB LED constants
 const RED: Colour = Colour { r: 255, g: 0, b: 0 };
 const BLUE: Colour = Colour { r: 0, g: 0, b: 255 };
+const DEFAULT_BRIGHTNESS: u8 = 15;
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
@@ -82,7 +84,11 @@ static HEAP: Heap = Heap::empty();
 
 fn initialise_allocator() {
     use core::mem::MaybeUninit;
-    const HEAP_SIZE: usize = 23000;
+    // This HEAP_SIZE is about as small as we can get without canadensis crashing.
+    // (luckily we have a decadent 128 KiB on the G474)
+    // NOTE: this *might* still crash if large transfers are ever reassembled, although the
+    // Planar types we're using at the moment should be fine
+    const HEAP_SIZE: usize = 0x6000; // 24 KiB
     static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
     unsafe { HEAP.init(&raw mut HEAP_MEM as usize, HEAP_SIZE) }
 }
@@ -126,7 +132,8 @@ fn main() -> ! {
     // Set PB8 to output mode to limit power consumption on reset
     gpiob.pb8.into_push_pull_output();
 
-    let mut argb = argb::Controller::new(dp.USART1, gpiob.pb6.into_alternate(), 15, &mut rcc);
+    // Initialise various device drivers.
+    let mut argb = argb::Controller::new(dp.USART1, gpiob.pb6.into_alternate(), DEFAULT_BRIGHTNESS, &mut rcc);
     let clock = clock::MicrosecondClock::new(dp.TIM2, &mut rcc);
     let can = CanDriver::new(
         dp.FDCAN1,
@@ -162,6 +169,8 @@ fn main() -> ! {
                 .into_push_pull_output_in_state(PinState::High)
                 .into(),
         ),
+        // Currently, the encoder does not work.
+        // TODO: fix encoder, uncomment this when working
         /*
         (
             gpiob.pb13.into_alternate(),
@@ -192,6 +201,7 @@ fn main() -> ! {
         &mut rcc,
     );
 
+    // Initialise Cyphal (canadensis) node.
     let id = CanNodeId::from_truncating(NODE_ID);
     let transmitter = CanTransmitter::new(Mtu::CanFd64);
     let receiver = CanReceiver::new(id);
@@ -205,17 +215,21 @@ fn main() -> ! {
         CYPHAL_NUM_SERVICES,
     > = CoreNode::new(clock, id, transmitter, receiver, can);
 
+    // NOTE: node initialisation is a non-recoverable error and should only happen if we run out of
+    // memory or the hardware is completely broken, hence all the unwrapping.
     let mut node = BasicNode::new(
         core_node,
         GetInfoResponse {
             protocol_version: Version { major: 1, minor: 0 },
+            // Hardware version refers to Rev. B2. Hopefully we can agree on a better versioning
+            // system in the future.
             hardware_version: Version { major: 1, minor: 1 },
-            software_version: Version { major: 0, minor: 2 },
+            software_version: Version { major: 1, minor: 0 },
             software_vcs_revision_id: 0,
             unique_id: [
-                // this is just garbage data for now
-                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
-                0x00, 0x00,
+                // TODO: Replace this with the ID fetched from the chip
+                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE,
+                0x78, 0x12, 0x99, 0x10, 0x00, 0x03, 0x00, 0x00,
             ],
             name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
             software_image_crc: Vec::new(),
@@ -267,6 +281,7 @@ fn main() -> ! {
             node.run_per_second_tasks().unwrap();
         }
 
+        // blink the ARGB LEDs
         if node
             .clock()
             .advance_if_elapsed(&mut tim_argb, 200_000.micros())
@@ -292,10 +307,10 @@ impl<T: Transport> TransferHandler<T> for CommsHandler {
         transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool {
         let op = match transfer.header.subject {
-            SETPOINT_MESSAGE_CHAN_0_ID => Some(Channel::_0),
-            SETPOINT_MESSAGE_CHAN_1_ID => Some(Channel::_1),
-            SETPOINT_MESSAGE_CHAN_2_ID => Some(Channel::_2),
-            SETPOINT_MESSAGE_CHAN_3_ID => Some(Channel::_3),
+            SETPOINT_MESSAGE_CHAN_0_ID => Some(Channel::CH0),
+            SETPOINT_MESSAGE_CHAN_1_ID => Some(Channel::CH1),
+            SETPOINT_MESSAGE_CHAN_2_ID => Some(Channel::CH2),
+            SETPOINT_MESSAGE_CHAN_3_ID => Some(Channel::CH3),
             _ => None,
         };
         if let Some(chan) = op {
