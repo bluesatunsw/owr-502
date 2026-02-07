@@ -1,4 +1,3 @@
-use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal as hal;
 
 use hal::{
@@ -22,9 +21,6 @@ use crate::stepper_bus::{StepperBus, StepperNcsPins, StepperSpiPins};
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: f32 = 60.;
-/// The number of stepper motors that the board is actually controlling, to avoid dealing with
-/// motors that don't exist.
-pub const NUM_STEPPERS: usize = 4;
 /// Inverts the position convention for the motors.
 const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
 /// Inverts the position convention for the encoders.
@@ -43,7 +39,7 @@ pub struct Drivebase {
     #[allow(dead_code)]
     diag: DiagPin,
     steppers: StepperBus,
-    encoders: EncoderBus,
+    //encoders: EncoderBus,
 }
 
 impl Drivebase {
@@ -53,9 +49,9 @@ impl Drivebase {
         diag: DiagPin,
         step_spi_pins: StepperSpiPins,
         step_spi_ncs: StepperNcsPins,
-        enc_spi_pins: EncoderSpiPins,
-        enc_spi_ncs: EncoderNcsPins,
-        spi2: pac::SPI2,
+        //enc_spi_pins: EncoderSpiPins,
+        //enc_spi_ncs: EncoderNcsPins,
+        //spi2: pac::SPI2,
         spi3: pac::SPI3,
         rcc: &mut Rcc,
     ) -> Self {
@@ -76,7 +72,7 @@ impl Drivebase {
                 step_spi_ncs,
                 rcc,
             )),
-            encoders: Self::config_encoders(EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc)),
+            //encoders: Self::config_encoders(EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc)),
         }
     }
 
@@ -164,6 +160,7 @@ impl Drivebase {
         steppers
     }
 
+    /* TODO: Currently this hangs on write_reg
     pub fn config_encoders(mut encoders: EncoderBus) -> EncoderBus {
         return encoders;
 
@@ -178,6 +175,7 @@ impl Drivebase {
 
         encoders
     }
+    */
 
     pub fn enable_all(&mut self) {
         self.enn.set_low();

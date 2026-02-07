@@ -5,9 +5,16 @@
 #![no_main]
 
 use canadensis::{
-    Node, TransferHandler, core::{SubjectId, time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport}, encoding::Deserialize, node::{
-        BasicNode, CoreNode, data_types::{GetInfoResponse, Version}
-    }, requester::TransferIdFixedMap
+    core::{
+        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, SubjectId,
+    },
+    encoding::Deserialize,
+    node::{
+        data_types::{GetInfoResponse, Version},
+        BasicNode, CoreNode,
+    },
+    requester::TransferIdFixedMap,
+    Node, TransferHandler,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use canadensis_data_types::reg::udral::physics::kinematics::rotation::planar_0_1::Planar;
@@ -155,6 +162,7 @@ fn main() -> ! {
                 .into_push_pull_output_in_state(PinState::High)
                 .into(),
         ),
+        /*
         (
             gpiob.pb13.into_alternate(),
             gpiob.pb14.into_alternate(),
@@ -179,6 +187,7 @@ fn main() -> ! {
                 .into(),
         ),
         dp.SPI2,
+        */
         dp.SPI3,
         &mut rcc,
     );
