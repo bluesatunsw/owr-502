@@ -1,0 +1,47 @@
+[package]
+authors = ["Jonah Hopkin <jonahhopkin@gmail.com>", "Evan LaFontaine", "Aavin Fernando", "Jethro Rosettenstein"]
+edition = "2018"
+readme = "README.md"
+name = "stepper_drivebase_firmware"
+version = "0.1.0"
+
+[dependencies]
+cortex-m-rt = "0.7.5"
+cortex-m-semihosting = "0.5.0"
+panic-semihosting = "0.6.0" # NOTE: change to different panic once not in development environment
+canadensis = "0.5.0"
+canadensis_data_types = "0.5.0"
+canadensis_filter_config = "0.5.0"
+heapless = "0.9.1"
+embedded-alloc = "0.6.0"
+embedded-io = "0.6.1"
+embedded_common = { path = "../embedded_common" }
+bitfield-struct = "0.12.1"
+
+# This Bluesat-custom HAL repo has extra UART and QSPI functionality. We would
+# like to clean this up and create a PR to add these to actual G4 HAL library, but this
+# is pretty low priority.
+[dependencies.stm32g4xx-hal]
+version = "0.0.2"
+git = "https://github.com/bluesatunsw/stm32g4xx-hal"
+branch = "qspi"
+features = ["stm32g474", "rt", "can"]
+
+[dependencies.canadensis_can]
+version = "0.5.1"
+features = ["can-fd"]
+
+[dependencies.cortex-m]
+version = "0.7.7"
+features = ["critical-section-single-core"]
+
+# allows use of `cargo fix`
+[[bin]]
+name = "stepper_drivebase_firmware"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
