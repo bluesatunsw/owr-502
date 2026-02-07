@@ -4,8 +4,10 @@
 # Run `./init.bash owr_update` to run rosdep
 function owr_run_subshells {
     if [ $SHLVL -le 10 ]; then
-        /bin/bash -c "./init.bash owr_run_subshells"
+        /bin/bash -c "$0 owr_run_subshells"
         /bin/bash; echo "WARN: Exited subshell $SHLVL"
+    else 
+        echo "Initialized!"
     fi
 }
 
