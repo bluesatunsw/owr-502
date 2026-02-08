@@ -1,31 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
-    <xacro:macro name="bg431_motor" params="name device_index ratio use_auxilary">
-        <ros2_control name="${name}_motor" type="actuator">
+    <xacro:macro name="motor_vesc" params="name subject_id">
+        <ros2_control name="$motor_vesc_{name}" type="actuator">
             <hardware>
                 <plugin>bg431esc1_actuator::Bg431esc1Actuator</plugin>
-                <param name="device_index">${device_index}</param>
-                <param name="ratio">${ratio}</param>
-                <param name="use_auxilary">${use_auxilary}</param>
+                <param name="subject_id">${subject_id}</param>
             </hardware>
             <joint name="${name}">
-                <command_interface name="position"/>
                 <command_interface name="velocity"/>
-                <command_interface name="torque"/>
-
-                <state_interface name="position"/>
-                <state_interface name="velocity"/>
-
-                <state_interface name="primary_position"/>
-                <state_interface name="primary_velocity"/>
-                <state_interface name="auxilary_position"/>
-                <state_interface name="auxilary_velocity"/>
-
-                <state_interface name="applied_voltage"/>
-                <state_interface name="stator_current"/>
-                <state_interface name="supply_current"/>
-                <state_interface name="bus_voltage"/>
-                <state_interface name="driver_temperature"/>
             </joint>
         </ros2_control>
     </xacro:macro>

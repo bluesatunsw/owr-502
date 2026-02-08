@@ -24,7 +24,6 @@ def generate_launch_description():
                     PathJoinSubstitution(
                         [FindPackageShare("rover"), "description", "robot.urdf.xacro"]
                     ),
-                    " is_simulation:=true",
                 ]
             ),
             value_type=str,

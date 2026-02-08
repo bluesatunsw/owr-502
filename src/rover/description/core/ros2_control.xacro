@@ -1,23 +1,29 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Specify the joints that are in a single swerve module, limits are specified in joint declaration! -->
     <xacro:if value="$(arg is_simulation)">
         <xacro:macro name="ros2control_swerve_module_iface" params="name drive_id turn_id">
             <joint name="db_${name}_fork_tyre_joint">
                 <command_interface name="velocity">
-                    <param name="min">-0.3</param>
-                    <param name="max">0.3</param>
+                    <limits enable="true"/>
                 </command_interface>
-                <state_interface name="position"/>
-                <state_interface name="velocity"/>
+        
+                <xacro:if value="$(arg is_simulation)">
+                    <!-- TODO: currently our hw interface doesn't have state publishing! -->
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </xacro:if>
             </joint>
             <joint name="db_${name}_smount_fork_joint">
                 <command_interface name="position">
                     <limits enable="true"/>
-                    <param name="min">-1.6</param>
-                    <param name="max">1.6</param>
                 </command_interface>
-                <state_interface name="position"/>
-                <state_interface name="velocity"/>
+        
+                <xacro:if value="$(arg is_simulation)">
+                    <!-- TODO: currently our hw interface doesn't have state publishing! -->
+                    <state_interface name="position"/>
+                    <state_interface name="velocity"/>
+                </xacro:if>
             </joint>
         </xacro:macro>
 
@@ -27,6 +33,8 @@
             </joint>
         </xacro:macro>
     </xacro:if>
+
+
     <xacro:unless value="$(arg is_simulation)">
         <xacro:macro name="ros2control_swerve_module_iface" params="name drive_id turn_id">
             <!-- TODO: set ratios correctly 
@@ -45,14 +53,11 @@
             </hardware>
         </xacro:if>
 
-        <!-- Drivebase drive motors -->
-        <xacro:ros2control_swerve_module_iface name="fl" drive_id="1" turn_id="2"/>
-        <xacro:ros2control_swerve_module_iface name="fr" drive_id="3" turn_id="4"/>
-        <xacro:ros2control_swerve_module_iface name="bl" drive_id="5" turn_id="6"/>
-        <xacro:ros2control_swerve_module_iface name="br" drive_id="7" turn_id="8"/>
+        <xacro:ros2control_swerve_module_iface name="fl" drive_id="3050" turn_id="3000"/>
+        <xacro:ros2control_swerve_module_iface name="fr" drive_id="3060" turn_id="3010"/>
+        <xacro:ros2control_swerve_module_iface name="bl" drive_id="3070" turn_id="3020"/>
+        <xacro:ros2control_swerve_module_iface name="br" drive_id="3080" turn_id="3030"/>
         <xacro:ros2control_drivebase_suspension_pivot side="l"/>
         <xacro:ros2control_drivebase_suspension_pivot side="r"/>
-
-        <!-- TODO: Drivebase turn motors -->
     </ros2_control>
 </robot>
