@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Specify the joints that are in a single swerve module, limits are specified in joint declaration! -->
+    <xacro:macro name="ros2control_swerve_drive_iface" params="name subject_id">
+        <joint name="db_${name}_fork_tyre_joint">
+            <command_interface name="velocity">
+                <limits enable="true"/>
+                <param name="subject_id">${subject_id}</param>
+            </command_interface>
+        </joint>
+
+    </xacro:macro>
+    
+
+    <xacro:macro name="ros2control_swerve_turn_iface" params="name subject_id">
+        <joint name="db_${name}_smount_fork_joint">
+            <command_interface name="position">
+                <limits enable="true"/>
+            </command_interface>
+        </joint>
+    </xacro:macro>
+
+
+    <xacro:macro name="ros2control_drivebase_suspension_pivot" params="side">
+        <joint name="${side}db_pivot_joint">
+            <state_interface name="position"/>
+        </joint>
+    </xacro:macro>
+
+
+    <ros2_control name="VESCControlSystem" type="system">
+        <hardware>
+            <plugin>cyphal_vesc_driver/CyphalVescDriver</plugin>
+        </hardware>
+
+        <xacro:ros2control_swerve_drive_iface name="fl" subject_id="3050"/>
+        <xacro:ros2control_swerve_drive_iface name="fr" subject_id="3060"/>
+        <xacro:ros2control_swerve_drive_iface name="bl" subject_id="3070"/>
+        <xacro:ros2control_swerve_drive_iface name="br" subject_id="3080"/>
+    </ros2_control>
+    
+    <ros2_control name="MockComponents" type="system">
+        <hardware>
+            <plugin>mock_components/GenericSystem</plugin>
+        </hardware>
+
+        <xacro:ros2control_swerve_turn_iface name="fl" subject_id="3000"/>
+        <xacro:ros2control_swerve_turn_iface name="fr" subject_id="3010"/>
+        <xacro:ros2control_swerve_turn_iface name="bl" subject_id="3020"/>
+        <xacro:ros2control_swerve_turn_iface name="br" subject_id="3030"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="l"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="r"/>
+    </ros2_control>
+</robot>

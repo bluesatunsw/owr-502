@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- Specify the joints that are in a single swerve module, limits are specified in joint declaration! -->
+    <xacro:macro name="ros2control_swerve_module_iface" params="name">
+        <!-- driving joint -->
+        <joint name="db_${name}_fork_tyre_joint">
+            <command_interface name="velocity">
+                <limits enable="true"/>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <!-- steering joint -->
+        <joint name="db_${name}_smount_fork_joint">
+            <command_interface name="position">
+                <limits enable="true"/>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="ros2control_drivebase_suspension_pivot" params="side">
+        <joint name="${side}db_pivot_joint">
+            <state_interface name="position"/>
+        </joint>
+    </xacro:macro>
+
+
+    <ros2_control name="DrivebaseControlSystem" type="system">
+        <hardware>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+
+        <xacro:ros2control_swerve_module_iface name="fl"/>
+        <xacro:ros2control_swerve_module_iface name="fr"/>
+        <xacro:ros2control_swerve_module_iface name="bl"/>
+        <xacro:ros2control_swerve_module_iface name="br"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="l"/>
+        <xacro:ros2control_drivebase_suspension_pivot side="r"/>
+    </ros2_control>
+</robot>

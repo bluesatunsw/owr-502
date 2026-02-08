@@ -38,4 +38,13 @@
 
 
     <xacro:include filename="drivebase.xacro" />
+
+
+    <xacro:if value="$(arg is_simulation)">
+        <xacro:include filename="ros2control_gazebo.xacro" />
+    </xacro:if>
+    
+    <xacro:unless value="$(arg is_simulation)">
+        <xacro:include filename="ros2control.xacro" />
+    </xacro:unless>
 </robot>

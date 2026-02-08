@@ -4,10 +4,6 @@
 
     <!-- DISABLED (false) / ENABLED (true) -->
     <!-- core subsystem can't be disabled! -->
-    <xacro:arg name="state_post_landing" default="false"/>
-    <xacro:arg name="state_space_resources" default="false"/>
-    <xacro:arg name="state_excavation_construction" default="false"/>
-    <xacro:arg name="state_mapping_autonomous" default="false"/>
 
     <!-- utilities -->
     <xacro:include filename="utils/inertial_macros.xacro" />
