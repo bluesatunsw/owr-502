@@ -1,12 +1,6 @@
 from launch import LaunchDescription
-from ament_index_python.packages import get_package_share_directory
 import launch_ros.actions
 from launch.substitutions import LaunchConfiguration
-import os
-import yaml
-from launch.substitutions import EnvironmentVariable
-import pathlib
-import launch.actions
 from launch.actions import DeclareLaunchArgument
 
 
@@ -27,7 +21,7 @@ def generate_launch_description():
                 parameters=[
                     {"video_device": camera_param},
                     {"pixel_format": "mjpeg2rgb"},
-                    {"frame_id": "base_link"},  # TO CHANGE
+                    {"frame_id": "base_link"},  # FIXME This currently attaches every camera to the same spot on the rover 
                     {
                         "camera_info_url": "package://rover/config/DECXIN_camera/ost.yaml"
                     },

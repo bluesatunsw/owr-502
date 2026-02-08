@@ -14,16 +14,14 @@
     <xacro:include filename="utils/materials.xacro" />
     
 
+    <!-- simulation specific global stuff -->
     <xacro:if value="$(arg is_simulation)">
         <xacro:include filename="utils/gazebo_plugins.xacro" />
     </xacro:if>
+
     <xacro:include filename="core/core.xacro" />
 
 
     <!--<xacro:include filename="cameras/depth_cams.xacro" /> -->
 
-    <!-- simulation specific global stuff -->
-    <xacro:if value="$(arg is_simulation)">
-        <xacro:include filename="utils/gazebo_plugins.xacro" />
-    </xacro:if>
 </robot>

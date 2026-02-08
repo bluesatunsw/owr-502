@@ -7,8 +7,8 @@ swerve_drive_base_controller:
     modules:
       FL: {
         translation: [0.55, 0.39],
-        drive_joint: db_fl_fork_tyre_joint,
-        steering_joint: db_fl_smount_fork_joint
+        drive_joint: "db_fl_fork_tyre_joint",
+        steering_joint: "db_fl_smount_fork_joint"
       }
       FR: {
         translation: [0.55, -0.39],

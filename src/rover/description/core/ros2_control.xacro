@@ -4,16 +4,17 @@
         <xacro:macro name="ros2control_swerve_module_iface" params="name drive_id turn_id">
             <joint name="db_${name}_fork_tyre_joint">
                 <command_interface name="velocity">
-                    <param name="min">-2</param>
-                    <param name="max">2</param>
+                    <param name="min">-0.3</param>
+                    <param name="max">0.3</param>
                 </command_interface>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
             </joint>
             <joint name="db_${name}_smount_fork_joint">
                 <command_interface name="position">
-                    <param name="min">-2</param>
-                    <param name="max">2</param>
+                    <limits enable="true"/>
+                    <param name="min">-1.6</param>
+                    <param name="max">1.6</param>
                 </command_interface>
                 <state_interface name="position"/>
                 <state_interface name="velocity"/>
@@ -54,12 +55,4 @@
 
         <!-- TODO: Drivebase turn motors -->
     </ros2_control>
-
-    <xacro:if value="$(arg is_simulation)">
-        <gazebo>
-            <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
-                <parameters>$(find rover)/config/drivebase/swerve_drive_controller.yaml</parameters>
-            </plugin>
-        </gazebo>
-    </xacro:if>
 </robot>

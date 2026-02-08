@@ -4,7 +4,7 @@ from ament_index_python.packages import get_package_share_directory
 
 from launch_ros.descriptions import ParameterValue
 from launch import LaunchDescription
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import Command
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 

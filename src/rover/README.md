@@ -21,8 +21,8 @@ Thus all 'helper' files used across multiple subfiles have been included directl
     - Add a RobotModel, set `Description Topic` to `/robot_description`
     - (Optional) add a TF
 
-- `rover.launch.py`
-  - This will launch the **entire rover** (with a swerve drivebase)
+- `simulation.launch.py`
+  - This will launch a simulation of the **entire rover** (with a swerve drivebase)
   - It will launch a gazebosim window with the simulated 'moon' environment
   - You may use rviz2 to view joint states etc..
 
