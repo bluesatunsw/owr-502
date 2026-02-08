@@ -66,8 +66,7 @@ if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
   set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND FALSE)
   ament_lint_auto_find_test_dependencies()
 endif()
 

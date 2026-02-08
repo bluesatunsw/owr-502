@@ -1,7 +1,6 @@
 #include "swerve_drive_controller/swerve_drive_controller.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "lifecycle_msgs/msg/state.hpp"
-#include "swerve_drive_controller_parameters.hpp"
 #include <Eigen/src/Core/Matrix.h>
 #include <Eigen/src/Core/util/Constants.h>
 #include <complex>
@@ -40,6 +39,10 @@ controller_interface::return_type SwerveDriveController::update(
   const rclcpp::Time & time,
   const rclcpp::Duration & delta_time)
 {
+  // Unused variables
+  (void)(time);
+  (void)(delta_time);
+
   auto logger = get_node()->get_logger();
 
   if (get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE) {
@@ -47,18 +50,17 @@ controller_interface::return_type SwerveDriveController::update(
     return controller_interface::return_type::OK;
   }
 
-  // TODO: Get current joint states (for odom / optimization)
+  // TODO: Get current joint states (for odom & optimization)
 
   // TODO: Calculate and publish Odometry
 
   // Get latest twistStamped -> run inverse kinematics -> set desired states
-  std::shared_ptr<TwistStamped> last_command_msg;
-  received_velocity_msg_ptr_.get(last_command_msg);
+  std::optional<TwistStamped> last_command_msg = received_velocity_msg_.try_get();
 
   // TODO: Timeout logic
 
-  if (last_command_msg == nullptr) {
-    RCLCPP_ERROR(logger, "Velocity message received was a nullptr.");
+  if (!last_command_msg.has_value()) {
+    RCLCPP_ERROR(logger, "Velocity message received was empty.");
     return controller_interface::return_type::ERROR;
   }
 
@@ -113,23 +115,21 @@ CallbackReturn SwerveDriveController::on_configure(const rclcpp_lifecycle::State
 
   RCLCPP_INFO(logger, "%d Modules have been configured for kinematics", count);
 
-  const TwistStamped empty_twist;
-  received_velocity_msg_ptr_.set(std::make_shared<TwistStamped>(empty_twist));
-
-
-  velocity_command_subscriber_ = get_node()->create_subscription<TwistStamped>(DEFAULT_COMMAND_TOPIC, rclcpp::SystemDefaultsQoS(),
-    [this](const std::shared_ptr<TwistStamped> msg) -> void {
+  velocity_command_subscriber_ =
+    get_node()->create_subscription<TwistStamped>(DEFAULT_COMMAND_TOPIC,
+      rclcpp::SystemDefaultsQoS(),
+      [this](const std::shared_ptr<TwistStamped> msg) -> void {
       // TODO: if (!subscriber_is_active_) {
       //  RCLCPP_WARN(get_node()->get_logger(), "Can't accept new
       //  commands. subscriber is inactive"); return;
-      // }      
-      if ((msg->header.stamp.sec == 0) && (msg->header.stamp.nanosec == 0)) {
-        RCLCPP_WARN_ONCE(get_node()->get_logger(),
+      // }
+        if ((msg->header.stamp.sec == 0) && (msg->header.stamp.nanosec == 0)) {
+          RCLCPP_WARN_ONCE(get_node()->get_logger(),
             "Received TwistStamped with zero timestamp, setting it to current"
           " time, this message will only be shown once");
-        msg->header.stamp = get_node()->get_clock()->now();
-      }
-      received_velocity_msg_ptr_.set(std::move(msg));
+          msg->header.stamp = get_node()->get_clock()->now();
+        }
+        received_velocity_msg_.set(*msg);
     });
 
   return CallbackReturn::SUCCESS;
@@ -152,6 +152,10 @@ InterfaceConfiguration SwerveDriveController::command_interface_configuration() 
 
 InterfaceConfiguration SwerveDriveController::state_interface_configuration() const
 {
+  return {controller_interface::interface_configuration_type::NONE, {}};
+
+
+  /* Disable closed loop for SAR
   InterfaceConfiguration state_ifaces_config;
   state_ifaces_config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
   state_ifaces_config.names.reserve(params_.module_names.size());
@@ -163,6 +167,7 @@ InterfaceConfiguration SwerveDriveController::state_interface_configuration() co
   }
 
   return state_ifaces_config;
+  */
 }
 
 // TODO:
