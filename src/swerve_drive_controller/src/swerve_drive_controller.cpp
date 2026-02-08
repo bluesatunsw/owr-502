@@ -61,7 +61,7 @@ controller_interface::return_type SwerveDriveController::update(
 
   if (!last_command_msg.has_value()) {
     RCLCPP_ERROR(logger, "Velocity message received was empty.");
-    return controller_interface::return_type::ERROR;
+    return controller_interface::return_type::OK;
   }
 
   const auto chassis_speeds = Eigen::Vector3d{
@@ -79,14 +79,19 @@ controller_interface::return_type SwerveDriveController::update(
   // TODO: Swerve optimization
   // TODO: also optimize for reachability
 
-  // TODO: Angle limiting
 
   // FIXME: check if the order of command_interfaces_ is fixed to be the same as the request from
   // command_interface_configuration
   using namespace std::ranges;
   for (const auto & [state, idx] : views::zip(moduleStateReqs, views::iota(std::size_t{0}))) {
-    const bool val_set_err = command_interfaces_[idx * 2].set_value(std::abs(state)) &&
-      command_interfaces_[idx * 2 + 1].set_value(std::arg(state));
+    // TODO: Proper Angle limiting, this flip-if-over-90-degrees from forward code should be removed!
+    double flip = state.real() < 0 ? -1 : 1;
+    auto velocity = std::abs(state) * flip;
+    auto angle = std::arg(state * flip);
+
+    // abs -> magnitude of complex velocity, arg -> angle of velocity
+    const bool val_set_err = command_interfaces_[idx * 2].set_value(velocity) &&
+      command_interfaces_[idx * 2 + 1].set_value(angle);
 
     RCLCPP_ERROR_EXPRESSION(logger, !val_set_err,
                             "Setting values to command interfaces has failed! "
