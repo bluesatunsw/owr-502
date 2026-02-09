@@ -1,0 +1,13 @@
+#!/bin/bash
+
+VELOCITY=${1:-0.0}
+# FL,FR,BL,BR -> 3050,3060,3070,3080
+TARGET=${2:-3000}
+
+
+echo $POSITION
+echo $VELOCITY
+
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-vesc', 8),50)" \
+      pub --count 1 ${TARGET}:reg.udral.service.actuator.common.sp.Scalar.0.1\
+      "{value: $VELOCITY }"
