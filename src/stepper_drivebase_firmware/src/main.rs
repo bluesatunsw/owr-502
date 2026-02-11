@@ -5,20 +5,17 @@
 #![no_main]
 
 use canadensis::{
-    core::{
-        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, SubjectId,
-    },
-    encoding::Deserialize,
-    node::{
-        data_types::{GetInfoResponse, Version},
-        BasicNode, CoreNode,
-    },
-    requester::TransferIdFixedMap,
-    Node, TransferHandler,
+    Node, TransferHandler, core::{
+        SubjectId, time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport
+    }, encoding::{DataType, Deserialize}, node::{
+        BasicNode, CoreNode, data_types::{GetInfoResponse, Version}
+    }, requester::TransferIdFixedMap
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use canadensis_data_types::reg::udral::physics::kinematics::rotation::planar_0_1::Planar;
-use core::panic::PanicInfo;
+use canadensis_data_types::{
+    reg::udral::physics::kinematics::rotation::planar_0_1::Planar, uavcan::node::health_1_0::Health,
+};
+use core::{hint::unreachable_unchecked, panic::PanicInfo};
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
@@ -35,7 +32,13 @@ use stm32g4xx_hal::{
     rcc::{
         Config, FdCanClockSource, PllConfig, PllMDiv, PllNMul, PllQDiv, PllRDiv, PllSrc, RccExt,
     },
+    stm32g4,
     time::{ExtU32, RateExtU32},
+};
+
+use canadensis_data_types::uavcan::node::execute_command_1_3::SERVICE as EXECUTE_COMMAND_SERVICE;
+use canadensis_data_types::uavcan::node::execute_command_1_3::{
+    ExecuteCommandRequest, ExecuteCommandResponse,
 };
 
 use crate::{
@@ -133,7 +136,12 @@ fn main() -> ! {
     gpiob.pb8.into_push_pull_output();
 
     // Initialise various device drivers.
-    let mut argb = argb::Controller::new(dp.USART1, gpiob.pb6.into_alternate(), DEFAULT_BRIGHTNESS, &mut rcc);
+    let mut argb = argb::Controller::new(
+        dp.USART1,
+        gpiob.pb6.into_alternate(),
+        DEFAULT_BRIGHTNESS,
+        &mut rcc,
+    );
     let clock = clock::MicrosecondClock::new(dp.TIM2, &mut rcc);
     let can = CanDriver::new(
         dp.FDCAN1,
@@ -228,8 +236,8 @@ fn main() -> ! {
             software_vcs_revision_id: 0,
             unique_id: [
                 // TODO: Replace this with the ID fetched from the chip
-                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE,
-                0x78, 0x12, 0x99, 0x10, 0x00, 0x03, 0x00, 0x00,
+                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
+                0x00, 0x00,
             ],
             name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
             software_image_crc: Vec::new(),
@@ -263,6 +271,13 @@ fn main() -> ! {
     )
     .unwrap();
 
+    node.subscribe_request(
+        EXECUTE_COMMAND_SERVICE,
+        ExecuteCommandRequest::EXTENT_BYTES.unwrap() as usize,
+        1000.millis(),
+    )
+    .unwrap();
+
     drivebase.enable_all();
     let mut comms_handler = CommsHandler { drivebase };
 
@@ -273,6 +288,16 @@ fn main() -> ! {
 
     loop {
         node.receive(&mut comms_handler).unwrap();
+
+        node.set_health(if comms_handler.drivebase.healthy() {
+            Health {
+                value: Health::NOMINAL,
+            }
+        } else {
+            Health {
+                value: Health::ADVISORY,
+            }
+        });
 
         if node
             .clock()
@@ -297,7 +322,7 @@ fn main() -> ! {
 }
 
 struct CommsHandler {
-    drivebase: Drivebase,
+    pub drivebase: Drivebase,
 }
 
 impl<T: Transport> TransferHandler<T> for CommsHandler {
@@ -322,5 +347,43 @@ impl<T: Transport> TransferHandler<T> for CommsHandler {
         } else {
             false
         }
+    }
+
+    fn handle_request<N: Node<Transport = T>>(
+        &mut self,
+        node: &mut N,
+        token: canadensis::ResponseToken<T>,
+        transfer: &canadensis::core::transfer::ServiceTransfer<alloc::vec::Vec<u8>, T>,
+    ) -> bool {
+        if transfer.header.service != EXECUTE_COMMAND_SERVICE {
+            return false;
+        }
+
+        let req =
+            ExecuteCommandRequest::deserialize_from_bytes(transfer.payload.as_slice()).unwrap();
+        match req.command {
+            ExecuteCommandRequest::COMMAND_RESTART => {
+                unsafe {
+                    stm32g4::stm32g474::CorePeripherals::steal()
+                        .SCB
+                        .aircr.write(0x05FA_0004);
+                };
+                // SAFETY: The above operation will instantly reset the  MCU
+                unsafe { unreachable_unchecked() }
+            }
+            _ => {
+                node.send_response(
+                    token,
+                    1000.millis(),
+                    &ExecuteCommandResponse {
+                        status: ExecuteCommandResponse::STATUS_BAD_COMMAND,
+                        output: Vec::new(),
+                    },
+                )
+                .unwrap();
+            }
+        }
+
+        true
     }
 }

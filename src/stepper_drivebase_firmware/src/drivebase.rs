@@ -189,11 +189,17 @@ impl Drivebase {
         self.enn.set_high();
     }
 
-    pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), !> {
+    pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), ()> {
         self.steppers
             .write_reg(channel, XTarget(target * GEAR_RATIO))
             .unwrap();
         Ok(())
+    }
+
+    pub fn healthy(&mut self) -> bool {
+        ALL_CHANNELS
+            .iter()
+            .all(|c| self.steppers.read_reg::<GStat>(*c).unwrap().0.ok())
     }
 
     /// Returns true if the motor is currently actuating, which is determined by comparing the
