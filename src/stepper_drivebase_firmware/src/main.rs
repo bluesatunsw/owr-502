@@ -5,17 +5,22 @@
 #![no_main]
 
 use canadensis::{
-    Node, TransferHandler, core::{
-        SubjectId, time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport
-    }, encoding::{DataType, Deserialize}, node::{
-        BasicNode, CoreNode, data_types::{GetInfoResponse, Version}
-    }, requester::TransferIdFixedMap
+    core::{
+        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, SubjectId,
+    },
+    encoding::{DataType, Deserialize},
+    node::{
+        data_types::{GetInfoResponse, Version},
+        BasicNode, CoreNode,
+    },
+    requester::TransferIdFixedMap,
+    Node, TransferHandler,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use canadensis_data_types::{
     reg::udral::physics::kinematics::rotation::planar_0_1::Planar, uavcan::node::health_1_0::Health,
 };
-use core::{hint::unreachable_unchecked, panic::PanicInfo};
+use core::{hint::unreachable_unchecked, intrinsics::breakpoint, panic::PanicInfo};
 use cortex_m_rt::entry;
 use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
@@ -78,6 +83,7 @@ const DEFAULT_BRIGHTNESS: u8 = 15;
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
     hprintln!("{}", _info.message());
+    breakpoint();
     loop {}
 }
 
@@ -289,15 +295,16 @@ fn main() -> ! {
     loop {
         node.receive(&mut comms_handler).unwrap();
 
-        node.set_health(if comms_handler.drivebase.healthy() {
-            Health {
-                value: Health::NOMINAL,
-            }
-        } else {
-            Health {
+        if let Some(status) = comms_handler.drivebase.health() {
+            node.set_health(Health {
                 value: Health::ADVISORY,
-            }
-        });
+            });
+            node.set_status_code(status);
+        } else {
+            node.set_health(Health {
+                value: Health::NOMINAL,
+            });
+        }
 
         if node
             .clock()
@@ -366,7 +373,8 @@ impl<T: Transport> TransferHandler<T> for CommsHandler {
                 unsafe {
                     stm32g4::stm32g474::CorePeripherals::steal()
                         .SCB
-                        .aircr.write(0x05FA_0004);
+                        .aircr
+                        .write(0x05FA_0004);
                 };
                 // SAFETY: The above operation will instantly reset the  MCU
                 unsafe { unreachable_unchecked() }
