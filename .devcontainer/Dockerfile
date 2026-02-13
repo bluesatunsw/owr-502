@@ -39,6 +39,9 @@ RUN curl "https://github.com/lichtblick-suite/lichtblick/releases/latest/downloa
     && dpkg -i lichtblick.deb \
     && rm lichtblick.deb
 
+# Python package manager 
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
 
 RUN echo '* soft rtprio 99\n\
 * soft priority 99\n\
