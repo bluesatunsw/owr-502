@@ -38,6 +38,12 @@ pub struct SpiFlags {
     pub status_stop_r: bool,
 }
 
+impl SpiFlags {
+    pub fn ok(&self) -> bool {
+        !self.reset_flag() && !self.driver_error() && !self.sg2()
+    }
+}
+
 // SCK, MISO, MOSI
 pub type StepperSpiPins = (PC10<AF6>, PC11<AF6>, PC12<AF6>);
 
