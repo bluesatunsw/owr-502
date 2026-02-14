@@ -1,3 +1,6 @@
+use core::intrinsics::black_box;
+
+use cortex_m_semihosting::hprintln;
 use stm32g4xx_hal as hal;
 
 use hal::{
@@ -6,7 +9,6 @@ use hal::{
     rcc::{self, Rcc},
 };
 
-use crate::encoder_bus::{EncoderBus, EncoderNcsPins, EncoderSpiPins};
 use crate::tmc_registers::{
     AMax, ChopConf, DMax, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, RampMode, TPowerDown,
     TPwmThrs, TZeroWait, TmcPosition, UnitlessExt, UnitsExt, VMax, VStart, VStop, XActual, XTarget,
@@ -16,13 +18,17 @@ use crate::{
     as_registers::{Settings1, Settings2},
     common::{Channel, ALL_CHANNELS},
 };
+use crate::{
+    encoder_bus::{EncoderBus, EncoderNcsPins, EncoderSpiPins},
+    tmc_registers::DrvStatus,
+};
 
 use crate::stepper_bus::{StepperBus, StepperNcsPins, StepperSpiPins};
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: f32 = 60.;
 /// Inverts the position convention for the motors.
-const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
+const INVERT_STEPPER_DIR: [bool; 4] = [true, true, true, true];
 /// Inverts the position convention for the encoders.
 const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// What encoder reading we interpret as an angular position of 0 for ROS purposes.
@@ -189,11 +195,53 @@ impl Drivebase {
         self.enn.set_high();
     }
 
-    pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), !> {
+    pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), ()> {
         self.steppers
             .write_reg(channel, XTarget(target * GEAR_RATIO))
             .unwrap();
         Ok(())
+    }
+
+    fn append_health(health: &mut Option<u8>, cond: bool, code: u8) {
+        if !cond {
+            return;
+        }
+
+        *health = Some(if let Some(curr) = *health {
+            if curr >= 100 {
+                curr
+            } else {
+                curr + 100
+            }
+        } else {
+            code
+        });
+    }
+
+    pub fn health(&mut self) -> Option<u8> {
+        let mut health = None;
+        for (&chan, prefix) in ALL_CHANNELS.iter().zip([0, 10, 20, 30]) {
+            let (_, gstat) = self.steppers.read_reg::<GStat>(chan).unwrap();
+            Self::append_health(&mut health, gstat.reset(), prefix + 0);
+            Self::append_health(&mut health, gstat.uv_cp(), prefix + 1);
+            if !gstat.drv_err() {
+                continue;
+            }
+
+            let (_, dstat) = self.steppers.read_reg::<DrvStatus>(chan).unwrap();
+            Self::append_health(&mut health, dstat.ot(), prefix + 2);
+            Self::append_health(&mut health, dstat.otpw(), prefix + 3);
+
+            Self::append_health(&mut health, dstat.s2ga(), prefix + 4);
+            Self::append_health(&mut health, dstat.s2gb(), prefix + 5);
+            Self::append_health(&mut health, dstat.s2vsa(), prefix + 6);
+            Self::append_health(&mut health, dstat.s2vsb(), prefix + 7);
+
+            Self::append_health(&mut health, dstat.ola(), prefix + 8);
+            Self::append_health(&mut health, dstat.olb(), prefix + 9);
+        }
+
+        health
     }
 
     /// Returns true if the motor is currently actuating, which is determined by comparing the
