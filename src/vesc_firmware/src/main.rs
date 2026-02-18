@@ -7,9 +7,9 @@ use core::convert::TryInto;
 use core::ptr;
 use core::{cell::UnsafeCell, mem::MaybeUninit};
 
+use canadensis_data_types::reg::udral::service::actuator;
 use canadensis_data_types::uavcan::node::health_1_0::Health;
 use canadensis_data_types::uavcan::node::mode_1_0::Mode;
-use canadensis_data_types::reg::udral::service::actuator;
 
 use canadensis::{
     core::time::Clock,
@@ -55,14 +55,13 @@ pub mod utils;
 
 use crate::{
     bsp::{clock::STM32F4xxCyphalClock, drv8301::DRV8301, six_pwm::STM32F4xxSixPwmDriver},
-    comms::{
-        CommSystem, CYPHAL_CONCURRENT_TRANSFERS, CYPHAL_NUM_SERVICES, CYPHAL_NUM_TOPICS, NODE_ID,
-        PORT_CTRL_DUTY,
-    },
+    comms::{CommSystem, CYPHAL_CONCURRENT_TRANSFERS, CYPHAL_NUM_SERVICES, CYPHAL_NUM_TOPICS},
+    config::presets::*,
     state::ControlMode,
     utils::{cos, sin},
 };
 
+// TODO: Move these into some CommutationState thingo or smth
 static G_HALLS: Mutex<UnsafeCell<MaybeUninit<(AnyPin<Input>, AnyPin<Input>, AnyPin<Input>)>>> =
     Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
 static G_PWMS: Mutex<UnsafeCell<MaybeUninit<STM32F4xxSixPwmDriver>>> =
@@ -88,6 +87,8 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
+    let config = DRIVEBASE_FL_CONFIG;
+
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
     let dp = stm32f4xx_hal::pac::Peripherals::take().unwrap();
@@ -111,7 +112,7 @@ fn main() -> ! {
     let mut led_green = gpiob.pb0.into_push_pull_output();
     let mut led_red = gpiob.pb1.into_push_pull_output();
     led_red.set_high();
-    
+
     unsafe {
         cp.DCB.enable_trace();
         cp.DWT.enable_cycle_counter();
@@ -206,7 +207,7 @@ fn main() -> ! {
         .enable();
 
     let clock = STM32F4xxCyphalClock::new(dp.TIM5, &mut rcc);
-    let id: CanNodeId = NODE_ID.try_into().unwrap();
+    let id: CanNodeId = config.comms.node_id.try_into().unwrap();
     let mut uuid: [u8; 16] = [0x00; 16];
     unsafe {
         ptr::copy_nonoverlapping(Uid::get() as *const Uid as *const u8, uuid.as_mut_ptr(), 12);
@@ -245,7 +246,7 @@ fn main() -> ! {
     });
 
     node.subscribe_message(
-        PORT_CTRL_DUTY,
+        config.comms.ctrl_volt,
         size_of::<actuator::common::sp::scalar_0_1::Scalar>(),
         1.secs(),
     )
@@ -253,6 +254,7 @@ fn main() -> ! {
 
     let mut handler = CommSystem {
         control_mode: &G_CONTROL,
+        config: config.comms,
     };
 
     let mut start = node.clock_mut().now();

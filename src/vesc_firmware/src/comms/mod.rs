@@ -3,13 +3,13 @@ use core::cell::UnsafeCell;
 use alloc::vec::Vec;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
 use canadensis::core::transport::Transport;
-use canadensis::core::SubjectId;
 use canadensis::encoding::Deserialize;
 use canadensis::{ResponseToken, TransferHandler};
 use canadensis_data_types::reg::udral::service::actuator;
 use cortex_m::interrupt::Mutex;
 use fixed::types::I16F16;
 
+use crate::config::CommsConfig;
 use crate::state::ControlMode;
 use crate::utils::{motor_disable, motor_enable};
 
@@ -17,10 +17,8 @@ pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 pub const CYPHAL_NUM_TOPICS: usize = 8;
 pub const CYPHAL_NUM_SERVICES: usize = 8;
 
-pub const NODE_ID: u8 = 12;
-pub const PORT_CTRL_DUTY: SubjectId = SubjectId::from_truncating(3070);
-
 pub struct CommSystem {
+    pub config: CommsConfig,
     pub control_mode: &'static Mutex<UnsafeCell<ControlMode>>,
 }
 
@@ -35,11 +33,11 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
         N: canadensis::Node<Transport = T>,
     {
         match transfer.header.subject {
-            PORT_CTRL_DUTY => {
+            _ if self.config.ctrl_volt == transfer.header.subject => {
                 // TODO this deadband is stupid, should have Readiness heartbeat
-                let Ok(volts) =
-                    actuator::common::sp::scalar_0_1::Scalar::deserialize_from_bytes(&transfer.payload)
-                else {
+                let Ok(volts) = actuator::common::sp::scalar_0_1::Scalar::deserialize_from_bytes(
+                    &transfer.payload,
+                ) else {
                     return false;
                 };
 

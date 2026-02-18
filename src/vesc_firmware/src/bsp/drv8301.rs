@@ -1,4 +1,4 @@
-use cortex_m::{asm::delay, iprintln, Peripherals};
+use cortex_m::{asm::delay};
 use fugit::RateExtU32;
 use stm32f4xx_hal::{
     gpio::{Alternate, Input, Output, Pin},
