@@ -142,12 +142,7 @@ fn main() -> ! {
     gpiob.pb8.into_push_pull_output();
 
     // Initialise various device drivers.
-    let mut argb = argb::Controller::new(
-        dp.USART1,
-        gpiob.pb6.into_alternate(),
-        DEFAULT_BRIGHTNESS,
-        &mut rcc,
-    );
+    let mut argb = argb::Controller::new(dp.USART1, gpiob.pb6.into_alternate(), DEFAULT_BRIGHTNESS, &mut rcc);
     let clock = clock::MicrosecondClock::new(dp.TIM2, &mut rcc);
     let can = CanDriver::new(
         dp.FDCAN1,
@@ -242,8 +237,8 @@ fn main() -> ! {
             software_vcs_revision_id: 0,
             unique_id: [
                 // TODO: Replace this with the ID fetched from the chip
-                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
-                0x00, 0x00,
+                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE,
+                0x78, 0x12, 0x99, 0x10, 0x00, 0x03, 0x00, 0x00,
             ],
             name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
             software_image_crc: Vec::new(),
