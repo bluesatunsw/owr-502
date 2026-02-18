@@ -22,8 +22,27 @@ cargo flash --release --chip stm32f446mc
 
 (You may need to install `cargo flash`.)
 
+## Firmware Organization
 
-## Current Sense Timings
+The `bsp` directory contains board/device specific structs (e.g. a driver for
+the TIM1 peripheral to get it to produce 6 PWM outputs, or a driver to
+communicate with the DRV8301)
+
+The `config` directory contains structs (and presets for specific motors, e.g.
+the front left drivebase motor) that may require a firmware restart to apply
+properly. For now these have no method to change them but in the future they
+should all be exposed as cyphal registers. E.g. PID constants.
+
+The `state` directory contains structs that store the current state of the
+motor, e.g. what control mode it is currently executing (voltage, velocity,
+position, etc..) or the current state of the PID controller (numerical
+integrator and differentiator values). This should be considered to be reset to
+default when the firmware is restarted.
+
+
+## Implementation Details
+
+### Duty cycle limit
 
 DRV8301 is config'd thru resistor for 80ns deadtime
 50 dts ticks @ 168MHz --> 298ns
@@ -50,7 +69,6 @@ ADC Samp      ______________________⎺___________________________
 ADC Conv      _______________________/⎺⎺\_______________________
                12 clks == 571ns      <-->           (doesn't affect timing 😸)
 
-## Duty cycle limit
 We need to limit the duty cycle to ensure channel A,B always have some low time
 (to allow for current sensing). Assuming 0 settling time after switch
 
