@@ -1,6 +1,29 @@
 # VESC Firmware 
 
-`openocd -f stm32f4x.cfg` and `cargo run --release` if you have an ST-LINK connected.
+## Running and debugging the firmware
+
+To run the firmware in a debugging/development context with an ST-LINK connected:
+
+```
+openocd -f ../embedded_common/tools/openocd-stm32f4.cfg
+cargo run --release
+```
+
+It's pretty much necessary to run in release mode due to space optimisations
+being necessary to fit onto the dozens of KB of device flash.
+
+To flash the firmware *and have it continue to run after you disconnect the
+debugger* (for integration testing, or the competition (!)), do *not* run
+OpenOCD. Instead, with the debugger connected, run:
+
+```
+cargo flash --release --chip stm32f446mc
+```
+
+(You may need to install `cargo flash`.)
+
+
+## Current Sense Timings
 
 DRV8301 is config'd thru resistor for 80ns deadtime
 50 dts ticks @ 168MHz --> 298ns
