@@ -8639,8 +8639,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x04_Pin")
-		(at 186.69 74.93 0)
-		(mirror y)
+		(at 186.69 77.47 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8648,15 +8647,6 @@
 		(dnp no)
 		(uuid "9f1d3c2d-467a-44f0-898e-095bd7812c89")
 		(property "Reference" "J301"
-			(at 186.69 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "B4P-VH"
 			(at 186.69 77.47 0)
 			(effects
 				(font
@@ -8665,8 +8655,17 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Bluesat:B4P-VH"
+		(property "Value" "B4P-VH"
 			(at 186.69 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Bluesat:B4P-VH"
+			(at 186.69 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8675,7 +8674,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 186.69 74.93 0)
+			(at 186.69 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8684,7 +8683,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated"
-			(at 186.69 74.93 0)
+			(at 186.69 77.47 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10035,7 +10034,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Bluesat:WS2812B-2020"
+		(property "Footprint" "Bluesat:VDFN5045-12"
 			(at 139.7 101.6 0)
 			(effects
 				(font
@@ -10156,7 +10155,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Bluesat:WS2812B-2020"
+		(property "Footprint" "Bluesat:VDFN5045-12"
 			(at 139.7 38.1 0)
 			(effects
 				(font
