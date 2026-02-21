@@ -289,290 +289,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Bluesat:D_TVS_Dual_Compact"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0 6.35 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Value" "D_TVS_Dual_Compact"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS thyrector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "D_TVS_Dual_Compact_0_1"
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 -1.27) (xy -1.27 -1.905) (xy 1.27 -1.905) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.254 1.27) (xy -2.286 1.27) (xy -0.254 -1.27) (xy -2.286 -1.27) (xy -0.254 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.254 -0.508) (xy -0.254 0) (xy -2.286 0) (xy -2.286 0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.286 1.27) (xy 0.254 1.27) (xy 2.286 -1.27) (xy 0.254 -1.27) (xy 2.286 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.286 -0.508) (xy 2.286 0) (xy 0.254 0) (xy 0.254 0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "D_TVS_Dual_Compact_1_1"
-				(rectangle
-					(start -2.794 2.54)
-					(end 2.794 -2.54)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -2.54) (xy 0 -1.905)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy 1.27 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -1.27 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 1.27 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Bluesat:D_TVS_Quad_Compact"
 			(pin_names
 				(offset 1.016)
@@ -8901,12 +8617,6 @@
 		(uuid "42ce6660-6d14-4823-9097-bddfb0182c29")
 	)
 	(junction
-		(at 43.18 116.84)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "59bd946f-cf3d-42f7-bd6e-cf9fa25127fe")
-	)
-	(junction
 		(at 139.7 175.26)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8971,12 +8681,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "86e39248-235c-4423-9bd4-7a2885383efa")
-	)
-	(junction
-		(at 45.72 119.38)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "88fc215b-44f6-450e-8152-0cc140cee35e")
 	)
 	(junction
 		(at 58.42 81.28)
@@ -10278,7 +9982,7 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 119.38) (xy 49.53 119.38)
+			(xy 40.64 119.38) (xy 49.53 119.38)
 		)
 		(stroke
 			(width 0)
@@ -10878,7 +10582,7 @@
 	)
 	(wire
 		(pts
-			(xy 40.64 116.84) (xy 43.18 116.84)
+			(xy 40.64 116.84) (xy 49.53 116.84)
 		)
 		(stroke
 			(width 0)
@@ -10905,16 +10609,6 @@
 			(type default)
 		)
 		(uuid "ae56a15c-e72a-4b3a-8836-70e6f5e032a3")
-	)
-	(wire
-		(pts
-			(xy 43.18 116.84) (xy 49.53 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b6634d05-884d-4850-9f2b-61529212d325")
 	)
 	(wire
 		(pts
@@ -11035,16 +10729,6 @@
 			(type default)
 		)
 		(uuid "c3a9cec2-727a-4fad-a8ac-ef6740d7b623")
-	)
-	(wire
-		(pts
-			(xy 43.18 116.84) (xy 43.18 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c46f51e7-925b-4a57-91ec-05b0a4e9afb2")
 	)
 	(wire
 		(pts
@@ -11248,16 +10932,6 @@
 	)
 	(wire
 		(pts
-			(xy 45.72 119.38) (xy 45.72 120.65)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "df0c87f5-d667-45d2-b5c9-7c7e8c815c26")
-	)
-	(wire
-		(pts
 			(xy 40.64 186.69) (xy 43.18 186.69)
 		)
 		(stroke
@@ -11345,16 +11019,6 @@
 			(type default)
 		)
 		(uuid "e76c66c7-e5da-43a2-877b-5b0b50426752")
-	)
-	(wire
-		(pts
-			(xy 40.64 119.38) (xy 45.72 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e7d5ffd1-0eb7-4f40-b98e-f23e6913ac08")
 	)
 	(wire
 		(pts
@@ -12822,7 +12486,7 @@
 		(uuid "f1b5ad2d-e469-486f-9a5c-a7f8ad534981")
 	)
 	(label "CANL"
-		(at 46.99 119.38 0)
+		(at 45.72 119.38 0)
 		(effects
 			(font
 				(size 0.762 0.762)
@@ -13578,8 +13242,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x06")
-		(at 31.75 81.28 0)
-		(mirror y)
+		(at 31.75 83.82 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13587,7 +13250,7 @@
 		(dnp no)
 		(uuid "1a15d33a-ee4d-4258-ae31-4c972ed4714c")
 		(property "Reference" "J102"
-			(at 34.036 73.66 0)
+			(at 34.036 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13596,7 +13259,7 @@
 			)
 		)
 		(property "Value" "HALL/ENCODER"
-			(at 29.21 89.916 90)
+			(at 29.21 75.184 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13605,7 +13268,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:BM06B-PASS"
-			(at 31.75 81.28 0)
+			(at 31.75 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13614,7 +13277,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 31.75 81.28 0)
+			(at 31.75 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13623,7 +13286,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 31.75 81.28 0)
+			(at 31.75 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19160,79 +18823,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Bluesat:D_TVS_Dual_Compact")
-		(at 44.45 124.46 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c6955911-ed72-4d4e-9c04-e79dbf0ef242")
-		(property "Reference" "D102"
-			(at 40.64 123.1899 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DTVS"
-			(at 40.64 125.7299 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-523"
-			(at 44.45 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 44.45 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-			(at 44.45 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3200f9f3-e5b4-451b-9ce5-d0a6472061f6")
-		)
-		(pin "2"
-			(uuid "8bd85874-19e5-4bcb-90c0-652ac20758f1")
-		)
-		(pin "3"
-			(uuid "5ef0ee8e-f195-438b-b2f9-5a9d59bdcb19")
-		)
-		(instances
-			(project ""
-				(path "/2059a583-03d9-42e7-b042-844898d8f177"
-					(reference "D102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:R_CompactV")
 		(at 69.85 50.8 0)
 		(unit 1)
@@ -20938,71 +20528,6 @@
 			(project "vesc2"
 				(path "/2059a583-03d9-42e7-b042-844898d8f177"
 					(reference "R103")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 44.45 128.27 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "f422ec52-fbe0-4886-96a0-c05e46738dfc")
-		(property "Reference" "#PWR0113"
-			(at 44.45 134.62 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 44.45 132.08 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 44.45 128.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 44.45 128.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 44.45 128.27 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "436e521d-20ce-4fd4-bb19-0a29431cd6dd")
-		)
-		(instances
-			(project "vesc2"
-				(path "/2059a583-03d9-42e7-b042-844898d8f177"
-					(reference "#PWR0113")
 					(unit 1)
 				)
 			)
