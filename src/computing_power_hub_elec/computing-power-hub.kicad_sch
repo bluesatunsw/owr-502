@@ -3612,89 +3612,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Mechanical:MountingHole"
-			(pin_names
-				(offset 1.016)
-			)
-			(exclude_from_sim no)
-			(in_bom no)
-			(on_board yes)
-			(property "Reference" "H"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "MountingHole"
-				(at 0 3.175 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Mounting Hole without connection"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "mounting hole"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "MountingHole*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "MountingHole_0_1"
-				(circle
-					(center 0 0)
-					(radius 1.27)
-					(stroke
-						(width 1.27)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Memory_EEPROM:24LC128"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -4444,12 +4361,6 @@
 		(uuid "37271a8c-5bf6-42bb-8f9d-644a33050907")
 	)
 	(junction
-		(at 223.52 147.32)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "39a40783-2514-4cc2-9197-f21ca0e9047b")
-	)
-	(junction
 		(at 191.77 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4588,12 +4499,6 @@
 		(uuid "e1f3c199-36f7-4ab7-99b2-b51b2cc74cea")
 	)
 	(junction
-		(at 219.71 147.32)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e23382b2-0ca6-40f6-81eb-4aab01f9345f")
-	)
-	(junction
 		(at 217.17 114.3)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4604,12 +4509,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ee2a3a03-9254-4e8d-a1cd-f0dd92bfb7d3")
-	)
-	(junction
-		(at 185.42 147.32)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ef29cd03-cc51-41d0-ba29-f9a7d50f4333")
 	)
 	(junction
 		(at 194.31 147.32)
@@ -4776,16 +4675,6 @@
 			(type default)
 		)
 		(uuid "04219ad5-aea6-49e7-a3ec-cf4ceae6ccf4")
-	)
-	(wire
-		(pts
-			(xy 219.71 147.32) (xy 223.52 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0572365f-56c5-407d-a4ab-d7c04aa88f2f")
 	)
 	(wire
 		(pts
@@ -5299,16 +5188,6 @@
 	)
 	(wire
 		(pts
-			(xy 185.42 147.32) (xy 185.42 149.86)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5af89ffb-c93a-4c68-ae31-53bc592aa2b5")
-	)
-	(wire
-		(pts
 			(xy 194.31 114.3) (xy 196.85 114.3)
 		)
 		(stroke
@@ -5469,7 +5348,7 @@
 	)
 	(wire
 		(pts
-			(xy 227.33 149.86) (xy 227.33 147.32)
+			(xy 219.71 149.86) (xy 219.71 147.32)
 		)
 		(stroke
 			(width 0)
@@ -5486,16 +5365,6 @@
 			(type default)
 		)
 		(uuid "72fb8728-6f40-4c15-871c-f081a94b2f90")
-	)
-	(wire
-		(pts
-			(xy 223.52 149.86) (xy 223.52 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "74f7c2ff-20c4-40c5-a1ab-223fd60fb23b")
 	)
 	(wire
 		(pts
@@ -5756,16 +5625,6 @@
 			(type default)
 		)
 		(uuid "97053fba-dc24-4278-b5b0-2e71d93b0ff0")
-	)
-	(wire
-		(pts
-			(xy 223.52 147.32) (xy 227.33 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a2865f9-c654-4f06-948a-4d67406964a2")
 	)
 	(wire
 		(pts
@@ -6336,16 +6195,6 @@
 			(type default)
 		)
 		(uuid "eb733a4a-7a84-450b-8036-70c5cc7d44e2")
-	)
-	(wire
-		(pts
-			(xy 219.71 149.86) (xy 219.71 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ec386907-a8ae-4564-864c-5eacc80853f9")
 	)
 	(bus
 		(pts
@@ -7273,7 +7122,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 82.55 35.56 0)
 			(effects
 				(font
@@ -7318,71 +7167,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "D101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 223.52 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0d8946ca-2016-4cab-a672-b77f1be558c9")
-		(property "Reference" "#PWR0239"
-			(at 223.52 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 223.52 158.115 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 223.52 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 223.52 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 223.52 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f029e0db-177e-4a34-830e-1d0087d2f518")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "#PWR0239")
 					(unit 1)
 				)
 			)
@@ -7454,78 +7238,6 @@
 			(project ""
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "R119")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:C_CompactV")
-		(at 185.42 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0e6cfad1-747f-4732-a0a0-7255ec0f83ca")
-		(property "Reference" "C119"
-			(at 184.531 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2u2"
-			(at 186.309 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 185.42 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 185.42 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 185.42 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9e8ed3c3-65b4-4195-ba5f-b85c909e64d7")
-		)
-		(pin "2"
-			(uuid "f0c7117b-0676-4852-adf2-2ab0033f6b67")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "C119")
 					(unit 1)
 				)
 			)
@@ -8923,70 +8635,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 139.7 165.1 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "301a8897-9718-4e03-a003-d9c492735e30")
-		(property "Reference" "H103"
-			(at 142.24 163.8299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "M2.5"
-			(at 142.24 166.3699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Bluesat:M2.5_Internal"
-			(at 139.7 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 139.7 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 139.7 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "H103")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 190.5 154.94 0)
 		(unit 1)
@@ -9046,71 +8694,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "#PWR0230")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 219.71 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "31848cda-749e-48e2-a607-de1b9c0c9424")
-		(property "Reference" "#PWR0238"
-			(at 219.71 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 219.71 158.115 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 219.71 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 219.71 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 219.71 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "69b3a5c8-87de-4646-a224-728c353d10ca")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "#PWR0238")
 					(unit 1)
 				)
 			)
@@ -9339,7 +8922,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 97.79 35.56 0)
 			(effects
 				(font
@@ -10017,7 +9600,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 227.33 154.94 0)
+		(at 219.71 154.94 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10025,7 +9608,7 @@
 		(dnp no)
 		(uuid "52cede41-06e1-4690-bb90-479d7afe16db")
 		(property "Reference" "#PWR0104"
-			(at 227.33 161.29 0)
+			(at 219.71 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10034,7 +9617,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 227.33 158.115 0)
+			(at 219.71 158.115 0)
 			(effects
 				(font
 					(size 0.762 0.762)
@@ -10042,7 +9625,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 227.33 154.94 0)
+			(at 219.71 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10051,7 +9634,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 227.33 154.94 0)
+			(at 219.71 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10060,7 +9643,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 227.33 154.94 0)
+			(at 219.71 154.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10082,7 +9665,7 @@
 	)
 	(symbol
 		(lib_id "Bluesat:C_CompactV")
-		(at 227.33 152.4 0)
+		(at 219.71 152.4 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10090,7 +9673,7 @@
 		(dnp no)
 		(uuid "548650db-3872-4af9-8f5d-aa45fa760d0d")
 		(property "Reference" "C101"
-			(at 226.441 151.638 90)
+			(at 218.821 151.638 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -10100,7 +9683,7 @@
 			)
 		)
 		(property "Value" "220n"
-			(at 228.219 151.638 90)
+			(at 220.599 151.638 90)
 			(do_not_autoplace yes)
 			(effects
 				(font
@@ -10110,7 +9693,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 227.33 152.4 90)
+			(at 219.71 152.4 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10119,7 +9702,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 227.33 152.4 90)
+			(at 219.71 152.4 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10128,7 +9711,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 227.33 152.4 0)
+			(at 219.71 152.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10500,77 +10083,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "#PWR0105")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:C_CompactV")
-		(at 223.52 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "632b8c56-dffe-488c-b461-e5aeae01ef43")
-		(property "Reference" "C128"
-			(at 222.631 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "220n"
-			(at 224.409 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 223.52 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 223.52 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 223.52 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cbfd0eb0-a0cf-4d23-a002-ebb3c80ba3fb")
-		)
-		(pin "2"
-			(uuid "1449895d-8ef1-4486-a37a-23d0a99ebaaf")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "C128")
 					(unit 1)
 				)
 			)
@@ -10983,77 +10495,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Bluesat:C_CompactV")
-		(at 219.71 152.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "72f525e2-5805-4f05-8065-b322c6c3f5a8")
-		(property "Reference" "C127"
-			(at 218.821 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "220n"
-			(at 220.599 151.638 90)
-			(do_not_autoplace yes)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 219.71 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 219.71 152.4 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, compact symbol"
-			(at 219.71 152.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "88ddc04d-92b7-40ae-9098-ba2f46cd7f45")
-		)
-		(pin "2"
-			(uuid "9e8e015a-7bb1-4c34-befe-28ee50bb01a8")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "C127")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 177.8 154.94 0)
 		(unit 1)
@@ -11179,70 +10620,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "#PWR0186")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 114.3 165.1 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "824c7191-1c3f-43a4-86dd-3429d1ea6c28")
-		(property "Reference" "H101"
-			(at 116.84 163.8299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "M2.5"
-			(at 116.84 166.3699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Bluesat:M2.5_Edge"
-			(at 114.3 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 114.3 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 114.3 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project ""
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "H101")
 					(unit 1)
 				)
 			)
@@ -12514,70 +11891,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Mechanical:MountingHole")
-		(at 127 165.1 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "bd221b25-6039-4157-84d9-5932f6f45253")
-		(property "Reference" "H102"
-			(at 129.54 163.8299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "M2.5"
-			(at 129.54 166.3699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Bluesat:M2.5_Edge"
-			(at 127 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 127 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Mounting Hole without connection"
-			(at 127 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "H102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "LED:WS2812B-2020")
 		(at 68.58 27.94 0)
 		(mirror y)
@@ -12605,7 +11918,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 67.31 35.56 0)
 			(effects
 				(font
@@ -13202,71 +12515,6 @@
 			(project "computing-power-hub"
 				(path "/294cc751-7444-4d80-b629-85aa96521600"
 					(reference "C118")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 185.42 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "e23cd62e-831c-4db0-8457-41438490b3f8")
-		(property "Reference" "#PWR0229"
-			(at 185.42 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 185.42 158.115 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 185.42 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 185.42 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 185.42 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "294b9832-ccb2-4898-ab2a-9ec3a0692eda")
-		)
-		(instances
-			(project "computing-power-hub"
-				(path "/294cc751-7444-4d80-b629-85aa96521600"
-					(reference "#PWR0229")
 					(unit 1)
 				)
 			)
