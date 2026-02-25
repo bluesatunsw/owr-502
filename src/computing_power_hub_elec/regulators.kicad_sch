@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "d386dd71-010e-4012-b2d4-e06a1cee8bf4")
 	(paper "A4")
+	(title_block
+		(title "Computing Power Module (CPM), a.k.a. Computing Power Hub")
+		(date "2026-02-25")
+		(rev "2.0")
+		(company "Bluesat OWR")
+	)
 	(lib_symbols
 		(symbol "Bluesat:+19V"
 			(power)
@@ -276,7 +282,7 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U202"
+			(property "Reference" "U"
 				(at 0 3.048 0)
 				(effects
 					(font
@@ -293,7 +299,7 @@
 				)
 			)
 			(property "Footprint" "Bluesat:RGY0024E-MFG"
-				(at 0 0 0)
+				(at 0 8.636 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -301,8 +307,8 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
-				(at 0 0 0)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/C7470701.pdf"
+				(at 0 6.604 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -310,8 +316,8 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
-				(at 0 0 0)
+			(property "Description" "Large (80V) buck converter"
+				(at 0 10.668 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1068,8 +1074,8 @@
 					)
 				)
 			)
-			(property "Footprint" ""
-				(at 0 0 0)
+			(property "Footprint" "Bluesat:PowerPAD_HTSSOP-14_4.4x5.0-0.65-EP"
+				(at 0 12.954 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1077,8 +1083,8 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
-				(at 0 0 0)
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps61175.pdf"
+				(at 0 10.668 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1086,8 +1092,8 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
-				(at 0 0 0)
+			(property "Description" "3-A High-Voltage Boost Converter With Soft Start and Programmable Switching Frequency"
+				(at 0 15.24 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -14890,7 +14896,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Bluesat:HTSSOP-14_4.4x5.0-0.65-EP"
+		(property "Footprint" "Bluesat:PowerPAD_HTSSOP-14_4.4x5.0-0.65-EP"
 			(at 173.99 96.52 0)
 			(effects
 				(font
@@ -14899,7 +14905,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tps61175.pdf"
 			(at 173.99 96.52 0)
 			(effects
 				(font
@@ -14908,7 +14914,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "3-A High-Voltage Boost Converter With Soft Start and Programmable Switching Frequency"
 			(at 173.99 96.52 0)
 			(effects
 				(font
@@ -19290,7 +19296,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C7470701.pdf"
 			(at 83.82 30.48 0)
 			(effects
 				(font
@@ -19299,7 +19305,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Large (80V) buck converter"
 			(at 83.82 30.48 0)
 			(effects
 				(font
