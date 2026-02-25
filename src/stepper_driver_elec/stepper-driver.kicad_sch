@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "22ad96d7-4eff-4ee6-90ff-f4a9952d1282")
 	(paper "A4")
+	(title_block
+		(title "Stepper Motor Driver")
+		(date "2026-02-26")
+		(rev "3.0")
+		(company "Bluesat OWR")
+	)
 	(lib_symbols
 		(symbol "Bluesat:C_CompactH"
 			(pin_numbers
@@ -305,7 +311,7 @@
 					)
 				)
 			)
-			(property "Value" "D_TVS_Dual_Compact"
+			(property "Value" "D_TVS_Quad_Compact"
 				(at 0 5.08 0)
 				(effects
 					(font
@@ -331,8 +337,8 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-				(at 0 0 0)
+			(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
+				(at 0.254 12.7 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -864,8 +870,8 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "J103"
-				(at 0.635 8.89 0)
+			(property "Reference" "J"
+				(at 0 7.366 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -873,7 +879,7 @@
 				)
 			)
 			(property "Value" "IDC_6P"
-				(at 0.635 6.35 0)
+				(at 0 0 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -909,7 +915,7 @@
 			)
 			(symbol "IDC_6P_1_1"
 				(rectangle
-					(start -6.35 3.81)
+					(start -5.08 3.81)
 					(end 6.35 -3.81)
 					(stroke
 						(width 0.254)
@@ -920,8 +926,8 @@
 					)
 				)
 				(rectangle
-					(start -6.35 2.667)
-					(end -5.08 2.413)
+					(start -5.08 2.667)
+					(end -3.81 2.413)
 					(stroke
 						(width 0.1524)
 						(type default)
@@ -931,8 +937,8 @@
 					)
 				)
 				(rectangle
-					(start -6.35 0.127)
-					(end -5.08 -0.127)
+					(start -5.08 0.127)
+					(end -3.81 -0.127)
 					(stroke
 						(width 0.1524)
 						(type default)
@@ -942,8 +948,8 @@
 					)
 				)
 				(rectangle
-					(start -6.35 -2.413)
-					(end -5.08 -2.667)
+					(start -5.08 -2.413)
+					(end -3.81 -2.667)
 					(stroke
 						(width 0.1524)
 						(type default)
@@ -985,9 +991,9 @@
 						(type none)
 					)
 				)
-				(pin input line
+				(pin passive line
 					(at -8.89 2.54 0)
-					(length 2.54)
+					(length 3.81)
 					(name "SWO"
 						(effects
 							(font
@@ -1003,9 +1009,9 @@
 						)
 					)
 				)
-				(pin power_in line
+				(pin passive line
 					(at -8.89 0 0)
-					(length 2.54)
+					(length 3.81)
 					(name "GND"
 						(effects
 							(font
@@ -1021,9 +1027,9 @@
 						)
 					)
 				)
-				(pin bidirectional line
+				(pin passive line
 					(at -8.89 -2.54 0)
-					(length 2.54)
+					(length 3.81)
 					(name "SWDIO"
 						(effects
 							(font
@@ -1039,9 +1045,9 @@
 						)
 					)
 				)
-				(pin output line
-					(at 8.89 2.54 180)
-					(length 2.54)
+				(pin passive line
+					(at 10.16 2.54 180)
+					(length 3.81)
 					(name "NRST"
 						(effects
 							(font
@@ -1057,10 +1063,10 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at 8.89 0 180)
-					(length 2.54)
-					(name "VDD"
+				(pin passive line
+					(at 10.16 0 180)
+					(length 3.81)
+					(name "3V3"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -1075,9 +1081,9 @@
 						)
 					)
 				)
-				(pin output line
-					(at 8.89 -2.54 180)
-					(length 2.54)
+				(pin passive line
+					(at 10.16 -2.54 180)
+					(length 3.81)
 					(name "SWCLK"
 						(effects
 							(font
@@ -2934,25 +2940,25 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "U"
-				(at 1.905 8.255 0)
+			(property "Reference" "U102"
+				(at -1.905 8.255 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
+					(justify right)
 				)
 			)
 			(property "Value" "TCAN1462V"
-				(at 1.905 6.35 0)
+				(at -1.905 6.35 0)
 				(effects
 					(font
-						(size 1.27 1.27)
+						(size 1.016 1.016)
 					)
-					(justify left)
+					(justify right)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2961,7 +2967,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tcan1462-q1.pdf"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2970,7 +2976,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
+			(property "Description" "CAN FD Transceiver with Signal Improvement Capability (SIC)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2991,7 +2997,7 @@
 						(type background)
 					)
 				)
-				(pin input line
+				(pin output line
 					(at -10.16 2.54 0)
 					(length 2.54)
 					(name "RXD"
@@ -3157,7 +3163,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Bluesat:ZD25WQ16C"
+		(symbol "Bluesat:ZD25WQ16CEIGR"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3170,7 +3176,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "ZD25WQ16C"
+			(property "Value" "ZD25WQ16CEIGR"
 				(at 0.635 1.27 0)
 				(effects
 					(font
@@ -3179,8 +3185,8 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" ""
-				(at 0 0 0)
+			(property "Footprint" "Package_SON:Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm"
+				(at 0 3.556 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -3188,8 +3194,8 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" ""
-				(at 0 0 0)
+			(property "Datasheet" "https://www.lcsc.com/datasheet/C5353550.pdf"
+				(at 0 5.842 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -3197,8 +3203,8 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
-				(at 0 0 0)
+			(property "Description" "16Mbit QSPI NOR flash memory"
+				(at 0 1.27 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -3206,7 +3212,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "ZD25WQ16C_1_1"
+			(symbol "ZD25WQ16CEIGR_1_1"
 				(rectangle
 					(start -6.35 0)
 					(end 6.35 -20.32)
@@ -5908,6 +5914,12 @@
 		(uuid "b3317d36-d93b-40fe-853a-04715931350b")
 	)
 	(junction
+		(at 123.19 161.29)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b7abc577-1597-484a-90d2-9eac216e423d")
+	)
+	(junction
 		(at 72.39 190.5)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5930,12 +5942,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c54a6ba6-f5d4-4485-8f08-45ce35425d02")
-	)
-	(junction
-		(at 123.19 161.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c6fbe4d0-b1e2-49e3-99ab-dccbdfe7f1eb")
 	)
 	(junction
 		(at 138.43 184.15)
@@ -7504,16 +7510,6 @@
 			(type default)
 		)
 		(uuid "172aa32b-5405-4e56-baea-8a1fe5f0a811")
-	)
-	(wire
-		(pts
-			(xy 123.19 161.29) (xy 125.73 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "177fb4f0-469f-4901-96b1-567c57c03b27")
 	)
 	(wire
 		(pts
@@ -9167,7 +9163,7 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 156.21) (xy 123.19 156.21)
+			(xy 118.11 156.21) (xy 123.19 156.21)
 		)
 		(stroke
 			(width 0)
@@ -9977,6 +9973,16 @@
 	)
 	(wire
 		(pts
+			(xy 123.19 161.29) (xy 125.73 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3c52da0-9d94-4800-a6c4-e95585f81d63")
+	)
+	(wire
+		(pts
 			(xy 64.77 77.47) (xy 64.77 102.87)
 		)
 		(stroke
@@ -10037,7 +10043,7 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 161.29) (xy 123.19 161.29)
+			(xy 118.11 161.29) (xy 123.19 161.29)
 		)
 		(stroke
 			(width 0)
@@ -11396,7 +11402,7 @@
 		(uuid "0d7479cd-8da7-4f58-b6d9-893102dfacd9")
 	)
 	(label "DBG.SWCLK"
-		(at 116.84 161.29 0)
+		(at 118.11 161.29 0)
 		(effects
 			(font
 				(size 0.762 0.762)
@@ -12326,7 +12332,7 @@
 		(uuid "b72e6695-0bbb-406c-b098-4c4567ed738c")
 	)
 	(label "DBG.NRST"
-		(at 116.84 156.21 0)
+		(at 118.11 156.21 0)
 		(effects
 			(font
 				(size 0.762 0.762)
@@ -12806,7 +12812,7 @@
 		(uuid "ff2251b5-7156-41ef-a7da-090928a62266")
 	)
 	(symbol
-		(lib_id "Bluesat:ZD25WQ16C")
+		(lib_id "Bluesat:ZD25WQ16CEIGR")
 		(at 30.48 162.56 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -12833,7 +12839,7 @@
 			)
 		)
 		(property "Footprint" "Package_SON:Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm"
-			(at 30.48 162.56 0)
+			(at 30.48 159.004 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12841,8 +12847,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 30.48 162.56 0)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C5353550.pdf"
+			(at 30.48 156.718 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12850,8 +12856,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 30.48 162.56 0)
+		(property "Description" "16Mbit QSPI NOR flash memory"
+			(at 30.48 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13029,7 +13035,7 @@
 		)
 	)
 	(symbol
-		(lib_id "Bluesat:ZD25WQ16C")
+		(lib_id "Bluesat:ZD25WQ16CEIGR")
 		(at 55.88 162.56 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -13056,7 +13062,7 @@
 			)
 		)
 		(property "Footprint" "Package_SON:Winbond_USON-8-1EP_3x2mm_P0.5mm_EP0.2x1.6mm"
-			(at 55.88 162.56 0)
+			(at 55.88 159.004 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13064,8 +13070,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 55.88 162.56 0)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C5353550.pdf"
+			(at 55.88 156.718 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13073,8 +13079,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 55.88 162.56 0)
+		(property "Description" "16Mbit QSPI NOR flash memory"
+			(at 55.88 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16489,7 +16495,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
+		(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
 			(at 189.23 153.67 0)
 			(effects
 				(font
@@ -17708,7 +17714,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
+		(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
 			(at 176.53 153.67 0)
 			(effects
 				(font
@@ -18194,7 +18200,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/tcan1462-q1.pdf"
 			(at 48.26 54.61 0)
 			(effects
 				(font
@@ -18203,7 +18209,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "CAN FD Transceiver with Signal Improvement Capability (SIC)"
 			(at 48.26 54.61 0)
 			(effects
 				(font
@@ -18380,7 +18386,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
+		(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
 			(at 151.13 153.67 0)
 			(effects
 				(font
@@ -20696,7 +20702,7 @@
 	)
 	(symbol
 		(lib_id "power:VDD")
-		(at 116.84 158.75 270)
+		(at 118.11 158.75 270)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -20705,7 +20711,7 @@
 		(dnp no)
 		(uuid "e3afb471-4c1c-489e-a521-3b281aff9ae0")
 		(property "Reference" "#PWR0169"
-			(at 113.03 158.75 0)
+			(at 114.3 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20714,7 +20720,7 @@
 			)
 		)
 		(property "Value" "VDD"
-			(at 119.888 158.75 90)
+			(at 121.158 158.75 90)
 			(effects
 				(font
 					(size 1.016 1.016)
@@ -20723,7 +20729,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 116.84 158.75 0)
+			(at 118.11 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20732,7 +20738,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 116.84 158.75 0)
+			(at 118.11 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20741,7 +20747,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VDD\""
-			(at 116.84 158.75 0)
+			(at 118.11 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20806,7 +20812,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
+		(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
 			(at 163.83 153.67 0)
 			(effects
 				(font
@@ -21819,8 +21825,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-			(at 105.41 176.53 0)
+		(property "Description" "Quad bidirectional transient-voltage-suppression diode, compact symbol (suggested: TPAZ1143-04F)"
+			(at 105.156 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)

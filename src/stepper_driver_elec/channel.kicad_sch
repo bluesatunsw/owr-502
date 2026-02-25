@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "3b2f3cb5-3bea-4bf3-8e91-b5bae336f4c5")
 	(paper "A4")
+	(title_block
+		(title "Stepper Motor Driver")
+		(date "2026-02-26")
+		(rev "3.0")
+		(company "Bluesat OWR")
+	)
 	(lib_symbols
 		(symbol "Bluesat:C_CompactV"
 			(pin_numbers
@@ -152,7 +158,7 @@
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at 2.032 9.652 0)
+				(at 0 4.318 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -160,24 +166,15 @@
 				)
 			)
 			(property "Value" "DMHT6016LFJ"
-				(at 7.874 7.62 0)
+				(at -0.254 6.35 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
+			(property "Footprint" "Bluesat:VDFN5045-12"
+				(at 0.508 -20.066 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -185,8 +182,17 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
-				(at 0 0 0)
+			(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMHT6016LFJ.pdf"
+				(at 0.254 -21.844 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "60V N-channel enhancement mode MOSFET H-bridge"
+				(at 0.762 -18.034 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -645,7 +651,7 @@
 				)
 			)
 			(property "Datasheet" "https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC5160A_Datasheet_Rev1.14.pdf"
-				(at 0.762 59.436 0)
+				(at 0.762 -53.34 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -654,7 +660,7 @@
 				)
 			)
 			(property "Description" "20A Driver for two-phase bipolar stepper motor, SPI, UART, TQFP-48"
-				(at -2.286 55.372 0)
+				(at -0.508 -48.26 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1815,6 +1821,344 @@
 						)
 					)
 					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "DMHT6016LFJ_1"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 4.318 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "DMHT6016LFJ"
+				(at -0.254 6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Bluesat:VDFN5045-12"
+				(at 0.508 -20.066 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMHT6016LFJ.pdf"
+				(at 0.254 -21.844 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "60V N-channel enhancement mode MOSFET H-bridge"
+				(at 0.762 -18.034 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DMHT6016LFJ_1_1_1"
+				(rectangle
+					(start -12.7 7.62)
+					(end 12.7 -7.62)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin input line
+					(at -15.24 3.81 0)
+					(length 2.54)
+					(name "G1_AH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 1.27 0)
+					(length 2.54)
+					(name "G2_AL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 -1.27 0)
+					(length 2.54)
+					(name "G4_BH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -15.24 -3.81 0)
+					(length 2.54)
+					(name "G3_BL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -1.27 -10.16 90)
+					(length 2.54)
+					(name "S2_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -1.27 -10.16 90)
+					(length 2.54)
+					(hide yes)
+					(name "S2_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 10.16 270)
+					(length 2.54)
+					(hide yes)
+					(name "D1/D4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 10.16 270)
+					(length 2.54)
+					(name "D1/D4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 10.16 270)
+					(length 2.54)
+					(hide yes)
+					(name "D1/D4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 1.27 -10.16 90)
+					(length 2.54)
+					(name "S3_B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 1.27 -10.16 90)
+					(length 2.54)
+					(hide yes)
+					(name "S3_B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 15.24 1.27 180)
+					(length 2.54)
+					(name "S1/D2_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin free line
+					(at 15.24 1.27 180)
+					(length 2.54)
+					(hide yes)
+					(name "S1/D2_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 15.24 -1.27 180)
+					(length 2.54)
+					(name "S4/D3_B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin free line
+					(at 15.24 -1.27 180)
+					(length 2.54)
+					(hide yes)
+					(name "S4/D3_B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -9796,7 +10140,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMHT6016LFJ.pdf"
 			(at 139.7 101.6 0)
 			(effects
 				(font
@@ -9805,7 +10149,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "60V N-channel enhancement mode MOSFET H-bridge"
 			(at 139.7 101.6 0)
 			(effects
 				(font
@@ -9881,6 +10225,7 @@
 		)
 	)
 	(symbol
+		(lib_name "DMHT6016LFJ_1")
 		(lib_id "Bluesat:DMHT6016LFJ")
 		(at 139.7 38.1 0)
 		(unit 1)
@@ -9909,7 +10254,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:VDFN5045-12"
-			(at 139.7 38.1 0)
+			(at 140.208 58.166 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9917,8 +10262,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 139.7 38.1 0)
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMHT6016LFJ.pdf"
+			(at 139.954 59.944 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9926,8 +10271,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 139.7 38.1 0)
+		(property "Description" "60V N-channel enhancement mode MOSFET H-bridge"
+			(at 140.462 56.134 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10029,7 +10374,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Bluesat:TQFP-48-0.5-EP"
+		(property "Footprint" "Package_QFP:TQFP-48-1EP_7x7mm_P0.5mm_EP5x5mm_ThermalVias"
 			(at 76.2 127 0)
 			(effects
 				(font
