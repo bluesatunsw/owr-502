@@ -289,290 +289,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Bluesat:D_TVS_Dual_Compact"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "D"
-				(at 0 6.35 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Value" "D_TVS_Dual_Compact"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.016 1.016)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode TVS thyrector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "D_TVS_Dual_Compact_0_1"
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 -1.27) (xy -1.27 -1.905) (xy 1.27 -1.905) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.254 1.27) (xy -2.286 1.27) (xy -0.254 -1.27) (xy -2.286 -1.27) (xy -0.254 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.254 -0.508) (xy -0.254 0) (xy -2.286 0) (xy -2.286 0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.286 1.27) (xy 0.254 1.27) (xy 2.286 -1.27) (xy 0.254 -1.27) (xy 2.286 1.27)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.286 -0.508) (xy 2.286 0) (xy 0.254 0) (xy 0.254 0.508)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "D_TVS_Dual_Compact_1_1"
-				(rectangle
-					(start -2.794 2.54)
-					(end 2.794 -2.54)
-					(stroke
-						(width 0)
-						(type solid)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 1.27) (xy -1.27 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -2.54) (xy 0 -1.905)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy 1.27 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 2.54) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 1.27) (xy 1.27 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -1.27 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 1.27 3.81 270)
-					(length 1.27)
-					(name ""
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Bluesat:D_TVS_Quad_Compact"
 			(pin_names
 				(offset 1.016)
@@ -6021,12 +5737,6 @@
 		(uuid "857ab45e-a79b-48cd-adb1-0cd435918cc2")
 	)
 	(junction
-		(at 83.82 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8a0f6cf7-774b-4d97-9e28-8b845050a7b5")
-	)
-	(junction
 		(at 238.76 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6067,12 +5777,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a793232a-e94a-498b-939e-6e8fd4a933bb")
-	)
-	(junction
-		(at 86.36 93.98)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "aba76164-8d7b-48e4-b5a7-2d137bb6677e")
 	)
 	(junction
 		(at 54.61 158.75)
@@ -6344,16 +6048,6 @@
 			(type default)
 		)
 		(uuid "e61d650b-fbfc-4a63-986c-13861ddb0b22")
-	)
-	(wire
-		(pts
-			(xy 82.55 91.44) (xy 83.82 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "002e8ae0-533d-47cf-9a57-9b4a4e785ebe")
 	)
 	(wire
 		(pts
@@ -6707,16 +6401,6 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 93.98) (xy 86.36 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "313bb649-20fa-44ed-9dbc-5b8bf402a8aa")
-	)
-	(wire
-		(pts
 			(xy 189.23 160.02) (xy 189.23 161.29)
 		)
 		(stroke
@@ -6804,16 +6488,6 @@
 			(type default)
 		)
 		(uuid "444a31c6-ada3-495d-9064-4644d81252e0")
-	)
-	(wire
-		(pts
-			(xy 83.82 91.44) (xy 83.82 97.79)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "446b648e-0192-4bdb-94ad-45cfece8eb28")
 	)
 	(wire
 		(pts
@@ -7697,16 +7371,6 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 93.98) (xy 90.17 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b212c824-e615-4ef9-aca5-c9644ebda47f")
-	)
-	(wire
-		(pts
 			(xy 267.97 48.26) (xy 267.97 50.8)
 		)
 		(stroke
@@ -7917,7 +7581,7 @@
 	)
 	(wire
 		(pts
-			(xy 82.55 93.98) (xy 86.36 93.98)
+			(xy 82.55 93.98) (xy 90.17 93.98)
 		)
 		(stroke
 			(width 0)
@@ -8167,7 +7831,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 91.44) (xy 90.17 91.44)
+			(xy 82.55 91.44) (xy 90.17 91.44)
 		)
 		(stroke
 			(width 0)
@@ -8795,7 +8459,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 306.07 160.02 0)
 			(effects
 				(font
@@ -8840,78 +8504,6 @@
 			(project "system_power_hub"
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "D5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Bluesat:D_TVS_Dual_Compact")
-		(at 85.09 101.6 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "084e7187-060f-4e15-bef2-892d8db29687")
-		(property "Reference" "D101"
-			(at 88.265 100.965 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "5V"
-			(at 88.265 102.235 0)
-			(effects
-				(font
-					(size 1.016 1.016)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-523"
-			(at 85.09 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 85.09 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Dual bidirectional transient-voltage-suppression diode, compact symbol"
-			(at 85.09 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9fdfb683-14e9-4f83-9f89-a0b2553d5b60")
-		)
-		(pin "2"
-			(uuid "933e9cfd-66c7-426e-923b-d8e4c1535990")
-		)
-		(pin "3"
-			(uuid "bac2f589-f6ba-428f-8faa-476822cb76f6")
-		)
-		(instances
-			(project "main_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "D101")
 					(unit 1)
 				)
 			)
@@ -9674,7 +9266,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 256.54 160.02 0)
 			(effects
 				(font
@@ -11098,7 +10690,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 223.52 160.02 0)
 			(effects
 				(font
@@ -11245,7 +10837,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 322.58 160.02 0)
 			(effects
 				(font
@@ -11589,7 +11181,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 240.03 160.02 0)
 			(effects
 				(font
@@ -12082,7 +11674,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 207.01 160.02 0)
 			(effects
 				(font
@@ -12582,7 +12174,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 273.05 160.02 0)
 			(effects
 				(font
@@ -13148,7 +12740,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN-10_1.0x2.5mm_P0.5mm"
+		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN-10_1x2.5mm_P0.5mm"
 			(at 45.72 83.82 0)
 			(effects
 				(font
@@ -14625,7 +14217,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 289.56 160.02 0)
 			(effects
 				(font
@@ -14701,7 +14293,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LQFP64-10x10mm"
+		(property "Footprint" "Bluesat:LQFP-64-0.5"
 			(at 233.68 43.18 0)
 			(effects
 				(font
@@ -14927,71 +14519,6 @@
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
 					(reference "U1")
 					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 85.09 105.41 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d482f3d5-8a7c-41c5-9b38-79bb27248736")
-		(property "Reference" "#PWR0103"
-			(at 85.09 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 85.09 108.458 0)
-			(effects
-				(font
-					(size 0.762 0.762)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 85.09 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 85.09 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 85.09 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "95d7bcb0-f798-4ee8-8148-e89a03576753")
-		)
-		(instances
-			(project "main_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc"
-					(reference "#PWR0103")
-					(unit 1)
 				)
 			)
 		)
@@ -15295,7 +14822,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 190.5 160.02 0)
 			(effects
 				(font
@@ -15514,7 +15041,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_WS2812B-2020_PLCC4_2.0x2.0mm"
+		(property "Footprint" "Bluesat:WS2812B-2020"
 			(at 339.09 160.02 0)
 			(effects
 				(font
@@ -15590,7 +15117,7 @@
 				)
 			)
 		)
-		(property "Footprint" "LQFP64-10x10mm"
+		(property "Footprint" "Bluesat:LQFP-64-0.5"
 			(at 115.57 41.91 0)
 			(effects
 				(font

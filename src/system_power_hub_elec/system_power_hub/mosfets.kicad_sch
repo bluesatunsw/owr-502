@@ -1115,7 +1115,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Transistor_FET:Q_NMOS_SGD"
+		(symbol "Transistor_FET:Q_NMOS_DGS"
 			(pin_names
 				(offset 0)
 				(hide yes)
@@ -1132,7 +1132,7 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NMOS_SGD"
+			(property "Value" "Q_NMOS_DGS"
 				(at 5.08 0 0)
 				(effects
 					(font
@@ -1159,7 +1159,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "N-MOSFET transistor, source/gate/drain"
+			(property "Description" "N-MOSFET transistor, drain/gate/source"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1177,7 +1177,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "Q_NMOS_SGD_0_1"
+			(symbol "Q_NMOS_DGS_0_1"
 				(polyline
 					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
@@ -1344,10 +1344,10 @@
 					)
 				)
 			)
-			(symbol "Q_NMOS_SGD_1_1"
+			(symbol "Q_NMOS_DGS_1_1"
 				(pin input line
 					(at -5.08 0 0)
-					(length 5.08)
+					(length 2.54)
 					(name "G"
 						(effects
 							(font
@@ -1373,7 +1373,7 @@
 							)
 						)
 					)
-					(number "3"
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1391,7 +1391,7 @@
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1781,12 +1781,6 @@
 		(uuid "0fc78383-6732-45f5-8fb7-2cdb48d8affa")
 	)
 	(junction
-		(at 111.76 60.96)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "116d0ca7-8c08-4ad2-9989-92c7c1f7a6f2")
-	)
-	(junction
 		(at 149.86 160.02)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1827,6 +1821,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5a7cb722-27bb-4f5a-88ed-3a0b6fb42285")
+	)
+	(junction
+		(at 111.76 60.96)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6faea43d-2856-402e-86f2-ac51014b81c9")
 	)
 	(junction
 		(at 149.86 147.32)
@@ -2196,6 +2196,16 @@
 	)
 	(wire
 		(pts
+			(xy 111.76 60.96) (xy 113.03 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "825cda71-98b3-478a-b9bd-82ad5cc9b287")
+	)
+	(wire
+		(pts
 			(xy 123.19 139.7) (xy 123.19 147.32)
 		)
 		(stroke
@@ -2373,16 +2383,6 @@
 			(type default)
 		)
 		(uuid "b6acd1b0-4542-4a91-9fc1-160728d5abbe")
-	)
-	(wire
-		(pts
-			(xy 111.76 60.96) (xy 113.03 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b87b145c-5045-4c9a-a88e-50ffadf0ea95")
 	)
 	(wire
 		(pts
@@ -2583,6 +2583,66 @@
 			(type default)
 		)
 		(uuid "ff65c303-3278-400b-b35a-65ddb06ef3dc")
+	)
+	(label "CTRL_{A}"
+		(at 107.95 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "0b5860ad-b153-4507-9c3f-89a47635f9d1")
+	)
+	(label "OUT_{A}"
+		(at 151.13 81.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "3297f6de-f97a-4899-9cb2-dd0bdffe60bb")
+	)
+	(label "GATE_{A}"
+		(at 143.51 60.96 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "989770bc-81db-456d-8d8f-55f64361a546")
+	)
+	(label "CTRL_{B}"
+		(at 106.68 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a4d21ca7-1606-400a-9f9b-952232ef62af")
+	)
+	(label "OUT_{B}"
+		(at 149.86 149.86 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cbbc0244-7b9b-4f52-8556-3c9b5b11e309")
+	)
+	(label "GATE_{B}"
+		(at 142.24 129.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cced0f74-5d4e-4f34-858a-05011fb4a407")
 	)
 	(hierarchical_label "chanA"
 		(shape input)
@@ -2869,91 +2929,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_SGD")
-		(at 148.59 60.96 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "252981a4-f34c-4c05-8677-de9745672a56")
-		(property "Reference" "Q4"
-			(at 154.94 59.6899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "IRFH7440TRPBF"
-			(at 154.94 62.2299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Bluesat:PQFN_5x6mm_E_SGD"
-			(at 153.67 58.42 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 148.59 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, source/gate/drain"
-			(at 148.59 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "83e7413d-5879-4e97-be9f-108e2adb5d1e")
-		)
-		(pin "3"
-			(uuid "914db92e-7e52-40f7-b3d7-ed8554fe62a8")
-		)
-		(pin "2"
-			(uuid "37f62089-c3f6-4bce-abf8-822928021203")
-		)
-		(instances
-			(project "system_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a"
-					(reference "Q15")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/5a174002-ffcc-4227-bd40-56b6b535d594"
-					(reference "Q7")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/6b7dc64d-9cd6-42f7-af21-7e92fad5eee6"
-					(reference "Q4")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
-					(reference "Q9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Bluesat:R_CompactH")
 		(at 115.57 60.96 0)
 		(unit 1)
@@ -3031,6 +3006,91 @@
 				)
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
 					(reference "R39")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 148.59 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3046b02c-11a3-44a7-84c8-f052f6644dc3")
+		(property "Reference" "Q201"
+			(at 154.94 59.6899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 154.94 62.2299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
+			(at 153.67 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 148.59 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 148.59 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "c40fa2be-2c9f-4d8b-b27a-f64c68bc8f12")
+		)
+		(pin "1"
+			(uuid "dfeb2dab-f92e-4650-a361-c738f879505d")
+		)
+		(pin "2"
+			(uuid "5040b878-db62-4a19-899d-cf39b54c0bc0")
+		)
+		(instances
+			(project ""
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a"
+					(reference "Q401")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/5a174002-ffcc-4227-bd40-56b6b535d594"
+					(reference "Q501")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/6b7dc64d-9cd6-42f7-af21-7e92fad5eee6"
+					(reference "Q201")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
+					(reference "Q601")
 					(unit 1)
 				)
 			)
@@ -3146,7 +3206,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 110.49 124.46 0)
 			(effects
 				(font
@@ -3464,7 +3524,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 139.7 69.85 0)
 			(effects
 				(font
@@ -3548,7 +3608,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 123.19 137.16 0)
 			(effects
 				(font
@@ -3791,7 +3851,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 138.43 138.43 0)
 			(effects
 				(font
@@ -3923,6 +3983,91 @@
 				)
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
 					(reference "R27")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_FET:Q_NMOS_DGS")
+		(at 147.32 129.54 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8bcdbd43-fe18-4e1d-a2b0-db13faf7e324")
+		(property "Reference" "Q202"
+			(at 153.67 128.2699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRFH7440TRPBF"
+			(at 153.67 130.8099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Bluesat:PQFN_5x6mm_E_DGS"
+			(at 152.4 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-MOSFET transistor, drain/gate/source"
+			(at 147.32 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "740c716f-92bf-4572-8ccc-3c53618edd89")
+		)
+		(pin "1"
+			(uuid "93840d10-4772-4b29-8146-feb8a202f766")
+		)
+		(pin "2"
+			(uuid "e6bb1a88-cd17-4d50-97d9-3807a01f9dee")
+		)
+		(instances
+			(project "system_power_hub"
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a"
+					(reference "Q402")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/5a174002-ffcc-4227-bd40-56b6b535d594"
+					(reference "Q502")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/6b7dc64d-9cd6-42f7-af21-7e92fad5eee6"
+					(reference "Q202")
+					(unit 1)
+				)
+				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
+					(reference "Q602")
 					(unit 1)
 				)
 			)
@@ -4195,7 +4340,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6"
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 109.22 134.62 0)
 			(effects
 				(font
@@ -4289,7 +4434,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-363_SC-70-6"
+		(property "Footprint" "Bluesat:SOT-363"
 			(at 110.49 66.04 0)
 			(effects
 				(font
@@ -4383,7 +4528,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-882D"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 111.76 57.15 0)
 			(effects
 				(font
@@ -4467,7 +4612,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 124.46 68.58 0)
 			(effects
 				(font
@@ -4921,91 +5066,6 @@
 				)
 				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
 					(reference "#PWR082")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Transistor_FET:Q_NMOS_SGD")
-		(at 147.32 129.54 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f04bcc9c-2f9b-41a6-956c-484a5846072b")
-		(property "Reference" "Q12"
-			(at 153.67 128.2699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "IRFH7440TRPBF"
-			(at 153.67 130.8099 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Bluesat:PQFN_5x6mm_E_SGD"
-			(at 152.4 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, source/gate/drain"
-			(at 147.32 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "9361bbc2-87be-485a-9ad8-b5275da3e102")
-		)
-		(pin "3"
-			(uuid "29956bcc-822f-45d3-a7e5-bf81d56334c7")
-		)
-		(pin "2"
-			(uuid "c6874924-4e8a-4dfd-ac2f-ca1af2882d5f")
-		)
-		(instances
-			(project "system_power_hub"
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a"
-					(reference "Q16")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/5a174002-ffcc-4227-bd40-56b6b535d594"
-					(reference "Q11")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/6b7dc64d-9cd6-42f7-af21-7e92fad5eee6"
-					(reference "Q12")
-					(unit 1)
-				)
-				(path "/535f321e-8428-4dab-8e55-8d6d7e9876bc/dfdefcaf-12cd-4252-bb51-a1950d062629/f7a18f6d-784b-4045-823f-0a66708ba49a"
-					(reference "Q10")
 					(unit 1)
 				)
 			)
