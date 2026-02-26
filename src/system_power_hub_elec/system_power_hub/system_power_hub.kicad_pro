@@ -38,8 +38,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.0,
-          "height": 3.35,
-          "width": 1.225
+          "height": 2.5,
+          "width": 4.0
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.2
+          "min_clearance": 0.15
         }
       },
       "diff_pair_dimensions": [
@@ -137,9 +137,9 @@
         "min_text_thickness": 0.08,
         "min_through_hole_diameter": 0.2,
         "min_track_width": 0.0,
-        "min_via_annular_width": 0.1,
-        "min_via_diameter": 0.45,
-        "solder_mask_to_copper_clearance": 0.0,
+        "min_via_annular_width": 0.05,
+        "min_via_diameter": 0.4,
+        "solder_mask_to_copper_clearance": 0.005,
         "use_height_for_length_calcs": true
       },
       "teardrop_options": [
@@ -189,9 +189,9 @@
       "track_widths": [
         0.0,
         0.095,
-        0.2,
+        0.25,
         0.3,
-        0.4
+        0.5
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -523,7 +523,7 @@
     "last_paths": {
       "gencad": "",
       "idf": "",
-      "netlist": "",
+      "netlist": "./",
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
@@ -664,20 +664,16 @@
       "Root"
     ],
     [
-      "6b7dc64d-9cd6-42f7-af21-7e92fad5eee6",
-      "Mosfets 2"
-    ],
-    [
       "dfdefcaf-12cd-4252-bb51-a1950d062629",
       "Analog Stuff"
     ],
     [
-      "b845a4e5-1050-4def-86fb-070c31221b92",
-      "Power"
+      "6b7dc64d-9cd6-42f7-af21-7e92fad5eee6",
+      "Mosfets 1"
     ],
     [
       "4d6810d5-d5bb-4c5e-8fb1-5757218b8d5a",
-      "Mosfets 1"
+      "Mosfets 2"
     ],
     [
       "5a174002-ffcc-4227-bd40-56b6b535d594",
@@ -686,6 +682,10 @@
     [
       "f7a18f6d-784b-4045-823f-0a66708ba49a",
       "Mosfets 4"
+    ],
+    [
+      "b845a4e5-1050-4def-86fb-070c31221b92",
+      "Power"
     ]
   ],
   "text_variables": {}
