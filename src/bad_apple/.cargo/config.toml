@@ -1,0 +1,22 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = "arm-none-eabi-gdb -q -x openocd.gdb"
+
+rustflags = [
+  "-C", "link-arg=-Tbs_link.x",
+]
+
+[alias]
+pack = """\
+  run --manifest-path ../wzrd_pack/Cargo.toml --target host-tuple -- \
+  -i target/thumbv7em-none-eabihf/release/bad_apple \
+  -o target/thumbv7em-none-eabihf/release/bad_apple.wzrd \
+  --hw-ver 192.168.1 --sw-ver 89.6.4 \
+""" 
+
+deploy = """\
+  yakut execute-command 42 begin_software_update \
+  "target/thumbv7em-none-eabihf/release/bad_apple.wzrd"\
+"""
+
+[build]
+target = "thumbv7em-none-eabihf"  		# Cortex-M4 with FPU
