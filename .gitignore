@@ -1,14 +1,12 @@
-# Artifacts
-**/log/**
-**/out/**
-**/build/**
-**/install/**
-**/production/**
+# ROS Artifacts
+log/
+build/
+install/
 
-# Code
+# Rust and C++ Code Artifacts
 compile_commands.json
 *.wzrd
-**/target/**
+target/
 
 # KiCad
 *.bak
@@ -18,11 +16,15 @@ compile_commands.json
 *-bak
 *-cache
 *-backups
-**/\#auto_saved_files\#/**
+\#auto_saved_files\#/
+
+# KiCAD Plugins / Elec admin stuff
+fabrication-toolkit-options.json
+replicate_layout.log
+production/
+out/
 
 # Other
-.devcontainer/.env
-.devcontainer/devcontainer.json
-
-**/.vscode/**
-**/.cache/**
+/.devcontainer/.env
+.vscode/
+.cache/
