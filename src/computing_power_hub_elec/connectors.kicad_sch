@@ -4,6 +4,12 @@
 	(generator_version "9.0")
 	(uuid "4d067e90-45a0-40e4-bb57-0d230651c808")
 	(paper "A4")
+	(title_block
+		(title "Computing Power Module (CPM), a.k.a. Computing Power Hub")
+		(date "2026-02-25")
+		(rev "2.0")
+		(company "Bluesat OWR")
+	)
 	(lib_symbols
 		(symbol "Bluesat:+19V"
 			(power)
@@ -5835,6 +5841,16 @@
 	)
 	(wire
 		(pts
+			(xy 68.58 41.91) (xy 68.58 44.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1f377e47-1477-44ed-a415-8ee5fa83d800")
+	)
+	(wire
+		(pts
 			(xy 152.4 53.34) (xy 146.05 53.34)
 		)
 		(stroke
@@ -6392,16 +6408,6 @@
 			(type default)
 		)
 		(uuid "68b4e1c3-c05e-4179-930d-c488f1f5c4a0")
-	)
-	(wire
-		(pts
-			(xy 68.58 41.91) (xy 68.58 44.45)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c853fe2-d5c9-4c4b-8a32-ffb3c4a3719d")
 	)
 	(wire
 		(pts
@@ -8778,7 +8784,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_10x10"
 			(at 54.61 38.1 0)
 			(effects
 				(font
@@ -10088,16 +10094,16 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x08_Pin")
-		(at 92.71 50.8 0)
+		(at 92.71 53.34 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "6c5ada7d-e9e9-4866-a199-e621ec24ab89")
 		(property "Reference" "J320"
-			(at 93.345 38.1 0)
+			(at 93.345 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10105,7 +10111,7 @@
 			)
 		)
 		(property "Value" "BM08B-PASS"
-			(at 93.345 40.64 0)
+			(at 93.345 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10113,7 +10119,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:BM08B-PASS"
-			(at 92.71 50.8 0)
+			(at 92.71 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10122,7 +10128,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 92.71 50.8 0)
+			(at 92.71 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10131,7 +10137,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x08, script generated"
-			(at 92.71 50.8 0)
+			(at 92.71 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10310,8 +10316,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x08_Pin")
-		(at 157.48 50.8 0)
-		(mirror y)
+		(at 157.48 53.34 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10319,7 +10324,7 @@
 		(dnp no)
 		(uuid "71e6b290-3328-451f-882d-c5a073e99d32")
 		(property "Reference" "J321"
-			(at 156.845 38.1 0)
+			(at 156.845 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10327,7 +10332,7 @@
 			)
 		)
 		(property "Value" "BM08B-PASS"
-			(at 156.845 40.64 0)
+			(at 156.845 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10335,7 +10340,7 @@
 			)
 		)
 		(property "Footprint" "Bluesat:BM08B-PASS"
-			(at 157.48 50.8 0)
+			(at 157.48 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10344,7 +10349,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 157.48 50.8 0)
+			(at 157.48 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10353,7 +10358,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x08, script generated"
-			(at 157.48 50.8 0)
+			(at 157.48 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13041,7 +13046,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Bluesat:S2P-VH"
+		(property "Footprint" "Bluesat:B2P-VH"
 			(at 46.99 69.85 0)
 			(effects
 				(font
