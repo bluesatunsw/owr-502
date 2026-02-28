@@ -1,0 +1,16 @@
+on:
+  push
+
+jobs:
+  check-boards:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v5
+      - name: Install kicad
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt install --install-recommends kicad kicad-packages3d- kicad-demos- kicad-doc-en-
+      - name: Check PCB's 
+        run: .github/workflows/check_boards.sh
