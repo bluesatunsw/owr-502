@@ -56,20 +56,6 @@ if(BUILD_TESTING)
   find_package(controller_manager REQUIRED)
   find_package(ros2_control_test_assets REQUIRED)
 
-  # ament_add_gmock(test_swerve_drive_controller
-  #   test/test_swerve_drive_controller.cpp)
-  # target_link_libraries(test_swerve_drive_controller swerve_drive_controller)
-  # ament_target_dependencies(test_swerve_drive_controller
-  #   geometry_msgs
-  #   hardware_interface
-  #   nav_msgs
-  #   rclcpp
-  #   rclcpp_lifecycle
-  #   realtime_tools
-  #   tf2
-  #   tf2_msgs
-  # )
-
   add_definitions(-DTEST_FILES_DIRECTORY="${CMAKE_CURRENT_SOURCE_DIR}/test")
   ament_add_gmock(test_load_swerve_drive_controller test/test_load_swerve_drive_controller.cpp)
   ament_target_dependencies(test_load_swerve_drive_controller
@@ -79,12 +65,8 @@ if(BUILD_TESTING)
 
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
   set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_cpplint_FOUND FALSE)
   ament_lint_auto_find_test_dependencies()
 endif()
 

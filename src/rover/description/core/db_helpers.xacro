@@ -20,9 +20,9 @@
         <joint name="${prefix}_smount_fork_joint" type="revolute">
             <parent link="${prefix}_smount"/>
             <child link="${prefix}_wheel_fork"/>
-	    <origin xyz="${0} ${0} ${-0.213/2 - 0.03/2}" rpy="0 0 0"/>
+	        <origin xyz="${0} ${0} ${-0.213/2 - 0.03/2}" rpy="0 0 0"/>
             <axis xyz="0 0 1"/>
-            <limit lower="${-pi/2}" upper="${pi/2}" effort="40.0" velocity="12.8"/>
+            <limit lower="${-pi/2}" upper="${pi/2}" effort="400" velocity="5"/>
         </joint>
 
         <!-- This is the actual wheel -->
@@ -31,6 +31,7 @@
             <child link="${prefix}_tyre"/>
             <origin xyz="0 0 ${-0.05}" rpy="${-pi/2} 0 0" />
             <axis xyz="0 0 1"/>
+            <limit effort="400" velocity="0.2"/>
         </joint>
 
 

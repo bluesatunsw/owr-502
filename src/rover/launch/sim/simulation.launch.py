@@ -13,14 +13,13 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command,
     FindExecutable,
-    LaunchConfiguration,
     PathJoinSubstitution,
 )
 
@@ -30,27 +29,19 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
+            " is_simulation:=true ",
             PathJoinSubstitution(
                 [FindPackageShare("rover"), "description", "robot.urdf.xacro"]
             ),
         ]
     )
+
     robot_description = {
         "robot_description": ParameterValue(robot_description_content, value_type=str)
     }
-    robot_controllers = PathJoinSubstitution(
-        [
-            FindPackageShare("rover"),
-            "config",
-            "drivebase",
-            "swerve_drive_controller.yaml",
-        ]
-    )
 
     node_robot_state_publisher = Node(
         package="robot_state_publisher",
@@ -59,21 +50,19 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    gz_spawn_entity = Node(
-        package="ros_gz_sim",
-        executable="create",
-        output="screen",
-        arguments=[
-            "-topic",
-            "robot_description",
-            "-name",
-            "rover",
-            "-allow_renaming",
-            "true",
-            "-z",
-            "7.6",  # Spawn ABOVE the surface
-        ],
+    
+    ###########################
+    #    ROS2Control Setup    # 
+    ###########################
+    robot_controllers = PathJoinSubstitution(
+        [
+            FindPackageShare("rover"),
+            "config",
+            "core",
+            "swerve_drive_controller.yaml",
+        ]
     )
+
 
     swerve_drive_base_controller_spawner = Node(
         package="controller_manager",
@@ -85,6 +74,9 @@ def generate_launch_description():
         ],
     )
 
+    ###########################
+    #      Gazebo setup       # 
+    ###########################
     bridge_params = PathJoinSubstitution(
         [
             FindPackageShare("rover"),
@@ -100,35 +92,44 @@ def generate_launch_description():
         parameters=[{"config_file": bridge_params}],
         output="screen",
     )
+    
+    gz_spawn_entity = Node(
+        package="ros_gz_sim",
+        executable="create",
+        output="screen",
+        arguments=[
+            "-topic",
+            "/robot_description",
+            "-name",
+            "rover",
+            "-allow_renaming",
+            "true",
+            "-z",
+            "7.6",  # Spawn ABOVE the surface
+        ],
+    )
+    
+    swerve_controller_spawn_trigger = RegisterEventHandler(
+        event_handler=OnProcessExit(
+                target_action=gz_spawn_entity,
+                on_exit=[swerve_drive_base_controller_spawner],
+        )
+    )
+    gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
+        ),
+        launch_arguments=[("gz_args", " -r -v 4 dem_moon.sdf")],
+    )
+
+
 
     return LaunchDescription(
         [
-            # Launch gazebo environment
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    [
-                        PathJoinSubstitution(
-                            [
-                                FindPackageShare("ros_gz_sim"),
-                                "launch",
-                                "gz_sim.launch.py",
-                            ]
-                        )
-                    ]
-                ),
-                launch_arguments={
-                    "gz_args": [" -r -v 4 dem_moon.sdf"],
-                    "on_exit_shutdown": "true",
-                }.items(),
-            ),
-            RegisterEventHandler(
-                event_handler=OnProcessExit(
-                    target_action=gz_spawn_entity,
-                    on_exit=[swerve_drive_base_controller_spawner],
-                )
-            ),
+            gazebo,
             node_robot_state_publisher,
-            gz_spawn_entity,
             start_gazebo_ros_bridge_cmd,
+            gz_spawn_entity,
+            swerve_controller_spawn_trigger,
         ]
     )
