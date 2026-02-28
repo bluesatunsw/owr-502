@@ -25,7 +25,7 @@ while read -r fname; do
         exitcode=$((exitcode|2))
     fi
 
-    if kicad-cli pcb drc --severity-all --exit-code-violations --output "out/drc-$proj_name" "$proj_path.kicad_pcb"; then
+    if ! kicad-cli pcb drc --severity-all --exit-code-violations --output "out/drc-$proj_name" "$proj_path.kicad_pcb"; then
         echo "::error file=$proj_name::DRC Error!"
         exitcode=$((exitcode|4))
     fi
