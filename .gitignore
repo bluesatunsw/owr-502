@@ -1,22 +1,33 @@
-log/*
-install/*
-build/*
-**/production/*
-.pio
-.vscode
-.cache
+# ROS Artifacts
+log/
+build/
+install/
+
+# Rust and C++ Code Artifacts
 compile_commands.json
-.devcontainer/.env
-.devcontainer/devcontainer.json
-*.lck
-*.zip
-*.csv
-*.lck
+*.wzrd
+target/
 
 # KiCad
-**/*-backups
-**/*-cache
-**/*.bak
-**/*-bak
-**/*.kicad_prl
-**/fp-info-cache
+fp-lib-table
+sym-lib-table
+*.bak
+*.lck
+*.kicad_prl
+
+*-bak
+*-cache
+*-backups/
+\#auto_saved_files\#/
+
+# KiCAD Plugins / Elec admin stuff
+fabrication-toolkit-options.json
+replicate_layout.log
+ibom.html
+production/
+out/
+
+# Other
+/.devcontainer/.env
+.vscode/
+.cache/
