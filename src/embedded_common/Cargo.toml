@@ -18,3 +18,6 @@ fdcan = { git = "https://github.com/umi-eng/fdcan.git", branch = "transceiver-de
 nb = "1.1.0"
 cortex-m = {version = "0.7.7", features = ["critical-section-single-core"]}
 canadensis_can = {version = "0.5.1", features = ["can-fd"]}
+
+[features]
+dprintln-enabled = []
