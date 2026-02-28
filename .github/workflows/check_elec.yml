@@ -3,7 +3,7 @@ on:
 
 jobs:
   check-boards:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./github/workflows
