@@ -18,7 +18,7 @@ pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: 
     }
 }
 
-#[cfg(debug_assertions)]
+#[cfg(feature = "dprintln-enabled")]
 #[macro_export]
 macro_rules! dprint {
     ($channel:literal, $s:expr) => {
@@ -31,14 +31,14 @@ macro_rules! dprint {
     };
 }
 
-#[cfg(not(debug_assertions))]
+#[cfg(not(feature = "dprintln-enabled"))]
 #[macro_export]
 macro_rules! dprint {
     ($channel:literal, $s:expr) => {};
     ($channel:literal, $($arg:tt)*) => {};
 }
 
-#[cfg(debug_assertions)]
+#[cfg(feature = "dprintln-enabled")]
 #[macro_export]
 macro_rules! dprintln {
     ($channel:literal) => {
@@ -55,7 +55,7 @@ macro_rules! dprintln {
     };
 }
 
-#[cfg(not(debug_assertions))]
+#[cfg(not(feature = "dprintln-enabled"))]
 #[macro_export]
 macro_rules! dprintln {
     ($channel:literal) => {};
