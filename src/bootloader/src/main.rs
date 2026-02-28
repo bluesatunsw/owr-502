@@ -24,7 +24,7 @@ use canadensis::{
     requester::TransferIdFixedMap,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use embedded_common::{can::CanDriver, clock::MicrosecondClock};
+use embedded_common::{can::CanDriver, clock::MicrosecondClock, dprintln};
 use heapless::Vec;
 // use panic_semihosting as _;
 
