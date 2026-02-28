@@ -1,5 +1,8 @@
+on:
+  push
+
 jobs:
-  example-job:
+  check-boards:
     runs-on: alpine-latest
     defaults:
       run:
