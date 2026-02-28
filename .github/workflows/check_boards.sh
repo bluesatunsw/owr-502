@@ -21,13 +21,13 @@ while read -r fname; do
     echo "Checking design files: $proj_name..."
 
     kicad-cli sch erc --severity-all --exit-code-violations --output "out/erc-$proj_name" "$proj_path.kicad_sch"
-    if [ ! -f "$proj_path.kicad_dru" ]; then 
+    if [ ! $? ]; then 
         echo "::error file=$proj_name::ERC Error!"
         exitcode=$((exitcode|2))
     fi
 
     kicad-cli pcb drc --severity-all --exit-code-violations --output "out/drc-$proj_name" "$proj_path.kicad_pcb"
-    if [ ! -f "$proj_path.kicad_dru" ]; then 
+    if [ ! $? ]; then 
         echo "::error file=$proj_name::DRC Error!"
         exitcode=$((exitcode|4))
     fi
