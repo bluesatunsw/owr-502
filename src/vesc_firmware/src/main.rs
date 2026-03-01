@@ -2,8 +2,10 @@
 #![feature(never_type)]
 #![no_std]
 #![no_main]
+#![feature(more_float_constants)]
 
 use core::convert::TryInto;
+use core::f32::consts;
 use core::ptr;
 use core::{cell::UnsafeCell, mem::MaybeUninit};
 
@@ -26,11 +28,6 @@ use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport};
 use cortex_m::interrupt::Mutex;
 use cortex_m_rt::entry;
 use embedded_alloc::LlffHeap as Heap;
-use fixed::types::I16F16;
-use foc::{
-    park_clarke::{inverse_park, RotatingReferenceFrame},
-    pwm::{Modulation, SpaceVector},
-};
 use panic_semihosting as _;
 
 use stm32f4xx_hal::{
@@ -51,15 +48,14 @@ pub mod bsp;
 pub mod comms;
 pub mod config;
 pub mod state;
-pub mod utils;
+pub mod util;
 
-use crate::utils::setup_itm;
+use crate::util::{foc::{RotatingReferenceFrame, inverse_park, modulate_spacevector}, debug::setup_itm};
 use crate::{
     bsp::{clock::STM32F4xxCyphalClock, drv8301::DRV8301, six_pwm::STM32F4xxSixPwmDriver},
     comms::{CommSystem, CYPHAL_CONCURRENT_TRANSFERS, CYPHAL_NUM_SERVICES, CYPHAL_NUM_TOPICS},
     config::presets::*,
     state::CommutationState,
-    utils::{cos, sin},
 };
 
 // TODO: Move these into some CommutationState thingo or smth
@@ -167,7 +163,7 @@ fn main() -> ! {
         dprintln!(
             0,
             "[INFO] Hall angle: {}, in state {}",
-            I16F16::FRAC_PI_3 * K_HALL_TABLE[_idx],
+            consts::FRAC_PI_3 * K_HALL_TABLE[_idx],
             _idx
         );
     }
@@ -269,15 +265,15 @@ fn main() -> ! {
     }
 }
 
-const K_HALL_TABLE: [i32; 8] = [
-    0, // 000 = xxx impossible
-    3, // 001 = 3 (180 deg)
-    5, // 010 = 5 (300 deg)
-    4, // 011 = 4 (240 deg)
-    1, // 100 = 1 (060 deg)
-    2, // 101 = 2 (120 deg)
-    0, // 110 = 0 (000 deg)
-    0, // 111 = xxx impossible
+const K_HALL_TABLE: [f32; 8] = [
+    0.0, // 000 = xxx impossible
+    3.0, // 001 = 3 (180 deg)
+    5.0, // 010 = 5 (300 deg)
+    4.0, // 011 = 4 (240 deg)
+    1.0, // 100 = 1 (060 deg)
+    2.0, // 101 = 2 (120 deg)
+    0.0, // 110 = 0 (000 deg)
+    0.0, // 111 = xxx impossible
 ];
 
 #[interrupt]
@@ -287,8 +283,8 @@ fn TIM1_UP_TIM10() {
     }
 
     // Voltage expressed as a duty cycle... I don't care vro
-    const V_D: I16F16 = I16F16::lit("0");
-    let mut v_q: I16F16 = I16F16::lit("0"); // Duty cycle from -1 to 1
+    const V_D: f32 = 0.0;
+    let mut v_q = 0f32; // Duty cycle from -1 to 1
 
     cortex_m::interrupt::free(|cs| {
         let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
@@ -298,31 +294,29 @@ fn TIM1_UP_TIM10() {
         }
     });
 
-    let mut angle: I16F16 = I16F16::ZERO;
+    let mut angle: f32 = 0.0;
     cortex_m::interrupt::free(|cs| unsafe {
         let halls = G_HALLS.borrow(cs).as_ref_unchecked().assume_init_ref();
         let idx = (usize::from(halls.0.is_high()) << 2)
             + (usize::from(halls.1.is_high()) << 1)
             + usize::from(halls.2.is_high());
 
-        angle = I16F16::FRAC_PI_3 * K_HALL_TABLE[idx];
+        angle = consts::FRAC_PI_3 * K_HALL_TABLE[idx];
 
-        while angle > I16F16::PI {
-            angle -= I16F16::TAU;
+        while angle > consts::PI {
+            angle -= consts::TAU;
         }
-        while angle < -I16F16::PI {
-            angle += I16F16::TAU;
+        while angle < -consts::PI {
+            angle += consts::TAU;
         }
     });
 
-    let (sin_angle, cos_angle) = (sin(angle), cos(angle));
-    let v_ab: foc::park_clarke::TwoPhaseReferenceFrame = inverse_park(
-        cos_angle,
-        sin_angle,
+    let v_ab = inverse_park(
+        angle,
         RotatingReferenceFrame { d: V_D, q: v_q },
     );
     // sinusoidal would do inverse clarke
-    let v_abc = SpaceVector::modulate(v_ab);
+    let v_abc = modulate_spacevector(v_ab);
 
     cortex_m::interrupt::free(|cs| unsafe {
         let pwm = G_PWMS.borrow(cs).as_mut_unchecked();

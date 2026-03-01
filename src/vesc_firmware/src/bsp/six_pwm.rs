@@ -1,10 +1,9 @@
-use fixed::types::I16F16;
 use stm32f4xx_hal::gpio::{Pin, PinState, Speed};
 use stm32f4xx_hal::prelude::*;
 use stm32f4xx_hal::timer::{Event, PwmChannel};
 use stm32f4xx_hal::{pac::TIM1, rcc::Rcc};
 
-use crate::utils::motor_disable;
+use crate::util::motor_disable;
 
 pub struct STM32F4xxSixPwmDriver {
     ph_a: PwmChannel<TIM1, 0, true>,
@@ -18,7 +17,7 @@ impl STM32F4xxSixPwmDriver {
     // -> A or B can never reach 100% duty (to reconstruct Iq and Id)
     // -> Cap all of them because capping just A&B would be cursed (torque ripple)
     // 168MHz / 28kHz = 6000, 100 derived in README.md
-    const PWM_SENSE_LIMIT: u32 = 6000 - 100;
+    const PWM_SENSE_LIMIT: f32 = 6000.0 - 100.0;
 
     pub fn setup(
         rcc: &mut Rcc,
@@ -108,10 +107,9 @@ impl STM32F4xxSixPwmDriver {
     // 2. mul (16 bit wide TIMx.ARR capped for curr sense) --> [0, 11800], uncapped is 12000
     //  - Cap all of them equally cause capping just 2 would be goofy asf
     // 3. div 2 --> [0, 5900] A.K.A [0%, 98.3%]
-    pub fn set_duty(&mut self, duties: [I16F16; 3]) {
+    pub fn set_duty(&mut self, duties: [f32; 3]) {
         let v_abc_norm = duties.map(|x| {
-            (((x + I16F16::lit("1")).unsigned_abs() * Self::PWM_SENSE_LIMIT) / 2)
-                .saturating_to_num::<u16>()
+            ((x + 1.0) * (Self::PWM_SENSE_LIMIT / 2.0)) as u16
         });
 
         self.ph_a.set_duty(v_abc_norm[0]);

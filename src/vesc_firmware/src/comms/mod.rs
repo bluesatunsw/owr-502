@@ -7,12 +7,11 @@ use canadensis::encoding::Deserialize;
 use canadensis::{ResponseToken, TransferHandler};
 use canadensis_data_types::reg::udral::service::actuator;
 use cortex_m::interrupt::Mutex;
-use fixed::types::I16F16;
 
 use crate::config::CommsConfig;
 use crate::dprintln;
 use crate::state::CommutationState;
-use crate::utils::{motor_disable, motor_enable};
+use crate::util::{motor_disable, motor_enable};
 
 pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 pub const CYPHAL_NUM_TOPICS: usize = 8;
@@ -52,7 +51,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                         self.control_mode
                             .borrow(cs)
                             .replace(CommutationState::Voltage {
-                                voltage: I16F16::from_num(volts.value),
+                                voltage: f32::from(volts.value),
                             });
                         motor_enable();
                     }
