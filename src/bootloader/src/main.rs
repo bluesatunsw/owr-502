@@ -24,7 +24,7 @@ use canadensis::{
     requester::TransferIdFixedMap,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use embedded_common::{can::CanDriver, clock::MicrosecondClock, dprintln};
+use embedded_common::{can::CanDriver, clock::MicrosecondClock, debug::uuid, dprintln};
 use heapless::Vec;
 // use panic_semihosting as _;
 
@@ -56,26 +56,22 @@ mod common;
 mod comms_handler;
 mod crc_handler;
 mod iflash;
-mod interfaces;
 mod peripherals;
 mod qspi;
 
 extern crate alloc;
 
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
-const CYPHAL_NUM_TOPICS: usize = 4;
+const CYPHAL_NUM_TOPICS: usize = 2;
 const CYPHAL_NUM_SERVICES: usize = 4;
 
 const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
-const UPDATE_TIMEOUT_US: u32 = 15_000_000;
+const UPDATE_TIMEOUT_US: u32 = 60_000_000;
 
 const UID_ADDRESS: u32 = 0x1FFF_7590;
 
 const RAM_START: *mut u32 = 0x2000_0000 as *mut u32;
 const FLASH_START: *const u32 = 0x0800_0000 as *const u32;
-
-const RAM_TEST_START: *mut u32 = 0x2001_0000 as *mut u32;
-const FLASH_TEST_START: *const u32 = 0x0801_0000 as *const u32;
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -128,15 +124,8 @@ fn main() -> ! {
     unsafe {
         // Copy bootloader code into RAM to allow us to write to internal flash
         copy_nonoverlapping(FLASH_START, RAM_START, 0x2000);
-        copy_nonoverlapping(FLASH_TEST_START, RAM_TEST_START, 0x4000);
         // Remap RAM to begin executing from RAM
         ps.sys.memrmp().write(|w| w.mem_mode().bits(0b011));
-    }
-
-    let mut uuid: [u8; 16] = [0x4C; 16];
-    // SAFETY: 😊
-    unsafe {
-        copy_nonoverlapping(UID_ADDRESS as *const u8, uuid.as_mut_ptr(), 12);
     }
 
     let clock_sys = MicrosecondClock::new(ps.clock_tim, &mut ps.rcc);
@@ -187,7 +176,7 @@ fn main() -> ! {
                 minor: current_header.sw_min,
             },
             software_vcs_revision_id: 0,
-            unique_id: uuid,
+            unique_id: uuid(),
             name: Vec::from_slice(b"org.bluesat.owr.bootloader").unwrap(),
             software_image_crc: Vec::from_array([current_header.crc as u64]),
             certificate_of_authenticity: Vec::new(),
@@ -223,7 +212,7 @@ fn main() -> ! {
         comms_handler.tick(&mut node);
         argb_sys.tick(comms_handler.identifying(), node.clock_mut().now());
 
-        //  Do nothing if handlers are still busy
+        //  Do nothing if either flasher is not ready
         if !qspi_flasher.tick() || !iflash_flasher.tick() {
             continue;
         }

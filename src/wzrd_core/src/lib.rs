@@ -124,11 +124,6 @@ impl Header {
     pub fn to_flash_location(&self, mut offset: usize) -> Option<(FlashLocation, usize)> {
         use FlashLocation::*;
 
-        if offset < Self::SIZE {
-            return None;
-        }
-        offset -= Self::SIZE;
-
         if offset < self.total_ext_length() {
             return Some((External, offset));
         }

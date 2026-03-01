@@ -1,4 +1,4 @@
-use core::arch::breakpoint;
+use core::{arch::breakpoint, hint::black_box};
 
 use canadensis::{
     Node, ResponseToken, ServiceToken, TransferHandler,
@@ -12,11 +12,13 @@ use canadensis::{
 };
 use canadensis_data_types::uavcan::{
     file::{
+        error_1_0::Error as FileError,
         path_2_0::Path,
         read_1_1::{ReadRequest, ReadResponse},
     },
     node::execute_command_1_3::{ExecuteCommandRequest, ExecuteCommandResponse},
 };
+use embedded_common::{debug::itm_hexdump, dprintln};
 use fugit::ExtU32;
 use heapless::Vec;
 
@@ -24,11 +26,14 @@ use canadensis_data_types::uavcan::file::read_1_1::SERVICE as READ_SERVICE;
 use canadensis_data_types::uavcan::node::execute_command_1_3::SERVICE as EXECUTE_COMMAND_SERVICE;
 use wzrd_core::{CHUNK_SIZE, Header};
 
+const MAX_TRANSFERS: usize = 1;
+
 use crate::{
     chunk::{ChunkManager, DoubleBuffer, TRANSFER_SIZE},
     common::{FlashCommand, LocatedChunk},
 };
 
+#[derive(Debug)]
 enum AsyncHeader<I: PartialEq> {
     Future(I),
     Some(Header),
@@ -67,7 +72,7 @@ where
             read_token: node
                 .start_sending_requests::<ReadRequest>(
                     READ_SERVICE,
-                    10.millis(),
+                    100.millis(),
                     ReadResponse::EXTENT_BYTES.unwrap() as usize,
                     Priority::Low.into(),
                 )
@@ -87,21 +92,30 @@ where
 
         if let Some(update) = &mut self.update
             && let AsyncHeader::Some(header) = &update.header
+            && (update.buffers.front().active_transfers()
+                + update.buffers.back().active_transfers())
+                < MAX_TRANSFERS
         {
             let tok = &self.read_token;
-            let (buf, off) = if update.buffers.front().complete() {
+            let (buf, off) = if update.buffers.front().unfilled() {
+                (update.buffers.front_mut(), update.file_offset)
+            } else if update.buffers.back().unfilled() {
                 (update.buffers.back_mut(), update.file_offset + CHUNK_SIZE)
             } else {
-                (update.buffers.front_mut(), update.file_offset)
+                return;
             };
 
-            if header.image_length() < off {
+            if off < header.image_length() {
                 buf.start_transfer(|x| {
+                    let file_offset = off + x * TRANSFER_SIZE;
+                    dprintln!(0, "{}/{}", file_offset, header.image_length());
                     node.send_request(
                         &tok,
                         &ReadRequest {
-                            offset: (off + x * TRANSFER_SIZE) as u64,
-                            path: Path::deserialize_from_bytes(update.path.as_slice()).unwrap(),
+                            offset: file_offset as u64,
+                            path: Path {
+                                path: update.path.clone(),
+                            },
                         },
                         update.server.clone(),
                     )
@@ -129,6 +143,7 @@ where
             update.file_offset += CHUNK_SIZE;
             update.buffers.switch();
 
+            itm_hexdump(1, &chunk);
             if header.image_length() < update.file_offset {
                 self.update = None;
                 self.finish_flag = true;
@@ -180,8 +195,9 @@ where
                             &self.read_token,
                             &ReadRequest {
                                 offset: 0,
-                                path: Path::deserialize_from_bytes(req.parameter.as_slice())
-                                    .unwrap(),
+                                path: Path {
+                                    path: req.parameter,
+                                },
                             },
                             source.clone(),
                         )
@@ -235,27 +251,29 @@ where
         _node: &mut N,
         transfer: &ServiceTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool {
-        breakpoint();
         if let Some(update) = &mut self.update {
             let tid = &transfer.header.transfer_id;
-            let payload = &transfer.payload;
+            let res = ReadResponse::deserialize_from_bytes(&transfer.payload).unwrap();
 
             if let AsyncHeader::Future(req_tid) = &update.header
                 && *tid == *req_tid
             {
-                update.header =
-                    AsyncHeader::Some(Header::deserialize(&payload.as_array().unwrap()).unwrap());
+                update.header = AsyncHeader::Some(
+                    Header::deserialize(
+                        res.data.value.as_slice()[0..Header::SIZE]
+                            .as_array()
+                            .unwrap(),
+                    )
+                    .unwrap(),
+                );
                 return true;
             }
 
-            return update
-                .buffers
-                .front_mut()
-                .end_transfer(&tid, payload.as_slice())
-                || update
-                    .buffers
-                    .back_mut()
-                    .end_transfer(&tid, payload.as_slice());
+            let chunk: &[u8; TRANSFER_SIZE] = res.data.value.as_slice()[0..TRANSFER_SIZE]
+                .as_array()
+                .unwrap();
+            return update.buffers.front_mut().end_transfer(&tid, chunk)
+                || update.buffers.back_mut().end_transfer(&tid, chunk);
         }
 
         false

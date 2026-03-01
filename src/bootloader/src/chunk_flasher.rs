@@ -1,3 +1,5 @@
+use core::arch::breakpoint;
+
 use wzrd_core::CHUNK_SIZE;
 
 use crate::common::Chunk;
@@ -35,6 +37,7 @@ where
     }
 
     pub fn write(&mut self, chunk: Chunk, addr: usize) {
+        breakpoint();
         assert!(self.done());
 
         self.data = chunk;
@@ -58,7 +61,7 @@ where
             self.base + self.offs,
         );
 
-        true
+        false
     }
 
     pub fn done(&mut self) -> bool {

@@ -1,4 +1,7 @@
+use core::arch::breakpoint;
+
 use canadensis::core::transport::TransferId;
+use embedded_common::{dprint, dprintln};
 use wzrd_core::CHUNK_SIZE;
 
 use crate::common::Chunk;
@@ -26,9 +29,32 @@ impl<T: TransferId + PartialEq> ChunkManager<T> {
         }
     }
 
+    pub fn active_transfers(&self) -> usize {
+        self.chunklets
+            .iter()
+            .filter(|x| {
+                if let ChunkletState::Transferring(_) = x {
+                    true
+                } else {
+                    false
+                }
+            })
+            .count()
+    }
+
     pub fn complete(&self) -> bool {
         self.chunklets.iter().all(|x| {
             if let ChunkletState::Filled = x {
+                true
+            } else {
+                false
+            }
+        })
+    }
+
+    pub fn unfilled(&self) -> bool {
+        self.chunklets.iter().any(|x| {
+            if let ChunkletState::Empty = x {
                 true
             } else {
                 false
@@ -42,7 +68,8 @@ impl<T: TransferId + PartialEq> ChunkManager<T> {
     {
         for i in 0..self.chunklets.len() {
             if let ChunkletState::Empty = self.chunklets[i] {
-                self.chunklets[i] = ChunkletState::Transferring(cb(i));
+                let x = cb(i);
+                self.chunklets[i] = ChunkletState::Transferring(x.clone());
                 return true;
             }
         }

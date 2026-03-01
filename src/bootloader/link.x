@@ -27,7 +27,7 @@ MEMORY
   /* To allow for bank switching put everything here */
   CODE  : ORIGIN = 0x00000000, LENGTH = 32K-256
   /* Skip over first 32K of SRAM */
-  RAM : ORIGIN = 0x20008000, LENGTH = 64K
+  RAM : ORIGIN = 0x20008000, LENGTH = 96K
 }
 
 /* # Entry point = reset vector */
