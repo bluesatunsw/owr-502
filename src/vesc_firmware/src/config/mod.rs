@@ -2,8 +2,7 @@ use canadensis::core::SubjectId;
 
 pub mod presets;
 
-#[derive(Default)]
-pub struct Config {
+pub struct AppConfig {
     pub comms: CommsConfig,
 }
 
@@ -12,11 +11,13 @@ pub struct CommsConfig {
     pub ctrl_volt: SubjectId,
 }
 
-impl Default for CommsConfig {
+impl Default for AppConfig {
     fn default() -> Self {
-        CommsConfig {
-            node_id: 1,
-            ctrl_volt: SubjectId::from_truncating(10),
+        AppConfig {
+            comms: CommsConfig {
+                node_id: 1,
+                ctrl_volt: SubjectId::from_truncating(10),
+            },
         }
     }
 }

@@ -10,7 +10,8 @@ use cortex_m::interrupt::Mutex;
 use fixed::types::I16F16;
 
 use crate::config::CommsConfig;
-use crate::state::ControlMode;
+use crate::dprintln;
+use crate::state::CommutationState;
 use crate::utils::{motor_disable, motor_enable};
 
 pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
@@ -19,7 +20,7 @@ pub const CYPHAL_NUM_SERVICES: usize = 8;
 
 pub struct CommSystem {
     pub config: CommsConfig,
-    pub control_mode: &'static Mutex<UnsafeCell<ControlMode>>,
+    pub control_mode: &'static Mutex<UnsafeCell<CommutationState>>,
 }
 
 impl CommSystem {
@@ -44,28 +45,22 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                 motor_disable();
                 cortex_m::interrupt::free(|cs| unsafe {
                     if f32::from(volts.value).abs() < 0.02 {
-                        self.control_mode.borrow(cs).replace(ControlMode::Disabled);
+                        self.control_mode
+                            .borrow(cs)
+                            .replace(CommutationState::Disabled);
                     } else {
-                        self.control_mode.borrow(cs).replace(ControlMode::Voltage {
-                            voltage: I16F16::from_num(volts.value),
-                        });
+                        self.control_mode
+                            .borrow(cs)
+                            .replace(CommutationState::Voltage {
+                                voltage: I16F16::from_num(volts.value),
+                            });
                         motor_enable();
                     }
                 });
-
-                /*iprintln!(
-                    unsafe { &mut Peripherals::steal().ITM.stim[0] },
-                    "[INFO] DutyCycle setpoint received: {}",
-                    I16F16::from_num(volts.value)
-                );*/
-
                 true
             }
             _ => {
-                /*iprintln!(
-                    unsafe { &mut Peripherals::steal().ITM.stim[0] },
-                    "[WARN] Unknown message RECV'd"
-                );*/
+                dprintln!(0, "[WARN] Unknown message RECV'd");
                 false
             }
         }
@@ -80,10 +75,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
     where
         N: canadensis::Node<Transport = T>,
     {
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] COMMS.REQ"
-        );*/
+        dprintln!(0, "[INFO] COMMS.REQ");
         false
     }
 
@@ -91,10 +83,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
     where
         N: canadensis::Node<Transport = T>,
     {
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] COMMS.RESP"
-        );*/
+        dprintln!(0, "[INFO] COMMS.RESP");
         false
     }
 }

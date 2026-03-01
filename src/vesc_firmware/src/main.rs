@@ -23,7 +23,7 @@ use canadensis::{
 };
 use canadensis_bxcan::BxCanDriver;
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport};
-use cortex_m::{interrupt::Mutex, iprintln};
+use cortex_m::interrupt::Mutex;
 use cortex_m_rt::entry;
 use embedded_alloc::LlffHeap as Heap;
 use fixed::types::I16F16;
@@ -53,11 +53,12 @@ pub mod config;
 pub mod state;
 pub mod utils;
 
+use crate::utils::setup_itm;
 use crate::{
     bsp::{clock::STM32F4xxCyphalClock, drv8301::DRV8301, six_pwm::STM32F4xxSixPwmDriver},
     comms::{CommSystem, CYPHAL_CONCURRENT_TRANSFERS, CYPHAL_NUM_SERVICES, CYPHAL_NUM_TOPICS},
     config::presets::*,
-    state::ControlMode,
+    state::CommutationState,
     utils::{cos, sin},
 };
 
@@ -66,8 +67,8 @@ static G_HALLS: Mutex<UnsafeCell<MaybeUninit<(AnyPin<Input>, AnyPin<Input>, AnyP
     Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
 static G_PWMS: Mutex<UnsafeCell<MaybeUninit<STM32F4xxSixPwmDriver>>> =
     Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
-static G_CONTROL: Mutex<UnsafeCell<ControlMode>> =
-    Mutex::new(UnsafeCell::new(ControlMode::Disabled));
+static G_CONTROL: Mutex<UnsafeCell<CommutationState>> =
+    Mutex::new(UnsafeCell::new(CommutationState::Disabled));
 
 // Global allocator -- required by canadensis.
 #[global_allocator]
@@ -91,7 +92,7 @@ fn main() -> ! {
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
-    let dp = stm32f4xx_hal::pac::Peripherals::take().unwrap();
+    let mut dp = stm32f4xx_hal::pac::Peripherals::take().unwrap();
 
     let mut rcc = dp.RCC.freeze(
         Config::hse(24.MHz())
@@ -114,15 +115,7 @@ fn main() -> ! {
     led_red.set_high();
 
     unsafe {
-        cp.DCB.enable_trace();
-        cp.DWT.enable_cycle_counter();
-        dp.DBGMCU
-            .cr()
-            .modify(|_, w| w.trace_ioen().set_bit().trace_mode().bits(0b00));
-        cp.ITM.lar.write(0xC5ACCE55); // Unlock ITM registers
-        cp.ITM.tcr.write(0x00010005); // AdvTBus ID = 1, Global ITM enable
-        cp.ITM.ter[0].write(0b111); // Enables STIM1 & STIM0
-        cp.ITM.tpr.write(0b1); // Enables STIM[7:0]
+        setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM);
     }
 
     let drv = DRV8301::<SPI3>::setup(
@@ -168,19 +161,15 @@ fn main() -> ! {
     //Adc::new(dp.ADC1, true, config, rcc);
 
     {
-        let idx = (usize::from(hall1.is_high()) << 2)
+        let _idx = (usize::from(hall1.is_high()) << 2)
             + (usize::from(hall2.is_high()) << 1)
             + usize::from(hall3.is_high());
-
-        let angle = I16F16::FRAC_PI_3 * K_HALL_TABLE[idx];
-        /*iprintln!(&mut cp.ITM.stim[0], "[INFO] HALL ANGLE: {}", angle);*/
-        /*if idx == 0 || idx == 7 {
-            iprintln!(
-                &mut cp.ITM.stim[0],
-                "[ERR] Invalid hall state {}... is the encoder plugged in?",
-                idx
-            );
-        }*/
+        dprintln!(
+            0,
+            "[INFO] Hall angle: {}, in state {}",
+            I16F16::FRAC_PI_3 * K_HALL_TABLE[_idx],
+            _idx
+        );
     }
 
     cortex_m::interrupt::free(|cs| unsafe {
@@ -262,23 +251,20 @@ fn main() -> ! {
     loop {
         if node.clock().advance_if_elapsed(&mut start, 1.secs()) {
             if drv.has_fault() {
-                iprintln!(&mut cp.ITM.stim[0], "[WARN] DRV Fault!");
+                dprintln!(0, "[WARN] DRV Fault!");
                 node.set_health(Health {
                     value: Health::ADVISORY,
                 });
             }
 
             if let Err(_) = node.run_per_second_tasks() {
-                /*iprintln!(
-                    &mut cp.ITM.stim[0],
-                    "[WARN] node.run_per_second_tasks failed!"
-                );*/
+                dprintln!(0, "[WARN] node.run_per_second_tasks failed!");
             }
             led_green.toggle();
         }
 
         if let Err(_) = node.receive(&mut handler) {
-            /*iprintln!(&mut cp.ITM.stim[0], "[ERR] node.receive failed!");*/
+            dprintln!(0, "[ERR] node.receive failed!");
         }
     }
 }
@@ -307,7 +293,7 @@ fn TIM1_UP_TIM10() {
     cortex_m::interrupt::free(|cs| {
         let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
 
-        if let ControlMode::Voltage { voltage: volts } = *control {
+        if let CommutationState::Voltage { voltage: volts } = *control {
             v_q = volts;
         }
     });
@@ -328,10 +314,6 @@ fn TIM1_UP_TIM10() {
             angle += I16F16::TAU;
         }
     });
-
-    //unsafe {
-    //    Peripherals::steal().ITM.stim[1].write_u32(transmute(angle));
-    //}
 
     let (sin_angle, cos_angle) = (sin(angle), cos(angle));
     let v_ab: foc::park_clarke::TwoPhaseReferenceFrame = inverse_park(

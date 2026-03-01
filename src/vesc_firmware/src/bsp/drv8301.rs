@@ -1,4 +1,4 @@
-use cortex_m::{asm::delay};
+use cortex_m::asm::delay;
 use fugit::RateExtU32;
 use stm32f4xx_hal::{
     gpio::{Alternate, Input, Output, Pin},
@@ -7,6 +7,8 @@ use stm32f4xx_hal::{
     rcc::Rcc,
     spi::{Instance, Mode, Phase, Polarity, Spi, SpiExt},
 };
+
+use crate::dprintln;
 
 bitfield::bitfield! {
     pub struct RegStatus1(u16);
@@ -85,11 +87,7 @@ impl<T: Instance> DRV8301<T> {
         gate_en.set_high();
         delay(250_000);
 
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.FAULT present? {}",
-            if nfault.is_low() { "Y" } else { "N" }
-        );*/
+        dprintln!(0, "[INFO] DRV.FAULT present? {}", nfault.is_low());
 
         let spi_mode = Mode {
             polarity: Polarity::IdleLow,
@@ -103,26 +101,14 @@ impl<T: Instance> DRV8301<T> {
             rcc,
         );
 
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.Basic pin setup done.. Moving on to SPI"
-        );*/
+        dprintln!(0, "[INFO] DRV.Basic pin setup done.. Moving on to SPI");
 
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_STAT1);
-
-        let mut rxdata =
+        let mut _rxdata =
             Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_STAT2);
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.STATUS1 RECV: {:#?}",
-            RegStatus1(rxdata)
-        );*/
-        rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.STATUS2 RECV: {:#?}",
-            RegStatus2(rxdata)
-        );*/
+        dprintln!(0, "[INFO] DRV.STATUS1 RECV: {:#?}", RegStatus1(_rxdata));
+        _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
+        dprintln!(0, "[INFO] DRV.STATUS2 RECV: {:#?}", RegStatus2(_rxdata));
 
         // Disable OCP (leave reporting enabled though) & Use lowest gate drive current
         Self::transfer_internal(
@@ -131,20 +117,12 @@ impl<T: Instance> DRV8301<T> {
             Self::FLAG_WR | Self::REG_CTRL1 | (2u16 << 4),
         );
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_CTRL1);
-        rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.CTRL1 RECV: {:#?}",
-            RegCtrl1(rxdata)
-        );*/
+        _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
+        dprintln!(0, "[INFO] DRV.CTRL1 RECV: {:#?}", RegCtrl1(_rxdata));
 
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_CTRL2);
-        rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        /*iprintln!(
-            unsafe { &mut Peripherals::steal().ITM.stim[0] },
-            "[INFO] DRV.CTRL2 RECV: {:#?}",
-            RegCtrl2(rxdata)
-        );*/
+        _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
+        dprintln!(0, "[INFO] DRV.CTRL2 RECV: {:#?}", RegCtrl2(_rxdata));
 
         DRV8301 {
             pin_spi_ncs: spi_ncs,

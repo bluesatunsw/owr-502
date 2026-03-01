@@ -42,6 +42,23 @@ default when the firmware is restarted.
 
 ## Implementation Details
 
+### Timer allocation
+- TIM1
+    - Commutation timer to generate 6 PWM signals
+- TIM3 (PLANNED - NOT USED ATM)
+    - Hall effect interfacing timer
+- TIM5
+    - Cyphal microsecond clock
+- TIM6
+    - Motion control timer
+
+### Configured Interrupts
+
+In order of priority:
+
+- `TIM1_UP_TIM10` (28kHz)
+- `TIM6_DAC` (1kHz)
+
 ### Duty cycle limit
 
 DRV8301 is config'd thru resistor for 80ns deadtime
