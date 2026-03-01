@@ -50,7 +50,11 @@ pub mod config;
 pub mod state;
 pub mod util;
 
-use crate::util::{foc::{RotatingReferenceFrame, inverse_park, modulate_spacevector}, debug::setup_itm};
+use crate::util::{
+    debug::setup_itm,
+    foc::{inverse_park, modulate_spacevector, RotatingReferenceFrame},
+};
+use crate::util::{motor_disable, motor_enable};
 use crate::{
     bsp::{clock::STM32F4xxCyphalClock, drv8301::DRV8301, six_pwm::STM32F4xxSixPwmDriver},
     comms::{CommSystem, CYPHAL_CONCURRENT_TRANSFERS, CYPHAL_NUM_SERVICES, CYPHAL_NUM_TOPICS},
@@ -98,10 +102,6 @@ fn main() -> ! {
             .pclk2(84.MHz()),
     );
 
-    dp.DBGMCU.apb2_fz().modify(|_, w| {
-        w.dbg_tim1_stop().set_bit() // Stops counting AND disables outputs!
-    });
-
     let gpioa = dp.GPIOA.split(&mut rcc);
     let gpiob = dp.GPIOB.split(&mut rcc);
     let gpioc = dp.GPIOC.split(&mut rcc);
@@ -110,9 +110,13 @@ fn main() -> ! {
     let mut led_red = gpiob.pb1.into_push_pull_output();
     led_red.set_high();
 
+    // Set up debugging support
     unsafe {
         setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM);
     }
+    dp.DBGMCU.apb2_fz().modify(|_, w| {
+        w.dbg_tim1_stop().set_bit() // Stops counting AND disables outputs!
+    });
 
     let drv = DRV8301::<SPI3>::setup(
         gpiob.pb5.into_push_pull_output_in_state(PinState::Low),
@@ -245,14 +249,15 @@ fn main() -> ! {
     let mut start = node.clock_mut().now();
     led_red.set_low();
     loop {
-        if node.clock().advance_if_elapsed(&mut start, 1.secs()) {
-            if drv.has_fault() {
-                dprintln!(0, "[WARN] DRV Fault!");
-                node.set_health(Health {
-                    value: Health::ADVISORY,
-                });
-            }
+        if drv.has_fault() {
+            motor_disable();
+            node.set_health(Health {
+                value: Health::WARNING,
+            });
+            dprintln!(0, "[WARN] DRV Fault!");
+        }
 
+        if node.clock().advance_if_elapsed(&mut start, 1.secs()) {
             if let Err(_) = node.run_per_second_tasks() {
                 dprintln!(0, "[WARN] node.run_per_second_tasks failed!");
             }
@@ -282,13 +287,29 @@ fn TIM1_UP_TIM10() {
         TIM1::steal().sr().modify(|_, w| w.uif().clear());
     }
 
+    if cortex_m::interrupt::free(|cs| {
+        let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
+        match control {
+            CommutationState::Disabled => {
+                motor_disable();
+                true
+            }
+            _ => {
+                motor_enable();
+                false
+            }
+        }
+    }) {
+        // Exit early if we're idle
+        return;
+    };
+
     // Voltage expressed as a duty cycle... I don't care vro
     const V_D: f32 = 0.0;
     let mut v_q = 0f32; // Duty cycle from -1 to 1
 
     cortex_m::interrupt::free(|cs| {
         let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
-
         if let CommutationState::Voltage { voltage: volts } = *control {
             v_q = volts;
         }
@@ -311,10 +332,7 @@ fn TIM1_UP_TIM10() {
         }
     });
 
-    let v_ab = inverse_park(
-        angle,
-        RotatingReferenceFrame { d: V_D, q: v_q },
-    );
+    let v_ab = inverse_park(angle, RotatingReferenceFrame { d: V_D, q: v_q });
     // sinusoidal would do inverse clarke
     let v_abc = modulate_spacevector(v_ab);
 

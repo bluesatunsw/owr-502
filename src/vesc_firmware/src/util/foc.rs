@@ -1,5 +1,5 @@
-use micromath::F32Ext;
 use core::f32::consts;
+use micromath::F32Ext;
 
 /// A value in a reference frame that moves with the electrical angle of the
 /// motor. The two axes are orthogonal.
@@ -38,10 +38,7 @@ pub struct ThreePhaseBalancedReferenceFrame {
 ///
 /// Implements equations 10 and 11 from the Microsemi guide.
 /// Yoinked from `foc` crate!
-pub fn inverse_park(
-    angle: f32,
-    inputs: RotatingReferenceFrame,
-) -> TwoPhaseReferenceFrame {
+pub fn inverse_park(angle: f32, inputs: RotatingReferenceFrame) -> TwoPhaseReferenceFrame {
     TwoPhaseReferenceFrame {
         // Eq10
         alpha: angle.cos() * inputs.d - angle.sin() * inputs.q,
@@ -67,7 +64,11 @@ pub fn modulate_spacevector(value: TwoPhaseReferenceFrame) -> [f32; 3] {
     let z = (beta - sqrt_3_alpha) / 2.0;
 
     // Calculate which sector the value falls in
-    let sector: u8 = match (x.is_sign_positive(), y.is_sign_positive(), z.is_sign_positive()) {
+    let sector: u8 = match (
+        x.is_sign_positive(),
+        y.is_sign_positive(),
+        z.is_sign_positive(),
+    ) {
         (true, true, false) => 1,
         (_, true, true) => 2,
         (true, false, true) => 3,
@@ -99,4 +100,3 @@ pub fn modulate_spacevector(value: TwoPhaseReferenceFrame) -> [f32; 3] {
 
     [ta, tb, tc]
 }
-

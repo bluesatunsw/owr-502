@@ -1,4 +1,4 @@
-use stm32f4xx_hal::pac::{DCB, DWT, DBGMCU, ITM};
+use stm32f4xx_hal::pac::{DBGMCU, DCB, DWT, ITM};
 
 pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: &mut ITM) {
     dcb.enable_trace();

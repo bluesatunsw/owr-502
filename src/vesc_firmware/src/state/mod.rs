@@ -9,14 +9,10 @@ pub enum MotionControlState {
     None,
 }
 
-#[derive(Default)]
 pub enum CommutationState {
     /* Current {
         current: I16F16,
     }, TODO: After Jonah implements current sensing (assuming we do the transform) */
-    Voltage {
-        voltage: f32,
-    }, // Testing -> Hall effects + FIXME: Vbus sense
-    #[default]
+    Voltage { voltage: f32 }, // Testing -> Hall effects + FIXME: Vbus sense
     Disabled,
 }

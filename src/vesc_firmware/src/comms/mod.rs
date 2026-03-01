@@ -11,7 +11,6 @@ use cortex_m::interrupt::Mutex;
 use crate::config::CommsConfig;
 use crate::dprintln;
 use crate::state::CommutationState;
-use crate::util::{motor_disable, motor_enable};
 
 pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 pub const CYPHAL_NUM_TOPICS: usize = 8;
@@ -41,7 +40,6 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                     return false;
                 };
 
-                motor_disable();
                 cortex_m::interrupt::free(|cs| unsafe {
                     if f32::from(volts.value).abs() < 0.02 {
                         self.control_mode
@@ -53,7 +51,6 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                             .replace(CommutationState::Voltage {
                                 voltage: f32::from(volts.value),
                             });
-                        motor_enable();
                     }
                 });
                 true

@@ -1,8 +1,9 @@
 use stm32f4xx_hal::gpio::{Pin, PinState, Speed};
 use stm32f4xx_hal::prelude::*;
-use stm32f4xx_hal::timer::{Event, PwmChannel};
+use stm32f4xx_hal::timer::{Event, IdleState, PwmChannel};
 use stm32f4xx_hal::{pac::TIM1, rcc::Rcc};
 
+use crate::config::IdleMode;
 use crate::util::motor_disable;
 
 pub struct STM32F4xxSixPwmDriver {
@@ -28,6 +29,7 @@ impl STM32F4xxSixPwmDriver {
         pin_bl: Pin<'B', 14>,
         pin_ch: Pin<'A', 10>,
         pin_cl: Pin<'B', 15>,
+        mode: IdleMode,
     ) -> Self {
         // trig UEV on *full* pwm cycle (1 bcuz center aligned :sob:)
         tim.rcr().write(|w| w.rep().set(1));
@@ -55,10 +57,6 @@ impl STM32F4xxSixPwmDriver {
             );
         pwm_c1.set_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
         pwm_c1.set_complementary_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
-        pwm_c1.set_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
-        pwm_c1.set_complementary_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
-        pwm_c1.enable();
-        pwm_c1.enable_complementary();
 
         let mut pwm_c2 = ch2
             .with(
@@ -73,10 +71,6 @@ impl STM32F4xxSixPwmDriver {
             );
         pwm_c2.set_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
         pwm_c2.set_complementary_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
-        pwm_c2.set_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
-        pwm_c2.set_complementary_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
-        pwm_c2.enable();
-        pwm_c2.enable_complementary();
 
         let mut pwm_c3 = ch3
             .with(
@@ -91,8 +85,13 @@ impl STM32F4xxSixPwmDriver {
             );
         pwm_c3.set_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
         pwm_c3.set_complementary_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
-        pwm_c3.set_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
-        pwm_c3.set_complementary_idle_state(stm32f4xx_hal::timer::IdleState::Reset);
+
+        Self::set_idle_mode(mode, (&mut pwm_c1, &mut pwm_c2, &mut pwm_c3));
+
+        pwm_c1.enable();
+        pwm_c1.enable_complementary();
+        pwm_c2.enable();
+        pwm_c2.enable_complementary();
         pwm_c3.enable();
         pwm_c3.enable_complementary();
 
@@ -103,14 +102,38 @@ impl STM32F4xxSixPwmDriver {
         }
     }
 
+    pub fn set_idle_mode(
+        mode: IdleMode,
+        ph: (
+            &mut PwmChannel<TIM1, 0, true>,
+            &mut PwmChannel<TIM1, 1, true>,
+            &mut PwmChannel<TIM1, 2, true>,
+        ),
+    ) {
+        ph.0.set_idle_state(IdleState::Reset);
+        ph.1.set_idle_state(IdleState::Reset);
+        ph.2.set_idle_state(IdleState::Reset);
+
+        match mode {
+            IdleMode::Ground => {
+                ph.0.set_complementary_idle_state(IdleState::Set);
+                ph.1.set_complementary_idle_state(IdleState::Set);
+                ph.2.set_complementary_idle_state(IdleState::Set);
+            }
+            IdleMode::HiZ => {
+                ph.0.set_complementary_idle_state(IdleState::Reset);
+                ph.1.set_complementary_idle_state(IdleState::Reset);
+                ph.2.set_complementary_idle_state(IdleState::Reset);
+            }
+        }
+    }
+
     // 1. x = x+1 --> shift [-1, 1] to [0, 2]
     // 2. mul (16 bit wide TIMx.ARR capped for curr sense) --> [0, 11800], uncapped is 12000
     //  - Cap all of them equally cause capping just 2 would be goofy asf
     // 3. div 2 --> [0, 5900] A.K.A [0%, 98.3%]
     pub fn set_duty(&mut self, duties: [f32; 3]) {
-        let v_abc_norm = duties.map(|x| {
-            ((x + 1.0) * (Self::PWM_SENSE_LIMIT / 2.0)) as u16
-        });
+        let v_abc_norm = duties.map(|x| ((x + 1.0) * (Self::PWM_SENSE_LIMIT / 2.0)) as u16);
 
         self.ph_a.set_duty(v_abc_norm[0]);
         self.ph_b.set_duty(v_abc_norm[1]);
