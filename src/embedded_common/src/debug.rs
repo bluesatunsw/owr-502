@@ -50,7 +50,7 @@ pub fn itm_send_raw<T: Sized>(chan: usize, value: &T) {
 }
 
 pub fn itm_hexdump(chan: usize, bytes: &[u8]) {
-    itm_send_raw(chan, &bytes.len());
+    itm_send_raw::<u32>(chan, &(bytes.len() as u32));
     itm_send_bytes(chan, bytes);
 }
 

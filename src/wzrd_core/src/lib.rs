@@ -130,7 +130,7 @@ impl Header {
         offset -= self.total_ext_length();
 
         if offset < self.ln_int as usize {
-            Some((External, offset))
+            Some((Internal, offset))
         } else {
             None
         }

@@ -1,5 +1,6 @@
 use core::arch::breakpoint;
 
+use embedded_common::dprintln;
 use wzrd_core::CHUNK_SIZE;
 
 use crate::common::Chunk;
@@ -37,7 +38,6 @@ where
     }
 
     pub fn write(&mut self, chunk: Chunk, addr: usize) {
-        breakpoint();
         assert!(self.done());
 
         self.data = chunk;
@@ -60,6 +60,7 @@ where
                 .unwrap(),
             self.base + self.offs,
         );
+        self.offs += F::BLOCK_SIZE;
 
         false
     }

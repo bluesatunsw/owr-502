@@ -1,5 +1,7 @@
+use core::arch::breakpoint;
 use core::convert::TryInto;
 
+use embedded_common::dprintln;
 use stm32g4xx_hal::pac;
 use stm32g4xx_hal::{
     quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt},
@@ -105,7 +107,7 @@ impl Flash for QspiSys {
         self.hw_swpi
             .command(Command::new(DdrMode::Disabled).with_instruction(LineMode::Quad, 0x06));
 
-        addr /= Self::BLOCK_SIZE;
+        addr /= 256;
         // Page Program
         self.hw_swpi.write(
             IoCommand::new(DdrMode::Disabled, LineMode::Quad)
@@ -113,9 +115,9 @@ impl Flash for QspiSys {
                 .with_address(
                     LineMode::Quad,
                     [
-                        (addr / 256).try_into().unwrap(),
-                        (addr % 256).try_into().unwrap(),
                         0,
+                        (addr % 256).try_into().unwrap(),
+                        (addr / 256).try_into().unwrap(),
                     ],
                 ),
             block,

@@ -11,6 +11,7 @@ use core::{
     arch::{breakpoint, naked_asm},
     panic::PanicInfo,
     ptr::copy_nonoverlapping,
+    slice,
 };
 
 use canadensis::{
@@ -24,7 +25,12 @@ use canadensis::{
     requester::TransferIdFixedMap,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
-use embedded_common::{can::CanDriver, clock::MicrosecondClock, debug::uuid, dprintln};
+use embedded_common::{
+    can::CanDriver,
+    clock::MicrosecondClock,
+    debug::{itm_hexdump, uuid},
+    dprintln,
+};
 use heapless::Vec;
 // use panic_semihosting as _;
 
@@ -66,7 +72,7 @@ const CYPHAL_NUM_TOPICS: usize = 2;
 const CYPHAL_NUM_SERVICES: usize = 4;
 
 const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
-const UPDATE_TIMEOUT_US: u32 = 60_000_000;
+const UPDATE_TIMEOUT_US: u32 = 10_000_000;
 
 const UID_ADDRESS: u32 = 0x1FFF_7590;
 
@@ -75,7 +81,7 @@ const FLASH_START: *const u32 = 0x0800_0000 as *const u32;
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    dprintln!(0, "{}", info.message().as_str().unwrap_or_default());
+    // dprintln!(0, "{}", info.message().as_str().unwrap_or_default());
     breakpoint();
     loop {}
 }
@@ -223,11 +229,13 @@ fn main() -> ! {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {
+                    dprintln!(0, "{}", valid);
+                    breakpoint();
                     if valid {
                         argb_sys.set_state(State::Booting);
                         unsafe {
                             Peripherals::reset();
-                            reset()
+                            reset();
                         };
                     } else {
                         argb_sys.set_state(State::BadCrc);

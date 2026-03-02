@@ -143,8 +143,8 @@ where
             update.file_offset += CHUNK_SIZE;
             update.buffers.switch();
 
-            itm_hexdump(1, &chunk);
-            if header.image_length() < update.file_offset {
+            if header.image_length() <= update.file_offset {
+                dprintln!(0, "Update compelete");
                 self.update = None;
                 self.finish_flag = true;
             }
@@ -266,6 +266,7 @@ where
                     )
                     .unwrap(),
                 );
+                dprintln!(0, "Header: {:?}", update.header);
                 return true;
             }
 
