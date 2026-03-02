@@ -130,7 +130,15 @@ fn main() -> ! {
     );
 
     let pwm_driver = STM32F4xxSixPwmDriver::setup(
-        &mut rcc, dp.TIM1, gpioa.pa8, gpiob.pb13, gpioa.pa9, gpiob.pb14, gpioa.pa10, gpiob.pb15,
+        &mut rcc,
+        dp.TIM1,
+        gpioa.pa8,
+        gpiob.pb13,
+        gpioa.pa9,
+        gpiob.pb14,
+        gpioa.pa10,
+        gpiob.pb15,
+        config.motion.idle_mode,
     );
 
     // Has external 2k2 pullups
