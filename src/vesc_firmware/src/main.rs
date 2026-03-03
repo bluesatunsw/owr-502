@@ -3,6 +3,7 @@
 #![no_std]
 #![no_main]
 #![feature(more_float_constants)]
+#![feature(const_trait_impl)]
 
 use core::convert::TryInto;
 use core::f32::consts;
@@ -50,6 +51,7 @@ pub mod config;
 pub mod state;
 pub mod util;
 
+use crate::state::CommutationMode;
 use crate::util::{
     debug::setup_itm,
     foc::{inverse_park, modulate_spacevector, RotatingReferenceFrame},
@@ -62,13 +64,12 @@ use crate::{
     state::CommutationState,
 };
 
-// TODO: Move these into some CommutationState thingo or smth
-static G_HALLS: Mutex<UnsafeCell<MaybeUninit<(AnyPin<Input>, AnyPin<Input>, AnyPin<Input>)>>> =
-    Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
-static G_PWMS: Mutex<UnsafeCell<MaybeUninit<STM32F4xxSixPwmDriver>>> =
-    Mutex::new(UnsafeCell::new(MaybeUninit::uninit()));
-static G_CONTROL: Mutex<UnsafeCell<CommutationState>> =
-    Mutex::new(UnsafeCell::new(CommutationState::Disabled));
+static G_COM_STATE: Mutex<UnsafeCell<CommutationState>> =
+    Mutex::new(UnsafeCell::new(CommutationState {
+        mode: CommutationMode::Disabled,
+        halls: MaybeUninit::uninit(),
+        pwm_driver: MaybeUninit::uninit(),
+    }));
 
 // Global allocator -- required by canadensis.
 #[global_allocator]
@@ -181,10 +182,10 @@ fn main() -> ! {
     }
 
     cortex_m::interrupt::free(|cs| unsafe {
-        G_PWMS.borrow(cs).as_mut_unchecked().write(pwm_driver);
-        G_HALLS
-            .borrow(cs)
-            .as_mut_unchecked()
+        let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
+        com_state.pwm_driver.write(pwm_driver);
+        com_state
+            .halls
             .write((hall1.into(), hall2.into(), hall3.into()));
     });
 
@@ -250,7 +251,7 @@ fn main() -> ! {
     .unwrap();
 
     let mut handler = CommSystem {
-        control_mode: &G_CONTROL,
+        commutation_state: &G_COM_STATE,
         config: config.comms,
     };
 
@@ -296,9 +297,9 @@ fn TIM1_UP_TIM10() {
     }
 
     if cortex_m::interrupt::free(|cs| {
-        let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
-        match control {
-            CommutationState::Disabled => {
+        let control = unsafe { G_COM_STATE.borrow(cs).as_ref_unchecked() };
+        match control.mode {
+            CommutationMode::Disabled => {
                 motor_disable();
                 true
             }
@@ -314,38 +315,46 @@ fn TIM1_UP_TIM10() {
 
     // Voltage expressed as a duty cycle... I don't care vro
     const V_D: f32 = 0.0;
-    let mut v_q = 0f32; // Duty cycle from -1 to 1
-
-    cortex_m::interrupt::free(|cs| {
-        let control = unsafe { G_CONTROL.borrow(cs).as_ref_unchecked() };
-        if let CommutationState::Voltage { voltage: volts } = *control {
-            v_q = volts;
+    // Duty cycle from -1 to 1
+    let v_q: f32 = cortex_m::interrupt::free(|cs| {
+        let control = unsafe { G_COM_STATE.borrow(cs).as_ref_unchecked() };
+        if let CommutationMode::Voltage { voltage: volts } = control.mode {
+            return volts;
         }
+
+        0.0
     });
 
-    let mut angle: f32 = 0.0;
-    cortex_m::interrupt::free(|cs| unsafe {
-        let halls = G_HALLS.borrow(cs).as_ref_unchecked().assume_init_ref();
-        let idx = (usize::from(halls.0.is_high()) << 2)
+    let idx = cortex_m::interrupt::free(|cs| unsafe {
+        let halls = G_COM_STATE
+            .borrow(cs)
+            .as_ref_unchecked()
+            .halls
+            .assume_init_ref();
+        (usize::from(halls.0.is_high()) << 2)
             + (usize::from(halls.1.is_high()) << 1)
-            + usize::from(halls.2.is_high());
-
-        angle = consts::FRAC_PI_3 * K_HALL_TABLE[idx];
-
-        while angle > consts::PI {
-            angle -= consts::TAU;
-        }
-        while angle < -consts::PI {
-            angle += consts::TAU;
-        }
+            + usize::from(halls.2.is_high())
     });
 
+    let mut angle = consts::FRAC_PI_3 * K_HALL_TABLE[idx];
+
+    while angle > consts::PI {
+        angle -= consts::TAU;
+    }
+    while angle < -consts::PI {
+        angle += consts::TAU;
+    }
+
+    // Saving grace... at least these expensive ass math ops aren't in an int::free
     let v_ab = inverse_park(angle, RotatingReferenceFrame { d: V_D, q: v_q });
-    // sinusoidal would do inverse clarke
     let v_abc = modulate_spacevector(v_ab);
 
     cortex_m::interrupt::free(|cs| unsafe {
-        let pwm = G_PWMS.borrow(cs).as_mut_unchecked();
-        pwm.assume_init_mut().set_duty(v_abc);
+        let pwm = G_COM_STATE
+            .borrow(cs)
+            .as_mut_unchecked()
+            .pwm_driver
+            .assume_init_mut();
+        pwm.set_duty(v_abc);
     });
 }

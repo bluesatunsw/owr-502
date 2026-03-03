@@ -10,7 +10,7 @@ use cortex_m::interrupt::Mutex;
 
 use crate::config::CommsConfig;
 use crate::dprintln;
-use crate::state::CommutationState;
+use crate::state::{CommutationMode, CommutationState};
 
 pub const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 pub const CYPHAL_NUM_TOPICS: usize = 8;
@@ -18,7 +18,7 @@ pub const CYPHAL_NUM_SERVICES: usize = 8;
 
 pub struct CommSystem {
     pub config: CommsConfig,
-    pub control_mode: &'static Mutex<UnsafeCell<CommutationState>>,
+    pub commutation_state: &'static Mutex<UnsafeCell<CommutationState>>,
 }
 
 impl CommSystem {
@@ -42,15 +42,12 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
 
                 cortex_m::interrupt::free(|cs| unsafe {
                     if f32::from(volts.value).abs() < 0.02 {
-                        self.control_mode
-                            .borrow(cs)
-                            .replace(CommutationState::Disabled);
+                        (*self.commutation_state.borrow(cs).get()).mode = CommutationMode::Disabled;
                     } else {
-                        self.control_mode
-                            .borrow(cs)
-                            .replace(CommutationState::Voltage {
+                        (*self.commutation_state.borrow(cs).get()).mode =
+                            CommutationMode::Voltage {
                                 voltage: f32::from(volts.value),
-                            });
+                            };
                     }
                 });
                 true

@@ -2,11 +2,12 @@
 
 ## Running and debugging the firmware
 
-To run the firmware in a debugging/development context with an ST-LINK connected:
+To run the firmware in a debugging/development context with an ST-LINK
+connected:
 
 ```
 openocd -f ../embedded_common/tools/openocd-stm32f4.cfg
-cargo run --release
+cargo run --release --features dprintln-enabled
 ```
 
 It's pretty much necessary to run in release mode due to space optimisations
@@ -56,8 +57,9 @@ default when the firmware is restarted.
 
 In order of priority:
 
-- `TIM1_UP_TIM10` (28kHz)
-- `TIM6_DAC` (1kHz)
+- 32 `TIM1_UP_TIM10` (fixed, 28kHz)
+- 36 `TIM3` (variable, motor frequency [0, 8.4kHz] with our battery)
+- 61 `TIM6_DAC` (fixed, 1kHz)
 
 ### Duty cycle limit
 
