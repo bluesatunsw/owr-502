@@ -36,7 +36,7 @@ use stm32f4xx_hal::{
         config::{AdcConfig, Resolution},
         Adc,
     },
-    gpio::{AnyPin, GpioExt, Input, PinState, Speed},
+    gpio::{GpioExt, PinState, Speed},
     interrupt,
     pac::{SPI3, TIM1},
     prelude::*,
@@ -89,7 +89,7 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let config = DRIVEBASE_FL_CONFIG;
+    let config = DRIVEBASE_FR_CONFIG;
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
@@ -142,15 +142,21 @@ fn main() -> ! {
         config.motion.idle_mode,
     );
 
-    // Has external 2k2 pullups
-    let hall1 = gpioc.pc6.into_pull_up_input();
-    let hall2 = gpioc.pc7.into_pull_up_input();
-    let hall3 = gpioc.pc8.into_pull_up_input();
+    // Has external 2k2 pullups but ehhhh whatevs
+    let hall1 = gpioc.pc6.into_alternate::<2>().internal_pull_up(true);
+    let hall2 = gpioc.pc7.into_alternate::<2>().internal_pull_up(true);
+    let hall3 = gpioc.pc8.into_alternate::<2>().internal_pull_up(true);
 
     // Set up hall-sensor interfacing timer (TIM5)
     //
     // Mode of operation described in RM0390 16.3.18
     // OR refer to RM0440 28.3.29
+    // rcc.apb1rstr().modify(|_, w| w.tim3rst().set_bit());
+    // rcc.apb1rstr().modify(|_, w| w.tim3rst().clear_bit());
+    // rcc.apb1enr().modify(|_, w| w.tim3en().set_bit());
+    // funny XOR
+    // dp.TIM3.cr2().write(|w| w.ti1s().set_bit());
+    // TODO: Set CKD and ARR
 
     // Set up ADC's for voltage and motor current sensing
     // Multi-ADC Simultaneous injected mode?? Need to look into this later...
@@ -191,6 +197,9 @@ fn main() -> ! {
 
     unsafe {
         cortex_m::peripheral::NVIC::unmask(interrupt::TIM1_UP_TIM10);
+
+        // TODO cp.NVIC.set_priority(interrupt::TIM3, 31);
+        // TODO cortex_m::peripheral::NVIC::unmask(interrupt::TIM3);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -254,6 +263,8 @@ fn main() -> ! {
         commutation_state: &G_COM_STATE,
         config: config.comms,
     };
+
+    dprintln!(0, "Finished setup");
 
     let mut start = node.clock_mut().now();
     led_red.set_low();

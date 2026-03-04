@@ -55,11 +55,11 @@ default when the firmware is restarted.
 
 ### Configured Interrupts
 
-In order of priority:
+In order of (priority, position in ivt):
 
-- 32 `TIM1_UP_TIM10` (fixed, 28kHz)
-- 36 `TIM3` (variable, motor frequency [0, 8.4kHz] with our battery)
-- 61 `TIM6_DAC` (fixed, 1kHz)
+- 31, 29 `TIM3` (variable, motor frequency [0, 8.4kHz] with our battery)
+- 32, 25 `TIM1_UP_TIM10` (fixed, 28kHz)
+- 61, 54 `TIM6_DAC` (fixed, 1kHz)
 
 ### Duty cycle limit
 

@@ -1,4 +1,5 @@
 use stm32f4xx_hal::gpio::{Pin, PinState, Speed};
+use stm32f4xx_hal::pac::Peripherals;
 use stm32f4xx_hal::prelude::*;
 use stm32f4xx_hal::timer::{Event, IdleState, PwmChannel};
 use stm32f4xx_hal::{pac::TIM1, rcc::Rcc};
@@ -87,6 +88,10 @@ impl STM32F4xxSixPwmDriver {
         pwm_c3.set_complementary_polarity(stm32f4xx_hal::timer::Polarity::ActiveHigh);
 
         Self::set_idle_mode(mode, (&mut pwm_c1, &mut pwm_c2, &mut pwm_c3));
+
+        unsafe {
+            Peripherals::steal().TIM1.bdtr().modify(|_, w| w.ossi().idle_level() );
+        }
 
         pwm_c1.enable();
         pwm_c1.enable_complementary();
