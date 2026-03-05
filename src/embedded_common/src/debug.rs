@@ -1,5 +1,6 @@
 use core::{mem::transmute_copy, ptr::copy_nonoverlapping, slice};
 
+use cortex_m::itm;
 use stm32g4::stm32g474::{DBGMCU, DCB, DWT, ITM};
 
 pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: &mut ITM) {
@@ -18,40 +19,24 @@ pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: 
     }
 }
 
-pub fn itm_send_bytes(chan: usize, bytes: &[u8]) {
+pub fn itm_send_raw<T: Sized>(chan: usize, value: &T) {
     if cfg!(not(feature = "dprintln-enabled")) {
         return;
     }
-
     let stim = unsafe { &mut stm32g4::stm32g474::CorePeripherals::steal().ITM.stim[chan] };
-
-    let chunked = bytes.iter().array_chunks::<4>();
-    chunked.clone().for_each(|chunk| {
-        while !stim.is_fifo_ready() {}
-        stim.write_u32(unsafe { transmute_copy(chunk.map(|&x| x).as_array::<4>().unwrap()) });
-    });
-
-    let final_chunk = chunked.into_remainder().array_chunks::<2>();
-    final_chunk.clone().for_each(|chunk| {
-        while !stim.is_fifo_ready() {}
-        stim.write_u16(unsafe { transmute_copy(chunk.map(|&x| x).as_array::<2>().unwrap()) })
-    });
-
-    final_chunk.into_remainder().for_each(|&b| {
-        while !stim.is_fifo_ready() {}
-        stim.write_u8(b);
-    });
-}
-
-pub fn itm_send_raw<T: Sized>(chan: usize, value: &T) {
-    itm_send_bytes(chan, unsafe {
+    itm::write_all(stim, unsafe {
         slice::from_raw_parts((value as *const T) as *const u8, size_of::<T>())
     });
 }
 
 pub fn itm_hexdump(chan: usize, bytes: &[u8]) {
-    itm_send_raw::<u32>(chan, &(bytes.len() as u32));
-    itm_send_bytes(chan, bytes);
+    if cfg!(not(feature = "dprintln-enabled")) {
+        return;
+    }
+
+    let stim = unsafe { &mut stm32g4::stm32g474::CorePeripherals::steal().ITM.stim[chan] };
+    stim.write_u32(bytes.len() as u32);
+    itm::write_all(stim, bytes);
 }
 
 #[cfg(feature = "dprintln-enabled")]

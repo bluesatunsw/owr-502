@@ -1,7 +1,5 @@
-use core::arch::breakpoint;
 use core::convert::TryInto;
 
-use embedded_common::dprintln;
 use stm32g4xx_hal::pac;
 use stm32g4xx_hal::{
     quadspi::{ClockMode, Command, DdrMode, FlashMode, IoCommand, LineMode, Qspi, QuadSpiExt},
@@ -45,7 +43,7 @@ impl QspiSys {
                     io3_bank2_pin,
                 ),
                 rcc,
-                0,
+                2,
                 8,
                 false,
                 21,

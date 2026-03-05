@@ -78,13 +78,21 @@ impl<'a> CrcHandler {
     }
 
     pub fn start(&mut self) {
-        itm_hexdump(1, unsafe { slice::from_raw_parts(EXTERNAL_START as *const u8, 4096) });
-        delay(1024*1024*64);
-        itm_hexdump(1, unsafe { slice::from_raw_parts((EXTERNAL_START + 4096) as *const u8, 4096) });
-        delay(1024*1024*64);
-        itm_hexdump(1, unsafe { slice::from_raw_parts((EXTERNAL_START + 8192) as *const u8, 4096) });
-        delay(1024*1024*64);
-        itm_hexdump(1, unsafe { slice::from_raw_parts(INTERNAL_START as *const u8, 4096) });
+        itm_hexdump(1, unsafe {
+            slice::from_raw_parts(EXTERNAL_START as *const u8, 4096)
+        });
+        delay(1024 * 1024 * 64);
+        itm_hexdump(1, unsafe {
+            slice::from_raw_parts((EXTERNAL_START + 4096) as *const u8, 4096)
+        });
+        delay(1024 * 1024 * 64);
+        itm_hexdump(1, unsafe {
+            slice::from_raw_parts((EXTERNAL_START + 8192) as *const u8, 4096)
+        });
+        delay(1024 * 1024 * 64);
+        itm_hexdump(1, unsafe {
+            slice::from_raw_parts(INTERNAL_START as *const u8, 4096)
+        });
 
         interrupt_free(|cs| unsafe {
             let state = STATE.borrow(cs).as_mut_unchecked().as_mut().unwrap();

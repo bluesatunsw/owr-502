@@ -8,14 +8,14 @@ rustflags = [
 [alias]
 pack = """\
   run --manifest-path ../wzrd_pack/Cargo.toml --target host-tuple -- \
-  -i target/thumbv7em-none-eabihf/release/bad_apple \
-  -o target/thumbv7em-none-eabihf/release/bad_apple.wzrd \
+  -i target/thumbv7em-none-eabihf/debug/bad_apple \
+  -o target/thumbv7em-none-eabihf/debug/bad_apple.wzrd \
   --hw-ver 192.168.1 --sw-ver 89.6.4 \
 """ 
 
 deploy = """\
   yakut execute-command 21 begin_software_update \
-  "target/thumbv7em-none-eabihf/release/bad_apple.wzrd"\
+  "target/thumbv7em-none-eabihf/debug/bad_apple.wzrd"\
 """
 
 [build]

@@ -122,18 +122,18 @@ impl Peripherals {
             argb_pin: gpiob.pb6.into_alternate(),
 
             qspi_instance: dp.QUADSPI,
-            qspi_clk_pin: gpioa.pa3.into_alternate().speed(Speed::VeryHigh),
-            qspi_ncs_pin: gpioa.pa2.into_alternate().speed(Speed::VeryHigh),
+            qspi_clk_pin: gpioa.pa3.into_alternate().speed(Speed::High),
+            qspi_ncs_pin: gpioa.pa2.into_alternate().speed(Speed::High),
 
-            qspi_io0_bank1_pin: gpiob.pb1.into_alternate().speed(Speed::VeryHigh),
-            qspi_io1_bank1_pin: gpiob.pb0.into_alternate().speed(Speed::VeryHigh),
-            qspi_io2_bank1_pin: gpioa.pa7.into_alternate().speed(Speed::VeryHigh),
-            qspi_io3_bank1_pin: gpioa.pa6.into_alternate().speed(Speed::VeryHigh),
+            qspi_io0_bank1_pin: gpiob.pb1.into_alternate().speed(Speed::High),
+            qspi_io1_bank1_pin: gpiob.pb0.into_alternate().speed(Speed::High),
+            qspi_io2_bank1_pin: gpioa.pa7.into_alternate().speed(Speed::High),
+            qspi_io3_bank1_pin: gpioa.pa6.into_alternate().speed(Speed::High),
 
-            qspi_io0_bank2_pin: gpioc.pc1.into_alternate().speed(Speed::VeryHigh),
-            qspi_io1_bank2_pin: gpioc.pc2.into_alternate().speed(Speed::VeryHigh),
-            qspi_io2_bank2_pin: gpioc.pc3.into_alternate().speed(Speed::VeryHigh),
-            qspi_io3_bank2_pin: gpioc.pc4.into_alternate().speed(Speed::VeryHigh),
+            qspi_io0_bank2_pin: gpioc.pc1.into_alternate().speed(Speed::High),
+            qspi_io1_bank2_pin: gpioc.pc2.into_alternate().speed(Speed::High),
+            qspi_io2_bank2_pin: gpioc.pc3.into_alternate().speed(Speed::High),
+            qspi_io3_bank2_pin: gpioc.pc4.into_alternate().speed(Speed::High),
 
             internal_flash: dp.FLASH.constrain(),
         }

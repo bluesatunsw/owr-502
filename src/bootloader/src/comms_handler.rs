@@ -135,24 +135,27 @@ where
             return FlashCommand::Start;
         }
 
-        if let Some(update) = &mut self.update
-            && let AsyncHeader::Some(header) = &update.header
-            && let Some(chunk) = update.buffers.front_mut().extract_data()
-        {
-            let (location, offset) = header.to_flash_location(update.file_offset).unwrap();
-            update.file_offset += CHUNK_SIZE;
-            update.buffers.switch();
+        if let Some(update) = &mut self.update {
+            if let AsyncHeader::Some(header) = &update.header
+                && let Some(chunk) = update.buffers.front_mut().extract_data()
+            {
+                let (location, offset) = header.to_flash_location(update.file_offset).unwrap();
+                update.file_offset += CHUNK_SIZE;
+                update.buffers.switch();
 
-            if header.image_length() <= update.file_offset {
-                dprintln!(0, "Update compelete");
-                self.update = None;
-                self.finish_flag = true;
+                if header.image_length() <= update.file_offset {
+                    dprintln!(0, "Update compelete");
+                    self.update = None;
+                    self.finish_flag = true;
+                }
+                FlashCommand::Write(LocatedChunk {
+                    data: chunk,
+                    location,
+                    offset,
+                })
+            } else {
+                FlashCommand::Wait
             }
-            FlashCommand::Write(LocatedChunk {
-                data: chunk,
-                location,
-                offset,
-            })
         } else {
             FlashCommand::None
         }

@@ -12,6 +12,7 @@ pub struct LocatedChunk {
 #[derive(Debug, Clone, Copy)]
 pub enum FlashCommand {
     None,
+    Wait,
     Start,
     Write(LocatedChunk),
     Finish,

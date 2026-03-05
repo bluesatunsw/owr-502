@@ -25,6 +25,7 @@ use canadensis::{
     requester::TransferIdFixedMap,
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
+use cortex_m_semihosting::hprintln;
 use embedded_common::{
     can::CanDriver,
     clock::MicrosecondClock,
@@ -122,7 +123,6 @@ fn initialise_allocator() {
 
 #[entry]
 fn main() -> ! {
-    breakpoint();
     initialise_allocator();
     let mut ps = Peripherals::take();
 
@@ -224,13 +224,14 @@ fn main() -> ! {
         }
 
         match comms_handler.poll() {
+            FlashCommand::Wait => {
+                continue;
+            }
             FlashCommand::None => {
                 if node.clock_mut().now() < Microseconds32::from_ticks(UPDATE_TIMEOUT_US) {
                     continue;
                 }
                 if let Some(valid) = crc_handler.valid() {
-                    dprintln!(0, "{}", valid);
-                    breakpoint();
                     if valid {
                         argb_sys.set_state(State::Booting);
                         unsafe {
