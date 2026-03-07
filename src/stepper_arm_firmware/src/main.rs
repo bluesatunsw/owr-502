@@ -22,14 +22,9 @@ use canadensis_data_types::{
 };
 use core::{hint::unreachable_unchecked, intrinsics::breakpoint, panic::PanicInfo};
 use cortex_m_rt::entry;
-use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
 use embedded_common::{
-    argb::{self, Colour},
-    can::CanDriver,
-    clock,
-    stepper_bus::{Channel, StepperNcsPins},
-    tmc_registers::TmcPosition,
+    argb::{self, Colour}, can::CanDriver, clock, debug::{setup_itm, uuid}, dprintln, stepper_bus::StepperNcsPins, tmc_registers::{TmcPosition, UnitsExt}
 };
 use heapless::Vec;
 use stm32g4xx_hal::{
@@ -48,6 +43,8 @@ use canadensis_data_types::uavcan::node::execute_command_1_3::{
     ExecuteCommandRequest, ExecuteCommandResponse,
 };
 
+use crate::motion::Motion;
+
 extern crate alloc;
 
 mod motion;
@@ -62,10 +59,9 @@ const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
 const TID_TIMEOUT_US: u32 = 100_000;
 
 // Cyphal message-IDs -- as per README
-const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
-const SETPOINT_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3010);
-const SETPOINT_MESSAGE_CHAN_2_ID: SubjectId = SubjectId::from_truncating(3020);
-const SETPOINT_MESSAGE_CHAN_3_ID: SubjectId = SubjectId::from_truncating(3030);
+const SETPOINT_MESSAGE_CHAN_PITCH_ID: SubjectId = SubjectId::from_truncating(1000);
+const SETPOINT_MESSAGE_CHAN_ROLL_ID: SubjectId = SubjectId::from_truncating(1010);
+const SETPOINT_MESSAGE_CHAN_CLAW_ID: SubjectId = SubjectId::from_truncating(1020);
 
 // ARGB LED constants
 const RED: Colour = Colour { r: 255, g: 0, b: 0 };
@@ -74,7 +70,7 @@ const DEFAULT_BRIGHTNESS: u8 = 15;
 
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
-    hprintln!("{}", _info.message());
+    dprintln!(0, "{}", _info.message());
     breakpoint();
     loop {}
 }
@@ -102,7 +98,10 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let dp = Peripherals::take().unwrap();
+    let mut dp = Peripherals::take().unwrap();
+    let mut cp = stm32g4xx_hal::pac::CorePeripherals::take().unwrap();
+    unsafe { setup_itm(&mut cp.DCB, &mut cp.DWT, &mut dp.DBGMCU, &mut cp.ITM) };
+
     let pwr = dp
         .PWR
         .constrain()
@@ -148,7 +147,7 @@ fn main() -> ! {
         &mut rcc,
     );
 
-    let mut drivebase = Drivebase::new(
+    let mut motion = Motion::new(
         (
             gpioc.pc10.into_alternate(),
             gpioc.pc11.into_alternate(),
@@ -175,34 +174,6 @@ fn main() -> ! {
         gpioa.pa8.into_analog(),
         gpiod.pd2.into_push_pull_output(),
         gpioa.pa10.into_input(),
-        // Currently, the encoder does not work.
-        // TODO: fix encoder, uncomment this when working
-        /*
-        (
-            gpiob.pb13.into_alternate(),
-            gpiob.pb14.into_alternate(),
-            gpiob.pb15.into_alternate(),
-        ),
-        EncoderNcsPins(
-            gpioc
-                .pc6
-                .into_push_pull_output_in_state(PinState::High)
-                .into(),
-            gpioc
-                .pc7
-                .into_push_pull_output_in_state(PinState::High)
-                .into(),
-            gpioc
-                .pc8
-                .into_push_pull_output_in_state(PinState::High)
-                .into(),
-            gpioc
-                .pc9
-                .into_push_pull_output_in_state(PinState::High)
-                .into(),
-        ),
-        dp.SPI2,
-        */
         dp.SPI3,
         &mut rcc,
     );
@@ -232,12 +203,8 @@ fn main() -> ! {
             hardware_version: Version { major: 1, minor: 1 },
             software_version: Version { major: 1, minor: 0 },
             software_vcs_revision_id: 0,
-            unique_id: [
-                // TODO: Replace this with the ID fetched from the chip
-                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
-                0x00, 0x00,
-            ],
-            name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
+            unique_id: uuid(),
+            name: Vec::from_slice(b"org.bluesat.owr.stepper_arm").unwrap(),
             software_image_crc: Vec::new(),
             certificate_of_authenticity: Vec::new(),
         },
@@ -245,25 +212,19 @@ fn main() -> ! {
     .unwrap();
 
     node.subscribe_message(
-        SETPOINT_MESSAGE_CHAN_0_ID,
+        SETPOINT_MESSAGE_CHAN_PITCH_ID,
         size_of::<Planar>(),
         MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
     )
     .unwrap();
     node.subscribe_message(
-        SETPOINT_MESSAGE_CHAN_1_ID,
+        SETPOINT_MESSAGE_CHAN_ROLL_ID,
         size_of::<Planar>(),
         MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
     )
     .unwrap();
     node.subscribe_message(
-        SETPOINT_MESSAGE_CHAN_2_ID,
-        size_of::<Planar>(),
-        MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
-    )
-    .unwrap();
-    node.subscribe_message(
-        SETPOINT_MESSAGE_CHAN_3_ID,
+        SETPOINT_MESSAGE_CHAN_CLAW_ID,
         size_of::<Planar>(),
         MicrosecondDuration32::from_ticks(TID_TIMEOUT_US),
     )
@@ -276,8 +237,8 @@ fn main() -> ! {
     )
     .unwrap();
 
-    drivebase.steppers.enable_all();
-    let mut comms_handler = CommsHandler { drivebase };
+    motion.steppers.enable_all();
+    let mut comms_handler = CommsHandler { motion, pitch: 0.0.rads(), roll: 0.0.rads(), claw: 0.0.rads() };
 
     let mut tim_heartbeat = node.clock().now_const();
 
@@ -287,7 +248,7 @@ fn main() -> ! {
     loop {
         node.receive(&mut comms_handler).unwrap();
 
-        if let Some(status) = comms_handler.drivebase.steppers.health() {
+        if let Some(status) = comms_handler.motion.steppers.health() {
             node.set_health(Health {
                 value: Health::ADVISORY,
             });
@@ -321,7 +282,10 @@ fn main() -> ! {
 }
 
 struct CommsHandler {
-    pub drivebase: Drivebase,
+    pub motion: Motion,
+    pitch: TmcPosition,
+    roll: TmcPosition,
+    claw: TmcPosition,
 }
 
 impl<T: Transport> TransferHandler<T> for CommsHandler {
@@ -330,18 +294,24 @@ impl<T: Transport> TransferHandler<T> for CommsHandler {
         _node: &mut N,
         transfer: &MessageTransfer<alloc::vec::Vec<u8>, T>,
     ) -> bool {
-        let op = match transfer.header.subject {
-            SETPOINT_MESSAGE_CHAN_0_ID => Some(Channel::CH0),
-            SETPOINT_MESSAGE_CHAN_1_ID => Some(Channel::CH1),
-            SETPOINT_MESSAGE_CHAN_2_ID => Some(Channel::CH2),
-            SETPOINT_MESSAGE_CHAN_3_ID => Some(Channel::CH3),
+        enum Op {
+            PITCH, ROLL, CLAW
+        }
+
+        let maybe_op = match transfer.header.subject {
+            SETPOINT_MESSAGE_CHAN_PITCH_ID => Some(Op::PITCH),
+            SETPOINT_MESSAGE_CHAN_ROLL_ID => Some(Op::ROLL),
+            SETPOINT_MESSAGE_CHAN_CLAW_ID => Some(Op::CLAW),
             _ => None,
         };
-        if let Some(chan) = op {
-            let msg = Planar::deserialize_from_bytes(&transfer.payload);
-            self.drivebase
-                .set_position(chan, TmcPosition(msg.unwrap().angular_position.radian))
-                .unwrap();
+        if let Some(op) = maybe_op {
+            let target = TmcPosition(Planar::deserialize_from_bytes(&transfer.payload).unwrap().angular_position.radian);
+            match op {
+                Op::PITCH => self.pitch = target,
+                Op::ROLL => self.roll = target,
+                Op::CLAW => self.claw = target,
+            }
+            self.motion.set_position(self.pitch, self.roll, self.claw).unwrap();
             true
         } else {
             false

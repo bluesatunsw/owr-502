@@ -1,4 +1,8 @@
-use core::{f32, fmt::Debug, ops::Mul};
+use core::{
+    f32,
+    fmt::Debug,
+    ops::*,
+};
 
 use bitfield_struct::bitfield;
 
@@ -11,62 +15,111 @@ pub trait Register: From<u32> + Into<u32> + Debug {
     const ADDRESS: u8;
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
-pub struct TmcPosition(pub f32);
+macro_rules! tmc_unit {
+    ($name:ident, $factor:expr) => {
+        #[derive(Copy, Clone, Debug, PartialEq, PartialOrd)]
+        pub struct $name(pub f32);
 
-impl TmcPosition {
-    const CONVERSION_FACTOR: f32 = MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI);
+        impl $name {
+            const CONVERSION_FACTOR: f32 = $factor;
 
-    pub fn from_bits(value: u32) -> Self {
-        Self(value as i32 as f32 / Self::CONVERSION_FACTOR)
-    }
+            pub fn from_bits(value: u32) -> Self {
+                Self(value as i32 as f32 / Self::CONVERSION_FACTOR)
+            }
 
-    pub fn bits(&self) -> u32 {
-        (self.0 * Self::CONVERSION_FACTOR) as i32 as u32
-    }
+            pub fn bits(&self) -> u32 {
+                (self.0 * Self::CONVERSION_FACTOR) as i32 as u32
+            }
+        }
+
+        impl Mul<f32> for $name {
+            type Output = $name;
+
+            fn mul(self, rhs: f32) -> Self::Output {
+                $name(self.0 * rhs)
+            }
+        }
+
+        impl MulAssign<f32> for $name {
+            fn mul_assign(&mut self, rhs: f32) {
+                *self = *self * rhs;
+            }
+        }
+
+        impl Mul<$name> for f32 {
+            type Output = $name;
+
+            fn mul(self, rhs: $name) -> Self::Output {
+                $name(self * rhs.0)
+            }
+        }
+
+        impl Div<f32> for $name {
+            type Output = $name;
+
+            fn div(self, rhs: f32) -> Self::Output {
+                $name(self.0 / rhs)
+            }
+        }
+
+        impl DivAssign<f32> for $name {
+            fn div_assign(&mut self, rhs: f32) {
+                *self = *self / rhs;
+            }
+        }
+
+        impl Div<$name> for $name {
+            type Output = f32;
+
+            fn div(self, rhs: Self) -> Self::Output {
+                self.0 / rhs.0
+            }
+        }
+
+        impl Add<$name> for $name {
+            type Output = $name;
+
+            fn add(self, rhs: Self) -> Self::Output {
+                $name(self.0 + rhs.0)
+            }
+        }
+
+        impl AddAssign<$name> for $name {
+            fn add_assign(&mut self, rhs: Self) {
+                *self = *self + rhs;
+            }
+        }
+
+        impl Sub<$name> for $name {
+            type Output = $name;
+
+            fn sub(self, rhs: Self) -> Self::Output {
+                $name(self.0 - rhs.0)
+            }
+        }
+
+        impl SubAssign<$name> for $name {
+            fn sub_assign(&mut self, rhs: Self) {
+                *self = *self - rhs;
+            }
+        }
+    };
 }
 
-impl Mul<f32> for TmcPosition {
-    type Output = TmcPosition;
-
-    fn mul(self, rhs: f32) -> Self::Output {
-        TmcPosition(self.0 * rhs)
-    }
-}
-
-#[derive(Debug, PartialEq, PartialOrd)]
-pub struct TmcVelocity(f32);
-
-impl TmcVelocity {
-    const CONVERSION_FACTOR: f32 =
-        MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI) / 12_000_000. * 2. * (1 << 23) as f32;
-
-    pub fn from_bits(value: u32) -> Self {
-        Self(value as i32 as f32 * Self::CONVERSION_FACTOR)
-    }
-
-    pub fn bits(&self) -> u32 {
-        (self.0 * Self::CONVERSION_FACTOR) as i32 as u32
-    }
-}
-
-#[derive(Debug, PartialEq, PartialOrd)]
-pub struct TmcAcceleration(f32);
-
-impl TmcAcceleration {
-    const CONVERSION_FACTOR: f32 =
-        MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI) / (12_000_000.) / (12_000_000.)
-            * (512. * 256.)
-            * (1 << 24) as f32;
-
-    pub fn from_bits(value: u32) -> Self {
-        Self(value as i32 as f32 * Self::CONVERSION_FACTOR)
-    }
-
-    pub fn bits(&self) -> u32 {
-        (self.0 * Self::CONVERSION_FACTOR) as i32 as u32
-    }
-}
+tmc_unit!(
+    TmcPosition,
+    MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI)
+);
+tmc_unit!(
+    TmcVelocity,
+    MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI) / 12_000_000. * 2. * (1 << 23) as f32
+);
+tmc_unit!(
+    TmcAcceleration,
+    MICROSTEPS_PER_REV as f32 / (2. * f32::consts::PI) / (12_000_000.) / (12_000_000.)
+        * (512. * 256.)
+        * (1 << 24) as f32
+);
 
 #[derive(Debug)]
 pub struct TmcUnitless(i32);
@@ -219,9 +272,9 @@ impl Register for GStat {
 #[bitfield(u32)]
 pub struct ShortConf {
     /// Short to VS detector level for lowside FETs. Checks for voltage drop in LS MOSFET and sense resistor.
-    /// 
+    ///
     /// 4(highest sensitivity) … 15 (lowest sensitivity)
-    /// 
+    ///
     /// Hint: Settings from 1 to 3 will trigger during normal operation due to voltage drop on sense resistor.
     #[bits(4)]
     pub s2vs_level: u8,
@@ -230,9 +283,9 @@ pub struct ShortConf {
     __: u32,
 
     /// Short to GND detector level for highside FETs. Checks for voltage drop on high side MOSFET.
-    /// 
+    ///
     /// 2 (highest sensitivity) … 15 (lowest sensitivity)
-    /// 
+    ///
     /// Attention: Settings below 6 not recommended at >52V operation – false detection might result.
     #[bits(4)]
     pub s2g_level: u8,
@@ -241,17 +294,17 @@ pub struct ShortConf {
     __: u32,
 
     /// Spike filtering bandwidth for short detection
-    /// 
+    ///
     /// 0 (lowest, 100ns), 1 (1μs), 2 (2μs) 3 (3μs)
-    /// 
+    ///
     /// Hint: A good PCB layout will allow using setting 0. Increase value, if erroneous short detection occurs.
     #[bits(2)]
     pub short_filter: u8,
 
     /// Short detection delay
-    /// 
+    ///
     /// 0=750ns: normal, 1=1500ns: high
-    /// 
+    ///
     /// The short detection delay shall cover the bridge switching time. 0 will work for most applications.
     #[bits(1)]
     pub short_delay: bool,
@@ -268,11 +321,11 @@ impl Register for ShortConf {
 #[bitfield(u32)]
 pub struct DrvConf {
     /// Break-Before make delay
-    /// 
+    ///
     /// 0=shortest (100ns) … 16 (200ns) … 24=longest (375ns)
-    /// 
+    ///
     /// >24 not recommended, use BBMCLKS instead
-    /// 
+    ///
     /// Hint: Choose the lowest setting safely covering the switching event to avoid bridge cross-conduction. Add
     /// roughly 30% of reserve.
     #[bits(5)]
@@ -282,7 +335,7 @@ pub struct DrvConf {
     __: u32,
 
     /// 0..15: Digital BBM time in clock cycles (typ. 83ns).
-    /// 
+    ///
     /// The longer setting rules (BBMTIME vs. BBMCLKS).
     #[bits(4)]
     pub bbm_clks: u8,
@@ -291,34 +344,34 @@ pub struct DrvConf {
     __: u32,
 
     /// Selection of over temperature level for bridge disable, switch on after cool down to 120°C / OTPW level.
-    /// 
+    ///
     /// - 0: 150°C
     /// - 1: 143°C
     /// - 2: 136°C (not recommended when VSA > 24V)
     /// - 3: 120°C (not recommended, no hysteresis)
-    /// 
+    ///
     /// Hint: Adapt overtemperature threshold as required to protect the MOSFETs or other components on the PCB.
     #[bits(2)]
     pub ot_select: u8,
 
     /// Selection of gate driver current. Adapts the gate driver current to the gate charge of the external MOSFETs.
-    /// 
+    ///
     /// - 0: weak
     /// - 1: weak+TC (medium above OTPW level)
     /// - 2: medium
     /// - 3: strong
-    /// 
+    ///
     /// Hint: Choose the lowest setting giving slopes <100ns.
     #[bits(2)]
     pub drv_strength: u8,
 
     /// Filter time constant of sense amplifier to suppress ringing and coupling from second coil operation
-    /// 
+    ///
     /// - 0: low – 100ns
     /// - 1: – 200ns
     /// - 2: – 300ns
     /// - 3: high– 400ns
-    /// 
+    ///
     /// Hint: Increase setting if motor chopper noise occurs due to cross-coupling of both coils.
     #[bits(2)]
     pub filt_isense: u8,
@@ -346,7 +399,7 @@ Hint: Values >128 recommended for best results
 #[bitfield(u32)]
 pub struct IHoldIRun {
     /// Standstill current (0=1/32…31=32/32)
-    /// 
+    ///
     /// In combination with StealthChop mode, setting IHOLD=0 allows to choose
     /// freewheeling or coil short circuit for motor stand still.
     #[bits(5)]
@@ -356,7 +409,7 @@ pub struct IHoldIRun {
     __: u32,
 
     /// Motor run current (0=1/32…31=32/32)
-    /// 
+    ///
     /// Hint: Choose sense resistors in a way, that normal IRUN is 16 to 31 for best microstep performance.
     #[bits(5)]
     pub irun: u8,
@@ -366,7 +419,7 @@ pub struct IHoldIRun {
 
     /// Controls the number of clock cycles for motor power down after a motion as soon as standstill is detected
     /// (stst=1) and TPOWERDOWN has expired. The smooth transition avoids a motor jerk upon power down.
-    /// 
+    ///
     /// - 0: instant power down
     /// - 1..15: Delay per current reduction step in multiple of 2^18 clocks
     #[bits(4)]
@@ -386,12 +439,17 @@ seconds.
 
 Attention: A minimum setting of 2 is required to allow automatic tuning of StealthChop PWM_OFS_AUTO.
 ");
-motion_register!(TPwmThrs, TmcVelocity, 0x13, "
+motion_register!(
+    TPwmThrs,
+    TmcVelocity,
+    0x13,
+    "
 This is the upper velocity for StealthChop voltage PWM mode. TSTEP ≥ TPWMTHRS
 
 - StealthChop PWM mode is enabled, if configured
 - DcStep is disabled
-");
+"
+);
 motion_register!(TCoolThrs, TmcVelocity, 0x14, "
 This is the lower threshold velocity for switching on smart energy CoolStep and StallGuard feature. (unsigned)
 
@@ -422,23 +480,33 @@ TSTEP ≤ THIGH:
 detection.
 ");
 
-motion_register!(RampMode, TmcUnitless, 0x20, "
+motion_register!(
+    RampMode,
+    TmcUnitless,
+    0x20,
+    "
 - 0: Positioning mode (using all A, D and V parameters)
 - 1: Velocity mode to positive VMAX (using AMAX acceleration)
 - 2: Velocity mode to negative VMAX (using AMAX acceleration)
 - 3: Hold mode (velocity remains unchanged, unless stop event occurs)
-");
+"
+);
 motion_register!(XActual, TmcPosition, 0x21, "
 Actual motor position (signed)
 
 Hint: This value normally should only be modified, when homing the drive. In positioning mode, modifying the register
 content will start a motion.
 ");
-motion_register!(VActual, TmcVelocity, 0x22, "
+motion_register!(
+    VActual,
+    TmcVelocity,
+    0x22,
+    "
 Actual motor velocity from ramp generator (signed)
 
 The sign matches the motion direction. A negative sign means motion to lower XACTUAL.
-");
+"
+);
 motion_register!(VStart, TmcVelocity, 0x23, "
 Motor start velocity (unsigned)
 
@@ -446,32 +514,62 @@ For universal use, set VSTOP ≥ VSTART. This is not required if the motion dist
 from VSTART to VSTOP.
 ");
 
-motion_register!(A1, TmcAcceleration, 0x24, "
+motion_register!(
+    A1,
+    TmcAcceleration,
+    0x24,
+    "
 First acceleration between VSTART and V1 (unsigned)
-");
-motion_register!(V1, TmcVelocity, 0x25, "
+"
+);
+motion_register!(
+    V1,
+    TmcVelocity,
+    0x25,
+    "
 First acceleration / deceleration phase threshold velocity (unsigned)
 
 0: Disables A1 and D1 phase, use AMAX, DMAX only
-");
-motion_register!(AMax, TmcAcceleration, 0x26, "
+"
+);
+motion_register!(
+    AMax,
+    TmcAcceleration,
+    0x26,
+    "
 Second acceleration between V1 and VMAX (unsigned)
 
 This is the acceleration and deceleration value for velocity mode.
-");
-motion_register!(VMax, TmcVelocity, 0x27, "
+"
+);
+motion_register!(
+    VMax,
+    TmcVelocity,
+    0x27,
+    "
 Motion ramp target velocity (for positioning ensure VMAX ≥ VSTART) (unsigned)
 
 This is the target velocity in velocity mode. It can be changed any time during a motion.
-");
-motion_register!(DMax, TmcAcceleration, 0x28, "
+"
+);
+motion_register!(
+    DMax,
+    TmcAcceleration,
+    0x28,
+    "
 Deceleration between VMAX and V1 (unsigned)
-");
-motion_register!(D1, TmcAcceleration, 0x2A, "
+"
+);
+motion_register!(
+    D1,
+    TmcAcceleration,
+    0x2A,
+    "
 Deceleration between V1 and VSTOP (unsigned)
 
 Attention: Do not set 0 in positioning mode, even if V1=0!
-");
+"
+);
 motion_register!(VStop, TmcVelocity, 0x2B, "
 Motor stop velocity (unsigned)
 
@@ -524,27 +622,27 @@ pub struct ChopConf {
     pub toff: u8,
 
     /// hysteresis start value added to HEND OR fast decay time setting
-    /// 
+    ///
     /// **chm=0:**
     /// Add 1, 2, …, 8 to hysteresis low value HEND (1/512 of this setting adds to current setting)
-    /// 
+    ///
     /// Attention: Effective HEND+HSTRT ≤ 16.
-    /// 
+    ///
     /// Hint: Hysteresis decrement is done each 16 clocks
-    /// 
+    ///
     /// **chm=1:**
     /// Fast decay time setting (MSB: fd3)
-    /// 
+    ///
     /// Fast decay time setting TFD with NCLK= 32*TFD
     #[bits(3)]
     pub hstrt: u8,
 
     /// hysteresis low value OR sine wave offset
-    /// 
+    ///
     /// **chm=0:**
     /// Hysteresis is -3, -2, -1, 0, 1, …, 12 (1/512 of this setting adds to current setting) This is the hysteresis
     /// value which becomes used for the hysteresis chopper.
-    /// 
+    ///
     /// **chm=1:**
     /// Offset is -3, -2, -1, 0, 1, …, 12 This is the sine wave offset and 1/512 of the value becomes added to the
     /// absolute value of each sine wave entry.
@@ -556,7 +654,7 @@ pub struct ChopConf {
     pub fd3: u8,
 
     /// fast decay mode
-    /// 
+    ///
     /// chm=1: disfdcc=1 disables current comparator usage for termination of the fast decay cycle
     #[bits(1)]
     pub disfdcc: bool,
@@ -565,7 +663,7 @@ pub struct ChopConf {
     __: u32,
 
     /// chopper mode
-    /// 
+    ///
     /// - true: Standard mode (SpreadCycle)
     /// - false: Constant off time with fast decay time. Fast decay time is also terminated when the negative nominal
     /// current is reached. Fast decay is after on time.
@@ -573,9 +671,9 @@ pub struct ChopConf {
     pub chm: bool,
 
     /// blank time select
-    /// 
+    ///
     /// Set comparator blank time to 16, 24, 36 or 54 clocks
-    /// 
+    ///
     /// Hint: 1 or 2 is recommended for most applications
     #[bits(2)]
     pub tbl: u8,
@@ -584,14 +682,14 @@ pub struct ChopConf {
     __: u32,
 
     /// high velocity fullstep selection
-    /// 
+    ///
     /// This bit enables switching to fullstep, when VHIGH is exceeded. Switching takes place only at 45° position. The
     /// fullstep target current uses the current value from the microstep table at the 45° position.
     #[bits(1)]
     pub vhighfs: bool,
 
     /// high velocity chopper mode
-    /// 
+    ///
     /// This bit enables switching to chm=1 and fd=0, when VHIGH is exceeded. This way, a higher velocity can be
     /// achieved. Can be combined with vhighfs=1. If set, the TOFF setting automatically becomes doubled during high
     /// velocity operation in order to avoid doubling of the chopper frequency.
@@ -599,18 +697,18 @@ pub struct ChopConf {
     pub vhighchm: bool,
 
     /// passive fast decay time
-    /// 
+    ///
     /// TPFD allows dampening of motor mid-range resonances. Passive fast decay time setting controls duration of the
     /// fast decay phase inserted after bridge polarity change NCLK= 128*TPFD
     #[bits(4)]
     pub tpdf: u8,
 
     /// micro step resolution
-    /// 
+    ///
     /// 0: Native 256 microstep setting. Normally use this setting with the internal motion controller.
-    /// 
-    /// 1…8: 128, 64, 32, 16, 8, 4, 2, FULLSTEP Reduced microstep resolution esp. for STEP/DIR operation. 
-    /// 
+    ///
+    /// 1…8: 128, 64, 32, 16, 8, 4, 2, FULLSTEP Reduced microstep resolution esp. for STEP/DIR operation.
+    ///
     /// The resolution gives the number of microstep entries per sine quarter wave. The driver automatically uses
     /// microstep positions which result in a symmetrical wave, when choosing a lower microstep resolution. step
     /// width=2^MRES [microsteps]
@@ -618,14 +716,14 @@ pub struct ChopConf {
     pub mres: u8,
 
     /// interpolation to 256 microsteps
-    /// 
+    ///
     /// The actual microstep resolution (MRES) becomes extrapolated to 256 microsteps for smoothest motor operation
     /// (useful for STEP/DIR operation, only)
     #[bits(1)]
     pub interpol: bool,
 
     /// enable double edge step pulses
-    /// 
+    ///
     /// Enable step impulse at each step edge to reduce step frequency requirement.
     #[bits(1)]
     pub dedge: bool,
@@ -647,7 +745,7 @@ impl Register for ChopConf {
 #[bitfield(u32)]
 pub struct CoolConf {
     /// minimum StallGuard2 value for smart current control and smart current enable
-    /// 
+    ///
     /// If the StallGuard2 result falls below SEMIN*32, the motor current becomes increased to reduce motor load angle.
     /// - 0: smart current control CoolStep off
     #[bits(4)]
@@ -657,9 +755,9 @@ pub struct CoolConf {
     __: u32,
 
     /// current up step width
-    /// 
+    ///
     /// Current increment steps per measured StallGuard2 value
-    /// 
+    ///
     /// 0 … 3: 1, 2, 4, 8
     #[bits(2)]
     pub seup: u8,
@@ -668,7 +766,7 @@ pub struct CoolConf {
     __: u32,
 
     /// StallGuard2 hysteresis value for smart current control
-    /// 
+    ///
     /// If the StallGuard2 result is equal to or above (SEMIN+SEMAX+1)*32, the motor current becomes decreased to save
     /// energy.
     #[bits(4)]
@@ -678,7 +776,7 @@ pub struct CoolConf {
     __: u32,
 
     /// current down step speed
-    /// 
+    ///
     /// - 0: For each 32 StallGuard2 values decrease by one
     /// - 1: For each 8 StallGuard2 values decrease by one
     /// - 2: For each 2 StallGuard2 values decrease by one
@@ -687,17 +785,17 @@ pub struct CoolConf {
     pub sedn: u8,
 
     /// minimum current for smart current control
-    /// 
+    ///
     /// - false: 1/2 of current setting (IRUN)
     /// - true: 1/4 of current setting (IRUN)
     #[bits(1)]
     pub seimin: bool,
 
     /// StallGuard2 threshold value
-    /// 
+    ///
     /// This signed value controls StallGuard2 level for stall output and sets the optimum measurement range for
     /// readout. A lower value gives a higher sensitivity. Zero is the starting value working with most motors.
-    /// 
+    ///
     /// A higher value makes StallGuard2 less sensitive and requires more torque to indicate a stall.
     #[bits(7)]
     pub sgt: i8,
@@ -706,7 +804,7 @@ pub struct CoolConf {
     __: u32,
 
     /// StallGuard2 filter enable
-    /// 
+    ///
     /// false: Standard mode, high time resolution for StallGuard2
     /// true: Filtered mode, StallGuard2 signal updated for each four fullsteps (resp. six fullsteps for 3 phase motor)
     /// only to compensate for motor pole tolerances
@@ -722,7 +820,7 @@ impl Register for CoolConf {
 }
 
 /// DcStep (DC) automatic commutation configuration register (enable via pin DCEN or via VDCMIN)
-/// 
+///
 /// Hint: Using a higher microstep resolution or interpolated operation, DcStep delivers a better StallGuard signal.
 /// DC_SG is also available above VHIGH if vhighfs is activated. For best result also set vhighchm.
 #[bitfield(u32)]
@@ -736,7 +834,7 @@ pub struct DcCtrl {
 
     /// Max. PWM on time for step loss detection using DcStep StallGuard2 in DcStep mode. (DC_SG * 16/fCLK). Set
     /// slightly higher than DC_TIME/16
-    /// 
+    ///
     /// 0=disable
     #[bits(8)]
     pub dc_sg: u8,
@@ -753,15 +851,15 @@ impl Register for DcCtrl {
 #[bitfield(u32)]
 pub struct DrvStatus {
     /// StallGuard2 result respectively PWM on time for coil A in standstill for motor temperature detection
-    /// 
+    ///
     /// **Mechanical load measurement:**
     /// The StallGuard2 result gives a means to measure mechanical motor load. A higher value means lower mechanical
     /// load. A value of 0 signals highest load. With optimum SGT setting, this is an indicator for a motor stall. The
     /// stall detection compares SG_RESULT to 0 to detect a stall. SG_RESULT is used as a base for CoolStep operation,
     /// by comparing it to a programmable upper and a lower limit. It is not applicable in StealthChop mode.
-    /// 
+    ///
     /// StallGuard2 works best with microstep operation or DcStep.
-    /// 
+    ///
     /// **Temperature measurement:**
     /// In standstill, no StallGuard2 result can be obtained. SG_RESULT shows the chopper on-time for motor coil A
     /// instead. Move the motor to a determined microstep position at a certain current setting to get a rough
@@ -774,33 +872,33 @@ pub struct DrvStatus {
     __: u32,
 
     /// short to supply indicator phase A
-    /// 
+    ///
     /// The driver becomes disabled. The flags stay active, until the driver is disabled by software (TOFF=0) or by the
     /// DRV_ENN input. Sense resistor voltage drop is included in the measurement!
     #[bits(1)]
     pub s2vsa: bool,
 
     /// short to supply indicator phase B
-    /// 
+    ///
     /// The driver becomes disabled. The flags stay active, until the driver is disabled by software (TOFF=0) or by the
     /// DRV_ENN input. Sense resistor voltage drop is included in the measurement!
     #[bits(1)]
     pub s2vsb: bool,
 
-    /// StealthChop indicator 
-    /// 
+    /// StealthChop indicator
+    ///
     /// Driver operates in StealthChop mode
     #[bits(1)]
     pub stealth: bool,
 
     /// full step active indicator
-    /// 
+    ///
     /// Indicates that the driver has switched to fullstep as defined by chopper mode settings and velocity thresholds.
     #[bits(1)]
     pub fsactive: bool,
 
     /// actual motor current / smart energy current
-    /// 
+    ///
     /// Actual current control scaling, for monitoring smart energy current scaling controlled via settings in register
     /// COOLCONF, or for monitoring the function of the automatic current scaling.
     #[bits(5)]
@@ -810,55 +908,55 @@ pub struct DrvStatus {
     __: u32,
 
     /// StallGuard2 status
-    /// 
+    ///
     /// Motor stall detected (SG_RESULT=0) or DcStep stall in DcStep mode.
     #[bits(1)]
     pub stall_guard: bool,
 
     /// overtemperature flag
-    /// 
+    ///
     /// Overtemperature limit has been reached. Drivers become disabled until otpw is also cleared due to cooling down
     /// of the IC. The overtemperature flag is common for both bridges.
     #[bits(1)]
     pub ot: bool,
 
     /// overtemperature pre-warning flag
-    /// 
+    ///
     /// Overtemperature pre-warning threshold is exceeded. The overtemperature pre-warning flag is common for both
     /// bridges.
     #[bits(1)]
     pub otpw: bool,
 
     /// short to ground indicator phase A
-    /// 
+    ///
     /// The driver becomes disabled. The flags stay active, until the driver is disabled by software (TOFF=0) or by the
     /// DRV_ENN input.
     #[bits(1)]
     pub s2ga: bool,
 
     /// short to ground indicator phase B
-    /// 
+    ///
     /// The driver becomes disabled. The flags stay active, until the driver is disabled by software (TOFF=0) or by the
     /// DRV_ENN input.
     #[bits(1)]
     pub s2gb: bool,
 
     /// open load indicator phase A
-    /// 
+    ///
     /// Hint: This is just an informative flag. The driver takes no action upon it. False detection may occur in fast
     /// motion and standstill. Check during slow motion, only.
     #[bits(1)]
     pub ola: bool,
 
     /// open load indicator phase B
-    /// 
+    ///
     /// Hint: This is just an informative flag. The driver takes no action upon it. False detection may occur in fast
     /// motion and standstill. Check during slow motion, only.
     #[bits(1)]
     pub olb: bool,
 
     /// standstill indicator
-    /// 
+    ///
     /// This flag indicates motor stand still in each operation mode. This occurs 2^20 clocks after the last step pulse.
     #[bits(1)]
     pub stst: bool,
@@ -872,32 +970,32 @@ impl Register for DrvStatus {
 #[bitfield(u32)]
 pub struct PwmConf {
     /// User defined amplitude (offset)
-    /// 
+    ///
     /// User defined PWM amplitude offset (0-255) related to full motor current (CS_ACTUAL=31) in stand still.
-    /// 
+    ///
     /// Use PWM_OFS as initial value for automatic scaling to speed up the automatic tuning process. To do this, set
     /// PWM_OFS to the determined, application specific value, with pwm_autoscale=0. Only afterwards, set
     /// pwm_autoscale=1. Enable StealthChop when finished.
-    /// 
+    ///
     /// PWM_OFS = 0 will disable scaling down motor current below a motor specific lower measurement threshold. This
     /// setting should only be used under certain conditions, i.e., when the power supply voltage can vary up and down
     /// by a factor of two or more. It prevents the motor going out of regulation, but it also prevents power down below
     /// the regulation limit.
-    /// 
+    ///
     /// PWM_OFS > 0 allows automatic scaling to low PWM duty cycles even below the lower regulation threshold. This
     /// allows low (standstill) current settings based on the actual (hold) current scale (register IHOLD_IRUN).
     #[bits(8)]
     pub pwm_ofs: u8,
 
     /// User defined amplitude gradient
-    /// 
+    ///
     /// Velocity dependent gradient for PWM amplitude: PWM_GRAD * 256 / TSTEP. This value is added to PWM_OFS to
     /// compensate for the velocity-dependent motor back-EMF.
-    /// 
+    ///
     /// Use PWM_GRAD as initial value for automatic scaling to speed up the automatic tuning process. To do this, set
     /// PWM_GRAD to the determined, application specific value, with pwm_autoscale=0. Only afterwards, set
     /// pwm_autoscale=1. Enable StealthChop when finished.
-    /// 
+    ///
     /// Hint: After initial tuning, the required initial value can be read out from PWM_GRAD_AUTO.
     #[bits(8)]
     pub pwm_grad: u8,
@@ -911,7 +1009,7 @@ pub struct PwmConf {
     pub pwm_freq: u8,
 
     /// PWM automatic amplitude scaling
-    /// 
+    ///
     /// - false: User defined feed forward PWM amplitude. The current settings IRUN and IHOLD are not enforced by
     /// regulation, but scale the PWM amplitude, only! The resulting PWM amplitude (limited to 0…255) is: PWM_OFS *
     /// ((CS_ACTUAL+1) / 32) + PWM_GRAD * 256 / TSTEP
@@ -920,29 +1018,29 @@ pub struct PwmConf {
     pub pwm_autoscale: bool,
 
     /// PWM automatic gradient adaptation
-    /// 
+    ///
     /// **false:** Fixed value for PWM_GRAD (PWM_GRAD_AUTO = PWM_GRAD)
-    /// 
+    ///
     /// **true:** Automatic tuning (only with pwm_autoscale=1)
-    /// 
+    ///
     /// PWM_GRAD_AUTO is initialized with PWM_GRAD while pwm_autograd=0 and becomes optimized automatically during
     /// motion.
-    /// 
+    ///
     /// **Preconditions:**
     /// - 1. PWM_OFS_AUTO has been automatically initialized. This requires standstill at IRUN for >130ms to a) detect
     /// standstill b) wait > 128 chopper cycles at IRUN and c) regulate PWM_OFS_AUTO so that -1 < PWM_SCALE_AUTO < 1
     /// - 2. Motor running and PWM_SCALE_SUM < 255 and 1.5 * PWM_OFS_AUTO * (IRUN+1)/32 < PWM_SCALE_SUM < 4 *
     /// PWM_OFS_AUTO * (IRUN+1)/32.
-    /// 
+    ///
     /// **Time required for tuning PWM_GRAD_AUTO** About 8 fullsteps per change of +/-1. Also enables use of reduced
     /// chopper frequency for tuning PWM_OFS_AUTO.
     #[bits(1)]
     pub pwm_autograd: bool,
 
     /// Allows different standstill modes
-    /// 
+    ///
     /// Stand still option when motor current setting is zero (I_HOLD=0).
-    /// 
+    ///
     /// - 0: Normal operation
     /// - 1: Freewheeling
     /// - 2: Coil shorted using LS drivers
@@ -954,7 +1052,7 @@ pub struct PwmConf {
     __: u32,
 
     /// Regulation loop gradient
-    /// 
+    ///
     /// User defined maximum PWM amplitude change per half wave when using pwm_autoscale=1. (1…15):
     /// - 1: 0.5 increments (slowest regulation)
     /// - 2: 1 increment
@@ -968,7 +1066,7 @@ pub struct PwmConf {
     pub pwm_reg: u8,
 
     /// PWM automatic scale amplitude limit when switching on
-    /// 
+    ///
     /// Limit for PWM_SCALE_AUTO when switching back from SpreadCycle to StealthChop. This value defines the upper limit
     /// for bits 7 to 4 of the automatic current control when switching back. It can be set to reduce the current jerk
     /// during mode change back to StealthChop. It does not limit PWM_GRAD or PWM_GRAD_AUTO offset.

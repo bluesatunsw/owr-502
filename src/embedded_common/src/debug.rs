@@ -1,4 +1,4 @@
-use core::{mem::transmute_copy, ptr::copy_nonoverlapping, slice};
+use core::{ptr::copy_nonoverlapping, slice};
 
 use cortex_m::itm;
 use stm32g4::stm32g474::{DBGMCU, DCB, DWT, ITM};
