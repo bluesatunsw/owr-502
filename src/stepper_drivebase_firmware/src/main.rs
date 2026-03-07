@@ -28,6 +28,8 @@ use embedded_common::{
     argb::{self, Colour},
     can::CanDriver,
     clock,
+    stepper_bus::{Channel, StepperNcsPins},
+    tmc_registers::TmcPosition,
 };
 use heapless::Vec;
 use stm32g4xx_hal::{
@@ -46,19 +48,13 @@ use canadensis_data_types::uavcan::node::execute_command_1_3::{
     ExecuteCommandRequest, ExecuteCommandResponse,
 };
 
-use crate::{
-    common::Channel, drivebase::Drivebase, encoder_bus::EncoderNcsPins,
-    stepper_bus::StepperNcsPins, tmc_registers::TmcPosition,
-};
+use crate::drivebase::Drivebase;
 
 extern crate alloc;
 
 mod as_registers;
-mod common;
 mod drivebase;
 mod encoder_bus;
-mod stepper_bus;
-mod tmc_registers;
 
 // Cyphal constants
 const NODE_ID: u8 = 6;
@@ -142,7 +138,12 @@ fn main() -> ! {
     gpiob.pb8.into_push_pull_output();
 
     // Initialise various device drivers.
-    let mut argb = argb::Controller::new(dp.USART1, gpiob.pb6.into_alternate(), DEFAULT_BRIGHTNESS, &mut rcc);
+    let mut argb = argb::Controller::new(
+        dp.USART1,
+        gpiob.pb6.into_alternate(),
+        DEFAULT_BRIGHTNESS,
+        &mut rcc,
+    );
     let clock = clock::MicrosecondClock::new(dp.TIM2, &mut rcc);
     let can = CanDriver::new(
         dp.FDCAN1,
@@ -152,9 +153,6 @@ fn main() -> ! {
     );
 
     let mut drivebase = Drivebase::new(
-        gpiod.pd2.into_push_pull_output(),
-        gpioa.pa8.into_analog(),
-        gpioa.pa10.into_input(),
         (
             gpioc.pc10.into_alternate(),
             gpioc.pc11.into_alternate(),
@@ -178,6 +176,9 @@ fn main() -> ! {
                 .into_push_pull_output_in_state(PinState::High)
                 .into(),
         ),
+        gpioa.pa8.into_analog(),
+        gpiod.pd2.into_push_pull_output(),
+        gpioa.pa10.into_input(),
         // Currently, the encoder does not work.
         // TODO: fix encoder, uncomment this when working
         /*
@@ -237,8 +238,8 @@ fn main() -> ! {
             software_vcs_revision_id: 0,
             unique_id: [
                 // TODO: Replace this with the ID fetched from the chip
-                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE,
-                0x78, 0x12, 0x99, 0x10, 0x00, 0x03, 0x00, 0x00,
+                0xFF, 0x55, 0x13, 0x31, 0x42, 0x69, 0x2A, 0xEE, 0x78, 0x12, 0x99, 0x10, 0x00, 0x03,
+                0x00, 0x00,
             ],
             name: Vec::from_slice(b"org.bluesat.owr.stepper_drivebase").unwrap(),
             software_image_crc: Vec::new(),
@@ -279,7 +280,7 @@ fn main() -> ! {
     )
     .unwrap();
 
-    drivebase.enable_all();
+    drivebase.steppers.enable_all();
     let mut comms_handler = CommsHandler { drivebase };
 
     let mut tim_heartbeat = node.clock().now_const();
@@ -290,7 +291,7 @@ fn main() -> ! {
     loop {
         node.receive(&mut comms_handler).unwrap();
 
-        if let Some(status) = comms_handler.drivebase.health() {
+        if let Some(status) = comms_handler.drivebase.steppers.health() {
             node.set_health(Health {
                 value: Health::ADVISORY,
             });

@@ -1,6 +1,7 @@
 // FIXME!
 
 use cortex_m::asm::delay;
+use embedded_common::stepper_bus::Channel;
 use stm32g4xx_hal::{
     gpio::{AnyPin, Output, AF5, PB13, PB14, PB15},
     pac::SPI2,
@@ -10,7 +11,7 @@ use stm32g4xx_hal::{
     time::RateExtU32,
 };
 
-use crate::{as_registers::Register, common::Channel};
+use crate::as_registers::Register;
 
 pub type EncoderSpiPins = (PB13<AF5>, PB14<AF5>, PB15<AF5>);
 
