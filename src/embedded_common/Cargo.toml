@@ -16,8 +16,10 @@ stm32g4xx-hal = { git = "https://github.com/bluesatunsw/stm32g4xx-hal", branch =
 # Need delay compensation, see: github.com/stm32-rs/fdcan/pull/57
 fdcan = { git = "https://github.com/umi-eng/fdcan.git", branch = "transceiver-delay-compensation" }
 nb = "1.1.0"
-cortex-m = {version = "0.7.7", features = ["critical-section-single-core"]}
-canadensis_can = {version = "0.5.1", features = ["can-fd"]}
+cortex-m = { version = "0.7.7", features = ["critical-section-single-core"] }
+canadensis_can = { version = "0.5.1", features = ["can-fd"] }
+bitfield-struct = { version = "0.12.1", optional = true }
 
 [features]
 dprintln-enabled = []
+stepper-board = ["bitfield-struct"]

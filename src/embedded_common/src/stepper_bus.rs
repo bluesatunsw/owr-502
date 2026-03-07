@@ -1,15 +1,25 @@
 use bitfield_struct::bitfield;
 use cortex_m::asm::delay;
 use stm32g4xx_hal::{
-    gpio::{AnyPin, Output, AF6, PC10, PC11, PC12},
+    gpio::{self, AF6, AnyPin, Output, PC10, PC11, PC12},
     pac::SPI3,
     prelude::*,
-    rcc::Rcc,
-    spi::{self, Spi, MODE_3},
+    rcc::{self, Rcc},
+    spi::{self, MODE_3, Spi},
     time::RateExtU32,
 };
 
-use crate::{common::Channel, tmc_registers::Register};
+use crate::tmc_registers::{DrvStatus, GStat, Register};
+
+#[derive(Debug, Clone, Copy)]
+pub enum Channel {
+    CH0,
+    CH1,
+    CH2,
+    CH3,
+}
+
+pub const ALL_CHANNELS: [Channel; 4] = [Channel::CH0, Channel::CH1, Channel::CH2, Channel::CH3];
 
 #[bitfield(u8)]
 pub struct SpiFlags {
@@ -54,9 +64,18 @@ pub struct StepperNcsPins(
     pub AnyPin<Output>,
 );
 
+pub type EnnPin = gpio::PD2<gpio::Output>;
+pub type ClkPin = gpio::PA8<gpio::Analog>; // MCO
+pub type DiagPin = gpio::PA10<gpio::Input>;
+
 pub struct StepperBus {
     spi_bus: Spi<SPI3, StepperSpiPins>,
     ncs_pins: StepperNcsPins,
+
+    _clk: rcc::Mco<gpio::PA8<gpio::AF0>>,
+    enn: EnnPin,
+    #[allow(dead_code)]
+    diag: DiagPin,
 }
 
 impl StepperBus {
@@ -64,11 +83,24 @@ impl StepperBus {
         spi_bus: SPI3,
         spi_pins: StepperSpiPins,
         ncs_pins: StepperNcsPins,
+
+        clk_pin: ClkPin,
+        enn: EnnPin,
+        diag: DiagPin,
+
         rcc: &mut Rcc,
     ) -> Self {
+        // initialise the MCO (CLK pin) at 12 MHz
+        let clk = clk_pin.mco(rcc::MCOSrc::HSE, rcc::Prescaler::Div2, rcc);
+        clk.enable();
+
         Self {
             spi_bus: spi_bus.spi(spi_pins, MODE_3, 1.MHz(), rcc),
             ncs_pins: ncs_pins,
+
+            _clk: clk,
+            enn,
+            diag,
         }
     }
 
@@ -135,5 +167,56 @@ impl StepperBus {
 
         let (flags, value) = Self::unpack_frame(res);
         Ok((SpiFlags(flags), R::from(value)))
+    }
+
+    /// Enables all drivebase channels. Must be called before any actuator commands (e.g.
+    /// `set_position()`) in order to actually cause the motors to move. See also `disable_all()`.
+    pub fn enable_all(&mut self) {
+        self.enn.set_low();
+    }
+
+    /// Disables all drivebase channels. Actuator commands (e.g. `set_position()`) will have no
+    /// effect until a call to `enable_all()`.
+    #[allow(unused)]
+    pub fn disable_all(&mut self) {
+        self.enn.set_high();
+    }
+
+    fn append_health(health: &mut Option<u8>, cond: bool, code: u8) {
+        if !cond {
+            return;
+        }
+
+        *health = Some(if let Some(curr) = *health {
+            if curr >= 100 { curr } else { curr + 100 }
+        } else {
+            code
+        });
+    }
+
+    pub fn health(&mut self) -> Option<u8> {
+        let mut health = None;
+        for (&chan, prefix) in ALL_CHANNELS.iter().zip([0, 10, 20, 30]) {
+            let (_, gstat) = self.read_reg::<GStat>(chan).unwrap();
+            Self::append_health(&mut health, gstat.reset(), prefix + 0);
+            Self::append_health(&mut health, gstat.uv_cp(), prefix + 1);
+            if !gstat.drv_err() {
+                continue;
+            }
+
+            let (_, dstat) = self.read_reg::<DrvStatus>(chan).unwrap();
+            Self::append_health(&mut health, dstat.ot(), prefix + 2);
+            Self::append_health(&mut health, dstat.otpw(), prefix + 3);
+
+            Self::append_health(&mut health, dstat.s2ga(), prefix + 4);
+            Self::append_health(&mut health, dstat.s2gb(), prefix + 5);
+            Self::append_health(&mut health, dstat.s2vsa(), prefix + 6);
+            Self::append_health(&mut health, dstat.s2vsb(), prefix + 7);
+
+            Self::append_health(&mut health, dstat.ola(), prefix + 8);
+            Self::append_health(&mut health, dstat.olb(), prefix + 9);
+        }
+
+        health
     }
 }

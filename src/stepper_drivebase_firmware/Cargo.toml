@@ -15,7 +15,6 @@ canadensis_filter_config = "0.5.0"
 heapless = "0.9.1"
 embedded-alloc = "0.6.0"
 embedded-io = "0.6.1"
-embedded_common = { path = "../embedded_common" }
 bitfield-struct = "0.12.1"
 
 # This Bluesat-custom HAL repo has extra UART and QSPI functionality. We would
@@ -34,6 +33,10 @@ features = ["can-fd"]
 [dependencies.cortex-m]
 version = "0.7.7"
 features = ["critical-section-single-core"]
+
+[dependencies.embedded_common]
+path = "../embedded_common"
+features = ["dprintln-enabled", "stepper-board"]
 
 # allows use of `cargo fix`
 [[bin]]
