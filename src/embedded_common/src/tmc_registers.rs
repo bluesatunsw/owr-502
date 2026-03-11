@@ -595,6 +595,28 @@ Hint: When increasing V1, D1 or DMAX during a motion, rewrite XTARGET afterwards
 if desired.
 ");
 
+/// Current or duty cycle configuration for the driver when operating in direct mode (set in the GCONF register)
+#[bitfield(u32)]
+pub struct XTargetDirect {
+    /// Duty cycle or current value for channel A
+    #[bits(9)]
+    pub a: i16,
+
+    #[bits(7)]
+    __: u32,
+
+    /// Duty cycle or current value for channel B
+    #[bits(9)]
+    pub b: i16,
+
+    #[bits(7)]
+    __: u32,
+}
+
+impl Register for XTargetDirect {
+    const ADDRESS: u8 = 0x2D;
+}
+
 motion_register!(VDcMin, TmcVelocity, 0x33, "
 Automatic commutation DcStep becomes enabled above velocity VDCMIN (unsigned) (only when using internal ramp generator,
 not for STEP/DIR interface - in STEP/DIR mode, DcStep becomes enabled by the external signal DCEN)
