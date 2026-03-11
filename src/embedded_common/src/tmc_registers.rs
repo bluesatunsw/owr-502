@@ -1,8 +1,4 @@
-use core::{
-    f32,
-    fmt::Debug,
-    ops::*,
-};
+use core::{f32, fmt::Debug, ops::*};
 
 use bitfield_struct::bitfield;
 
@@ -207,7 +203,7 @@ pub struct GConf {
 
     /// Enable step input filtering for StealthChop optimization with external step source
     #[bits(1)]
-    multistep_filt: bool,
+    pub multistep_filt: bool,
 
     /// Inverse motor direction
     #[bits(1)]
@@ -219,13 +215,13 @@ pub struct GConf {
     /// - false: Hysteresis for step frequency comparison is 1/16
     /// - true: Hysteresis for step frequency comparison is 1/32
     #[bits(1)]
-    small_hysteresis: bool,
+    pub small_hysteresis: bool,
 
     /// - false: Normal operation
     /// - true: Emergency stop, ENCA_DCIN stops the sequencer when tied high (no steps become executed by the sequencer,
     /// motor goes to standstill state).
     #[bits(1)]
-    stop_enable: bool,
+    pub stop_enable: bool,
 
     /// - false: Normal operation
     /// - true: Motor coil currents and polarity directly programmed via serial interface: Register XTARGET (0x2D)
@@ -233,7 +229,7 @@ pub struct GConf {
     /// scaled by IHOLD setting. Velocity based current regulation of StealthChop is not available in this mode. The
     /// automatic StealthChop current regulation will work only for low stepper motor velocities.
     #[bits(1)]
-    direct_mode: bool,
+    pub direct_mode: bool,
 
     #[bits(15)]
     __: u32,
