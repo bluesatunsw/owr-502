@@ -1,3 +1,5 @@
+use alloc::slice;
+use cortex_m::itm;
 use stm32f4xx_hal::pac::{DBGMCU, DCB, DWT, ITM};
 
 pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: &mut ITM) {
@@ -14,6 +16,26 @@ pub unsafe fn setup_itm(dcb: &mut DCB, dwt: &mut DWT, dbgmcu: &mut DBGMCU, itm: 
         itm.tpr.write(0b1111); // Enables STIM 0 to 3
         itm.ter[0].write(0xFFFF_FFFF); // Enables STIM[31:0]
     }
+}
+
+pub fn itm_send_raw<T: Sized>(chan: usize, value: &T) {
+    if cfg!(not(feature = "dprintln-enabled")) {
+        return;
+    }
+    let stim = unsafe { &mut stm32f4xx_hal::pac::CorePeripherals::steal().ITM.stim[chan] };
+    itm::write_all(stim, unsafe {
+        slice::from_raw_parts((value as *const T) as *const u8, size_of::<T>())
+    });
+}
+
+pub fn itm_hexdump(chan: usize, bytes: &[u8]) {
+    if cfg!(not(feature = "dprintln-enabled")) {
+        return;
+    }
+
+    let stim = unsafe { &mut stm32f4xx_hal::pac::CorePeripherals::steal().ITM.stim[chan] };
+    stim.write_u32(bytes.len() as u32);
+    itm::write_all(stim, bytes);
 }
 
 #[cfg(feature = "dprintln-enabled")]

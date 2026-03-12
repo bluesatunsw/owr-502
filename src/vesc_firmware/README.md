@@ -46,12 +46,21 @@ default when the firmware is restarted.
 ### Timer allocation
 - TIM1
     - Commutation timer to generate 6 PWM signals
-- TIM3 (PLANNED - NOT USED ATM)
+- TIM3
     - Hall effect interfacing timer
 - TIM5
     - Cyphal microsecond clock
 - TIM6
     - Motion control timer
+
+### Hall Effect Sensor Working Method
+PC6/7/8 --> TIM3CH1/2/3 --[XOR]--> TI1 --[Edge Detector]--> TI1F_ED --> TRC
+--[Slave Controller]--> RESET TIM3.CNT
+--[TIM3_CCMR1.CC1S == IC1 mapped to TRC]--> IC1
+
+TIM3 capture compare register 1 is set up in *capture* mode, it captures
+TIM3.CNT *when IC1 is asserted*. The counter is set to run in One Pulse Mode
+(OPM) as it overflows ~100sec and so `CNT == 0` is used as a sentinel value.
 
 ### Configured Interrupts
 

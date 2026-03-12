@@ -90,7 +90,10 @@ impl STM32F4xxSixPwmDriver {
         Self::set_idle_mode(mode, (&mut pwm_c1, &mut pwm_c2, &mut pwm_c3));
 
         unsafe {
-            Peripherals::steal().TIM1.bdtr().modify(|_, w| w.ossi().idle_level() );
+            Peripherals::steal()
+                .TIM1
+                .bdtr()
+                .modify(|_, w| w.ossi().idle_level());
         }
 
         pwm_c1.enable();

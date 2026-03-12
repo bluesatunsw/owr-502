@@ -31,6 +31,7 @@ use cortex_m_rt::entry;
 use embedded_alloc::LlffHeap as Heap;
 use panic_semihosting as _;
 
+use stm32f4xx_hal::pac::TIM3;
 use stm32f4xx_hal::{
     adc::{
         config::{AdcConfig, Resolution},
@@ -52,6 +53,7 @@ pub mod state;
 pub mod util;
 
 use crate::state::CommutationMode;
+use crate::util::debug::itm_send_raw;
 use crate::util::{
     debug::setup_itm,
     foc::{inverse_park, modulate_spacevector, RotatingReferenceFrame},
@@ -69,6 +71,9 @@ static G_COM_STATE: Mutex<UnsafeCell<CommutationState>> =
         mode: CommutationMode::Disabled,
         halls: MaybeUninit::uninit(),
         pwm_driver: MaybeUninit::uninit(),
+        hall_state: 0.0,
+        full_revs: 0,
+        velocity_raw: 0.0,
     }));
 
 // Global allocator -- required by canadensis.
@@ -89,7 +94,7 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let config = DRIVEBASE_FR_CONFIG;
+    let config = DRIVEBASE_BL_CONFIG;
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
@@ -147,16 +152,42 @@ fn main() -> ! {
     let hall2 = gpioc.pc7.into_alternate::<2>().internal_pull_up(true);
     let hall3 = gpioc.pc8.into_alternate::<2>().internal_pull_up(true);
 
-    // Set up hall-sensor interfacing timer (TIM5)
+    // Set up hall-sensor interfacing timer (TIM3, 84MHz clock)
     //
     // Mode of operation described in RM0390 16.3.18
     // OR refer to RM0440 28.3.29
-    // rcc.apb1rstr().modify(|_, w| w.tim3rst().set_bit());
-    // rcc.apb1rstr().modify(|_, w| w.tim3rst().clear_bit());
-    // rcc.apb1enr().modify(|_, w| w.tim3en().set_bit());
-    // funny XOR
-    // dp.TIM3.cr2().write(|w| w.ti1s().set_bit());
-    // TODO: Set CKD and ARR
+    TIM3::enable(&mut rcc);
+    TIM3::reset(&mut rcc);
+    // reset cr1 (pause), counter, pending interrupt flags
+    dp.TIM3.cr1().reset();
+    dp.TIM3.cnt().reset();
+    dp.TIM3.sr().reset();
+    // Set psc (time quanta = 1/28kHz) and arr (u16 max)
+    dp.TIM3.arr().write(|w| w.arr().set(u16::MAX));
+    dp.TIM3.psc().write(|w| {
+        w.psc().set(
+            (rcc.clocks.timclk1().raw() / 28.kHz::<1, 1>().raw())
+                .try_into()
+                .unwrap(),
+        )
+    });
+    
+    // Update on overflow so we can set velocity to 0, One punch mode
+    dp.TIM3
+        .cr1()
+        .modify(|_, w| w.urs().counter_only().opm().enabled());
+    // TI1/2/3 --[XOR]--> TI1 --> TI1F_ED
+    dp.TIM3.cr2().write(|w| w.ti1s().xor());
+    // TI1F_ED -> TRGI -> Reset CNT (Slave Mode)
+    dp.TIM3
+        .smcr()
+        .write(|w| w.ts().ti1f_ed().sms().reset_mode());
+    // Trigger an interrupt when the hall sensors change OR on timeout
+    dp.TIM3.dier().write(|w| w.tie().enabled().uie().enabled());
+    // Capture CNT on TRC event (actual hall time)
+    dp.TIM3.ccer().reset();
+    dp.TIM3.ccmr1_input().write(|w| w.cc1s().trc());
+    dp.TIM3.ccer().write(|w| w.cc1e().enabled());
 
     // Set up ADC's for voltage and motor current sensing
     // Multi-ADC Simultaneous injected mode?? Need to look into this later...
@@ -175,17 +206,7 @@ fn main() -> ! {
     // .external_trigger(adc::config::TriggerMode::RisingEdge, adc::config::ExternalTrigger::Tim_5_cc_1),
     //Adc::new(dp.ADC1, true, config, rcc);
 
-    {
-        let _idx = (usize::from(hall1.is_high()) << 2)
-            + (usize::from(hall2.is_high()) << 1)
-            + usize::from(hall3.is_high());
-        dprintln!(
-            0,
-            "[INFO] Hall angle: {}, in state {}",
-            consts::FRAC_PI_3 * K_HALL_TABLE[_idx],
-            _idx
-        );
-    }
+    {}
 
     cortex_m::interrupt::free(|cs| unsafe {
         let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
@@ -193,13 +214,15 @@ fn main() -> ! {
         com_state
             .halls
             .write((hall1.into(), hall2.into(), hall3.into()));
+        com_state.hall_state = com_state.get_angle_force_hw();
+        dprintln!(0, "[INFO] Hall angle: {}", com_state.hall_state);
     });
 
     unsafe {
         cortex_m::peripheral::NVIC::unmask(interrupt::TIM1_UP_TIM10);
 
-        // TODO cp.NVIC.set_priority(interrupt::TIM3, 31);
-        // TODO cortex_m::peripheral::NVIC::unmask(interrupt::TIM3);
+        cp.NVIC.set_priority(interrupt::TIM3, 31);
+        cortex_m::peripheral::NVIC::unmask(interrupt::TIM3);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -253,7 +276,7 @@ fn main() -> ! {
     });
 
     node.subscribe_message(
-        config.comms.ctrl_volt,
+        config.comms.ctrl_duty,
         size_of::<actuator::common::sp::scalar_0_1::Scalar>(),
         1.secs(),
     )
@@ -290,17 +313,68 @@ fn main() -> ! {
     }
 }
 
-const K_HALL_TABLE: [f32; 8] = [
-    0.0, // 000 = xxx impossible
-    3.0, // 001 = 3 (180 deg)
-    5.0, // 010 = 5 (300 deg)
-    4.0, // 011 = 4 (240 deg)
-    1.0, // 100 = 1 (060 deg)
-    2.0, // 101 = 2 (120 deg)
-    0.0, // 110 = 0 (000 deg)
-    0.0, // 111 = xxx impossible
-];
+// Hall sensor interfacing interrupt
+//
+// This will NOT capture the velocity on the first hall transition after it
+// times out, it requires another (first enables the counter) for a capture
+#[interrupt]
+fn TIM3() {
+    // If we overflowed the timer period at some point
+    let tim = unsafe { TIM3::steal() };
+    tim.cr1().modify(|_, w| w.cen().enabled());
 
+    if tim.sr().read().cc1of().is_overcapture() {
+        dprintln!(0, "[ERR] Hall overcapture!");
+    }
+
+    // Get old and new hall sensor states to check if we need to wrap around
+    // AND wtf the direction of our velocity is!
+    let halls_old = cortex_m::interrupt::free(|cs| unsafe {
+        G_COM_STATE.borrow(cs).as_mut_unchecked().hall_state
+    });
+    let halls_new = cortex_m::interrupt::free(|cs| unsafe {
+        let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
+        com_state.get_halls()
+    });
+
+    // This is still fine in the case of UIF firing (timer overflow)
+    let (direction, wrap) = match (halls_old, halls_new) {
+        (state::K_HALL_MIN, state::K_HALL_MAX) => (-1, 1),
+        (state::K_HALL_MAX, state::K_HALL_MIN) => (1, 1),
+        _ if halls_new > halls_old => (1, 0),
+        _ => (-1, 0),
+    };
+
+    // TODO: Is this off-by-one (ticks value == ccr + 1)?
+    // ticks (one per 1/28kHz) between hall transition --> speed (rad/s)
+    // speed = (28k / ticks) * 1/6 (hall trans/turn * 2pi (turn/s->rad/s)
+    let velocity = if tim.sr().read().uif().is_update_pending() {
+        0.0
+    } else if tim.ccr1().read().ccr().bits() == 0u16 {
+        dprintln!(0, "Aliasing glitch to 0 speed");
+        0.0
+    } else {
+        dprintln!(0, "CNT: {}", tim.ccr1().read().ccr().bits());
+        (28000.0 / (tim.ccr1().read().ccr().bits() as f32 * 6.0)) * consts::TAU * direction as f32
+    };
+    tim.sr().reset();
+    
+    // Write new numbers
+    cortex_m::interrupt::free(|cs| unsafe {
+        let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
+        com_state.hall_state = halls_new;
+        com_state.velocity_raw = velocity;
+        com_state.full_revs += wrap * direction;
+
+        itm_send_raw(1, &halls_new);
+        itm_send_raw(2, &velocity);
+        itm_send_raw(3, &com_state.full_revs);
+    });
+}
+
+// Motion control interrupt
+
+// Commutation interrupt
 #[interrupt]
 fn TIM1_UP_TIM10() {
     unsafe {
@@ -329,25 +403,16 @@ fn TIM1_UP_TIM10() {
     // Duty cycle from -1 to 1
     let v_q: f32 = cortex_m::interrupt::free(|cs| {
         let control = unsafe { G_COM_STATE.borrow(cs).as_ref_unchecked() };
-        if let CommutationMode::Voltage { voltage: volts } = control.mode {
-            return volts;
+        if let CommutationMode::DutyCycle { duty } = control.mode {
+            return duty;
         }
 
         0.0
     });
 
-    let idx = cortex_m::interrupt::free(|cs| unsafe {
-        let halls = G_COM_STATE
-            .borrow(cs)
-            .as_ref_unchecked()
-            .halls
-            .assume_init_ref();
-        (usize::from(halls.0.is_high()) << 2)
-            + (usize::from(halls.1.is_high()) << 1)
-            + usize::from(halls.2.is_high())
+    let mut angle = cortex_m::interrupt::free(|cs| unsafe {
+        G_COM_STATE.borrow(cs).as_ref_unchecked().get_angle()
     });
-
-    let mut angle = consts::FRAC_PI_3 * K_HALL_TABLE[idx];
 
     while angle > consts::PI {
         angle -= consts::TAU;

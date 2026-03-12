@@ -32,21 +32,21 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
         N: canadensis::Node<Transport = T>,
     {
         match transfer.header.subject {
-            _ if self.config.ctrl_volt == transfer.header.subject => {
+            _ if self.config.ctrl_duty == transfer.header.subject => {
                 // TODO this deadband is stupid, should have Readiness heartbeat
-                let Ok(volts) = actuator::common::sp::scalar_0_1::Scalar::deserialize_from_bytes(
+                let Ok(duty) = actuator::common::sp::scalar_0_1::Scalar::deserialize_from_bytes(
                     &transfer.payload,
                 ) else {
                     return false;
                 };
 
                 cortex_m::interrupt::free(|cs| unsafe {
-                    if f32::from(volts.value).abs() < 0.02 {
+                    if f32::from(duty.value).abs() < 0.02 {
                         (*self.commutation_state.borrow(cs).get()).mode = CommutationMode::Disabled;
                     } else {
                         (*self.commutation_state.borrow(cs).get()).mode =
-                            CommutationMode::Voltage {
-                                voltage: f32::from(volts.value),
+                            CommutationMode::DutyCycle {
+                                duty: f32::from(duty.value),
                             };
                     }
                 });

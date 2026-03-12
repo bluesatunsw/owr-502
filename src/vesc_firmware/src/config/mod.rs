@@ -11,7 +11,7 @@ pub struct CommsConfig {
     // Cyphal node id
     pub node_id: u8,
     // Cyphal subject id to subscribe for duty cycle messages
-    pub ctrl_volt: SubjectId,
+    pub ctrl_duty: SubjectId,
     // TODO Motor inversion here?
 }
 
@@ -31,7 +31,7 @@ impl Default for AppConfig {
         AppConfig {
             comms: CommsConfig {
                 node_id: 1,
-                ctrl_volt: SubjectId::from_truncating(10),
+                ctrl_duty: SubjectId::from_truncating(10),
             },
             motion: MotionConfig {
                 idle_mode: IdleMode::HiZ,
