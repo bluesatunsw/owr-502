@@ -94,7 +94,7 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let config = DRIVEBASE_BL_CONFIG;
+    let config = DRIVEBASE_BR_CONFIG;
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
@@ -171,7 +171,7 @@ fn main() -> ! {
                 .unwrap(),
         )
     });
-    
+
     // Update on overflow so we can set velocity to 0, One punch mode
     dp.TIM3
         .cr1()
@@ -184,9 +184,11 @@ fn main() -> ! {
         .write(|w| w.ts().ti1f_ed().sms().reset_mode());
     // Trigger an interrupt when the hall sensors change OR on timeout
     dp.TIM3.dier().write(|w| w.tie().enabled().uie().enabled());
-    // Capture CNT on TRC event (actual hall time)
+    // Capture CNT on TRC event (actual hall time), filter
     dp.TIM3.ccer().reset();
-    dp.TIM3.ccmr1_input().write(|w| w.cc1s().trc());
+    dp.TIM3
+        .ccmr1_input()
+        .write(|w| w.cc1s().trc().ic1f().fdts_div32_n8());
     dp.TIM3.ccer().write(|w| w.cc1e().enabled());
 
     // Set up ADC's for voltage and motor current sensing
@@ -205,8 +207,6 @@ fn main() -> ! {
 
     // .external_trigger(adc::config::TriggerMode::RisingEdge, adc::config::ExternalTrigger::Tim_5_cc_1),
     //Adc::new(dp.ADC1, true, config, rcc);
-
-    {}
 
     cortex_m::interrupt::free(|cs| unsafe {
         let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
@@ -323,18 +323,15 @@ fn TIM3() {
     let tim = unsafe { TIM3::steal() };
     tim.cr1().modify(|_, w| w.cen().enabled());
 
-    if tim.sr().read().cc1of().is_overcapture() {
+    /*if tim.sr().read().cc1of().is_overcapture() {
         dprintln!(0, "[ERR] Hall overcapture!");
-    }
+    }*/
 
     // Get old and new hall sensor states to check if we need to wrap around
     // AND wtf the direction of our velocity is!
-    let halls_old = cortex_m::interrupt::free(|cs| unsafe {
-        G_COM_STATE.borrow(cs).as_mut_unchecked().hall_state
-    });
-    let halls_new = cortex_m::interrupt::free(|cs| unsafe {
+    let (halls_old, halls_new) = cortex_m::interrupt::free(|cs| unsafe {
         let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
-        com_state.get_halls()
+        (com_state.hall_state, com_state.get_halls())
     });
 
     // This is still fine in the case of UIF firing (timer overflow)
@@ -345,23 +342,26 @@ fn TIM3() {
         _ => (-1, 0),
     };
 
-    // TODO: Is this off-by-one (ticks value == ccr + 1)?
     // ticks (one per 1/28kHz) between hall transition --> speed (rad/s)
     // speed = (28k / ticks) * 1/6 (hall trans/turn * 2pi (turn/s->rad/s)
     let velocity = if tim.sr().read().uif().is_update_pending() {
         0.0
-    } else if tim.ccr1().read().ccr().bits() == 0u16 {
-        dprintln!(0, "Aliasing glitch to 0 speed");
-        0.0
+    } else if tim.ccr1().read().ccr().bits() <= 2u16 {
+        // Assume hall sensor glitched
+        cortex_m::interrupt::free(|cs| unsafe {
+            G_COM_STATE.borrow(cs).as_mut_unchecked().glitch_accum +=
+                tim.ccr1().read().ccr().bits();
+        });
+        return;
     } else {
-        dprintln!(0, "CNT: {}", tim.ccr1().read().ccr().bits());
         (28000.0 / (tim.ccr1().read().ccr().bits() as f32 * 6.0)) * consts::TAU * direction as f32
     };
     tim.sr().reset();
-    
+
     // Write new numbers
     cortex_m::interrupt::free(|cs| unsafe {
         let com_state = G_COM_STATE.borrow(cs).as_mut_unchecked();
+        com_state.glitch_accum = 0; // Clear glitch velocity accumulator
         com_state.hall_state = halls_new;
         com_state.velocity_raw = velocity;
         com_state.full_revs += wrap * direction;
@@ -410,16 +410,12 @@ fn TIM1_UP_TIM10() {
         0.0
     });
 
-    let mut angle = cortex_m::interrupt::free(|cs| unsafe {
-        G_COM_STATE.borrow(cs).as_ref_unchecked().get_angle()
+    let angle = cortex_m::interrupt::free(|cs| unsafe {
+        G_COM_STATE
+            .borrow(cs)
+            .as_ref_unchecked()
+            .get_angle_force_hw()
     });
-
-    while angle > consts::PI {
-        angle -= consts::TAU;
-    }
-    while angle < -consts::PI {
-        angle += consts::TAU;
-    }
 
     // Saving grace... at least these expensive ass math ops aren't in an int::free
     let v_ab = inverse_park(angle, RotatingReferenceFrame { d: V_D, q: v_q });

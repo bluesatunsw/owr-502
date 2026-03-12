@@ -25,14 +25,14 @@ pub enum CommutationMode {
 }
 
 pub const K_HALL_TABLE: [f32; 8] = [
-    0.0, // 000 = xxx impossible
-    3.0, // 001 = 3 (180 deg)
-    5.0, // 010 = 5 (300 deg)
-    4.0, // 011 = 4 (240 deg)
-    1.0, // 100 = 1 (060 deg)
-    2.0, // 101 = 2 (120 deg)
-    0.0, // 110 = 0 (000 deg)
-    0.0, // 111 = xxx impossible
+    0.0,  // 000 = xxx impossible
+    3.0,  // 001 = 3 (180 deg)
+    -1.0, // 010 = 5 (300 deg --> -060 deg)
+    -2.0, // 011 = 4 (240 deg --> -120 deg)
+    1.0,  // 100 = 1 (060 deg)
+    2.0,  // 101 = 2 (120 deg)
+    0.0,  // 110 = 0 (000 deg)
+    0.0,  // 111 = xxx impossible
 ];
 pub const K_HALL_MAX: f32 = K_HALL_TABLE[0b010];
 pub const K_HALL_MIN: f32 = K_HALL_TABLE[0b110];
@@ -46,6 +46,7 @@ pub struct CommutationState {
     )>,
     pub mode: CommutationMode,
     pub hall_state: f32,
+    pub glitch_accum: u16,
     pub velocity_raw: f32,
     pub full_revs: i32,
     // pub velocity: f32, TODO filtered in motion control interrupt!
