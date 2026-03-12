@@ -354,7 +354,12 @@ fn TIM3() {
         });
         return;
     } else {
-        (28000.0 / (tim.ccr1().read().ccr().bits() as f32 * 6.0)) * consts::TAU * direction as f32
+        let glitches = cortex_m::interrupt::free(|cs| unsafe {
+            G_COM_STATE.borrow(cs).as_mut_unchecked().glitch_accum
+        });
+        (28000.0 / ((tim.ccr1().read().ccr().bits() + glitches) as f32 * 6.0))
+            * consts::TAU
+            * direction as f32
     };
     tim.sr().reset();
 
