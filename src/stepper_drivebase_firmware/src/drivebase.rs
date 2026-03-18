@@ -106,6 +106,9 @@ impl Drivebase {
 
             steppers.write_reg(chan, GlobalScalar(64.ul())).unwrap();
 
+            // We use the default DRVSTRENGTH (drv_strength) value of 0 ("weak") in DrvConf for
+            // Rev. 3p0 (and the Rev. B2 with the zero-ohm MOSFET gate resistor modification).
+
             steppers
                 .write_reg(
                     chan,
