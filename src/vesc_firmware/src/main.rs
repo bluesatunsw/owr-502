@@ -73,6 +73,7 @@ static G_COM_STATE: Mutex<UnsafeCell<CommutationState>> =
         pwm_driver: MaybeUninit::uninit(),
         hall_state: 0.0,
         full_revs: 0,
+        glitch_accum: 0,
         velocity_raw: 0.0,
     }));
 
@@ -94,7 +95,7 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let config = DRIVEBASE_BR_CONFIG;
+    let config = DRIVEBASE_FR_CONFIG;
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
