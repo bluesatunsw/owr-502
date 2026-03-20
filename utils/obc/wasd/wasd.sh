@@ -49,7 +49,6 @@ case $NAME in
         ;;
 esac
 
-
 echo -n "Waiting for steering motion... "
 echo -n "2... "
 sleep 1
