@@ -32,7 +32,7 @@ fn main() -> ! {
 
     delay(50_000_000);
 
-    for (mut chan, led_idx) in zip(pwr_chans, [2, 3, 4, 5]) {
+    for (mut chan, led_idx) in zip(pwr_chans, [0, 1, 4, 5]) {
         chan.enable();
         led_buf[led_idx] = Colour { r: 0, b: 0, g: 255 };
     }
