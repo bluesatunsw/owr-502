@@ -7,7 +7,7 @@ TARGET=${2:-3000}
 echo $POSITION
 echo $TARGET
 
-yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),100)" \
-      pub --count 1 ${TARGET}:reg.udral.physics.dynamics.rotation.Planar\
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),42)" \
+      pub -N 1 ${TARGET}:reg.udral.physics.dynamics.rotation.Planar.0.1\
       "{kinematics: {angular_position: $POSITION }}"
 

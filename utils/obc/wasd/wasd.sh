@@ -1,4 +1,5 @@
 function steer {
+    echo "steering $1 $2 $3 $4"
     yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all',64),44)" pub -N 1 \
         3000:reg.udral.physics.dynamics.rotation.Planar "{kinematics: {angular_position: $1 }}" \
         3010:reg.udral.physics.dynamics.rotation.Planar "{kinematics: {angular_position: $2 }}" \
@@ -18,16 +19,15 @@ function drive {
 NAME=${0,,}
 NAME=${NAME#./}
 
-VELOCITY="0.1"
+VELOCITY="0.06"
 if [[ "$0" =~ [[:upper:]] ]] 
 then
-   VELOCITY="0.3"
+   VELOCITY="0.20"
 fi
 
-
+drive 0.0 0.0 0.0 0.0
 if [[ "$NAME" =~ "x" ]] 
 then
-    drive 0.0 0.0 0.0 0.0
     echo "stopped!"
     exit 0
 fi
@@ -47,10 +47,7 @@ case $NAME in
         ;;
 esac
 
-
 echo -n "Waiting for steering motion... "
-echo -n "3... "
-sleep 1
 echo -n "2... "
 sleep 1
 echo -n "1... "
