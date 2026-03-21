@@ -7,7 +7,7 @@ use canadensis::encoding::Deserialize;
 use canadensis::{ResponseToken, TransferHandler};
 use canadensis_data_types::reg::udral::service::actuator;
 use cortex_m::interrupt::Mutex;
-// use embedded_common::dprintln;
+use embedded_common::dprintln;
 
 use crate::config::CommsConfig;
 use crate::state::{CommutationMode, CommutationState};
@@ -53,7 +53,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                 true
             }
             _ => {
-                // dprintln!(0, "[WARN] Unknown message RECV'd");
+                dprintln!(0, "[WARN] Unknown message RECV'd");
                 false
             }
         }
@@ -68,7 +68,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
     where
         N: canadensis::Node<Transport = T>,
     {
-        // dprintln!(0, "[INFO] COMMS.REQ");
+        dprintln!(0, "[INFO] COMMS.REQ");
         false
     }
 
@@ -76,7 +76,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
     where
         N: canadensis::Node<Transport = T>,
     {
-        // dprintln!(0, "[INFO] COMMS.RESP");
+        dprintln!(0, "[INFO] COMMS.RESP");
         false
     }
 }

@@ -1,4 +1,3 @@
-use cortex_m_semihosting::hprintln;
 use hal::gpio::{Alternate, Pin};
 use cortex_m::prelude::*;
 use hal::pwm::{self, Pwm, PwmAdvExt};
@@ -35,14 +34,6 @@ impl STM32G4xxSixPwmDriver {
         mode: IdleMode,
     ) -> Self {
         // configure all the timer crap before we make it PWM
-        // trig UEV on *full* pwm cycle (1 bcuz center aligned :sob:)
-        tim.rcr().write(|w| w.rep().set(1));
-        Self::set_idle_mode(mode, &mut tim);
-        // enable update interrupts on the underlying timer for commutation handler to run.
-        // TIM1's NVIC is unmasked in main.
-        tim.dier().write(|w| w.uie().set_bit());
-        // off-state selection for idle mode: force to idle level (bit 1)
-        tim.bdtr().modify(|_, w| w.ossi().idle_level());
 
         // The G4 HAL takes alignment into account so we don't have to do the 28 kHz silly
         // ⚠️ Change dead_time and PWM_SENSE_LIMIT if changing this! ⚠️
@@ -56,9 +47,24 @@ impl STM32G4xxSixPwmDriver {
             .finalize();
         motor_disable();
 
-        /*assert!(ch1.get_max_duty() == 6000);
+        assert!(ch1.get_max_duty() == 6000);
         assert!(ch2.get_max_duty() == 6000);
-        assert!(ch3.get_max_duty() == 6000);*/
+        assert!(ch3.get_max_duty() == 6000);
+
+        // TIM1 is both eaten and reset by PWM HAL, so we have to use unsafe to set these TIM1
+        // fields for our own nefarious purposes here.
+        unsafe {
+            let mut tim = hal::pac::Peripherals::steal().TIM1;
+            // trig UEV on *full* pwm cycle (1 bcuz center aligned :sob:)
+            tim.rcr().write(|w| w.rep().set(1));
+            // Enable update interrupts on the underlying timer for commutation handler to run.
+            // TIM1's NVIC is unmasked in main.
+            tim.dier().write(|w| w.uie().enabled());
+            // set idle mode
+            Self::set_idle_mode(mode, &mut tim);
+            // off-state selection for idle mode: force to idle level (bit 1)
+            tim.bdtr().modify(|_, w| w.ossi().idle_level());
+        }
 
         // default is active high for both regular and complementary, which we want
         let mut pwm_c1 = ch1

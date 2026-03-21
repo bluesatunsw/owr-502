@@ -29,7 +29,6 @@ use canadensis::{
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport};
 use cortex_m::interrupt::Mutex;
 use cortex_m_rt::entry;
-use cortex_m_semihosting::hprintln;
 use embedded_alloc::LlffHeap as Heap;
 use embedded_common::{
     argb::{self, Colour},
@@ -182,14 +181,14 @@ fn main() -> ! {
     );
 
     // Has external 2k2 pullups but ehhhh whatevs
-    let hall1 = gpioa.pa2.into_alternate::<2>().internal_pull_up(true);
+    let hall1 = gpioa.pa0.into_alternate::<2>().internal_pull_up(true);
     let hall2 = gpioa.pa1.into_alternate::<2>().internal_pull_up(true);
-    let hall3 = gpioa.pa0.into_alternate::<2>().internal_pull_up(true);
+    let hall3 = gpioa.pa2.into_alternate::<2>().internal_pull_up(true);
 
     // Set up hall-sensor interfacing timer (TIM5, 84MHz clock)
     //
-    // Mode of operation described in RM0390 16.3.18
-    // OR refer to RM0440 28.3.29
+    // Mode of operation described in RM0390 16.3.18 (F4)
+    // OR refer to RM0440 29.3.29 (G4)
     TIM5::enable(&mut rcc);
     TIM5::reset(&mut rcc);
     // reset cr1 (pause), counter, pending interrupt flags
@@ -404,6 +403,7 @@ fn TIM5() {
             G_COM_STATE.borrow(cs).as_mut_unchecked().glitch_accum +=
                 tim.ccr1().read().ccr().bits();
         });
+        tim.sr().reset();
         return;
     } else {
         let glitches = cortex_m::interrupt::free(|cs| unsafe {
