@@ -10,7 +10,7 @@ use stm32g4xx_hal::{
     time::RateExtU32,
 };
 
-// use embedded_common::dprintln;
+use embedded_common::dprintln;
 
 bitfield! {
     pub struct RegStatus1(u16);
@@ -91,7 +91,7 @@ impl DRV8301 {
         gate_en.set_high();
         delay(250_000);
 
-        // dprintln!(0, "[INFO] DRV.FAULT present? {}", nfault.is_low());
+        dprintln!(0, "[INFO] DRV.FAULT present? {}", nfault.is_low());
 
         let spi_mode = Mode {
             polarity: Polarity::IdleLow,
@@ -105,14 +105,14 @@ impl DRV8301 {
             rcc,
         );
 
-        // dprintln!(0, "[INFO] DRV.Basic pin setup done.. Moving on to SPI");
+        dprintln!(0, "[INFO] DRV.Basic pin setup done.. Moving on to SPI");
 
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_STAT1);
         let mut _rxdata =
             Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_STAT2);
-        // dprintln!(0, "[INFO] DRV.STATUS1 RECV: {:#?}", RegStatus1(_rxdata));
+        dprintln!(0, "[INFO] DRV.STATUS1 RECV: {:#?}", RegStatus1(_rxdata));
         _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        // dprintln!(0, "[INFO] DRV.STATUS2 RECV: {:#?}", RegStatus2(_rxdata));
+        dprintln!(0, "[INFO] DRV.STATUS2 RECV: {:#?}", RegStatus2(_rxdata));
 
         // Disable OCP (leave reporting enabled though) & Use lowest gate drive current
         Self::transfer_internal(
@@ -122,11 +122,11 @@ impl DRV8301 {
         );
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_CTRL1);
         _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        // dprintln!(0, "[INFO] DRV.CTRL1 RECV: {:#?}", RegCtrl1(_rxdata));
+        dprintln!(0, "[INFO] DRV.CTRL1 RECV: {:#?}", RegCtrl1(_rxdata));
 
         Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD | Self::REG_CTRL2);
         _rxdata = Self::transfer_internal(&mut spi3, &mut spi_ncs, Self::FLAG_RD);
-        // dprintln!(0, "[INFO] DRV.CTRL2 RECV: {:#?}", RegCtrl2(_rxdata));
+        dprintln!(0, "[INFO] DRV.CTRL2 RECV: {:#?}", RegCtrl2(_rxdata));
 
         DRV8301 {
             pin_spi_ncs: spi_ncs,

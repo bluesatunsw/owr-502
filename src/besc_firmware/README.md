@@ -111,7 +111,7 @@ HAL doesn't support these right now, so we're going to implement them ourselves.
 
 ### Hall Effect Sensor Working Method
 
-PC6/7/8 --> TIM5CH1/2/3 --[XOR]--> TI1 --[Edge Detector]--> TI1F_ED --> TRC
+PA0/1/2 --> TIM5CH1/2/3 --[XOR]--> TI1 --[Edge Detector]--> TI1F_ED --> TRC
 --[Slave Controller]--> RESET TIM5.CNT
 --[TIM5_CCMR1.CC1S == IC1 mapped to TRC]--> IC1
 
