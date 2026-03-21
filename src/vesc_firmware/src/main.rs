@@ -353,6 +353,8 @@ fn TIM3() {
             G_COM_STATE.borrow(cs).as_mut_unchecked().glitch_accum +=
                 tim.ccr1().read().ccr().bits();
         });
+        // need to clear interrupt before we early return
+        tim.sr().reset();
         return;
     } else {
         let glitches = cortex_m::interrupt::free(|cs| unsafe {
