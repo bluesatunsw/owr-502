@@ -1,8 +1,4 @@
-use core::{hint::black_box, intrinsics::breakpoint};
-
-use cortex_m_semihosting::hprintln;
 use embedded_common::{
-    dprintln,
     stepper_bus::{Channel, ClkPin, DiagPin, EnnPin, StepperBus, StepperNcsPins, StepperSpiPins},
     tmc_registers::{
         ChopConf, GConf, GStat, GlobalScalar, IHoldIRun, PwmConf, TPowerDown, TZeroWait,
@@ -12,6 +8,10 @@ use embedded_common::{
 use stm32g4xx_hal::{pac, rcc::Rcc};
 
 const MAX_DUTY: i16 = 127;
+// default is bucket on A, pivot on B; setting this to true inverts this
+const INVERT_BUCKET_PIVOT: bool = false;
+// default is paver on B; setting this to true puts it on A
+const INVERT_PAVER: bool = false;
 
 pub struct Motion {
     pub steppers: StepperBus,
@@ -125,39 +125,48 @@ impl Motion {
         steppers
     }
 
-    pub fn set_pivot(&mut self, duty: f32) -> Result<(), ()> {
-        self.pivot_duty = ((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY);
+    // Other functions should call this function since it handles the INVERT constant correctly
+    fn refresh_pivot_and_bucket(&mut self) -> Result<(), ()> {
         self.steppers
             .write_reg(
                 Self::CHANNEL_SHOVEL,
-                XTargetDirect::new()
-                    .with_a(self.bucket_duty)
-                    .with_b(self.pivot_duty),
+                if INVERT_BUCKET_PIVOT {
+                    XTargetDirect::new()
+                        .with_a(self.pivot_duty)
+                        .with_b(self.bucket_duty)
+                } else {
+                    XTargetDirect::new()
+                        .with_a(self.bucket_duty)
+                        .with_b(self.pivot_duty)
+                },
             )
             .unwrap();
         Ok(())
     }
 
+    pub fn set_pivot(&mut self, duty: f32) -> Result<(), ()> {
+        self.pivot_duty = ((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY);
+        return self.refresh_pivot_and_bucket();
+    }
+
     pub fn set_bucket(&mut self, duty: f32) -> Result<(), ()> {
         self.bucket_duty = ((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY);
-        self.steppers
-            .write_reg(
-                Self::CHANNEL_SHOVEL,
-                XTargetDirect::new()
-                    .with_a(self.bucket_duty)
-                    .with_b(self.pivot_duty),
-            )
-            .unwrap();
-        Ok(())
+        return self.refresh_pivot_and_bucket();
     }
 
     pub fn set_paver(&mut self, duty: f32) -> Result<(), ()> {
         self.steppers
             .write_reg(
                 Self::CHANNEL_PAVER,
-                XTargetDirect::new()
-                    .with_a(0)
-                    .with_b(((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY)),
+                if INVERT_PAVER {
+                    XTargetDirect::new()
+                        .with_a(((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY))
+                        .with_b(0)
+                } else {
+                    XTargetDirect::new()
+                        .with_a(0)
+                        .with_b(((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY))
+                },
             )
             .unwrap();
         Ok(())
