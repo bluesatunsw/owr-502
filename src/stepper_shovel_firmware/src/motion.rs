@@ -7,11 +7,11 @@ use embedded_common::{
 };
 use stm32g4xx_hal::{pac, rcc::Rcc};
 
-const MAX_DUTY: i16 = 127;
+const MAX_DUTY: i16 = 255;
 // default is bucket on A, pivot on B; setting this to true inverts this
-const INVERT_BUCKET_PIVOT: bool = false;
+const TMC_CH_SWAP_BUCKET_PIVOT: bool = true;
 // default is paver on B; setting this to true puts it on A
-const INVERT_PAVER: bool = false;
+const TMC_CH_SWAP_PAVER: bool = true;
 
 pub struct Motion {
     pub steppers: StepperBus,
@@ -21,8 +21,8 @@ pub struct Motion {
 }
 
 impl Motion {
-    pub const CHANNEL_SHOVEL: Channel = Channel::CH0;
-    pub const CHANNEL_PAVER: Channel = Channel::CH1;
+    pub const CHANNEL_SHOVEL: Channel = Channel::CH2;
+    pub const CHANNEL_PAVER: Channel = Channel::CH3;
 
     pub fn new(
         step_spi_pins: StepperSpiPins,
@@ -99,7 +99,7 @@ impl Motion {
             // 50ms
             steppers.write_reg(chan, TZeroWait(1172.ul())).unwrap();
 
-            steppers.write_reg(chan, GlobalScalar(32.ul())).unwrap();
+            steppers.write_reg(chan, GlobalScalar(64.ul())).unwrap();
         }
 
         steppers
@@ -130,7 +130,7 @@ impl Motion {
         self.steppers
             .write_reg(
                 Self::CHANNEL_SHOVEL,
-                if INVERT_BUCKET_PIVOT {
+                if TMC_CH_SWAP_BUCKET_PIVOT {
                     XTargetDirect::new()
                         .with_a(self.pivot_duty)
                         .with_b(self.bucket_duty)
@@ -158,7 +158,7 @@ impl Motion {
         self.steppers
             .write_reg(
                 Self::CHANNEL_PAVER,
-                if INVERT_PAVER {
+                if TMC_CH_SWAP_PAVER {
                     XTargetDirect::new()
                         .with_a(((duty * MAX_DUTY as f32) as i16).clamp(-MAX_DUTY, MAX_DUTY))
                         .with_b(0)

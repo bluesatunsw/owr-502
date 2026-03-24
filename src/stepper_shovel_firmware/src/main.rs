@@ -30,7 +30,6 @@ use embedded_common::{
     debug::{setup_itm, uuid},
     dprintln,
     stepper_bus::StepperNcsPins,
-    tmc_registers::{TmcPosition, UnitsExt},
 };
 use heapless::Vec;
 use stm32g4xx_hal::{
@@ -56,7 +55,7 @@ extern crate alloc;
 mod motion;
 
 // Cyphal constants
-const NODE_ID: u8 = 6;
+const NODE_ID: u8 = 8;
 const CYPHAL_CONCURRENT_TRANSFERS: usize = 4;
 const CYPHAL_NUM_TOPICS: usize = 8;
 const CYPHAL_NUM_SERVICES: usize = 8;
