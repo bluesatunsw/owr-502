@@ -72,6 +72,7 @@ const SETPOINT_MESSAGE_CHAN_PAVER_ID: SubjectId = SubjectId::from_truncating(202
 // ARGB LED constants
 const RED: Colour = Colour { r: 255, g: 0, b: 0 };
 const BLUE: Colour = Colour { r: 0, g: 0, b: 255 };
+const GREEN: Colour = Colour { r: 0, g: 255, b: 0 };
 const DEFAULT_BRIGHTNESS: u8 = 15;
 
 #[panic_handler]
@@ -278,9 +279,9 @@ fn main() -> ! {
             .advance_if_elapsed(&mut tim_argb, 200_000.micros())
         {
             if argb_phase {
-                argb.display(&[BLUE, RED, BLUE, RED, BLUE, RED]);
+                argb.display(&[BLUE, GREEN, BLUE, GREEN, BLUE, GREEN]);
             } else {
-                argb.display(&[RED, BLUE, RED, BLUE, RED, BLUE]);
+                argb.display(&[GREEN, BLUE, GREEN, BLUE, GREEN, BLUE]);
             }
             argb_phase = !argb_phase;
         }
