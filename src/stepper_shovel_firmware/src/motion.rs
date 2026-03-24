@@ -99,17 +99,28 @@ impl Motion {
             // 50ms
             steppers.write_reg(chan, TZeroWait(1172.ul())).unwrap();
 
-            steppers.write_reg(chan, GlobalScalar(255.ul())).unwrap();
-            steppers
-                .write_reg(
-                    chan,
-                    IHoldIRun::new()
-                        .with_ihold(31) // ~1.0A
-                        .with_irun(31) // ~2.5A
-                        .with_ihold_delay(6),
-                )
-                .unwrap();
+            steppers.write_reg(chan, GlobalScalar(32.ul())).unwrap();
         }
+
+        steppers
+            .write_reg(
+                Self::CHANNEL_SHOVEL,
+                IHoldIRun::new()
+                    .with_ihold(15)
+                    .with_irun(15)
+                    .with_ihold_delay(6),
+            )
+            .unwrap();
+
+        steppers
+            .write_reg(
+                Self::CHANNEL_PAVER,
+                IHoldIRun::new()
+                    .with_ihold(7)
+                    .with_irun(7)
+                    .with_ihold_delay(6),
+            )
+            .unwrap();
 
         steppers
     }
