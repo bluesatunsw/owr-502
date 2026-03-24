@@ -71,8 +71,4 @@ The current policy is that this firmware will always target and be maintained
 solely for the latest revision of the board, which as of the time of writing
 is:
 
-Rev. B2
-
-TODO: Get some kind of tagged release system working, and have more sane
-specifiers for hardware and firmware revisions/versions. (Semantic Versioning
-("semver")?
+Rev. 3p0
