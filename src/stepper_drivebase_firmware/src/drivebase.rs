@@ -14,7 +14,7 @@ use stm32g4xx_hal as hal;
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: f32 = 60.;
 /// Inverts the position convention for the motors.
-const INVERT_STEPPER_DIR: [bool; 4] = [true, true, true, true];
+const INVERT_STEPPER_DIR: [bool; 4] = [false, false, false, false];
 /// Inverts the position convention for the encoders.
 const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// What encoder reading we interpret as an angular position of 0 for ROS purposes.
