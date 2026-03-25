@@ -26,5 +26,7 @@ monitor arm semihosting enable
 
 load
 
+svd_load ../embedded_common/tools/STM32G474.svd
+
 # start the process but immediately halt the processor
 stepi
