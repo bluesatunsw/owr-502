@@ -10,6 +10,8 @@ use embedded_common::{
 };
 use hal::{pac, rcc::Rcc};
 use stm32g4xx_hal as hal;
+use crate::encoder_bus::{EncoderNcsPins, EncoderBus, EncoderSpiPins};
+use crate::as_registers::{Settings1, Settings2};
 
 /// Gear ratio between the stepper motor shaft and the shaft actually being driven.
 const GEAR_RATIO: f32 = 60.;
@@ -23,7 +25,7 @@ const INVERT_ENCODER_DIR: [bool; 4] = [true, false, false, false];
 /// TMC5160 stepper driver (over SPI).
 pub struct Drivebase {
     pub steppers: StepperBus,
-    //encoders: EncoderBus,
+    encoders: EncoderBus,
 }
 
 impl Drivebase {
@@ -33,9 +35,9 @@ impl Drivebase {
         clk_pin: ClkPin,
         enn: EnnPin,
         diag: DiagPin,
-        //enc_spi_pins: EncoderSpiPins,
-        //enc_spi_ncs: EncoderNcsPins,
-        //spi2: pac::SPI2,
+        enc_spi_pins: EncoderSpiPins,
+        enc_spi_ncs: EncoderNcsPins,
+        spi2: pac::SPI2,
         spi3: pac::SPI3,
         rcc: &mut Rcc,
     ) -> Self {
@@ -49,7 +51,7 @@ impl Drivebase {
                 diag,
                 rcc,
             )),
-            //encoders: Self::config_encoders(EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc)),
+            encoders: Self::config_encoders(EncoderBus::new(spi2, enc_spi_pins, enc_spi_ncs, rcc)),
         }
     }
 
@@ -139,9 +141,9 @@ impl Drivebase {
         steppers
     }
 
-    /* TODO: This currently hangs on write_reg().
+    // TODO: This currently hangs on write_reg().
     pub fn config_encoders(mut encoders: EncoderBus) -> EncoderBus {
-        return encoders;
+        // return encoders;
 
         for (&chan, invert) in ALL_CHANNELS.iter().zip(INVERT_ENCODER_DIR) {
             encoders
@@ -154,7 +156,6 @@ impl Drivebase {
 
         encoders
     }
-    */
 
     pub fn set_position(&mut self, channel: Channel, target: TmcPosition) -> Result<(), ()> {
         self.steppers
