@@ -189,13 +189,12 @@ fn main() -> ! {
         gpioa.pa10.into_input(),
         // Currently, the encoder does not work.
         // TODO: fix encoder, uncomment this when working
-        /*
         (
             gpiob.pb13.into_alternate(),
             gpiob.pb14.into_alternate(),
             gpiob.pb15.into_alternate(),
         ),
-        EncoderNcsPins(
+        encoder_bus::EncoderNcsPins(
             gpioc
                 .pc6
                 .into_push_pull_output_in_state(PinState::High)
@@ -214,7 +213,6 @@ fn main() -> ! {
                 .into(),
         ),
         dp.SPI2,
-        */
         dp.SPI3,
         &mut rcc,
     );
