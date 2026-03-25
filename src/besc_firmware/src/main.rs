@@ -32,7 +32,7 @@ use cortex_m_rt::entry;
 use embedded_alloc::LlffHeap as Heap;
 use embedded_common::{
     argb::{self, Colour},
-    can::CanDriver,
+    foolcan::CanDriver,
     clock,
     debug::{itm_send_raw, setup_itm},
     dprintln,
@@ -106,7 +106,7 @@ fn initialise_allocator() {
 fn main() -> ! {
     initialise_allocator();
 
-    let config = DRIVEBASE_BR_CONFIG;
+    let config = DRIVEBASE_BL_CONFIG;
 
     // Embedded boilerplate...
     let mut cp = cortex_m::Peripherals::take().unwrap();
@@ -287,7 +287,7 @@ fn main() -> ! {
         gpioa.pa12.into_alternate(),
         &mut rcc
     );
-    let transmitter = CanTransmitter::new(canadensis_can::Mtu::CanFd64);
+    let transmitter = CanTransmitter::new(canadensis_can::Mtu::Can8);
     let receiver = CanReceiver::new(id);
 
     let core_node: node::CoreNode<
