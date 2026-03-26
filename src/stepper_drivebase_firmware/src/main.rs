@@ -6,7 +6,8 @@
 
 use canadensis::{
     core::{
-        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, SubjectId,
+        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, Priority,
+        SubjectId,
     },
     encoding::{DataType, Deserialize},
     node::{
@@ -285,6 +286,15 @@ fn main() -> ! {
         1000.millis(),
     )
     .unwrap();
+
+    node.start_publishing(POSITION_MESSAGE_CHAN_0_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_1_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_2_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_3_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
 
     drivebase.steppers.enable_all();
     let mut comms_handler = CommsHandler { drivebase };
