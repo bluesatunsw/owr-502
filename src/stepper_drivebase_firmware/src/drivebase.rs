@@ -166,6 +166,10 @@ impl Drivebase {
         Ok(())
     }
 
+    pub fn get_position(&mut self, channel: Channel) -> Result<TmcPosition, ()> {
+        Ok(self.steppers.read_reg::<XActual>(channel).unwrap().1 .0 / GEAR_RATIO)
+    }
+
     /// Returns true if the motor is currently actuating, which is determined by comparing the
     /// TMC5160's ramp profiler target position with its current position.
     #[allow(unused)]
