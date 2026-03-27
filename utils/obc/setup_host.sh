@@ -18,5 +18,14 @@ echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02c4", MODE="0
 echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02d8", MODE="0666"' >> "${KINECT_RULES_FILE}"
 echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02d9", MODE="0666"' >> "${KINECT_RULES_FILE}"
 
+CAMERA_RULES_FILE="/etc/udev/rules.d/decxin-cam.rules"
+{ \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="3", ATTRS{devnum}=="2", SYMLINK+="videopolef"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="3", ATTRS{devnum}=="2", SYMLINK+="videopolel"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="3", ATTRS{devnum}=="2", SYMLINK+="videopoler"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="3", ATTRS{devnum}=="2", SYMLINK+="videofront"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="3", ATTRS{devnum}=="2", SYMLINK+="videopaver"'; \
+} > "${CAMERA_RULES_FILE}"
+
 udevadm control --reload-rules
 udevadm trigger
