@@ -68,6 +68,8 @@ const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
 const TELEM_PERIOD_US: u32 = 50_000;
 const TID_TIMEOUT_US: u32 = 100_000;
 
+const ENABLE_TELEM: bool = false;
+
 // Cyphal message-IDs -- as per README
 const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
 const SETPOINT_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3010);
@@ -101,7 +103,7 @@ fn initialise_allocator() {
     // (luckily we have a decadent 128 KiB on the G474)
     // NOTE: this *might* still crash if large transfers are ever reassembled, although the
     // Planar types we're using at the moment should be fine
-    const HEAP_SIZE: usize = 0x6000; // 24 KiB
+    const HEAP_SIZE: usize = 0x1_0000; // 64 KiB
     static mut HEAP_MEM: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZE];
     unsafe { HEAP.init(&raw mut HEAP_MEM as usize, HEAP_SIZE) }
 }
@@ -288,14 +290,16 @@ fn main() -> ! {
     )
     .unwrap();
 
-    node.start_publishing(POSITION_MESSAGE_CHAN_0_ID, 10.millis(), Priority::Nominal)
-        .unwrap();
-    node.start_publishing(POSITION_MESSAGE_CHAN_1_ID, 10.millis(), Priority::Nominal)
-        .unwrap();
-    node.start_publishing(POSITION_MESSAGE_CHAN_2_ID, 10.millis(), Priority::Nominal)
-        .unwrap();
-    node.start_publishing(POSITION_MESSAGE_CHAN_3_ID, 10.millis(), Priority::Nominal)
-        .unwrap();
+    if ENABLE_TELEM {
+        node.start_publishing(POSITION_MESSAGE_CHAN_0_ID, 10.millis(), Priority::Nominal)
+            .unwrap();
+        node.start_publishing(POSITION_MESSAGE_CHAN_1_ID, 10.millis(), Priority::Nominal)
+            .unwrap();
+        node.start_publishing(POSITION_MESSAGE_CHAN_2_ID, 10.millis(), Priority::Nominal)
+            .unwrap();
+        node.start_publishing(POSITION_MESSAGE_CHAN_3_ID, 10.millis(), Priority::Nominal)
+            .unwrap();
+    }
 
     drivebase.steppers.enable_all();
     let mut comms_handler = CommsHandler { drivebase };
@@ -327,9 +331,10 @@ fn main() -> ! {
             node.run_per_second_tasks().unwrap();
         }
 
-        if node
-            .clock()
-            .advance_if_elapsed(&mut tim_telem, TELEM_PERIOD_US.micros())
+        if ENABLE_TELEM
+            && node
+                .clock()
+                .advance_if_elapsed(&mut tim_telem, TELEM_PERIOD_US.micros())
         {
             node.publish(
                 POSITION_MESSAGE_CHAN_0_ID,
