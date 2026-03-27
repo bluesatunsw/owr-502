@@ -229,6 +229,12 @@ impl Cmd for Move {
             println!("If the previous move occurred correctly, wheels are already in position!");
         } else {
             println!("Steering into position...");
+            // first, stop the rover
+            rover.cmd_tx.send(NodeCommand {
+                op: Operation::DriveVesc,
+                values: [0.0; 4]
+            }).unwrap();
+            // now send steer command
             match target_orientation {
                 WheelOrientation::Aligned(target_angle) => {
                     rover.cmd_tx.send(NodeCommand {
