@@ -251,8 +251,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     }
                                 };
                                 stepper_node.publish(STEPPER_SETPOINT_SUB[i].try_into().unwrap(), &payload).unwrap();
+                                stepper_node.flush().unwrap();
                             }
-                            stepper_node.flush().unwrap();
                         }
                     }
                     core::Operation::DriveVesc => {
@@ -263,8 +263,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     value: half::f16::from_f32(msg.values[i])
                                 };
                                 vesc_node.publish(VESC_SPEED_SUB[i].try_into().unwrap(), &payload).unwrap();
+                                vesc_node.flush().unwrap();
                             }
-                            vesc_node.flush().unwrap();
                         }
                     }
                     // this operation only makes sense in the context of the stepper
@@ -390,7 +390,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         } else if keyword == "q" && q_safety_interlock {
             println!("NOTE: if you want to quit this program, use '!' instead.");
-            println!("Rerun this command if you want to strafe.");
+            println!("Rerun this command if you really do want to strafe left (move the rover).");
             println!("This message only appears once.");
             q_safety_interlock = false;
         } else if keyword == "!" || keyword == "quit" || keyword == "exit" {
