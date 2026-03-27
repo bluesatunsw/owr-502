@@ -44,7 +44,7 @@ use std::collections::HashMap;
 use std::sync::mpsc;
 
 use half;
-use socketcan::{CanFdSocket, Socket};
+use socketcan::{CanFdSocket, CanSocket, Socket};
 
 use canadensis::core::time::MicrosecondDuration32;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
@@ -71,8 +71,6 @@ use canadensis_linux::{LinuxCan, SystemClock};
 mod cmd;
 mod core;
 
-// of the host
-const CYPHAL_NODE_ID: u8 = 43;
 // of the VESCs
 // canonical ordering: FL, FR, BL, BR
 const VESC_IDS: [u8; 4] = [10, 11, 12, 13];
@@ -90,7 +88,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     .unwrap();
 
     let mut args = env::args().skip(1);
-    let can_interface = args.next().expect("Expected CAN interface name");
+    let stepper_can_interface = args.next().expect("Expected CAN interface name");
+    let vesc_can_interface = args.next().expect("Expected CAN interface name");
     let node_id = CanNodeId::try_from(
         args.next()
             .expect("Expected node ID")
@@ -104,40 +103,55 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::mem::size_of::<canadensis_data_types::uavcan::node::port::list_1_0::List>()
     );
 
-    let can = CanFdSocket::open(&can_interface).expect("Failed to open CAN interface");
-    can.set_read_timeout(Duration::from_millis(100))?;
-    can.set_write_timeout(Duration::from_millis(100))?;
-    let can = LinuxCan::new(can);
+    let stepper_can = CanFdSocket::open(&stepper_can_interface).expect("Failed to open CAN interface");
+    stepper_can.set_read_timeout(Duration::from_millis(100))?;
+    stepper_can.set_write_timeout(Duration::from_millis(100))?;
+    let stepper_can = LinuxCan::new(stepper_can);
 
-    // Set up information about this node
-    let node_info = GetInfoResponse {
+    let vesc_can = CanSocket::open(&vesc_can_interface).expect("Failed to open CAN interface");
+    vesc_can.set_read_timeout(Duration::from_millis(100))?;
+    vesc_can.set_write_timeout(Duration::from_millis(100))?;
+    let vesc_can = LinuxCan::new(vesc_can);
+
+    let stepper_node_info = GetInfoResponse {
         protocol_version: Version { major: 1, minor: 0 },
         hardware_version: Version { major: 0, minor: 0 },
         software_version: Version { major: 0, minor: 1 },
         software_vcs_revision_id: 0,
         unique_id: rand::random(),
-        name: heapless::Vec::from_slice(b"org.bluesat.obc").unwrap(),
+        name: heapless::Vec::from_slice(b"org.bluesat.obc.all").unwrap(),
+        software_image_crc: heapless::Vec::new(),
+        certificate_of_authenticity: Default::default(),
+    };
+    let vesc_node_info = GetInfoResponse {
+        protocol_version: Version { major: 1, minor: 0 },
+        hardware_version: Version { major: 0, minor: 0 },
+        software_version: Version { major: 0, minor: 1 },
+        software_vcs_revision_id: 0,
+        unique_id: rand::random(),
+        name: heapless::Vec::from_slice(b"org.bluesat.obc.vesc").unwrap(),
         software_image_crc: heapless::Vec::new(),
         certificate_of_authenticity: Default::default(),
     };
 
     const QUEUE_CAPACITY: usize = 1210;
-    type Queue = SingleQueueDriver<SystemClock, ArrayQueue<QUEUE_CAPACITY>, LinuxCan<CanFdSocket>>;
-    let queue_driver: Queue = SingleQueueDriver::new(ArrayQueue::new(), can);
-
-    let transmitter = CanTransmitter::new(Mtu::CanFd64);
-    let receiver = CanReceiver::new(node_id);
+    type FDQueue = SingleQueueDriver<SystemClock, ArrayQueue<QUEUE_CAPACITY>, LinuxCan<CanFdSocket>>;
+    type ClassicQueue = SingleQueueDriver<SystemClock, ArrayQueue<QUEUE_CAPACITY>, LinuxCan<CanSocket>>;
+    let stepper_queue_driver: FDQueue = SingleQueueDriver::new(ArrayQueue::new(), stepper_can);
+    let vesc_queue_driver: ClassicQueue = SingleQueueDriver::new(ArrayQueue::new(), vesc_can);
 
     const TRANSFER_IDS: usize = 32;
     const PUBLISHERS: usize = 32;
     const REQUESTERS: usize = 8;
 
-    let core_node: CoreNode<
+    let transmitter = CanTransmitter::new(Mtu::CanFd64);
+    let receiver = CanReceiver::new(node_id);
+    let stepper_core_node: CoreNode<
         SystemClock,
-        CanTransmitter<SystemClock, Queue>,
-        CanReceiver<SystemClock, Queue>,
+        CanTransmitter<SystemClock, FDQueue>,
+        CanReceiver<SystemClock, FDQueue>,
         TransferIdFixedMap<CanTransport, TRANSFER_IDS>,
-        Queue,
+        FDQueue,
         PUBLISHERS,
         REQUESTERS,
     > = CoreNode::new(
@@ -145,15 +159,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         node_id,
         transmitter,
         receiver,
-        queue_driver,
+        stepper_queue_driver,
     );
-    let mut node = BasicNode::new(core_node, node_info).unwrap();
+    let mut stepper_node = BasicNode::new(stepper_core_node, stepper_node_info).unwrap();
+
+    let transmitter = CanTransmitter::new(Mtu::CanFd64);
+    let receiver = CanReceiver::new(node_id);
+    let vesc_core_node: CoreNode<
+        SystemClock,
+        CanTransmitter<SystemClock, ClassicQueue>,
+        CanReceiver<SystemClock, ClassicQueue>,
+        TransferIdFixedMap<CanTransport, TRANSFER_IDS>,
+        ClassicQueue,
+        PUBLISHERS,
+        REQUESTERS,
+    > = CoreNode::new(
+        SystemClock::new(),
+        node_id,
+        transmitter,
+        receiver,
+        vesc_queue_driver,
+    );
+    let mut vesc_node = BasicNode::new(vesc_core_node, vesc_node_info).unwrap();
+
     let (cmd_tx, cmd_rx) = mpsc::channel::<core::NodeCommand>();
     let (notif_tx, notif_rx) = mpsc::channel::<Result<(),()>>();
 
     for subject in VESC_SPEED_SUB {
         println!("Publishing on {}...", subject);
-        node.start_publishing(
+        vesc_node.start_publishing(
             SubjectId::from_truncating(subject),
             MicrosecondDuration32::millis(1_000),
             Priority::Nominal
@@ -161,15 +195,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     for subject in STEPPER_SETPOINT_SUB {
         println!("Publishing on {}...", subject);
-        node.start_publishing(
+        stepper_node.start_publishing(
             SubjectId::from_truncating(subject),
             MicrosecondDuration32::millis(1_000),
             Priority::Nominal
         ).unwrap();
     }
     for subject in STEPPER_POSITION_SUB {
-        println!("subscribing to {}...", subject);
-        node.subscribe_message(
+        println!("Subscribing to {}...", subject);
+        stepper_node.subscribe_message(
             SubjectId::from_truncating(subject),
             size_of::<angle_pos_scalar::Scalar>(),
             MicrosecondDuration32::millis(1_000)
@@ -186,7 +220,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // also handles other operations on the node via message passing from the REPL thread
     thread::spawn(move || loop {
         // node handler loop
-        match node.receive(&mut rover_internal) {
+        /*match vesc_node.receive(&mut rover_internal) {
+            Ok(_) => {}
+            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
+            Err(e) => panic!("{:?}", e),
+        }*/
+        match stepper_node.receive(&mut rover_internal) {
             Ok(_) => {}
             Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
             Err(e) => panic!("{:?}", e),
@@ -197,9 +236,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     core::Operation::DriveStepper => {
                         let payload = StepperPlanar {
                             kinematics: Planar {
-                                angular_position: angle_pos_scalar::Scalar { radian: f32::NAN },
+                                angular_position: angle_pos_scalar::Scalar { radian: msg.value },
                                 angular_velocity: AVScalar { radian_per_second: f32::NAN },
-                                angular_acceleration: AAScalar { radian_per_second_per_second: msg.value },
+                                angular_acceleration: AAScalar { radian_per_second_per_second: f32::NAN },
                             },
                             torque: TScalar {
                                 newton_meter: f32::NAN
@@ -208,7 +247,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         rover_internal.target_stepper_pos[msg.index] = msg.value;
                         // send the message thrice for redundancy
                         for _ in 0..3 {
-                            node.publish(STEPPER_SETPOINT_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
+                            stepper_node.publish(STEPPER_SETPOINT_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
                         }
                     }
                     core::Operation::DriveVesc => {
@@ -216,9 +255,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             value: half::f16::from_f32(msg.value)
                         };
                         // send the message thrice for redundancy
-                        for _ in 0..3 {
-                            node.publish(VESC_SPEED_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
-                        }
+                        /*for _ in 0..3 {
+                            vesc_node.publish(VESC_SPEED_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
+                        }*/
                     }
                     // this operation only makes sense in the context of the stepper
                     // to avoid deadlock, caller must NEVER call this twice in succession;
@@ -249,8 +288,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .as_secs();
         if seconds != prev_seconds {
             prev_seconds = seconds;
-            node.run_per_second_tasks().unwrap();
-            node.flush().unwrap();
+            /*vesc_node.run_per_second_tasks().unwrap();
+            vesc_node.flush().unwrap();*/
+            stepper_node.run_per_second_tasks().unwrap();
+            stepper_node.flush().unwrap();
         }
     });
 
