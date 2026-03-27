@@ -65,6 +65,7 @@ const CYPHAL_NUM_TOPICS: usize = 8;
 const CYPHAL_NUM_SERVICES: usize = 8;
 
 const HEARTBEAT_PERIOD_US: u32 = 1_000_000;
+const TELEM_PERIOD_US: u32 = 50_000;
 const TID_TIMEOUT_US: u32 = 100_000;
 
 // Cyphal message-IDs -- as per README
@@ -300,60 +301,13 @@ fn main() -> ! {
     let mut comms_handler = CommsHandler { drivebase };
 
     let mut tim_heartbeat = node.clock().now_const();
+    let mut tim_telem = node.clock().now_const();
 
     let mut tim_argb = node.clock().now_const();
     let mut argb_phase = false;
 
     loop {
         node.receive(&mut comms_handler).unwrap();
-
-        node.publish(
-            POSITION_MESSAGE_CHAN_0_ID,
-            &angle::scalar_1_0::Scalar {
-                radian: comms_handler
-                    .drivebase
-                    .get_position(Channel::CH0)
-                    .unwrap()
-                    .0,
-            },
-        )
-        .unwrap();
-
-        node.publish(
-            POSITION_MESSAGE_CHAN_1_ID,
-            &angle::scalar_1_0::Scalar {
-                radian: comms_handler
-                    .drivebase
-                    .get_position(Channel::CH1)
-                    .unwrap()
-                    .0,
-            },
-        )
-        .unwrap();
-
-        node.publish(
-            POSITION_MESSAGE_CHAN_2_ID,
-            &angle::scalar_1_0::Scalar {
-                radian: comms_handler
-                    .drivebase
-                    .get_position(Channel::CH2)
-                    .unwrap()
-                    .0,
-            },
-        )
-        .unwrap();
-
-        node.publish(
-            POSITION_MESSAGE_CHAN_3_ID,
-            &angle::scalar_1_0::Scalar {
-                radian: comms_handler
-                    .drivebase
-                    .get_position(Channel::CH3)
-                    .unwrap()
-                    .0,
-            },
-        )
-        .unwrap();
 
         if let Some(status) = comms_handler.drivebase.steppers.health() {
             node.set_health(Health {
@@ -371,6 +325,59 @@ fn main() -> ! {
             .advance_if_elapsed(&mut tim_heartbeat, HEARTBEAT_PERIOD_US.micros())
         {
             node.run_per_second_tasks().unwrap();
+        }
+
+        if node
+            .clock()
+            .advance_if_elapsed(&mut tim_telem, TELEM_PERIOD_US.micros())
+        {
+            node.publish(
+                POSITION_MESSAGE_CHAN_0_ID,
+                &angle::scalar_1_0::Scalar {
+                    radian: comms_handler
+                        .drivebase
+                        .get_position(Channel::CH0)
+                        .unwrap()
+                        .0,
+                },
+            )
+            .unwrap();
+
+            node.publish(
+                POSITION_MESSAGE_CHAN_1_ID,
+                &angle::scalar_1_0::Scalar {
+                    radian: comms_handler
+                        .drivebase
+                        .get_position(Channel::CH1)
+                        .unwrap()
+                        .0,
+                },
+            )
+            .unwrap();
+
+            node.publish(
+                POSITION_MESSAGE_CHAN_2_ID,
+                &angle::scalar_1_0::Scalar {
+                    radian: comms_handler
+                        .drivebase
+                        .get_position(Channel::CH2)
+                        .unwrap()
+                        .0,
+                },
+            )
+            .unwrap();
+
+            node.publish(
+                POSITION_MESSAGE_CHAN_3_ID,
+                &angle::scalar_1_0::Scalar {
+                    radian: comms_handler
+                        .drivebase
+                        .get_position(Channel::CH3)
+                        .unwrap()
+                        .0,
+                },
+            )
+            .unwrap();
         }
 
         // blink the ARGB LEDs
