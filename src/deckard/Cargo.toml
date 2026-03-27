@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 canadensis = "0.5.0"
-canadensis_can = "0.5.1"
 canadensis_data_types = "0.5.0"
 canadensis_linux = "0.5.0"
 half = "2.7.1"
@@ -13,3 +12,12 @@ heapless = "0.9.2"
 rand = "0.9.2"
 simplelog = "0.12.2"
 socketcan = "3.5.0"
+
+[dependencies.canadensis_can]
+version = "0.5.1"
+features = ["can-fd"]
+
+[patch.crates-io]
+canadensis_linux = { git = "https://github.com/samcrow/canadensis" }
+canadensis_core = { git = "https://github.com/samcrow/canadensis" }
+canadensis_can = { git = "https://github.com/samcrow/canadensis" }

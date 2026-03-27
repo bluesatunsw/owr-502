@@ -44,7 +44,7 @@ use std::collections::HashMap;
 use std::sync::mpsc;
 
 use half;
-use socketcan::{CanSocket, Socket};
+use socketcan::{CanFdSocket, Socket};
 
 use canadensis::core::time::MicrosecondDuration32;
 use canadensis::core::transfer::{MessageTransfer, ServiceTransfer};
@@ -104,7 +104,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::mem::size_of::<canadensis_data_types::uavcan::node::port::list_1_0::List>()
     );
 
-    let can = CanSocket::open(&can_interface).expect("Failed to open CAN interface");
+    let can = CanFdSocket::open(&can_interface).expect("Failed to open CAN interface");
     can.set_read_timeout(Duration::from_millis(100))?;
     can.set_write_timeout(Duration::from_millis(100))?;
     let can = LinuxCan::new(can);
@@ -122,11 +122,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     const QUEUE_CAPACITY: usize = 1210;
-    type Queue = SingleQueueDriver<SystemClock, ArrayQueue<QUEUE_CAPACITY>, LinuxCan>;
+    type Queue = SingleQueueDriver<SystemClock, ArrayQueue<QUEUE_CAPACITY>, LinuxCan<CanFdSocket>>;
     let queue_driver: Queue = SingleQueueDriver::new(ArrayQueue::new(), can);
 
-    // Create a node with capacity for 8 publishers and 8 requesters
-    let transmitter = CanTransmitter::new(Mtu::Can8);
+    let transmitter = CanTransmitter::new(Mtu::CanFd64);
     let receiver = CanReceiver::new(node_id);
 
     const TRANSFER_IDS: usize = 32;
