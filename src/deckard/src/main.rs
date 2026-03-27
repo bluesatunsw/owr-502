@@ -36,14 +36,16 @@ extern crate simplelog;
 extern crate socketcan;
 
 use std::convert::TryFrom;
-use std::env;
+use std::{env, time};
 use std::time::Duration;
 use std::io::{self, Write, ErrorKind};
 use std::thread;
 use std::collections::HashMap;
 use std::sync::mpsc;
+use std::process;
 
 use half;
+use ctrlc;
 use socketcan::{CanFdSocket, CanSocket, Socket};
 
 use canadensis::core::time::MicrosecondDuration32;
@@ -303,12 +305,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // assuming we start in this state...
     let mut rover = core::Rover {
-        cmd_tx,
+        cmd_tx: cmd_tx.clone(),
         notif_rx,
         wheels: core::WheelOrientation::Aligned(0.0),
+        is_stopped: true,
     };
 
-    let commands: [Box<dyn cmd::Cmd>; _] = [
+    ctrlc::set_handler(move || {
+        println!("\nStopping rover...");
+        cmd_tx.send(core::NodeCommand {
+            op: core::Operation::DriveVesc,
+            values: [0.0; 4] // drive: position 0
+        }).unwrap();
+        thread::sleep(time::Duration::from_secs(1));
+        process::exit(1);
+    }).expect("Error setting ^C handler");
+
+    let commands: [Box<dyn cmd::Cmd>; 4] = [
         Box::new(cmd::Move {}),
         Box::new(cmd::Stop {}),
         Box::new(cmd::Help {}),
@@ -323,6 +336,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     println!("Welcome to the new and improved (?) drivebase controller.");
     println!("Type 'help' for a list of commands, and 'help <command>' for command-specific help.");
+    let mut q_safety_interlock = true;
     loop {
         print!("> ");
         io::stdout().flush().unwrap();
@@ -336,6 +350,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(b) => {
                 if b == 0 {
                     // EOF
+                    print!("\n");
                     break;
                 }
             }
@@ -373,9 +388,37 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     }
                 }
             }
+        } else if keyword == "q" && q_safety_interlock {
+            println!("NOTE: if you want to quit this program, use '!' instead.");
+            println!("Rerun this command if you want to strafe.");
+            println!("This message only appears once.");
+            q_safety_interlock = false;
         } else if keyword == "!" || keyword == "quit" || keyword == "exit" {
             // second special case: quit
-            break;
+            if !rover.is_stopped {
+                println!("WARNING! Rover is STILL MOVING!!!!");
+                break;
+            } else if rover.wheels != core::WheelOrientation::Aligned(0.0) {
+                print!("Rover wheels aren't aligned. Do you want to exit anyway? (y/n) ");
+                io::stdout().flush().unwrap();
+                let mut input = String::new();
+                match io::stdin().read_line(&mut input) {
+                    Err(_) => {
+                        eprintln!("Error reading input");
+                        continue;
+                    }
+                    Ok(_) => {
+                        let input = input.trim();
+                        if input == "y" || input == "yes" {
+                            break;
+                        } else {
+                            continue
+                        }
+                    }
+                }
+            } else {
+                break;
+            }
         } else {
             match keyword_lookup.get(keyword.as_str()) {
                 Some(cmd_idx) => {
@@ -392,7 +435,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     }
-    println!("kthxbye");
+    println!("Stopping rover...");
+    rover.cmd_tx.send(core::NodeCommand {
+        op: core::Operation::DriveVesc,
+        values: [0.0; 4] // drive: position 0
+    }).unwrap();
+    thread::sleep(time::Duration::from_secs(1));
     Ok(())
 }
 
@@ -412,7 +460,6 @@ impl RoverInternal {
     fn is_idle(&self) -> bool {
         let mut is_idle = true;
         for i in 0..4 {
-            // TODO: allow extra leeway here
             let delta = f32::abs(self.curr_stepper_pos[i] - self.target_stepper_pos[i]);
             const EPSILON: f32 = 0.001;
             if delta >= EPSILON {

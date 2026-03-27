@@ -21,6 +21,7 @@ pub struct NodeCommand {
 /// The state of the rover as understood by the top layer, plus interfaces
 /// with the lower layer.
 pub struct Rover {
+    pub is_stopped: bool,
     pub wheels: WheelOrientation,
     pub cmd_tx: mpsc::Sender<NodeCommand>,
     pub notif_rx: mpsc::Receiver<Result<(),()>>,

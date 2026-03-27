@@ -84,6 +84,7 @@ impl Cmd for Stop {
             values: [0.0; 4] // drive: position 0
         }).unwrap();
         println!("STOPPED!");
+        rover.is_stopped = true;
         Ok(())
     }
 }
@@ -241,6 +242,7 @@ impl Cmd for Move {
             op: Operation::DriveVesc,
             values: [speed; 4]
         }).unwrap();
+        rover.is_stopped = false;
         Ok(())
     }
 }
