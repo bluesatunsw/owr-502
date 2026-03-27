@@ -15,8 +15,7 @@ pub enum WheelOrientation {
 /// A command that is handled by the internal Cyphal thread.
 pub struct NodeCommand {
     pub op: Operation,
-    pub index: usize,
-    pub value: f32
+    pub values: [f32; 4]
 }
 
 /// The state of the rover as understood by the top layer, plus interfaces

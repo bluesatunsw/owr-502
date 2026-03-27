@@ -79,15 +79,12 @@ impl Cmd for Stop {
     }
 
     fn run(&self, _args: Vec<&str>, rover: &mut Rover) -> Result<(), CmdErr> {
-       for i in 0..4 {
-            rover.cmd_tx.send(NodeCommand {
-                op: Operation::DriveVesc,
-                index: i,
-                value: 0.0 // drive: position 0
-            }).unwrap();
-       }
-       println!("STOPPED!");
-       Ok(())
+        rover.cmd_tx.send(NodeCommand {
+            op: Operation::DriveVesc,
+            values: [0.0; 4] // drive: position 0
+        }).unwrap();
+        println!("STOPPED!");
+        Ok(())
     }
 }
 
@@ -217,43 +214,33 @@ impl Cmd for Move {
         println!("Steering into position...");
         match target_orientation {
             WheelOrientation::Aligned(target_angle) => {
-                for i in 0..4 {
-                    rover.cmd_tx.send(NodeCommand {
-                        op: Operation::DriveStepper,
-                        index: i,
-                        value: target_angle
-                    }).unwrap();
-                }
+                rover.cmd_tx.send(NodeCommand {
+                    op: Operation::DriveStepper,
+                    values: [target_angle; 4]
+                }).unwrap();
             }
             WheelOrientation::RotateInPlace => {
                 const ROTATE_ANGLES: [f32; 4] = [-1.04, 1.06, 1.06, -1.04];
-                for i in 0..4 {
-                    rover.cmd_tx.send(NodeCommand {
-                        op: Operation::DriveStepper,
-                        index: i,
-                        value: ROTATE_ANGLES[i] 
-                    }).unwrap();
-                }
+                rover.cmd_tx.send(NodeCommand {
+                    op: Operation::DriveStepper,
+                    values: ROTATE_ANGLES
+                }).unwrap();
             }
         }
         // block on command completing
         rover.cmd_tx.send(NodeCommand {
             op: Operation::NotifyWhenDone,
-            index: 0,
-            value: f32::NAN
+            values: [f32::NAN; 4]
         }).unwrap();
         // TODO: sus
         rover.notif_rx.recv().unwrap().unwrap();
         println!("Wheels are now in position. Driving!");
         rover.wheels = target_orientation;
         // then move
-        for i in 0..4 {
-            rover.cmd_tx.send(NodeCommand {
-                op: Operation::DriveVesc,
-                index: i,
-                value: speed
-            }).unwrap();
-        }
+        rover.cmd_tx.send(NodeCommand {
+            op: Operation::DriveVesc,
+            values: [speed; 4]
+        }).unwrap();
         Ok(())
     }
 }

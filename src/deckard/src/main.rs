@@ -234,29 +234,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Ok(msg) => {
                 match msg.op {
                     core::Operation::DriveStepper => {
-                        let payload = StepperPlanar {
-                            kinematics: Planar {
-                                angular_position: angle_pos_scalar::Scalar { radian: msg.value },
-                                angular_velocity: AVScalar { radian_per_second: f32::NAN },
-                                angular_acceleration: AAScalar { radian_per_second_per_second: f32::NAN },
-                            },
-                            torque: TScalar {
-                                newton_meter: f32::NAN
-                            }
-                        };
-                        rover_internal.target_stepper_pos[msg.index] = msg.value;
+                        rover_internal.target_stepper_pos = msg.values;
                         // send the message thrice for redundancy
                         for _ in 0..3 {
-                            stepper_node.publish(STEPPER_SETPOINT_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
+                            for i in 0..4 {
+                                let payload = StepperPlanar {
+                                    kinematics: Planar {
+                                        angular_position: angle_pos_scalar::Scalar { radian: msg.values[i] },
+                                        angular_velocity: AVScalar { radian_per_second: f32::NAN },
+                                        angular_acceleration: AAScalar { radian_per_second_per_second: f32::NAN },
+                                    },
+                                    torque: TScalar {
+                                        newton_meter: f32::NAN
+                                    }
+                                };
+                                stepper_node.publish(STEPPER_SETPOINT_SUB[i].try_into().unwrap(), &payload).unwrap();
+                            }
+                            stepper_node.flush().unwrap();
                         }
                     }
                     core::Operation::DriveVesc => {
-                        let payload = VESCScalar {
-                            value: half::f16::from_f32(msg.value)
-                        };
-                        // send the message thrice for redundancy
+                        // send messages thrice for redundancy
                         for _ in 0..3 {
-                            vesc_node.publish(VESC_SPEED_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
+                            for i in 0..4 {
+                                let payload = VESCScalar {
+                                    value: half::f16::from_f32(msg.values[i])
+                                };
+                                vesc_node.publish(VESC_SPEED_SUB[i].try_into().unwrap(), &payload).unwrap();
+                            }
+                            vesc_node.flush().unwrap();
                         }
                     }
                     // this operation only makes sense in the context of the stepper
