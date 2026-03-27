@@ -225,31 +225,35 @@ impl Cmd for Move {
             }
         };
         // handle pre-drive steering
-        println!("Steering into position...");
-        match target_orientation {
-            WheelOrientation::Aligned(target_angle) => {
-                rover.cmd_tx.send(NodeCommand {
-                    op: Operation::DriveStepper,
-                    values: [target_angle; 4]
-                }).unwrap();
+        if target_orientation == rover.wheels {
+            println!("If the previous move occurred correctly, wheels are already in position!");
+        } else {
+            println!("Steering into position...");
+            match target_orientation {
+                WheelOrientation::Aligned(target_angle) => {
+                    rover.cmd_tx.send(NodeCommand {
+                        op: Operation::DriveStepper,
+                        values: [target_angle; 4]
+                    }).unwrap();
+                }
+                WheelOrientation::RotateInPlace => {
+                    const ROTATE_ANGLES: [f32; 4] = [-1.04, 1.06, 1.06, -1.04];
+                    rover.cmd_tx.send(NodeCommand {
+                        op: Operation::DriveStepper,
+                        values: ROTATE_ANGLES
+                    }).unwrap();
+                }
             }
-            WheelOrientation::RotateInPlace => {
-                const ROTATE_ANGLES: [f32; 4] = [-1.04, 1.06, 1.06, -1.04];
-                rover.cmd_tx.send(NodeCommand {
-                    op: Operation::DriveStepper,
-                    values: ROTATE_ANGLES
-                }).unwrap();
-            }
+            // block on command completing
+            rover.cmd_tx.send(NodeCommand {
+                op: Operation::NotifyWhenDone,
+                values: [f32::NAN; 4]
+            }).unwrap();
+            // TODO: sus
+            rover.notif_rx.recv().unwrap().unwrap();
+            rover.wheels = target_orientation;
         }
-        // block on command completing
-        rover.cmd_tx.send(NodeCommand {
-            op: Operation::NotifyWhenDone,
-            values: [f32::NAN; 4]
-        }).unwrap();
-        // TODO: sus
-        rover.notif_rx.recv().unwrap().unwrap();
         println!("Wheels are now in position. Driving!");
-        rover.wheels = target_orientation;
         // then move
         if let WheelOrientation::Aligned(_) = target_orientation {
             // because of the way wheels are mounted
