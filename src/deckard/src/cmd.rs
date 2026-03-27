@@ -104,8 +104,8 @@ fn parse_speed(mut s: &str) -> Option<f32> {
     }
     match s {
         "hi" => Some(f * HIGH),
-        "norm" => Some(f * NORMAL),
-        "slo" => Some(f * LOW),
+        "mid" => Some(f * NORMAL),
+        "lo" => Some(f * LOW),
         _ => None
     }
 }
@@ -127,7 +127,7 @@ impl Cmd for Move {
         MAKE SURE YOU KNOW HOW TO USE THE STOP COMMAND BEFORE YOU RUN THIS.\n\
         Aliases for specific move command variants: w, a, s, d, q, e (and CAPS variants)\n\
         'straight' aliased by 'st', 'strafe' aliased by 'sf', 'circle' aliased by 'cl'\n\
-        <speed>: either 'lo' (0.03), 'norm' (0.06) or 'hi' (0.09); prefix with '-' to go backwards\n\
+        <speed>: either 'lo' (0.03), 'mid' (0.06) or 'hi' (0.09); prefix with '-' to go backwards\n\
         <angle>: integer, in degrees; range is (-90, 90]\n\
         Default for circle is clockwise; use 'backwards' speed to go anticlockwise"
     }
@@ -238,10 +238,29 @@ impl Cmd for Move {
         println!("Wheels are now in position. Driving!");
         rover.wheels = target_orientation;
         // then move
-        rover.cmd_tx.send(NodeCommand {
-            op: Operation::DriveVesc,
-            values: [speed; 4]
-        }).unwrap();
+        if let WheelOrientation::Aligned(_) = target_orientation {
+            // because of the way wheels are mounted
+            let values = match kw_lower.as_str() {
+                "w" | "q" => {
+                    [speed, -speed, speed, -speed]
+                }
+                "s" | "e" => {
+                    [-speed, speed, -speed, speed]
+                }
+                _ => {
+                    [speed, -speed, speed, -speed]
+                }
+            };
+            rover.cmd_tx.send(NodeCommand {
+                op: Operation::DriveVesc,
+                values,
+            }).unwrap();
+        } else {
+            rover.cmd_tx.send(NodeCommand {
+                op: Operation::DriveVesc,
+                values: if kw_lower == "d" { [speed; 4] } else if kw_lower == "a" { [-speed; 4] } else { [speed; 4] }
+            }).unwrap();
+        }
         rover.is_stopped = false;
         Ok(())
     }

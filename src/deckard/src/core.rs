@@ -6,7 +6,7 @@ pub enum Operation {
     NotifyWhenDone
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone)]
 pub enum WheelOrientation {
     Aligned(f32),
     RotateInPlace
