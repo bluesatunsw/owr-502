@@ -203,14 +203,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Priority::Nominal
         ).unwrap();
     }
-    for subject in STEPPER_POSITION_SUB {
+    /*for subject in STEPPER_POSITION_SUB {
         println!("Subscribing to {}...", subject);
         stepper_node.subscribe_message(
             SubjectId::from_truncating(subject),
             size_of::<angle_pos_scalar::Scalar>(),
             MicrosecondDuration32::millis(1_000)
         ).unwrap();
-    }
+    }*/
 
     let start_time = std::time::Instant::now();
     let mut prev_seconds = 0;
@@ -222,15 +222,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // also handles other operations on the node via message passing from the REPL thread
     thread::spawn(move || loop {
         // node handler loop
-        while let Ok(_) = vesc_node.receive(&mut rover_internal) {}
+        match vesc_node.receive(&mut rover_internal) {
         // TODO: more brain cells needed here
-        /*Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
-        Err(e) => panic!("{:?}", e),*/
-        while let Ok(_) = stepper_node.receive(&mut rover_internal) {}
-            /*Ok(_) => {}
-            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
+            Ok(_) => {}
+            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {},
             Err(e) => panic!("{:?}", e),
-        }*/
+        }
+        match stepper_node.receive(&mut rover_internal) {
+            Ok(_) => {},
+            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {},
+            Err(e) => panic!("{:?}", e),
+        }
         match cmd_rx.try_recv() {
             Ok(msg) => {
                 match msg.op {
@@ -482,6 +484,7 @@ impl<T: Transport> TransferHandler<T> for RoverInternal {
             return false;
         };
         // we're handling a stepper position message
+        println!("idx {} bytes {:?}", idx, transfer.payload);
         let Ok(stepper_pos) =
             angle_pos_scalar::Scalar::deserialize_from_bytes(&transfer.payload)
         else {

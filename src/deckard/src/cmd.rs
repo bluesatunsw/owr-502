@@ -89,6 +89,7 @@ impl Cmd for Stop {
     }
 }
 
+const VERY_LOW: f32 = 0.02;
 const LOW: f32 = 0.03;
 const NORMAL: f32 = 0.06;
 const HIGH: f32 = 0.09;
@@ -106,6 +107,7 @@ fn parse_speed(mut s: &str) -> Option<f32> {
         "hi" => Some(f * HIGH),
         "mid" => Some(f * NORMAL),
         "lo" => Some(f * LOW),
+        "xlo" => Some(f * VERY_LOW),
         _ => None
     }
 }
@@ -113,7 +115,11 @@ fn parse_speed(mut s: &str) -> Option<f32> {
 pub struct Move {}
 impl Cmd for Move {
     fn get_keywords(&self) -> Vec<&'static str> {
-        Vec::from(["move", "m", "mv", "w", "a", "s", "d", "q", "e", "W", "A", "S", "D", "Q", "E"])
+        Vec::from(["move", "m", "mv",
+            "w", "a", "s", "d", "q", "e",
+            "W", "A", "S", "D", "Q", "E",
+            ".w", ".a", ".s", ".d", ".q", ".e",
+        ])
     }
 
     fn get_brief(&self) -> &'static str {
@@ -126,9 +132,9 @@ impl Cmd for Move {
         \tmove strafe <angle> <speed>\n\
         \tmove circle <speed>\n\
         MAKE SURE YOU KNOW HOW TO USE THE STOP COMMAND BEFORE YOU RUN THIS.\n\
-        Aliases for specific move command variants: w, a, s, d, q, e (and CAPS variants)\n\
+        Aliases for specific move command variants: w, a, s, d, q, e (and CAPS and .prefix variants)\n\
         'straight' aliased by 'st', 'strafe' aliased by 'sf', 'circle' aliased by 'cl'\n\
-        <speed>: either 'lo' (0.03), 'mid' (0.06) or 'hi' (0.09); prefix with '-' to go backwards\n\
+        <speed>: either 'xlo' (0.01), 'lo' (0.03), 'mid' (0.06) or 'hi' (0.09); prefix with '-' to go backwards\n\
         <angle>: integer, in degrees; range is (-90, 90]\n\
         Default for circle is clockwise; use 'backwards' speed to go anticlockwise, but just use 'a'/'d' tbh."
     }
@@ -187,22 +193,28 @@ impl Cmd for Move {
                     }
                 }
             }
-            "w" | "s" => {
-                if args[0].chars().nth(0).unwrap().is_lowercase() {
+            "w" | "s" | ".w" | ".s" => {
+                if args[0].chars().nth(0).unwrap() == '.' {
+                    (WheelOrientation::Aligned(0.0), VERY_LOW)
+                } else if args[0].chars().nth(0).unwrap().is_lowercase() {
                     (WheelOrientation::Aligned(0.0), LOW)
                 } else {
                     (WheelOrientation::Aligned(0.0), NORMAL)
                 }
             }
-            "q" | "e" => {
-                if args[0].chars().nth(0).unwrap().is_lowercase() {
+            "q" | "e" | ".q" | ".e" => {
+                if args[0].chars().nth(0).unwrap() == '.' {
+                    (WheelOrientation::Aligned(90.0 * PI / 180.0), VERY_LOW)
+                } else if args[0].chars().nth(0).unwrap().is_lowercase() {
                     (WheelOrientation::Aligned(90.0 * PI / 180.0), LOW)
                 } else {
                     (WheelOrientation::Aligned(90.0 * PI / 180.0), NORMAL)
                 }
             }
-            "a" | "d" => {
-                if args[0].chars().nth(0).unwrap().is_lowercase() {
+            "a" | "d" | ".a" | ".d" => {
+                if args[0].chars().nth(0).unwrap() == '.' {
+                    (WheelOrientation::RotateInPlace, VERY_LOW)
+                } else if args[0].chars().nth(0).unwrap().is_lowercase() {
                     (WheelOrientation::RotateInPlace, LOW)
                 } else {
                     (WheelOrientation::RotateInPlace, NORMAL)
@@ -242,10 +254,10 @@ impl Cmd for Move {
         if let WheelOrientation::Aligned(_) = target_orientation {
             // because of the way wheels are mounted
             let values = match kw_lower.as_str() {
-                "w" | "q" => {
+                "w" | "q" | ".w" | ".q" => {
                     [speed, -speed, speed, -speed]
                 }
-                "s" | "e" => {
+                "s" | "e" | ".s" | ".e" => {
                     [-speed, speed, -speed, speed]
                 }
                 _ => {
@@ -259,7 +271,7 @@ impl Cmd for Move {
         } else {
             rover.cmd_tx.send(NodeCommand {
                 op: Operation::DriveVesc,
-                values: if kw_lower == "d" { [speed; 4] } else if kw_lower == "a" { [-speed; 4] } else { [speed; 4] }
+                values: if kw_lower == "d" || kw_lower == ".d" { [speed; 4] } else if kw_lower == "a" || kw_lower == ".a" { [-speed; 4] } else { [speed; 4] }
             }).unwrap();
         }
         rover.is_stopped = false;
