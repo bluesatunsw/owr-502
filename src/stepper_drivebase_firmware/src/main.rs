@@ -6,7 +6,8 @@
 
 use canadensis::{
     core::{
-        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, SubjectId,
+        time::MicrosecondDuration32, transfer::MessageTransfer, transport::Transport, Priority,
+        SubjectId,
     },
     encoding::{DataType, Deserialize},
     node::{
@@ -18,7 +19,8 @@ use canadensis::{
 };
 use canadensis_can::{CanNodeId, CanReceiver, CanTransmitter, CanTransport, Mtu};
 use canadensis_data_types::{
-    reg::udral::physics::kinematics::rotation::planar_0_1::Planar, uavcan::node::health_1_0::Health,
+    reg::udral::physics::kinematics::rotation::planar_0_1::Planar,
+    uavcan::{node::health_1_0::Health, si::unit::angle},
 };
 use core::{hint::unreachable_unchecked, intrinsics::breakpoint, panic::PanicInfo};
 use cortex_m_rt::entry;
@@ -70,6 +72,11 @@ const SETPOINT_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3000);
 const SETPOINT_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3010);
 const SETPOINT_MESSAGE_CHAN_2_ID: SubjectId = SubjectId::from_truncating(3020);
 const SETPOINT_MESSAGE_CHAN_3_ID: SubjectId = SubjectId::from_truncating(3030);
+
+const POSITION_MESSAGE_CHAN_0_ID: SubjectId = SubjectId::from_truncating(3001);
+const POSITION_MESSAGE_CHAN_1_ID: SubjectId = SubjectId::from_truncating(3011);
+const POSITION_MESSAGE_CHAN_2_ID: SubjectId = SubjectId::from_truncating(3021);
+const POSITION_MESSAGE_CHAN_3_ID: SubjectId = SubjectId::from_truncating(3031);
 
 // ARGB LED constants
 const RED: Colour = Colour { r: 255, g: 0, b: 0 };
@@ -280,6 +287,15 @@ fn main() -> ! {
     )
     .unwrap();
 
+    node.start_publishing(POSITION_MESSAGE_CHAN_0_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_1_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_2_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+    node.start_publishing(POSITION_MESSAGE_CHAN_3_ID, 10.millis(), Priority::Nominal)
+        .unwrap();
+
     drivebase.steppers.enable_all();
     let mut comms_handler = CommsHandler { drivebase };
 
@@ -290,6 +306,54 @@ fn main() -> ! {
 
     loop {
         node.receive(&mut comms_handler).unwrap();
+
+        node.publish(
+            POSITION_MESSAGE_CHAN_0_ID,
+            &angle::scalar_1_0::Scalar {
+                radian: comms_handler
+                    .drivebase
+                    .get_position(Channel::CH0)
+                    .unwrap()
+                    .0,
+            },
+        )
+        .unwrap();
+
+        node.publish(
+            POSITION_MESSAGE_CHAN_1_ID,
+            &angle::scalar_1_0::Scalar {
+                radian: comms_handler
+                    .drivebase
+                    .get_position(Channel::CH1)
+                    .unwrap()
+                    .0,
+            },
+        )
+        .unwrap();
+
+        node.publish(
+            POSITION_MESSAGE_CHAN_2_ID,
+            &angle::scalar_1_0::Scalar {
+                radian: comms_handler
+                    .drivebase
+                    .get_position(Channel::CH2)
+                    .unwrap()
+                    .0,
+            },
+        )
+        .unwrap();
+
+        node.publish(
+            POSITION_MESSAGE_CHAN_3_ID,
+            &angle::scalar_1_0::Scalar {
+                radian: comms_handler
+                    .drivebase
+                    .get_position(Channel::CH3)
+                    .unwrap()
+                    .0,
+            },
+        )
+        .unwrap();
 
         if let Some(status) = comms_handler.drivebase.steppers.health() {
             node.set_health(Health {
