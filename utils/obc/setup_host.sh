@@ -8,8 +8,15 @@
 sudo gpasswd -a owr video
 
 # Allow anyone to access cameras, by default only root has camera perms
-RULES_FILE="/etc/udev/rules.d/can-conv.rules"
-echo 'KERNEL=="can[0-9]*", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{serial}=="003F00544543500120353148", NAME="can-all"' > "${RULES_FILE}"
-echo 'KERNEL=="can[0-9]*", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{serial}=="004000544543500120353148", NAME="can-vesc"' >> "${RULES_FILE}"
+CAN_RULES_FILE="/etc/udev/rules.d/can-conv.rules"
+echo 'KERNEL=="can[0-9]*", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{serial}=="003F00544543500120353148", NAME="can-all"' > "${CAN_RULES_FILE}"
+echo 'KERNEL=="can[0-9]*", SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{serial}=="004000544543500120353148", NAME="can-vesc"' >> "${CAN_RULES_FILE}"
+
+KINECT_RULES_FILE="/etc/udev/rules.d/kinect.rules"
+# ATTR{product}=="Kinect2"
+echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02c4", MODE="0666"' > "${KINECT_RULES_FILE}"
+echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02d8", MODE="0666"' >> "${KINECT_RULES_FILE}"
+echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02d9", MODE="0666"' >> "${KINECT_RULES_FILE}"
+
 udevadm control --reload-rules
 udevadm trigger

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+PIVOT=${1:-0.0}
+TWIST=${2:-0.0}
+
+echo $PIVOT, $TWIST
+
+X=$(echo "$TWIST/15 + $PIVOT/30" | bc -l)
+Y=$(echo "$TWIST/15 - $PIVOT/30" | bc -l)
+
+echo $X, $Y
+
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),100)" \
+      pub --count 1 3000:reg.udral.physics.dynamics.rotation.Planar\
+      "{kinematics: {angular_position: $X }}"
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),100)" \
+      pub --count 1 3010:reg.udral.physics.dynamics.rotation.Planar\
+      "{kinematics: {angular_position: $Y }}"
+

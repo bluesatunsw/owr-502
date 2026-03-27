@@ -1,0 +1,11 @@
+#!/bin/bash
+
+VELOCITY=${1:-0.0}
+# pivot (big), shovel (smol), paver (smol) -> 2000,2010,2020 
+TARGET=${2:-2000}
+
+echo "$TARGET commanded to $VELOCITY"
+
+yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),50)" \
+      pub --count 2 ${TARGET}:reg.udral.service.actuator.common.sp.Scalar.0.1\
+      "{value: $VELOCITY }"
