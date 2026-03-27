@@ -15,7 +15,7 @@ pub trait Cmd {
     fn get_keywords(&self) -> Vec<&'static str>;
     fn get_brief(&self) -> &'static str;
     fn get_help(&self) -> &'static str;
-    fn run(&self, args: Vec<&str>, rover: &Rover) -> Result<(), CmdErr>;
+    fn run(&self, args: Vec<&str>, rover: &mut Rover) -> Result<(), CmdErr>;
 }
 
 pub struct Quit {}
@@ -34,7 +34,7 @@ impl Cmd for Quit {
         Exits the REPL gracefully."
     }
 
-    fn run(&self, _args: Vec<&str>, _rover: &Rover) -> Result<(), CmdErr> {
+    fn run(&self, _args: Vec<&str>, _rover: &mut Rover) -> Result<(), CmdErr> {
         panic!("quit command should never be run in the normal way");
     }
 }
@@ -56,7 +56,7 @@ impl Cmd for Help {
         Just try it and see what happens."
     }
 
-    fn run(&self, _args: Vec<&str>, _rover: &Rover) -> Result<(), CmdErr> {
+    fn run(&self, _args: Vec<&str>, _rover: &mut Rover) -> Result<(), CmdErr> {
         panic!("help command should never be run in the normal way");
     }
 }
@@ -77,7 +77,7 @@ impl Cmd for Stop {
         Immediately halts the rover drivebase. All 'move' commands should be eventually followed by this command."
     }
 
-    fn run(&self, _args: Vec<&str>, rover: &Rover) -> Result<(), CmdErr> {
+    fn run(&self, _args: Vec<&str>, rover: &mut Rover) -> Result<(), CmdErr> {
        for i in 0..4 {
             rover.cmd_tx.send(NodeCommand {
                 op: Operation::DriveVesc,
@@ -133,7 +133,7 @@ impl Cmd for Move {
         Default for circle is clockwise; use 'backwards' speed to go anticlockwise"
     }
 
-    fn run(&self, args: Vec<&str>, rover: &Rover) -> Result<(), CmdErr> {
+    fn run(&self, args: Vec<&str>, rover: &mut Rover) -> Result<(), CmdErr> {
         let kw = args[0];
         let kw_lower = kw.to_lowercase();
         let (target_orientation, speed): (WheelOrientation, f32) = match kw_lower.as_str() {
@@ -244,6 +244,7 @@ impl Cmd for Move {
         // TODO: sus
         rover.notif_rx.recv().unwrap().unwrap();
         println!("Wheels are now in position. Driving!");
+        rover.wheels = target_orientation;
         // then move
         for i in 0..4 {
             rover.cmd_tx.send(NodeCommand {

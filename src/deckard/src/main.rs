@@ -256,7 +256,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
 
     // assuming we start in this state...
-    let rover = core::Rover {
+    let mut rover = core::Rover {
         cmd_tx,
         notif_rx,
         wheels: core::WheelOrientation::Aligned(0.0),
@@ -334,7 +334,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match keyword_lookup.get(keyword.as_str()) {
                 Some(cmd_idx) => {
                     let cmd = &commands[*cmd_idx];
-                    cmd.run(parts, &rover).unwrap();
+                    cmd.run(parts, &mut rover).unwrap();
                 }
                 None => {
                     eprintln!("The word {} is not a recognised command or alias.", keyword);
