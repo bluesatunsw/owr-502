@@ -41,7 +41,7 @@ impl<T: Transport> TransferHandler<T> for CommSystem {
                 };
 
                 cortex_m::interrupt::free(|cs| unsafe {
-                    if f32::from(duty.value).abs() < 0.02 {
+                    if f32::from(duty.value).abs() < 0.001 {
                         (*self.commutation_state.borrow(cs).get()).mode = CommutationMode::Disabled;
                     } else {
                         (*self.commutation_state.borrow(cs).get()).mode =
