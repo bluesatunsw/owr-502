@@ -251,8 +251,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     }
                                 };
                                 stepper_node.publish(STEPPER_SETPOINT_SUB[i].try_into().unwrap(), &payload).unwrap();
-                                stepper_node.flush().unwrap();
                             }
+                            stepper_node.flush().unwrap();
+                            thread::sleep(time::Duration::from_millis(19)); // arbitrary number (-:
                         }
                     }
                     core::Operation::DriveVesc => {
@@ -263,8 +264,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                     value: half::f16::from_f32(msg.values[i])
                                 };
                                 vesc_node.publish(VESC_SPEED_SUB[i].try_into().unwrap(), &payload).unwrap();
-                                vesc_node.flush().unwrap();
                             }
+                            vesc_node.flush().unwrap();
+                            thread::sleep(time::Duration::from_millis(19));
                         }
                     }
                     // this operation only makes sense in the context of the stepper
@@ -460,11 +462,12 @@ impl RoverInternal {
     fn is_idle(&self) -> bool {
         let mut is_idle = true;
         for i in 0..4 {
-            let delta = f32::abs(self.curr_stepper_pos[i] - self.target_stepper_pos[i]);
+            let delta = self.curr_stepper_pos[i] - self.target_stepper_pos[i];
             const EPSILON: f32 = 0.001;
-            if delta >= EPSILON {
+            if f32::abs(delta) >= EPSILON {
                 is_idle = false;
             }
+            println!("stepper {} has delta {}", i, delta);
         }
         is_idle
     }

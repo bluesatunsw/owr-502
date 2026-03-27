@@ -121,15 +121,16 @@ impl Cmd for Move {
     }
 
     fn get_help(&self) -> &'static str {
-        "Usage: move straight <speed>\n\
-                move strafe <angle> <speed>\n\
-                move circle <speed>\n\
+        "Usage:
+        \tmove straight <speed>\n\
+        \tmove strafe <angle> <speed>\n\
+        \tmove circle <speed>\n\
         MAKE SURE YOU KNOW HOW TO USE THE STOP COMMAND BEFORE YOU RUN THIS.\n\
         Aliases for specific move command variants: w, a, s, d, q, e (and CAPS variants)\n\
         'straight' aliased by 'st', 'strafe' aliased by 'sf', 'circle' aliased by 'cl'\n\
         <speed>: either 'lo' (0.03), 'mid' (0.06) or 'hi' (0.09); prefix with '-' to go backwards\n\
         <angle>: integer, in degrees; range is (-90, 90]\n\
-        Default for circle is clockwise; use 'backwards' speed to go anticlockwise"
+        Default for circle is clockwise; use 'backwards' speed to go anticlockwise, but just use 'a'/'d' tbh."
     }
 
     fn run(&self, args: Vec<&str>, rover: &mut Rover) -> Result<(), CmdErr> {
@@ -172,10 +173,10 @@ impl Cmd for Move {
                         }
                     }
                     "cl" | "circle" => {
-                        match parse_speed(args[3]) {
+                        match parse_speed(args[2]) {
                             Some(speed) => (WheelOrientation::RotateInPlace, speed),
                             None => {
-                                eprintln!("Unrecognised speed '{}'", args[3]);
+                                eprintln!("Unrecognised speed '{}'", args[2]);
                                 return Err(CmdErr::SyntaxError);
                             }
                         }
