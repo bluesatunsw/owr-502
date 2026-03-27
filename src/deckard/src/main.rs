@@ -222,16 +222,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // also handles other operations on the node via message passing from the REPL thread
     thread::spawn(move || loop {
         // node handler loop
-        match vesc_node.receive(&mut rover_internal) {
-            Ok(_) => {}
+        while let Ok(_) = vesc_node.receive(&mut rover_internal) {}
+        // TODO: more brain cells needed here
+        /*Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
+        Err(e) => panic!("{:?}", e),*/
+        while let Ok(_) = stepper_node.receive(&mut rover_internal) {}
+            /*Ok(_) => {}
             Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
             Err(e) => panic!("{:?}", e),
-        }
-        match stepper_node.receive(&mut rover_internal) {
-            Ok(_) => {}
-            Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
-            Err(e) => panic!("{:?}", e),
-        }
+        }*/
         match cmd_rx.try_recv() {
             Ok(msg) => {
                 match msg.op {
@@ -282,11 +281,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             Err(_) => {}
         }
         if notify_in_flight {
-            if rover_internal.is_idle() {
-                notif_tx.send(Ok(())).unwrap();
+            /*if rover_internal.is_idle() {
+                /*notif_tx.send(Ok(())).unwrap();
                 notify_in_flight = false;
-                println!("[BACKEND] Steering resolved (motors reporting idle)");
-            } else if std::time::Instant::now().duration_since(notif_op_time).as_secs() >= 3 {
+                println!("[BACKEND] Steering resolved (motors reporting idle)");*/
+            } else */if std::time::Instant::now().duration_since(notif_op_time).as_secs() >= 3 {
                 // 3-second timeout
                 notif_tx.send(Ok(())).unwrap();
                 notify_in_flight = false;
