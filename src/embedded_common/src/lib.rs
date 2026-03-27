@@ -11,5 +11,3 @@ pub mod debug;
 pub mod stepper_bus;
 #[cfg(feature = "stepper-board")]
 pub mod tmc_registers;
-#[cfg(feature = "desperation")]
-pub mod foolcan;
