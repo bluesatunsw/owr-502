@@ -9,5 +9,5 @@ echo $POSITION
 echo $VELOCITY
 
 yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-vesc', 8),50)" \
-      pub --count 1 ${TARGET}:reg.udral.service.actuator.common.sp.Scalar.0.1\
+      pub --count 2 ${TARGET}:reg.udral.service.actuator.common.sp.Scalar.0.1\
       "{value: $VELOCITY }"

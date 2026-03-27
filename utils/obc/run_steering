@@ -8,6 +8,6 @@ echo $POSITION
 echo $TARGET
 
 yakut -i "CAN(can.media.socketcan.SocketCANMedia('can-all', 64),42)" \
-      pub -N 1 ${TARGET}:reg.udral.physics.dynamics.rotation.Planar.0.1\
+      pub -N 2 ${TARGET}:reg.udral.physics.dynamics.rotation.Planar.0.1\
       "{kinematics: {angular_position: $POSITION }}"
 
