@@ -1,4 +1,5 @@
 use crate::core::{Rover, WheelOrientation, NodeCommand, Operation};
+use std::f32::consts::PI;
 
 #[derive(Debug)]
 pub enum CmdErr {
@@ -159,7 +160,7 @@ impl Cmd for Move {
                                     eprintln!("The angle {} is out of range (-90, 90]", target_angle_int);
                                     return Err(CmdErr::ValueError);
                                 }
-                                target_angle_int as f32
+                                target_angle_int as f32 * PI / 180.0
                             }
                             Err(_) => { eprintln!("{} is not a valid angle", args[2]); return Err(CmdErr::SyntaxError) }
                         };
@@ -196,16 +197,16 @@ impl Cmd for Move {
             }
             "q" | "e" => {
                 if args[0].chars().nth(0).unwrap().is_lowercase() {
-                    (WheelOrientation::Aligned(90.0), LOW)
+                    (WheelOrientation::Aligned(90.0 * PI / 180.0), LOW)
                 } else {
-                    (WheelOrientation::Aligned(90.0), NORMAL)
+                    (WheelOrientation::Aligned(90.0 * PI / 180.0), NORMAL)
                 }
             }
             "a" | "d" => {
                 if args[0].chars().nth(0).unwrap().is_lowercase() {
-                    (WheelOrientation::Aligned(90.0), LOW)
+                    (WheelOrientation::RotateInPlace, LOW)
                 } else {
-                    (WheelOrientation::Aligned(90.0), NORMAL)
+                    (WheelOrientation::RotateInPlace, NORMAL)
                 }
             }
             _ => {

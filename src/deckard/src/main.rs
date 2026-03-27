@@ -140,9 +140,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let stepper_queue_driver: FDQueue = SingleQueueDriver::new(ArrayQueue::new(), stepper_can);
     let vesc_queue_driver: ClassicQueue = SingleQueueDriver::new(ArrayQueue::new(), vesc_can);
 
-    const TRANSFER_IDS: usize = 32;
-    const PUBLISHERS: usize = 32;
-    const REQUESTERS: usize = 8;
+    const TRANSFER_IDS: usize = 16;
+    const PUBLISHERS: usize = 16;
+    const REQUESTERS: usize = 16;
 
     let transmitter = CanTransmitter::new(Mtu::CanFd64);
     let receiver = CanReceiver::new(node_id);
@@ -163,7 +163,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let mut stepper_node = BasicNode::new(stepper_core_node, stepper_node_info).unwrap();
 
-    let transmitter = CanTransmitter::new(Mtu::CanFd64);
+    let transmitter = CanTransmitter::new(Mtu::Can8);
     let receiver = CanReceiver::new(node_id);
     let vesc_core_node: CoreNode<
         SystemClock,
@@ -220,11 +220,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // also handles other operations on the node via message passing from the REPL thread
     thread::spawn(move || loop {
         // node handler loop
-        /*match vesc_node.receive(&mut rover_internal) {
+        match vesc_node.receive(&mut rover_internal) {
             Ok(_) => {}
             Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
             Err(e) => panic!("{:?}", e),
-        }*/
+        }
         match stepper_node.receive(&mut rover_internal) {
             Ok(_) => {}
             Err(Error::Driver(e)) if e.kind() == ErrorKind::WouldBlock => {}
@@ -255,9 +255,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             value: half::f16::from_f32(msg.value)
                         };
                         // send the message thrice for redundancy
-                        /*for _ in 0..3 {
+                        for _ in 0..3 {
                             vesc_node.publish(VESC_SPEED_SUB[msg.index].try_into().unwrap(), &payload).unwrap();
-                        }*/
+                        }
                     }
                     // this operation only makes sense in the context of the stepper
                     // to avoid deadlock, caller must NEVER call this twice in succession;
@@ -288,8 +288,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .as_secs();
         if seconds != prev_seconds {
             prev_seconds = seconds;
-            /*vesc_node.run_per_second_tasks().unwrap();
-            vesc_node.flush().unwrap();*/
+            vesc_node.run_per_second_tasks().unwrap();
+            vesc_node.flush().unwrap();
             stepper_node.run_per_second_tasks().unwrap();
             stepper_node.flush().unwrap();
         }
@@ -374,7 +374,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match keyword_lookup.get(keyword.as_str()) {
                 Some(cmd_idx) => {
                     let cmd = &commands[*cmd_idx];
-                    cmd.run(parts, &mut rover).unwrap();
+                    match cmd.run(parts, &mut rover) {
+                        Ok(_) => println!("Ok."),
+                        Err(_) => println!("Error executing command.")
+                    }
                 }
                 None => {
                     eprintln!("The word {} is not a recognised command or alias.", keyword);
