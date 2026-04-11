@@ -20,11 +20,11 @@ echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="045e", ATTR{idProduct}=="02d9", MODE="0
 
 CAMERA_RULES_FILE="/etc/udev/rules.d/decxin-cam.rules"
 { \
-    echo 'KERNEL=="video[02468]", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="2", ATTRS{devnum}=="3", SYMLINK+="video-polef"'; \
-    echo 'KERNEL=="video[02468]", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="2", ATTRS{devnum}=="4", SYMLINK+="video-polel"'; \
-    echo 'KERNEL=="video[02468]", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="2", ATTRS{devnum}=="5", SYMLINK+="video-poler"'; \
-    echo 'KERNEL=="video[02468]", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="2", ATTRS{devnum}=="6", SYMLINK+="video-front"'; \
-    echo 'KERNEL=="video[02468]", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{busnum}=="4", ATTRS{devnum}=="2", SYMLINK+="video-paver"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", ATTR{index}=="0", SUBSYSTEMS=="usb", KERNELS=="3-1:1.0", SYMLINK+="video-polef"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", ATTR{index}=="0", SUBSYSTEMS=="usb", KERNELS=="3-1:1.0", SYMLINK+="video-polel"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", ATTR{index}=="0", SUBSYSTEMS=="usb", KERNELS=="3-1:1.0", SYMLINK+="video-poler"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", ATTR{index}=="0", SUBSYSTEMS=="usb", KERNELS=="3-1:1.0", SYMLINK+="video-front"'; \
+    echo 'KERNEL=="video[0-9]*", SUBSYSTEM=="video4linux", ATTR{index}=="0", SUBSYSTEMS=="usb", KERNELS=="3-1:1.0", SYMLINK+="video-paver"'; \
 } > "${CAMERA_RULES_FILE}"
 
 udevadm control --reload-rules
