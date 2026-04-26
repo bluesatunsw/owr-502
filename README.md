@@ -1,10 +1,10 @@
-# owr-502
+# owr
 This repo includes all software necessary to operate the Test Rover Platform
-that is being designed and developed in the 502 project.
+that is being designed and developed in the OWR project.
 
 ## System Setup
 A guide is available on the
-[owr-502-docs](https://github.com/bluesatunsw/owr-502-docs/tree/main/src/guides/container_setup.md)
+[owr-docs](https://github.com/bluesatunsw/owr-docs/tree/main/src/guides/container_setup.md)
 repository.
 
 ## Useful Command index
@@ -13,7 +13,7 @@ repository.
 | `podman compose -f "$PWD/.devcontainer/docker-compose.yml" up -d`     | Run in the git root to build/restart/start the Docker container.                                |
 | `podman compose -f "$PWD/.devcontainer/docker-compose-obc.yml" up -d` | Run in the git root to build/restart/start the Docker container **with obc specific settings!** |
 | `podman exec -it --latest /bin/bash`                                  | Enter the docker container after launching it with the devcontainer.                            |
-| `./utils/init.bash`                                                   | Run after `cd`'ing into `/workspaces/owr-502` in the container to source the ROS env and tools  |
+| `./utils/init.bash`                                                   | Run after `cd`'ing into `/workspaces/owr` in the container to source the ROS env and tools      |
 | `colcon build --symlink-install`                                      | Runs the `colcon` meta build system, builds ALL rover packages!                                 |
 | `ros2 launch rover rover.launch.py`                                   | Launch the robot state publisher. Just leave this running.                                      |
 | `rqt`                                                                 | The flexible ROS2 viewer, useful for debugging topic flows and looking at raw topics.           |
